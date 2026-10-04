@@ -164,6 +164,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 
 <!-- ================= STUDIO ================= -->
 <section class="tab on" id="t-studio">
+  <div class="banner" id="desk-warn" style="display:none;font-size:13px">📱 Chrome è in modalità <b>"Sito desktop"</b>: ho adattato la grafica, ma per la resa migliore apri il menu ⋮ di Chrome e togli la spunta a "Sito desktop".</div>
   <div class="hero" id="hero">
     <h1>Il tuo video,<br><i>pronto per i Per Te</i></h1>
     <p class="sub" style="margin:8px 0 0">Lo analizzo come lo valuta TikTok, lo correggo e ti preparo tutto per pubblicarlo. Il video non lascia mai il telefono.</p>
@@ -974,6 +975,12 @@ function stpSum(n,txt){const el=$('#s'+n+'-sum');if(el&&txt)el.textContent=txt}
 function goStep(n){stpOpen(n,true);setTimeout(()=>$('#s'+n).scrollIntoView({behavior:'smooth',block:'start'}),60)}
 const hhmm=d=>`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 function normDB(){DB.posts=DB.posts||[];DB.stats=DB.stats||[];DB.checklist=DB.checklist||{};DB.series=DB.series||[];DB.pending=DB.pending||[]}
+/* telefono aperto in modalità "Sito desktop": riporto la scala a misura di telefono */
+function fitPhone(){try{const sw=Math.min(screen.width,screen.height)>0?screen.width:0,iw=window.innerWidth;
+  const phone=sw>0&&sw<760&&('ontouchstart' in window||navigator.maxTouchPoints>0);
+  const z=phone&&iw>sw*1.4?iw/sw:1;document.documentElement.style.zoom=z>1?String(z):'';
+  const b=$('#desk-warn');if(b)b.style.display=z>1?'':'none'}catch(_){}}
+window.addEventListener('resize',fitPhone);window.addEventListener('orientationchange',()=>setTimeout(fitPhone,200));
 /* installazione PWA */
 let _dip=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dip=e;$('#btn-install').style.display=''});
 function installApp(){if(!_dip)return;_dip.prompt();(_dip.userChoice||Promise.resolve()).finally(()=>{_dip=null;$('#btn-install').style.display='none'})}
@@ -2002,7 +2009,7 @@ function applyAllFixes(){(VA.score.items||[]).filter(i=>i.fix&&i.fix.startsWith(
   updEst();renderScore();if(readOpts().hook&&!curHook().trim()){goStep(3);toast('Ora scegli l\'hook')}else toast('Correzioni applicate ✓')}
 
 /* ---------- avvio ---------- */
-load();normDB();fillNiches();$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();scheduleNotifs();updateRules(false);
+fitPhone();load();normDB();fillNiches();$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();scheduleNotifs();updateRules(false);
 if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
