@@ -273,6 +273,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   <h2>Crescita</h2>
   <p class="sub">TikTok mostra ogni video a un piccolo pubblico e lo spinge solo se trattiene più della media del tuo account. Inserisci i dati dopo 48 ore: qui vedi la tua media e cosa la batte.</p>
   <div id="g-pending"></div>
+  <div id="g-next"></div>
   <div id="s-kpis" class="kpis"></div>
   <div id="s-insight"></div>
   <div class="card" id="s-chartbox" style="display:none">
@@ -377,7 +378,11 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 <!-- Modal dati video -->
 <div class="modal" id="m-stat"><div class="sheet">
   <h2 id="ms-title">Dati del video</h2>
-  <p class="sub" style="margin:0">Li trovi in TikTok Studio → Analytics del video.</p>
+  <p class="sub" style="margin:0">Li trovi in TikTok Studio → Analytics del video. Puoi caricare gli screenshot e li leggo io.</p>
+  <label class="btn cy" style="text-transform:none;letter-spacing:0;font-size:15px;color:#06232a;margin-top:12px">📷 Leggi i dati da screenshot
+    <input type="file" accept="image/*" multiple style="display:none" onchange="ocrStats(event)">
+  </label>
+  <div id="s-ocr" style="font-size:13px;color:var(--mut);margin-top:8px"></div>
   <input type="hidden" id="s-id"><input type="hidden" id="s-pid"><input type="hidden" id="s-score"><input type="hidden" id="s-series">
   <label>Titolo</label><input id="s-title" placeholder="es. Puntata 1 – il primo cliente">
   <div class="row">
@@ -1179,6 +1184,7 @@ function openStatForm(id,pid){
   $('#s-title').value=s?s.title:'';$('#s-date').value=s?s.date:todayISO();$('#s-hour').value=s&&s.hour||'';
   $('#s-format').value=s&&s.format?s.format:FORMATS[0];$('#s-hk').value=s&&s.hk||'';
   ['views','likes','comm','shares','saves','follows','len','watch','full'].forEach(k=>$('#s-'+k).value=s&&s[k]!=null&&s[k]!==''?s[k]:'');
+  $('#s-ocr').innerHTML='';document.querySelectorAll('#m-stat input').forEach(e=>e.style.borderColor='');
   openModal('m-stat');
 }
 function saveStat(){
@@ -1187,6 +1193,7 @@ function saveStat(){
   const o={id:$('#s-id').value||uid(),title,date:$('#s-date').value,hour:$('#s-hour').value,format:$('#s-format').value,hk:$('#s-hk').value,views,
     series:$('#s-series').value,score:$('#s-score').value===''?null:+$('#s-score').value};
   ['likes','comm','shares','saves','follows','len','watch','full'].forEach(k=>{const v=$('#s-'+k).value;o[k]=v===''?'':+v});
+  const prev=DB.stats.find(x=>x.id===o.id)||DB.pending.find(x=>x.id===$('#s-pid').value)||{};['transcript','topic','end','niche','pubAt'].forEach(k=>{if(prev[k]!=null&&o[k]==null)o[k]=prev[k]});
   const i=DB.stats.findIndex(x=>x.id===o.id);if(i>=0)DB.stats[i]=o;else DB.stats.push(o);
   const pid=$('#s-pid').value;if(pid)DB.pending=DB.pending.filter(x=>x.id!==pid);
   save();closeModal('m-stat');renderStats();renderPlan();toast('Salvato ✓');
@@ -1196,7 +1203,7 @@ const er=s=>s.views?((+s.likes||0)+(+s.comm||0)+(+s.shares||0)+(+s.saves||0))/s.
 const ret=s=>s.len&&s.watch?Math.min(100,s.watch/s.len*100):null;
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
 function renderStats(){
-  renderPendingGrow();
+  renderPendingGrow();renderNext();
   const S=DB.stats.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   if(!S.length){$('#s-kpis').innerHTML='';$('#s-chartbox').style.display='none';
     $('#s-insight').innerHTML=`<div class="card"><b>Come funziona</b><div style="color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.55">1. Pubblica dallo Studio e tocca "L'ho pubblicato".<br>2. Dopo 48 ore inserisci view, visione media e interazioni.<br>3. Dopo 3 video ti mostro la formula del tuo canale: tipo di hook, orario, durata e formato che ti rendono di più.</div></div>`;
@@ -1624,8 +1631,8 @@ function markPublished(){
   const o=readOpts(),ser=curSeries(),now=new Date(),P=VA.pkg||{};const h=P.hooks?P.hooks[P.sel||0]:null;
   const item={id:uid(),title:(o.hookTxt||vFile.name).replace(/\n/g,' ').slice(0,90),date:todayISO(),hour:hhmm(now),
     hk:!o.hookTxt?'Nessuno':P.edited||!h?'Personalizzato':h.k,len:+getPlan(o).outDur.toFixed(1),
-    format:ser?'Serie (puntata)':'Altro',series:ser?`${ser.name} · P${ser.ep}`:'',score:VA.score?VA.score.total:null,pubAt:now.getTime()};
-  DB.pending.push(item);if(ser)ser.ep++;DB.checklist={};save();scheduleNotifs();renderSeriesSel();
+    format:ser?'Serie (puntata)':'Altro',series:ser?`${ser.name} · P${ser.ep}`:'',score:VA.score?VA.score.total:null,pubAt:now.getTime(),transcript:(VA.transcript||'').slice(0,900),topic:P.topicOk?P.topic:'',end:o.endTxt,niche:($('#a-niche')||{}).value||''};
+  DB.pending.push(item);if(ser)ser.ep++;DB.nextHook=null;DB.checklist={};save();scheduleNotifs();renderSeriesSel();
   const d1=new Date(now.getTime()+45*60e3),d2=new Date(now.getTime()+48*3600e3);
   $('#pub-next').innerHTML=`<div class="banner" style="margin:12px 0 0">🎉 Pubblicato! Prossimi passi:<br>💬 <b>Entro le ${hhmm(d1)}</b> rispondi ai primi commenti: TikTok guarda l'interazione della prima ora.<br>📊 <b>${slotLabel(d2)}</b> inserisci i dati nella scheda Crescita.
     <div class="acts"><button class="btn sm alt" onclick="exportFollowICS('${item.id}')">🔔 Promemoria nel calendario</button></div></div>`;
@@ -1797,6 +1804,7 @@ function renderAutoCard(){
    <label>Caption e hashtag</label><textarea id="a-cap" style="min-height:120px" oninput="schedScore()" placeholder="La caption appare qui. Puoi scriverla o modificarla."></textarea>
    <div id="a-trend"></div>
    <button class="btn alt" onclick="goStep(4)">Avanti: montaggio ↓</button></div>`;
+  if(DB.nextHook&&!curHook()){$('#a-hookedit').value=DB.nextHook;hookEdited(true);$('#a-hookscore').insertAdjacentHTML('beforebegin','<div class="tag o" style="margin-top:6px">📋 Hook dal piano del prossimo video</div>')}
   hookPreview();renderTrendBox()}
 const A_STEPS=['Ascolto il video','Capisco l\'argomento','Scelgo l\'hook migliore','Scrivo caption e hashtag','Imposto correzioni e sottotitoli'];
 function aStep(i,state,txt){VA.st=VA.st||A_STEPS.map(n=>({n,state:'wait',txt:''}));VA.st[i]={n:A_STEPS[i],state,txt:txt||''};
@@ -2007,6 +2015,119 @@ function applyFix(id){
   updEst();renderScore()}
 function applyAllFixes(){(VA.score.items||[]).filter(i=>i.fix&&i.fix.startsWith('o-')&&i.pts<i.max*0.8).forEach(i=>{const e=$('#'+i.fix);if(e&&!e.disabled)e.checked=true});
   updEst();renderScore();if(readOpts().hook&&!curHook().trim()){goStep(3);toast('Ora scegli l\'hook')}else toast('Correzioni applicate ✓')}
+
+/* ---------- DATI DA SCREENSHOT (lettura del testo nel telefono) ---------- */
+let _tess=null;
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Non riesco a scaricare il lettore di testo: serve la connessione la prima volta.'));document.head.appendChild(s)})}
+async function getOCR(onP){if(_tess)return _tess;
+  if(!window.Tesseract)await loadScript(window.SPINTA_TESS_SRC||'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+  const opts=Object.assign({logger:m=>onP&&onP(m)},window.SPINTA_TESS_OPTS||{});
+  _tess=await Tesseract.createWorker(['ita','eng'],1,opts);return _tess}
+async function prepImg(file){const bmp=await createImageBitmap(file);const sc=bmp.width<1100?2:1;const c=document.createElement('canvas');c.width=bmp.width*sc;c.height=bmp.height*sc;
+  const x=c.getContext('2d');x.drawImage(bmp,0,0,c.width,c.height);const d=x.getImageData(0,0,c.width,c.height),a=d.data;
+  let s=0,k=0;for(let i=0;i<a.length;i+=64){s+=(a[i]+a[i+1]+a[i+2])/3;k++}const dark=s/k<128;
+  for(let i=0;i<a.length;i+=4){let g=0.299*a[i]+0.587*a[i+1]+0.114*a[i+2];if(dark)g=255-g;g=clamp((g-140)*1.6+140,0,255);a[i]=a[i+1]=a[i+2]=g}
+  x.putImageData(d,0,0);return c}
+function parseNum(str){const m=String(str).replace(/\s/g,'').match(/(\d+(?:[.,]\d+)*)(k|m|mila|mln|b)?/i);if(!m)return null;const n=m[1],suf=(m[2]||'').toLowerCase();
+  if(suf)return Math.round(parseFloat(n.replace(',','.'))*(suf==='k'||suf==='mila'?1e3:suf==='b'?1e9:1e6));
+  if(/^\d{1,3}([.,]\d{3})+$/.test(n))return parseInt(n.replace(/[.,]/g,''));return parseFloat(n.replace(',','.'))}
+function parseSecs(str){let m=str.match(/(\d+):(\d{2})/);if(m)return +m[1]*60+ +m[2];
+  m=str.match(/(?:(\d+)\s*m(?:in)?\s*)?(\d+(?:[.,]\d+)?)\s*s\b/i);if(m)return Math.round(((m[1]?+m[1]*60:0)+parseFloat(m[2].replace(',','.')))*10)/10;return null}
+const OCR_LABELS=[['watch',/tempo medio|visione media|media di visione|average watch|avg\.? watch/i,'sec'],
+  ['full',/video complet|visualizzazion\w* complet|watched (the )?full|full video|completamento/i,'pct'],
+  ['follows',/nuovi follower|new follower|follower acquisiti|followers? gained/i,'num'],
+  ['views',/visualizzazion|video views|\bviews\b|riproduzioni del video/i,'num'],['likes',/mi piace|\blikes?\b/i,'num'],['comm',/commenti|comments?/i,'num'],
+  ['shares',/condivision|\bshares?\b/i,'num'],['saves',/salvat|preferit|\bsaves?\b|favorit/i,'num'],['len',/durata del video|video length|durata video/i,'sec']];
+function parseStatsText(t){const L=t.split(/\n/).map(x=>x.trim()).filter(Boolean),out={};
+  const valFrom=(s,kind)=>{if(!s)return null;if(kind==='sec')return parseSecs(s);
+    if(kind==='pct'){const m=s.match(/(\d+(?:[.,]\d+)?)\s*[%9]?/);if(!m)return null;let v=parseFloat(m[1].replace(',','.'));while(v>100)v=Math.floor(v/10);return v}
+    const m=s.replace(/\d+(?:[.,]\d+)?\s*%/g,'').match(/\d[\d.,]*\s*(?:k|m|mila|mln)?(?![a-z])/i);return m?parseNum(m[0]):null};
+  L.forEach((line,i)=>{if(/totale|total/i.test(line))return;
+    for(const [k,re,kind] of OCR_LABELS){if(!re.test(line))continue;if(out[k]!=null)break;
+      let v=valFrom(line.replace(re,' '),kind);if(v==null)v=valFrom(L[i+1],kind);if(v==null)v=valFrom(L[i-1],kind);if(v!=null)out[k]=v;break}});
+  if(out.views==null)for(const line of L){if(/[a-z]{4,}/i.test(line))continue;const nums=(line.match(/\d[\d.,]*\s*[kKmM]?/g)||[]).map(parseNum).filter(x=>x!=null);
+    if(nums.length>=4&&nums.length<=6){['views','likes','comm','shares','saves'].forEach((k,j)=>{if(out[k]==null&&nums[j]!=null)out[k]=nums[j]});break}}
+  return out}
+async function ocrStats(e){const files=[...(e.target.files||[])];e.target.value='';if(!files.length)return;const box=$('#s-ocr');
+  const say=h=>box.innerHTML=h;let found={},txtAll='';
+  try{say('⏳ Preparo il lettore di testo… (la prima volta scarica circa 10 MB)');
+    const w=await getOCR(m=>{if(m&&m.status&&m.progress!=null&&/load|init/i.test(m.status))say(`⏳ Preparo il lettore di testo… ${Math.round(m.progress*100)}%`)});
+    for(let i=0;i<files.length;i++){say(`🔎 Leggo lo screenshot ${i+1} di ${files.length}…`);
+      const c=await prepImg(files[i]);const r=await w.recognize(c);txtAll+=r.data.text+'\n';const f=parseStatsText(r.data.text);for(const k in f)if(found[k]==null)found[k]=f[k]}
+  }catch(err){say('❌ '+esc(err.message||'Lettura non riuscita'));return}
+  const names={views:'view',likes:'like',comm:'commenti',shares:'condivisioni',saves:'salvataggi',follows:'follower',len:'durata',watch:'visione media',full:'% completa'};
+  const got=Object.keys(found).filter(k=>names[k]);
+  got.forEach(k=>{const el=$('#s-'+k);el.value=found[k];el.style.borderColor='var(--cyan)'});
+  if(!$('#s-title').value.trim()&&!got.length){say('⚠️ Non ho trovato numeri leggibili. Usa lo screenshot della pagina Analytics del video in TikTok Studio, senza ritagliarlo.');return}
+  const miss=['views','likes','comm','shares','saves','watch','full','follows'].filter(k=>found[k]==null).map(k=>names[k]);
+  say(`✅ Ho letto <b>${got.length}</b> valori (bordo azzurro): ${got.map(k=>names[k]+' '+found[k]).join(' · ')}.${miss.length?`<br>Mancano: ${miss.join(', ')} — aggiungili a mano o carica un altro screenshot.`:''}<br><b>Controllali prima di salvare.</b>
+   <details style="margin-top:6px"><summary>Testo letto</summary><div style="white-space:pre-wrap;margin-top:6px">${esc(txtAll.trim().slice(0,1500))}</div></details>`)}
+
+/* ---------- PROSSIMO VIDEO: il seguito costruito sui dati ---------- */
+function renderNext(){const el=$('#g-next');if(!el)return;const has=DB.stats.length||DB.pending.length;
+  el.innerHTML=has?`<div class="card"><h3>🎬 Prossimo video</h3><div style="color:var(--mut);font-size:13px;margin:4px 0 2px">Preparo il seguito partendo dall'ultimo video e da quello che ha funzionato sul tuo canale: hook, scaletta secondo per secondo, durata e orario.</div>
+   <label>Idea o commento da cui partire (facoltativo)</label><textarea id="nx-idea" style="min-height:60px" placeholder="es. «Fai un'app per dividere il conto in pizzeria»"></textarea>
+   <button class="btn" onclick="genNext()">🎬 Prepara il prossimo video</button><div id="nx-out"></div></div>`:'';}
+function lastVideo(){const items=[...DB.stats.map(s=>({...s,_t:s.pubAt||Date.parse((s.date||'1970-01-01')+'T'+(s.hour||'12:00'))})),...DB.pending.map(p=>({...p,_t:p.pubAt}))];
+  return items.sort((a,b)=>b._t-a._t)[0]||null}
+function genNext(){
+  const L=lastVideo();if(!L){toast('Prima pubblica o inserisci almeno un video');return}
+  const S=DB.stats,av=S.length?avg(S.map(s=>s.views)):0,ser=curSeries(),ep=ser?ser.ep:null,idea=($('#nx-idea').value||'').trim();
+  const Ls=L.views?L:null;const tgt=(RULES.obiettivi||{}).completamento||70;
+  const groups=fn=>{const m={};S.forEach(s=>{const k=fn(s);if(!k)return;(m[k]=m[k]||[]).push(s)});return Object.entries(m).map(([k,a])=>({k,n:a.length,v:avg(a.map(x=>x.views))})).sort((a,b)=>b.v-a.v)};
+  // cosa ci dicono i dati
+  const notes=[];let len=Math.round(((RULES.durata.ideale[0]+RULES.durata.ideale[1])/2)/5)*5;let hk=null;
+  const bestHk=groups(s=>s.hk&&s.hk!=='Nessuno'?s.hk:null)[0],bestLen=groups(s=>!s.len?null:s.len<15?'12':s.len<30?'25':s.len<=60?'45':'75')[0];
+  if(bestLen&&S.length>=3)len=+bestLen.k;
+  if(Ls){const p=av?(Ls.views/av-1)*100:0,r=ret(Ls),e=er(Ls);
+    if(S.length>1&&p>=10){notes.push(`✅ L'ultimo video ha fatto <b>${fmt(Ls.views)}</b> view, il ${p.toFixed(0)}% sopra la tua media: tieni la stessa formula.`);hk=Ls.hk;if(Ls.len)len=Math.round(Ls.len)}
+    else if(S.length>1)notes.push(`📉 L'ultimo video è ${p<0?'sotto':'in linea con'} la tua media (${fmt(Ls.views)} view): cambio un elemento alla volta.`);
+    if(r!=null&&r<45){len=Math.max(15,Math.round(Math.min(len,(Ls.len||len)*0.7)));notes.push(`⏱️ Visione media al ${r.toFixed(0)}%: il prossimo dura meno (circa ${len} s) e va dritto al punto.`)}
+    if(Ls.full!==''&&Ls.full!=null&&+Ls.full<tgt)notes.push(`🏁 Visione completa ${Ls.full}% (obiettivo ${tgt}%): chiudi con un colpo di scena negli ultimi 3 secondi.`);
+    if(e<4)notes.push('💬 Pochi commenti: finisci con una domanda a cui si risponde con una parola (A o B?).');
+    else if(+Ls.comm>=10)notes.push('💬 Il pubblico commenta: rispondi al commento più votato dentro il video, citandolo a schermo.');
+  }else notes.push('📥 Non ho ancora i numeri dell\'ultimo video: preparo il seguito sulla storia. Inserisci i dati dopo 48 ore per piani più precisi.');
+  if(!hk&&bestHk&&S.length>=3){hk=bestHk.k;notes.push(`🎣 Il tipo di hook che ti rende di più: <b>${esc(hk)}</b>.`)}
+  // orario
+  const slotOf=h=>{const x=+h.split(':')[0];return x<11?[0,11]:x<15?[11,15]:x<19?[15,19]:x<22?[19,22]:[22,24]};
+  const bestSlot=groups(s=>s.hour?slotOf(s.hour).join('-'):null)[0];let when=nextSlot();
+  if(bestSlot&&S.length>=3){const [a,b]=bestSlot.k.split('-').map(Number);const now=new Date();
+    outer:for(let d=0;d<8;d++){const day=new Date(now);day.setDate(now.getDate()+d);for(const h of BEST[day.getDay()]){const [hh,mm]=h.split(':').map(Number);if(hh>=a&&hh<b){const dt=new Date(day);dt.setHours(hh,mm,0,0);if(dt-now>20*60e3){when=dt;break outer}}}}}
+  // hook proposti
+  const topic=L.topic||(ser?ser.name:'');const tArt=topic?withArticle(topic,L.transcript||''):'';const prevHook=(L.title||'').replace(/\s+/g,' ').trim();
+  const H=[];
+  const goal=((L.transcript||'')+' '+prevHook).match(/(\d[\d.]*)\s*(like|euro|follower)/i);const cut=t=>{const a=Array.from(t);return a.length>40?a.slice(0,40).join('')+'…':t};
+  if(ser&&ep>1)H.push({k:'Seguito',s:goal?`Parte ${ep}: ce l'ho fatta a fare ${goal[1]} ${goal[2]}? 👀`:`Parte ${ep}: com'è andata a finire? 👀`,bonus:20});
+  const sh=L.transcript?stakesHook(L.transcript):null;if(sh&&sh!==prevHook)H.push({k:'Posta in gioco',s:sh});
+  if(idea)H.push({k:'Risposta',s:`Mi avete chiesto: ${idea.replace(/^["«]|["»]$/g,'')}`.slice(0,90)});
+  const tpl=HOOKS.find(h=>h.k===hk);if(tpl&&tArt)H.push({k:hk,s:fixIt(cap1(tpl.s.replace(/\{t\}/g,tArt).replace(/\{T\}/g,cap1(tArt))))});
+  if(prevHook)H.push({k:'Richiamo',s:`Ricordate «${cut(prevHook)}»? Ecco il seguito`});
+  if(tArt&&H.length<4)H.push({k:'Fino alla fine',s:fixIt(cap1(`Guarda fino alla fine: con ${tArt} succede una cosa assurda.`))});
+  const hooks=H.map(h=>({...h,sc:hookAnalysis(h.s).sc})).sort((a,b)=>(b.sc+(b.bonus||0))-(a.sc+(a.bonus||0))).slice(0,4);
+  // scaletta
+  const T=len,b1=Math.min(8,Math.round(T*0.2)),b3=Math.max(b1+4,T-6);
+  const beats=[[`0–3 s`,'Hook',hooks[0]?hooks[0].s:'La posta in gioco in una frase'],
+    [`3–${b1} s`,ser&&ep>1?'Riassunto lampo':'Contesto',ser&&ep>1?`In una frase cosa è successo nella Parte ${ep-1}${prevHook?` («${cut(prevHook)}»)`:''}.`:'Chi sei e cosa sta per succedere, in una frase.'],
+    [`${b1}–${b3} s`,'Sviluppo',`${idea?`Il cuore: ${idea}. `:''}Un cambio (inquadratura, numero o oggetto a schermo) ogni 6-8 secondi, niente pause.`],
+    [`${b3}–${T-3} s`,'Svolta','Il risultato o il colpo di scena: il motivo per cui valeva la pena guardare.'],
+    [`ultimi 3 s`,'Gancio finale',ser?`Cliffhanger + «Parte ${ep+1} in arrivo: segui 🔔»`:'Domanda secca al pubblico (A o B?) + invito a seguire']];
+  const capQ=ser?`Parte ${ep} · ${idea?idea+' — ':''}secondo voi com'è andata? 👇`:`${idea||cap1(topic||'Il prossimo video')} — voi cosa ne pensate? 👇`;
+  const tags=[ser?ser.tag:null,...tagsFor('',wordsOf(topic).filter(w=>w.length>=4&&!STOP.has(w)),L.niche||'generale').split(' ')].filter(Boolean);const capFull=capQ+'\n\n'+[...new Set(tags)].slice(0,RULES.hashtag.max).join(' ');
+  const plan=`${ser?`${ser.name} – Parte ${ep}`:'Prossimo video'}\nDurata: circa ${T} s · Pubblica: ${slotLabel(when)}\n\nHOOK (primi 3 s): ${hooks[0]?hooks[0].s:''}\n\nSCALETTA\n${beats.map(b=>`${b[0]} · ${b[1]}: ${b[2]}`).join('\n')}\n\nCAPTION\n${capFull}`;
+  const ask=`Crea la ${ser?`Parte ${ep} di "${ser.name}"`:'prossima puntata'} per TikTok (verticale 9:16, circa ${T} secondi, sottotitoli inclusi), seguendo questo piano preparato da Spinta sui dati del mio canale.\n\n${plan}\n\nDati dell'ultimo video: ${Ls?`${fmt(Ls.views)} view, ${fmt(Ls.likes)} like, ${fmt(Ls.comm)} commenti${ret(Ls)!=null?`, visione media ${ret(Ls).toFixed(0)}%`:''}`:'non ancora disponibili'}.${L.transcript?`\nTesto dell'ultima puntata: «${L.transcript.slice(0,500)}»`:''}${idea?`\nIdea/commento da cui partire: ${idea}`:''}`;
+  window._nx={hooks,plan,ask,when,cap:capFull};
+  $('#nx-out').innerHTML=`<div style="margin-top:14px">${notes.map(x=>`<div style="font-size:13.5px;margin-bottom:6px">${x}</div>`).join('')}</div>
+   <h4 class="h4">Hook per il prossimo video</h4>${hooks.map((h,i)=>`<div class="hk ${i?'':'on'}" onclick="useNextHook(${i})">${esc(h.s)}<small>${esc(h.k)} · ${h.sc}/100 · tocca per usarlo nello Studio</small></div>`).join('')}
+   <h4 class="h4">Scaletta · circa ${T} secondi</h4>${beats.map(b=>`<div class="fix"><span class="tag" style="white-space:nowrap">${b[0]}</span><div><b style="font-size:14px">${b[1]}</b><div style="font-size:13px;color:var(--mut)">${esc(b[2])}</div></div></div>`).join('')}
+   <h4 class="h4">Caption</h4><div class="item" style="white-space:pre-wrap;padding-right:70px">${esc(capFull)}${copyBtn(capFull)}</div>
+   <div style="font-size:13.5px;margin-top:8px">⏰ Pubblica: <b>${slotLabel(when)}</b></div>
+   <div class="acts"><button class="btn sm" onclick="copy(window._nx.ask)">🤖 Copia la richiesta per Claude</button><button class="btn sm alt" onclick="copy(window._nx.plan)">📋 Copia il piano</button><button class="btn sm alt" onclick="nextToPlan()">📅 Metti nel piano</button></div>
+   <small class="n">"Copia la richiesta per Claude" prepara un messaggio con piano e dati: incollalo in una chat con Claude per farti creare la puntata.</small>`;
+  useNextHook(0,true)}
+function useNextHook(i,silent){const h=window._nx&&window._nx.hooks[i];if(!h)return;DB.nextHook=h.s;save();
+  document.querySelectorAll('#nx-out .hk').forEach((e,j)=>e.classList.toggle('on',j===i));if(!silent)toast('Lo trovi nello Studio al passo 3')}
+function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>String(n).padStart(2,'0');
+  DB.posts.push({id:uid(),title:(DB.nextHook||x.hooks[0].s),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
 
 /* ---------- avvio ---------- */
 fitPhone();load();normDB();fillNiches();$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();scheduleNotifs();updateRules(false);
