@@ -165,6 +165,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 <!-- ================= STUDIO ================= -->
 <section class="tab on" id="t-studio">
   <div class="banner" id="desk-warn" style="display:none;font-size:13px">📱 Chrome è in modalità <b>"Sito desktop"</b>: ho adattato la grafica, ma per la resa migliore apri il menu ⋮ di Chrome e togli la spunta a "Sito desktop".</div>
+  <div class="card" id="ready" style="display:none;border-color:rgba(255,45,111,.6)"></div>
   <div class="hero" id="hero">
     <h1>Il tuo video,<br><i>pronto per i Per Te</i></h1>
     <p class="sub" style="margin:8px 0 0">Lo analizzo come lo valuta TikTok, lo correggo e ti preparo tutto per pubblicarlo. Il video non lascia mai il telefono.</p>
@@ -218,7 +219,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
     <div class="stp-h" onclick="stpToggle(5)"><span class="num">5</span><div><h3>Esporta e pubblica</h3><small id="s5-sum">Video, copertina, caption e orario</small></div><span class="chev">⌄</span></div>
     <div class="stp-b">
       <button class="btn" id="o-go" onclick="exportVideo()">🚀 Crea il video finale</button>
-      <small class="n">Tieni l'app aperta e lo schermo acceso: l'elaborazione dura circa quanto il video.</small>
+      <small class="n">Tieni l'app aperta finché non finisce (circa quanto dura il video): se esci, l'esportazione si mette in pausa e riprende quando torni.</small>
       <div id="v-out"></div>
     </div>
   </article>
@@ -422,7 +423,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.0 · regole algoritmo <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.1 · regole algoritmo <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -956,10 +957,25 @@ const fmt=n=>{n=Number(n)||0;return n>=1e6?(n/1e6).toFixed(1).replace('.0','')+'
 const KEY='spinta_v1';
 let DB={posts:[],stats:[],checklist:{},series:[],pending:[]};
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d)DB=Object.assign(DB,d)}catch(e){}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){toast('Memoria non disponibile')}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));if(!save.p&&navigator.storage&&navigator.storage.persist){save.p=1;navigator.storage.persist().catch(()=>{})}}catch(e){toast('Memoria non disponibile')}}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1800)}
-function copy(txt){(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('Copiato ✓')).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Copiato ✓')})}
-function copyBtn(txt){return `<button class="btn sm alt copy" onclick="copy(decodeURIComponent('${encodeURIComponent(txt)}'))">Copia</button>`}
+function copy(txt){txt=String(txt??'');
+  const fb=()=>{let ok=false;try{const ta=document.createElement('textarea');ta.value=txt;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,txt.length);ok=document.execCommand('copy');ta.remove()}catch(_){}
+    toast(ok?'Copiato ✓':'Non riesco a copiare: tieni premuto sul testo e copia')};
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(txt).then(()=>toast('Copiato ✓'),fb);else fb()}
+function copyBtn(txt){return `<button class="btn sm alt copy" onclick="copy(decodeURIComponent('${encodeURIComponent(txt).replace(/'/g,'%27')}'))">Copia</button>`}
+const cutTxt=(s,n)=>{const a=Array.from(String(s??''));return a.length>n?a.slice(0,n).join('')+'…':a.join('')};
+function downloadBlob(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(u)},30000)}
+/* schermo acceso durante analisi, trascrizione, esportazione e lettura degli screenshot */
+const WL={r:new Set(),s:null,p:false,n:0};
+function wakeOn(k){const t=k+(++WL.n);WL.r.add(t);wakeSync();return t}
+function wakeOff(t){WL.r.delete(t);wakeSync()}
+async function wakeSync(){if(!('wakeLock'in navigator))return;
+  if(WL.r.size&&!WL.s&&!WL.p&&document.visibilityState==='visible'){WL.p=true;
+    try{const s=await navigator.wakeLock.request('screen');WL.s=s;s.addEventListener('release',()=>{if(WL.s===s)WL.s=null})}catch(_){}
+    WL.p=false;if(!WL.r.size)wakeSync()}
+  else if(!WL.r.size&&WL.s){const s=WL.s;WL.s=null;try{await s.release()}catch(_){}}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')wakeSync()});
 function openModal(id){$('#'+id).classList.add('on')}
 function closeModal(id){$('#'+id).classList.remove('on')}
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on')}));
@@ -989,6 +1005,7 @@ window.addEventListener('resize',fitPhone);window.addEventListener('orientationc
 /* installazione PWA */
 let _dip=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dip=e;$('#btn-install').style.display=''});
 function installApp(){if(!_dip)return;_dip.prompt();(_dip.userChoice||Promise.resolve()).finally(()=>{_dip=null;$('#btn-install').style.display='none'})}
+window.addEventListener('appinstalled',()=>{_dip=null;$('#btn-install').style.display='none'});
 
 /* ---------- dati nicchie ---------- */
 const NICHES={
@@ -1065,7 +1082,7 @@ function hookAnalysis(s){
   if(/\b(tu|ti|tuo|tua|te|fai|sai|vuoi|stai|hai)\b/i.test(s)){sc+=15;good.push('Parla direttamente allo spettatore')}else tips.push('Parla al "tu": "stai sbagliando", "non sai che…".');
   if(/(nessuno|segreto|mai|errore|sbagli|non sapevi|assurd|incredibil|vero|perché|fine|prima|dopo|stop|attenzione|entro|sfratt|perd|rischi|ultim|scadenz|o mi |o perdo|o chiudo|stut|speg|se nun|si nun|se non|altrimenti|sennò|sinnò)/i.test(s)){sc+=20;good.push('Usa una leva di curiosità')}else tips.push('Aggiungi curiosità: "nessuno ti dice", "l\'errore che fanno tutti", "aspetta la fine".');
   if(/[?…]\s*\S{0,3}$|\.\.\.\s*\S{0,3}$|…/.test(s)){sc+=10;good.push('Lascia la frase aperta')}else tips.push('Prova a chiudere con una domanda o con i puntini, per lasciare in sospeso.');
-  if(/^(ciao|salve|buongiorno|eccomi|oggi vi|benvenut)/i.test(s))tips.unshift('Elimina il saluto iniziale: è il motivo n.1 per cui si scorre via.');else sc+=15;
+  if(/^(ciao|salve|buongiorno|buonasera|eccomi|oggi vi|benvenut|bentornat|ehi\b|hey\b|u[eèé](?=[\s,!.]|$))/i.test(s))tips.unshift('Elimina il saluto iniziale: è il motivo n.1 per cui si scorre via.');else sc+=15;
   return{sc:Math.min(100,sc),good,tips};
 }
 
@@ -1086,7 +1103,7 @@ function tagsFor(t,kw,nicheKey){const niche=NICHES[nicheKey]||NICHES.generale;co
 function genCaptions(){
   const t=$('#c-topic').value.trim();if(!t){toast('Scrivi l\'argomento');return}
   const kw=$('#c-kw').value.split(',').map(x=>x.trim()).filter(Boolean);
-  const niche=NICHES[$('#c-niche').value];const goal=$('#c-goal').value;
+  const goal=$('#c-goal').value;
   const t0=toTag(t).slice(1);
   const caps=shuffle(CAPS[goal]).slice(0,3).map(c=>c.replace(/\{T\}/g,cap1(t)).replace(/\{t\}/g,t).replace(/\{t0\}/g,t0));
   const mixes=[0,1,2].map(()=>tagsFor(t,kw,$('#c-niche').value));
@@ -1134,20 +1151,25 @@ function exportICS(id){
   if(!list.length){toast('Niente da esportare');return}
   const ev=list.map(p=>{const s=new Date(p.date+'T'+p.time);const e=new Date(s.getTime()+15*60e3);
     return ['BEGIN:VEVENT','UID:'+p.id+'@spinta','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(s),'DTEND:'+icsDate(e),
-    'SUMMARY:🎬 Pubblica: '+p.title.replace(/[,;]/g,' '),'DESCRIPTION:'+(p.note||'Controlla la checklist in Spinta').replace(/[,;\n]/g,' '),
+    'SUMMARY:🎬 Pubblica: '+p.title.replace(/[,;\r\n]/g,' '),'DESCRIPTION:'+(p.note||'Controlla la checklist in Spinta').replace(/[,;\n]/g,' '),
     'BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:Tra 30 minuti pubblica il video','END:VALARM','END:VEVENT'].join('\r\n')}).join('\r\n');
   const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Spinta//IT',ev,'END:VCALENDAR'].join('\r\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download=id?'video.ics':'piano-video.ics';a.click();
+  downloadBlob(new Blob([ics],{type:'text/calendar'}),id?'video.ics':'piano-video.ics');
   toast('Aprilo per aggiungerlo al calendario');
 }
 let notifTimers=[];
+function primaOra(){const m=+((RULES.obiettivi||{}).primaOraMinuti);return m>=5&&m<=180?Math.round(m):30}
+/* su Android gli avvisi passano dal service worker: new Notification() lì non funziona */
+function notify(body){const opt={body,icon:'icon-192.png',badge:'icon-192.png',tag:'spinta-'+Date.now()};
+  const fb=()=>{try{new Notification('Spinta ⚡',opt)}catch(_){}};
+  if('serviceWorker'in navigator)navigator.serviceWorker.getRegistration().then(r=>r&&r.active?r.showNotification('Spinta ⚡',opt):fb()).catch(fb);else fb()}
 function askNotif(){if(!('Notification'in window)){toast('Avvisi non supportati qui: usa l\'export calendario');return}
-  Notification.requestPermission().then(r=>{toast(r==='granted'?'Avvisi attivi (con app aperta)':'Permesso negato');scheduleNotifs()})}
+  Promise.resolve(Notification.requestPermission()).then(r=>{if(r==='granted'){notify('Avvisi attivi ✓ Ti avviso 10 minuti prima dei video in programma e dopo ogni pubblicazione.');toast('Avvisi attivi ✓ (con l\'app aperta)')}else toast('Permesso negato: usa l\'export calendario');scheduleNotifs()})}
 function scheduleNotifs(){notifTimers.forEach(clearTimeout);notifTimers=[];
   if(!('Notification'in window)||Notification.permission!=='granted')return;
-  const at=(ms,body)=>{if(ms>0&&ms<24*3600e3)notifTimers.push(setTimeout(()=>{try{new Notification('Spinta ⚡',{body})}catch(_){}},ms))};
+  const at=(ms,body)=>{if(ms>0&&ms<24*3600e3)notifTimers.push(setTimeout(()=>notify(body),ms))};
   DB.posts.filter(p=>p.st!=='pub').forEach(p=>at(new Date(p.date+'T'+p.time)-Date.now()-10*60e3,'Tra 10 minuti: '+p.title));
-  (DB.pending||[]).forEach(p=>{at(p.pubAt+30*60e3-Date.now(),'💬 Rispondi ai commenti: '+p.title);at(p.pubAt+48*3600e3-Date.now(),'📊 Inserisci i dati: '+p.title)})}
+  (DB.pending||[]).forEach(p=>{at(p.pubAt+10*60e3-Date.now(),'💬 Rispondi ai commenti: '+p.title);at(p.pubAt+48*3600e3-Date.now(),'📊 Inserisci i dati: '+p.title)})}
 $('#p-seg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   document.querySelectorAll('#p-seg button').forEach(x=>x.classList.toggle('on',x===b));
   $('#p-list').style.display=b.dataset.v==='list'?'':'none';$('#p-check').style.display=b.dataset.v==='check'?'':'none';renderChecklist()});
@@ -1165,11 +1187,11 @@ let CHECK=[
  'Pubblicato nell\'orario in cui il pubblico è online',
  'Resto 15-30 minuti a rispondere ai primi commenti'
 ];
-function renderChecklist(){const c=DB.checklist||{};const L=CHECK.concat(RULES.checklistExtra||[]);const n=L.filter((_,i)=>c[i]).length;
+function renderChecklist(){const c=DB.checklist||{};const L=CHECK.concat(RULES.checklistExtra||[]);const n=L.filter(t=>c[t]).length;
   $('#ck-bar').style.width=(n/L.length*100)+'%';
-  $('#ck-items').innerHTML=L.map((t,i)=>`<label class="check ${c[i]?'done':''}" style="text-transform:none;letter-spacing:0;font-size:15px;font-weight:400;color:var(--txt);margin:0"><input type="checkbox" ${c[i]?'checked':''} onchange="tick(${i},this.checked)"><span>${esc(t)}</span></label>`).join('')+
+  $('#ck-items').innerHTML=L.map(t=>`<label class="check ${c[t]?'done':''}" style="text-transform:none;letter-spacing:0;font-size:15px;font-weight:400;color:var(--txt);margin:0"><input type="checkbox" data-k="${esc(t)}" ${c[t]?'checked':''} onchange="tick(this.dataset.k,this.checked)"><span>${esc(t)}</span></label>`).join('')+
   (n===L.length?'<div class="banner" style="margin:10px 0 0">🚀 Tutto pronto: pubblica!</div>':'')}
-function tick(i,v){DB.checklist[i]=v;save();renderChecklist()}
+function tick(k,v){DB.checklist=DB.checklist||{};if(v)DB.checklist[k]=true;else delete DB.checklist[k];save();renderChecklist()}
 function resetChecklist(){DB.checklist={};save();renderChecklist()}
 
 /* ---------- STATS ---------- */
@@ -1247,7 +1269,7 @@ function renderPendingGrow(){const el=$('#g-pending');const P=DB.pending||[];if(
    return `<div class="fix"><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(p.title)}</b><div style="color:var(--mut);font-size:12.5px">${ready?'Pronto: inserisci i dati di TikTok Studio':'Dati affidabili da '+slotLabel(due)}</div></div><button class="btn sm ${ready?'':'alt'}" onclick="openStatForm(null,'${p.id}')">Inserisci</button></div>`}).join('')}</div>`}
 function renderPendingPlan(){const el=$('#p-pending-card');if(!el)return;const P=DB.pending||[];if(!P.length){el.style.display='none';return}
   el.style.display='';const now=Date.now();
-  el.innerHTML=`<h3>⏱️ Dopo la pubblicazione</h3>`+P.map(p=>{const c=p.pubAt+60*60e3,due=p.pubAt+48*3600e3;
+  el.innerHTML=`<h3>⏱️ Dopo la pubblicazione</h3>`+P.map(p=>{const c=p.pubAt+primaOra()*60e3,due=p.pubAt+48*3600e3;
     const line=now<c?`💬 Rispondi ai commenti fino alle <b>${hhmm(new Date(c))}</b>`:now<due?`📊 Dati da ${slotLabel(new Date(due))}`:'📊 <b>Inserisci i dati adesso</b>';
     return `<div class="fix"><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(p.title)}</b><div style="font-size:13px;color:var(--mut)">${line}</div></div><button class="btn sm alt" onclick="goTab('grow');openStatForm(null,'${p.id}')">Dati</button></div>`}).join('')}
 /* ---------- IDEE ---------- */
@@ -1300,7 +1322,7 @@ function seekTo(v,t){return new Promise(res=>{let done=false;const f=()=>{if(don
 function loadVideoFile(f){if(!f)return;
   if(f.type&&!f.type.startsWith('video/')&&!/\.(mp4|mov|m4v|webm|3gp|mkv)$/i.test(f.name)){toast('Questo non è un video');return}
   if(exporting&&cancelExport)cancelExport();
-  if(vURL)URL.revokeObjectURL(vURL);vFile=f;vURL=URL.createObjectURL(f);VA=null;
+  if(vURL)URL.revokeObjectURL(vURL);vFile=f;vURL=URL.createObjectURL(f);VA=null;freeOut();renderReady();
   $('#v-name').textContent=`📄 ${f.name} · ${(f.size/1048576).toFixed(1)} MB`;
   const p=$('#v-prev');p.src=vURL;p.style.display='block';$('#hero').style.display='none';
   ['v-score','v-auto','v-fix','v-out'].forEach(id=>$('#'+id).innerHTML='');
@@ -1318,7 +1340,7 @@ $('#v-file').addEventListener('change',e=>{const f=e.target.files&&e.target.file
 })();
 
 async function analyzeVideo(){
-  const runURL=vURL;let v;
+  const runURL=vURL,runFile=vFile,wk=wakeOn('an');let v;
   try{
     vProg('Leggo il video…',2);
     v=hiddenVideo(vURL,true);await waitMeta(v);
@@ -1347,12 +1369,17 @@ async function analyzeVideo(){
       vProg(`Analizzo le immagini… ${i+1}/${times.length}`,3+72*(i+1)/times.length);
     }
     let audio=null,audioErr='',audioBuf=null;
-    if(vFile.size>400*1024*1024)audioErr='File troppo grande per analizzare l\'audio sul telefono.';
-    else{vProg('Analizzo l\'audio…',82);
-      try{const buf=await vFile.arrayBuffer();const AC=window.AudioContext||window.webkitAudioContext;const ac=new AC();
+    if(runFile.size>400*1024*1024)audioErr='File troppo grande per analizzare l\'audio sul telefono.';
+    else{vProg('Analizzo l\'audio…',82);const AC=window.AudioContext||window.webkitAudioContext;let ac=null;
+      try{const buf=await runFile.arrayBuffer();if(runURL!==vURL)return;
+        // decodifico già a 16 kHz: un terzo della memoria, ed è il formato che serve alla trascrizione
+        try{ac=new AC({sampleRate:16000})}catch(_){ac=new AC()}
         const ab=await new Promise((res,rej)=>{const p=ac.decodeAudioData(buf,res,rej);if(p&&p.then)p.then(res,rej)});
-        audio=analyzeAudio(ab);audioBuf=ab;try{ac.close()}catch(_){}}
-      catch(_){audioErr='Audio assente o non leggibile.'}}
+        audio=analyzeAudio(ab);audioBuf=ab;
+        // silenzio finale misurato sulla durata del video (l'audio può finire prima delle immagini)
+        audio.trail=Math.max(0,dur-(audio.adur-audio.trail))}
+      catch(_){audioErr='Audio assente o non leggibile.'}
+      finally{if(ac)try{ac.close()}catch(_){}}}
     if(runURL!==vURL)return;
     const md=median(frames.slice(1).map(f=>f.diff));const thr=Math.max(0.09,md*3.5);
     const cuts=frames.filter((f,i)=>i>0&&f.diff>thr).map(f=>f.t);
@@ -1362,7 +1389,7 @@ async function analyzeVideo(){
     VA={dur,W,H,frames,audio,audioErr,cuts,thr,ab:audioBuf,subs:[],transcript:'',hasSubs,loop:clamp(1-mad*5,0,1)};
     vProg('',null);renderVideoReport();
   }catch(err){vProg('❌ '+esc(err.message||err),null)}
-  finally{if(v){v.removeAttribute('src');v.load();v.remove()}}
+  finally{wakeOff(wk);if(v){v.removeAttribute('src');v.load();v.remove()}}
 }
 
 function analyzeAudio(ab){
@@ -1434,12 +1461,12 @@ function renderFixPanel(){
    ${opt('o-speed','Accelera leggermente (1,1×)','Più ritmo senza cambiare il tono della voce',g.speed,false)}</div>
   <div class="grp"><h4>🖼️ Immagine</h4>
    ${opt('o-crop','Ritaglia a 9:16',ratio>0.6?'Riempie tutto lo schermo del telefono':'Il video è già verticale',g.crop,ratio<=0.6)}
-   <div id="o-cropbox" style="display:none"><label>Posizione del ritaglio (sinistra ↔ destra)</label><input type="range" id="o-croppos" min="-100" max="100" value="0" onchange="VA.prevFrame=null;hookPreview()"></div>
+   <div id="o-cropbox" style="display:none"><label>Posizione del ritaglio (sinistra ↔ destra)</label><input type="range" id="o-croppos" min="-100" max="100" value="0" onchange="updEst()"></div>
    ${opt('o-light','Correggi luce e colori',FILTER_OK?'Luminosità, contrasto e saturazione automatici':'Non supportato da questo browser',g.light,!FILTER_OK)}</div>
   <div class="grp"><h4>🔊 Audio</h4>
    ${opt('o-vol','Normalizza il volume',hasA?`Ora ${A.loud.toFixed(0)} dB · porta la voce al livello di TikTok`:'Nessun audio',g.vol,!hasA)}</div>
   <div class="grp"><h4>🔤 Testi a schermo</h4>
-   ${opt('o-hook','Hook nei primi secondi','Il testo che scegli nel passo 3',g.hook,false)}
+   ${opt('o-hook','Hook nei primi secondi','Il testo che scegli nel passo 3',g.hook||!!curHook().trim(),false)}
    ${opt('o-subs','Sottotitoli automatici',subsDesc(),false,true)}
    ${opt('o-part','Etichetta "PARTE N"',ser?`Sopra l'hook: PARTE ${ser.ep}`:'Imposta una serie nel passo 1',!!ser,!ser)}
    ${opt('o-end','Testo finale','Negli ultimi 2,5 secondi: porta follow e commenti',true,false)}
@@ -1464,7 +1491,7 @@ function updEst(){if(!VA||!$('#o-trim'))return;const o=readOpts(),p=getPlan(o);
   $('#o-cropbox').style.display=o.crop?'':'none';$('#o-endbox').style.display=o.end?'':'none';
   const n=['trim','pause','crop','light','vol','subs','hook','bar','speed','end','part'].filter(k=>o[k]).length;
   $('#o-est').textContent=`Durata finale: ${p.outDur.toFixed(1)} s (era ${VA.dur.toFixed(1)} s)`;
-  stpSum(4,`${n} correzioni attive · ${p.outDur.toFixed(1)} s`);schedScore()}
+  stpSum(4,`${n} correzioni attive · ${p.outDur.toFixed(1)} s`);schedScore();hookPreview()}
 function cropRect(o,force){let sx=0,sy=0,sw=VA.W,sh=VA.H;const r=9/16;
   if((o.crop||force)&&sw/sh>r){const nw=sh*r;sx=(VA.W-nw)/2*(1+o.pos/100);sw=nw}
   else if(force&&sw/sh<r){const nh=sw/r;sy=(VA.H-nh)/2;sh=nh}
@@ -1491,9 +1518,6 @@ function drawPill(ctx,label,W,H,yFrac,hookTxt,alpha){
   ctx.globalAlpha=alpha;ctx.fillStyle='#ff2d6f';ctx.beginPath();
   if(ctx.roundRect)ctx.roundRect(px,py,pw,ph,ph/2);else ctx.rect(px,py,pw,ph);ctx.fill();
   ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,W/2,py+ph/2+1);ctx.restore()}
-function pickMime(){if(!window.MediaRecorder)return '';
-  return ['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']
-   .find(m=>{try{return MediaRecorder.isTypeSupported(m)}catch(_){return false}})||''}
 
 function exportVideo(light){
   if(exporting||!VA)return;
@@ -1534,12 +1558,12 @@ async function runExport(o,v,ac,src,dest,v2){
   const outW=Math.max(2,Math.round(sw*sc/2)*2),outH=Math.max(2,Math.round(sh*sc/2)*2);
   const c=document.createElement('canvas');c.width=outW;c.height=outH;const ctx=c.getContext('2d');
   const filt=o.light&&FILTER_OK?VA.filter:'none';let finished=false,busy=false,rec=null,mime='',tracks=[],lastUi=0;
-  const out=$('#v-out');
+  const out=$('#v-out'),wk=wakeOn('exp');let onVis=null,hidPaused=false;
   const ui=p=>{const now=Date.now();if(now-lastUi<250&&p<1)return;lastUi=now;
     out.innerHTML=`<div class="card"><b>Creo la versione migliorata${o.light720?' (720p)':''}…</b><div class="meter"><i style="width:${(p*100).toFixed(0)}%"></i></div>
-    <div style="color:var(--mut);font-size:13px">Tieni l'app aperta e lo schermo acceso fino alla fine.</div>
+    <div style="color:var(--mut);font-size:13px">Resta su questa schermata: se esci dall'app l'esportazione si mette in pausa e riprende quando torni.</div>
     <button class="btn alt" onclick="cancelExport&&cancelExport()">Annulla</button></div>`};
-  const cleanup=()=>{tracks.forEach(t=>t.stop());try{ac.close()}catch(_){}[vA,vB].forEach(x=>{if(!x)return;x.pause();x.removeAttribute('src');x.load();x.remove()});exporting=false;cancelExport=null;const b=$('#o-go');if(b)b.disabled=false};
+  const cleanup=()=>{wakeOff(wk);if(onVis)document.removeEventListener('visibilitychange',onVis);tracks.forEach(t=>t.stop());try{ac.close()}catch(_){}[vA,vB].forEach(x=>{if(!x)return;x.pause();x.removeAttribute('src');x.load();x.remove()});exporting=false;cancelExport=null;const b=$('#o-go');if(b)b.disabled=false};
   const fail=err=>{if(finished&&!err)return;finished=true;try{rec&&rec.state!=='inactive'&&rec.stop()}catch(_){}cleanup();
     const det=err?`${err.name||'Errore'}${err.message?': '+err.message:''}`:'il registratore non ha prodotto dati';
     out.innerHTML=`<div class="card">❌ <b>Non sono riuscito a creare il video.</b>
@@ -1578,6 +1602,11 @@ async function runExport(o,v,ac,src,dest,v2){
         else done(blob)};
       try{rec.stop()}catch(_){rec.onstop()}};
     cancelExport=()=>stop(true);
+    // app in sottofondo: niente fotogrammi disegnati, quindi metto in pausa registrazione e video e riprendo al ritorno
+    onVis=()=>{if(finished)return;
+      if(document.hidden){if(rec.state==='recording'&&!busy){try{rec.pause()}catch(_){}v.pause();hidPaused=true}}
+      else if(hidPaused){hidPaused=false;draw();try{rec.resume()}catch(_){}v.play().catch(()=>{})}};
+    document.addEventListener('visibilitychange',onVis);
     [vA,vB].forEach(x=>x&&x.addEventListener('ended',()=>{if(x===v){draw();stop(false)}}));
     const prep=()=>{if(!nx)return;nx.ready=false;const sk=skips[si];if(!sk)return;nx.pause();const me=nx;seekTo(me,sk.e).then(()=>{if(me===nx)me.ready=true})};
     prep();
@@ -1587,15 +1616,23 @@ async function runExport(o,v,ac,src,dest,v2){
       const sk=skips[si];
       if(sk&&t>=sk.s&&!busy){
         if(nx&&nx.ready){const old=v;v=nx;nx=old;v.play().catch(()=>{});old.pause();si++;prep()}
-        else{busy=true;try{rec.pause()}catch(_){}v.pause();await seekTo(v,sk.e);draw();try{rec.resume()}catch(_){}await v.play().catch(()=>{});si++;prep();busy=false}}
+        else{busy=true;try{rec.pause()}catch(_){}v.pause();await seekTo(v,sk.e);draw();if(document.hidden)hidPaused=true;else{try{rec.resume()}catch(_){}await v.play().catch(()=>{})}si++;prep();busy=false}}
       if(!busy)draw();ui(clamp(outT(v.currentTime)/total,0,1));requestAnimationFrame(loop)};
-    ui(0);await v.play();requestAnimationFrame(loop);
+    ui(0);await v.play().catch(e=>{if(!hidPaused)throw e});requestAnimationFrame(loop);
   }catch(err){fail(err)}
 }
+function freeOut(){['_resURL','_covURL'].forEach(k=>{if(window[k]){URL.revokeObjectURL(window[k]);window[k]=null}});window._spintaFile=null;window._spintaCover=null}
+/* il pacchetto del video finale resta salvato: se Android chiude l'app mentre pubblichi su TikTok, al ritorno lo ritrovi */
+function pkgFromCurrent(o,plan,cap){const P=VA.pkg||{},h=P.hooks?P.hooks[P.sel||0]:null,ser=o.series;
+  return{id:uid(),at:Date.now(),title:cutTxt((o.hookTxt||(vFile?vFile.name.replace(/\.[^.]+$/,''):'')||'Video').replace(/\s*\n\s*/g,' '),90),cap,
+    hk:!o.hookTxt?'Nessuno':P.edited||!h?'Personalizzato':h.k,len:+plan.outDur.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep:ser.ep}:null,
+    score:VA.score?VA.score.total:null,transcript:(VA.transcript||'').slice(0,900),topic:P.topicOk?P.topic:'',end:o.end?o.endTxt:'',niche:($('#a-niche')||{}).value||''}}
 function showResult(blob,type,o,plan){
   const ext=type.includes('mp4')?'mp4':'webm';
-  const name=(o.series?`${toTag(o.series.name).slice(1)}-parte-${o.series.ep}`:'spinta-video')+'.'+ext,url=URL.createObjectURL(blob);
+  const name=(o.series?`${toTag(o.series.name).slice(1)}-parte-${o.series.ep}`:'spinta-video')+'.'+ext;
+  freeOut();const url=URL.createObjectURL(blob);window._resURL=url;
   const cap=(($('#a-cap')||{}).value||'').trim();window._spintaCap=cap;
+  DB.lastPkg=pkgFromCurrent(o,plan,cap);save();
   const done=[o.trim&&'silenzi tagliati',o.pause&&(plan.skips.length===1?'1 pausa rimossa':`${plan.skips.length} pause rimosse`),o.speed&&'1,1×',o.crop&&'9:16',o.light&&'luce',o.vol&&'volume',o.hook&&'hook',o.subs&&'sottotitoli',o.part&&'PARTE '+o.series.ep,o.end&&'testo finale',o.bar&&'barra'].filter(Boolean);
   const file=new File([blob],name,{type});const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
   window._spintaFile=file;const slot=nextSlot();const slotTxt=slot?slotLabel(slot):'';
@@ -1610,8 +1647,8 @@ function showResult(blob,type,o,plan){
    <div id="v-cover"></div></div>
    <div class="card" style="background:var(--card2)"><h3>🚀 Pubblica al momento giusto</h3>
    ${slot?`<div style="font-size:14px;margin-top:6px">⏰ Prossimo orario consigliato: <b>${slotTxt}</b></div>`:''}
-   <div style="color:var(--mut);font-size:13px;margin-top:8px;line-height:1.6">☑️ Etichetta "Contenuto generato con AI" se usi voci o personaggi AI<br>☑️ Copertina caricata<br>☑️ Resta 30 minuti a rispondere ai primi commenti</div>
-   <div class="acts">${slot?`<button class="btn sm alt" onclick="planFromPkg()">📅 Programma</button>`:''}<button class="btn sm" onclick="markPublished()">✅ L'ho pubblicato</button></div>
+   <div style="color:var(--mut);font-size:13px;margin-top:8px;line-height:1.6">☑️ Etichetta "Contenuto generato con AI" se usi voci o personaggi AI<br>☑️ Copertina caricata<br>☑️ Resta ${primaOra()} minuti a rispondere ai primi commenti</div>
+   <div class="acts">${slot?`<button class="btn sm alt" onclick="planFromPkg()">📅 Programma</button>`:''}<button class="btn sm pub-btn" onclick="markPublished('pub-next')">✅ L'ho pubblicato</button></div>
    <div id="pub-next"></div></div>`;
   stp(5,'done');stpSum(5,`Pronto · ${plan.outDur.toFixed(1)} s · ${(blob.size/1048576).toFixed(1)} MB`);
   makeCover();
@@ -1623,57 +1660,109 @@ function slotLabel(d){const t=new Date();const tm=new Date();tm.setDate(t.getDat
   const day=d.toDateString()===t.toDateString()?'oggi':d.toDateString()===tm.toDateString()?'domani':DAYS[d.getDay()];return `${day} alle ${hhmm(d)}`}
 function shareFinal(){const cap=window._spintaCap||'';if(cap)copy(cap);
   setTimeout(()=>navigator.share({files:[window._spintaFile],text:cap}).catch(()=>{}),cap?150:0)}
-function planFromPkg(){const slot=nextSlot();if(!slot){toast('Nessun orario disponibile');return}
+function planFromPkg(){const pk=DB.lastPkg;
+  if(pk&&pk.published){toast('Questo video risulta già pubblicato');return}
+  if(pk&&pk.planned&&DB.posts.some(p=>p.id===pk.planned)){toast('Già nel piano ✓');return}
+  const slot=nextSlot();if(!slot){toast('Nessun orario disponibile');return}
   const pad=n=>String(n).padStart(2,'0');const date=`${slot.getFullYear()}-${pad(slot.getMonth()+1)}-${pad(slot.getDate())}`;
-  const o=readOpts();DB.posts.push({id:uid(),title:(o.hookTxt||'Video').replace(/\n/g,' '),date,time:hhmm(slot),note:(window._spintaCap||'').split('\n')[0].slice(0,90),st:'edit'});save();scheduleNotifs();
-  toast(`Nel piano: ${slotLabel(slot)}`)}
-function markPublished(){
-  const o=readOpts(),ser=curSeries(),now=new Date(),P=VA.pkg||{};const h=P.hooks?P.hooks[P.sel||0]:null;
-  const item={id:uid(),title:(o.hookTxt||vFile.name).replace(/\n/g,' ').slice(0,90),date:todayISO(),hour:hhmm(now),
-    hk:!o.hookTxt?'Nessuno':P.edited||!h?'Personalizzato':h.k,len:+getPlan(o).outDur.toFixed(1),
-    format:ser?'Serie (puntata)':'Altro',series:ser?`${ser.name} · P${ser.ep}`:'',score:VA.score?VA.score.total:null,pubAt:now.getTime(),transcript:(VA.transcript||'').slice(0,900),topic:P.topicOk?P.topic:'',end:o.endTxt,niche:($('#a-niche')||{}).value||''};
-  DB.pending.push(item);if(ser)ser.ep++;DB.nextHook=null;DB.checklist={};save();scheduleNotifs();renderSeriesSel();
-  const d1=new Date(now.getTime()+45*60e3),d2=new Date(now.getTime()+48*3600e3);
-  $('#pub-next').innerHTML=`<div class="banner" style="margin:12px 0 0">🎉 Pubblicato! Prossimi passi:<br>💬 <b>Entro le ${hhmm(d1)}</b> rispondi ai primi commenti: TikTok guarda l'interazione della prima ora.<br>📊 <b>${slotLabel(d2)}</b> inserisci i dati nella scheda Crescita.
+  const id=uid();DB.posts.push({id,title:pk?pk.title:'Video',date,time:hhmm(slot),note:cutTxt(((pk&&pk.cap)||'').split('\n')[0],90),st:'edit'});
+  if(pk)pk.planned=id;save();scheduleNotifs();toast(`Nel piano: ${slotLabel(slot)}`)}
+function markPublished(target){const pk=DB.lastPkg;if(!pk){toast('Prima crea il video finale');return}
+  if(pk.published){toast('Già registrato ✓');return}
+  const now=new Date();pk.published=now.getTime();
+  const ser=pk.series?(DB.series||[]).find(s=>s.id===pk.series.id):null;
+  const item={id:uid(),title:pk.title,date:todayISO(),hour:hhmm(now),hk:pk.hk,len:pk.len,format:pk.series?'Serie (puntata)':'Altro',
+    series:pk.series?`${pk.series.name} · P${pk.series.ep}`:'',score:pk.score,pubAt:now.getTime(),transcript:pk.transcript,topic:pk.topic,end:pk.end,niche:pk.niche};
+  DB.pending.push(item);if(ser&&ser.ep===pk.series.ep)ser.ep++;DB.nextHook=null;DB.checklist={};
+  const pl=pk.planned&&DB.posts.find(x=>x.id===pk.planned);if(pl){pl.st='pub';pl.date=item.date;pl.time=item.hour}
+  save();scheduleNotifs();renderSeriesSel();onSeriesChanged();renderPlan();
+  document.querySelectorAll('.pub-btn').forEach(b=>{b.disabled=true;b.textContent='✅ Registrato'});
+  const d1=new Date(now.getTime()+primaOra()*60e3),d2=new Date(now.getTime()+48*3600e3);const box=$('#'+(target||'pub-next'));
+  if(box)box.innerHTML=`<div class="banner" style="margin:12px 0 0">🎉 Pubblicato! Prossimi passi:<br>💬 <b>Fino alle ${hhmm(d1)}</b> rispondi ai commenti: TikTok guarda l'interazione della prima ora.<br>📊 <b>${slotLabel(d2)}</b> inserisci i dati nella scheda Crescita.
     <div class="acts"><button class="btn sm alt" onclick="exportFollowICS('${item.id}')">🔔 Promemoria nel calendario</button></div></div>`;
-  toast('Ottimo! Ti ricordo i prossimi passi');}
-function exportFollowICS(id){const p=DB.pending.find(x=>x.id===id);if(!p)return;
-  const ev=[[30*60e3,'💬 Rispondi ai commenti: '],[48*3600e3,'📊 Inserisci i dati in Spinta: ']].map(([d,t],i)=>{const s=new Date(p.pubAt+d),e=new Date(s.getTime()+15*60e3);
-    return ['BEGIN:VEVENT','UID:'+p.id+'-'+i+'@spinta','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(s),'DTEND:'+icsDate(e),'SUMMARY:'+(t+p.title).replace(/[,;\n]/g,' ').slice(0,120),'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:Spinta','END:VALARM','END:VEVENT'].join('\r\n')}).join('\r\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Spinta//IT',ev,'END:VCALENDAR'].join('\r\n')],{type:'text/calendar'}));a.download='spinta-promemoria.ics';a.click();toast('Aprilo per aggiungerlo al calendario')}
+  toast('Ottimo! Ti ricordo i prossimi passi')}
+/* scheda "video pronto" dopo una riapertura dell'app */
+function renderReady(){const el=$('#ready');if(!el)return;const pk=DB.lastPkg;
+  if(!pk||pk.published||pk.hidden||vFile||Date.now()-pk.at>3*864e5){el.style.display='none';el.innerHTML='';return}
+  const d=new Date(pk.at),t=new Date(),y=new Date();y.setDate(t.getDate()-1);
+  const when=(d.toDateString()===t.toDateString()?'oggi':d.toDateString()===y.toDateString()?'ieri':DAYS[d.getDay()])+' alle '+hhmm(d);
+  el.style.display='';
+  el.innerHTML=`<h3>🎬 Hai un video pronto da pubblicare</h3>
+   <div style="font-size:14px;margin-top:6px;font-weight:700">${esc(pk.title)}</div>
+   <div style="color:var(--mut);font-size:12.5px;margin-top:2px">${pk.series?esc(pk.series.name)+' · Parte '+pk.series.ep+' · ':''}${pk.len} s · creato ${when}</div>
+   <div style="color:var(--mut);font-size:13px;margin-top:8px">Dopo averlo pubblicato su TikTok tocca «L'ho pubblicato»: ti ricordo quando rispondere ai commenti e quando inserire i dati.</div>
+   <div class="acts">${pk.cap?'<button class="btn sm alt" onclick="copy(DB.lastPkg.cap)">📋 Copia caption</button>':''}<button class="btn sm pub-btn" onclick="markPublished('ready-next')">✅ L'ho pubblicato</button><button class="btn sm alt" onclick="hideReady()" aria-label="Nascondi">✕</button></div>
+   <div id="ready-next"></div>`}
+function hideReady(){if(DB.lastPkg){DB.lastPkg.hidden=true;save()}renderReady()}
+function exportFollowICS(id){const p=DB.pending.find(x=>x.id===id);if(!p){toast('Dati già inseriti: promemoria non più necessario');return}
+  const ev=[[10*60e3,'💬 Rispondi ai commenti: '],[48*3600e3,'📊 Inserisci i dati in Spinta: ']].map(([d,t],i)=>{const s=new Date(p.pubAt+d),e=new Date(s.getTime()+15*60e3);
+    return ['BEGIN:VEVENT','UID:'+p.id+'-'+i+'@spinta','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(s),'DTEND:'+icsDate(e),'SUMMARY:'+(t+p.title).replace(/[,;\r\n]/g,' ').slice(0,120),'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:Spinta','END:VALARM','END:VEVENT'].join('\r\n')}).join('\r\n');
+  downloadBlob(new Blob([['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Spinta//IT',ev,'END:VCALENDAR'].join('\r\n')],{type:'text/calendar'}),'spinta-promemoria.ics');toast('Aprilo per aggiungerlo al calendario')}
 async function makeCover(){
-  if(!VA)return;const o=readOpts();const prev=$('#v-prev');let t;
+  if(!VA)return;const me=VA,url0=vURL;const o=readOpts();const prev=$('#v-prev');let t;
   if(prev.paused&&prev.currentTime>0.05)t=prev.currentTime;
-  else{const cand=VA.frames.filter(f=>f.t>0.4&&f.luma>0.22&&f.luma<0.82);const pool=cand.length?cand:VA.frames;
+  else{const cand=me.frames.filter(f=>f.t>0.4&&f.luma>0.22&&f.luma<0.82);const pool=cand.length?cand:me.frames;
     t=pool.reduce((a,f)=>{const s=f.sharp*(0.5+f.con)*(1-Math.abs(f.luma-0.5));return s>a.s?{s,t:f.t}:a},{s:-1,t:pool[0].t}).t}
-  const v=hiddenVideo(vURL,true);
-  try{await waitMeta(v);try{await v.play();v.pause()}catch(_){}await seekTo(v,t);
+  const v=hiddenVideo(url0,true);
+  try{await waitMeta(v);try{await v.play();v.pause()}catch(_){}await seekTo(v,t);if(VA!==me)return;
     const {sx,sy,sw,sh}=cropRect(o,true);const W=1080,H=1920;const c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');
-    if(o.light&&FILTER_OK)ctx.filter=VA.filter;ctx.drawImage(v,sx,sy,sw,sh,0,0,W,H);ctx.filter='none';
+    if(o.light&&FILTER_OK)ctx.filter=me.filter;ctx.drawImage(v,sx,sy,sw,sh,0,0,W,H);ctx.filter='none';
     const txt=o.hookTxt;if(txt){const gr=ctx.createLinearGradient(0,H*0.3,0,H*0.6);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.5,'rgba(0,0,0,.35)');gr.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gr;ctx.fillRect(0,H*0.3,W,H*0.3);drawCaption(ctx,txt,W,H,0.45,1)}
-    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.92));const url=URL.createObjectURL(blob);
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.92));if(VA!==me||!blob)return;
+    if(window._covURL)URL.revokeObjectURL(window._covURL);const url=URL.createObjectURL(blob);window._covURL=url;
     const file=new File([blob],'spinta-copertina.jpg',{type:'image/jpeg'});window._spintaCover=file;
     const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
     ($('#v-cover')||$('#v-out')).insertAdjacentHTML('beforeend',`<div style="margin-top:14px"><h3 style="font-size:16px">🖼️ Copertina (a ${t.toFixed(1)} s)</h3>
-      <img src="${url}" style="width:60%;display:block;margin:12px auto;border-radius:12px">
+      <img src="${url}" style="width:60%;display:block;margin:12px auto;border-radius:12px" alt="Copertina">
       ${txt?'':'<small class="n">Scrivi un testo hook nel campo qui sopra per avere il titolo sulla copertina.</small>'}
       <div class="acts"><a class="btn sm" href="${url}" download="spinta-copertina.jpg" style="text-decoration:none">⬇︎ Scarica</a>
       ${canShare?'<button class="btn sm cy" onclick="navigator.share({files:[window._spintaCover]}).catch(()=>{})">📤 Condividi</button>':''}</div>
       <small class="n">Su TikTok: Modifica copertina → Carica dalla galleria, se la tua versione lo permette. Altrimenti mettila come primo fotogramma o pubblicala come post foto.</small></div>`);
-  }catch(_){toast('Copertina non riuscita')}
+  }catch(_){if(VA===me)toast('Copertina non riuscita')}
   finally{v.removeAttribute('src');v.load();v.remove()}
 }
 
 /* ---------- REGOLE ALGORITMO (aggiornabili da spinta-regole.json) ---------- */
 const DEFAULT_RULES={"version": "2026.10.04", "aggiornato": "4 ottobre 2026", "prossimoAggiornamento": "lunedì 12 ottobre", "durata": {"min": 10, "ideale": [15, 90], "max": 180}, "hashtag": {"max": 5, "larghi": 0, "evitare": ["#fyp", "#foryou", "#viral", "#perte", "#neiperte"]}, "hookSecondi": 3, "pausaMin": 0.6, "obiettivi": {"completamento": 70, "rewatch": 15, "frequenza": "3-5 video a settimana", "primaOraMinuti": 30}, "orari": {"0": ["11:00", "18:00", "20:30"], "1": ["12:30", "19:00", "20:00"], "2": ["12:30", "19:00", "20:00"], "3": ["13:00", "19:00", "20:00"], "4": ["12:30", "18:30", "20:00"], "5": ["13:00", "18:00", "21:00"], "6": ["11:30", "15:00", "20:30"]}, "segnali": ["Tempo di visione e percentuale di visione completa (obiettivo: oltre il 70%)", "Rewatch: oltre il 15-20% è un segnale forte", "Condivisioni", "Commenti lunghi e veloci nella prima ora", "Nuovi follower dal video", "Salvataggi", "Like (il segnale più debole)"], "novita": ["I video più lunghi (60-180 s) vengono spinti di più, ma solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.", "La soglia per diventare virali si è alzata: serve circa il 70% di visione completa.", "TikTok funziona sempre più come motore di ricerca: dì l'argomento a voce, scrivilo a schermo e nella caption.", "Hashtag generici come #fyp e #viral non aiutano più: usa da 1 a 5 hashtag specifici della tua nicchia.", "L'audio originale (la tua voce) viene favorito; i suoni di tendenza aiutano solo se li usi entro 24-48 ore da quando esplodono.", "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.", "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.", "Le serie a puntate e i format ripetibili fanno tornare il pubblico sul profilo.", "Restare in una nicchia precisa rende più dei profili che parlano di tutto.", "Costanza: meglio 3-5 video a settimana regolari che tanti video in pochi giorni.", "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."], "tendenze": {"settimana": "28 settembre – 4 ottobre 2026", "format": [{"nome": "Serie a tema", "come": "Puntate numerate con lo stesso inizio e lo stesso personaggio: chi trova una puntata guarda le altre."}, {"nome": "Video-domanda", "come": "Apri o chiudi con una domanda diretta al pubblico: le analisi riportano circa il 26% di commenti in più."}, {"nome": "Problema → soluzione", "come": "Mostra subito un problema reale del tuo pubblico e risolvilo entro il video."}, {"nome": "Storytelling 60-90 s", "come": "Una mini-storia con posta in gioco, sviluppo e finale chiaro: i video più lunghi crescono se tengono fino alla fine."}, {"nome": "Format ripetibile", "come": "Stessa struttura ogni volta (es. «Giorno X di Y», «Valuto i vostri…»): l'algoritmo e il pubblico la riconoscono."}], "hashtag": [], "suoni": [], "nota": "TikTok non rende pubblici i dati sui suoni e gli hashtag di tendenza in Italia: per quelli del momento apri il TikTok Creative Center dal tuo account."}, "fonti": [{"titolo": "Hootsuite – How the TikTok algorithm works in 2026", "url": "https://blog.hootsuite.com/tiktok-algorithm/"}, {"titolo": "Socialync – TikTok Algorithm 2026: the 7 signals (agg. luglio 2026)", "url": "https://www.socialync.io/blog/tiktok-algorithm-2026-what-works-now"}, {"titolo": "Metricool – TikTok Trends 2026 (agg. agosto 2026)", "url": "https://metricool.com/tiktok-trends/"}, {"titolo": "DeRev – Algoritmo di TikTok 2026", "url": "https://derev.com/2026/07/algoritmo-tiktok-2026/"}, {"titolo": "OpusClip – TikTok's new algorithm 2026", "url": "https://www.opus.pro/blog/tiktoks-new-algorithm-2026"}], "checklistExtra": ["Etichetta \"Contenuto generato con AI\" se usi voci, immagini o personaggi creati con l'AI", "Nessuna filigrana di altre app (CapCut, Instagram…)", "Hashtag specifici della nicchia, niente #fyp o #viral"]};
+/* ogni campo del file viene controllato: se uno è sbagliato uso il valore incorporato, così l'app non si blocca mai */
+function sanitizeRules(j){const D=DEFAULT_RULES,R=JSON.parse(JSON.stringify(D));const isObj=x=>!!x&&typeof x==='object'&&!Array.isArray(x);if(!isObj(j))return R;
+  const str=(x,n)=>typeof x==='string'&&x.trim()?x.trim().slice(0,n||300):'';
+  const num=(x,a,b)=>{const n=typeof x==='number'?x:typeof x==='string'&&x.trim()?Number(x.replace(',','.')):NaN;return isFinite(n)?Math.min(b,Math.max(a,n)):null};
+  const list=(x,max,n)=>Array.isArray(x)?x.map(y=>str(y,n)).filter(Boolean).slice(0,max):null;
+  const objs=(x,max,fn)=>Array.isArray(x)?x.filter(isObj).map(fn).filter(Boolean).slice(0,max):null;
+  const TAG=/^#[\p{L}\p{N}_]{2,40}$/u,HM=/^([01]\d|2[0-3]):[0-5]\d$/;
+  const vs=String(j.version??'').trim(),vm=vs.match(/^(\d{4})\D(\d{1,2})\D(\d{1,2})/);
+  R.version=vm?`${vm[1]}.${vm[2].padStart(2,'0')}.${vm[3].padStart(2,'0')}`:vs.slice(0,40)||D.version;
+  R.aggiornato=str(j.aggiornato,60)||R.version;R.prossimoAggiornamento=str(j.prossimoAggiornamento,60);
+  if(isObj(j.durata)){const d=j.durata,mn=num(d.min,1,600),mx=num(d.max,5,900),id=Array.isArray(d.ideale)?d.ideale.map(x=>num(x,1,900)):[];
+    if(mn!=null&&mx!=null&&id.length===2&&id[0]!=null&&id[1]!=null&&mn<=id[0]&&id[0]<=id[1]&&id[1]<=mx)R.durata={min:mn,ideale:[id[0],id[1]],max:mx}}
+  if(isObj(j.hashtag)){const h=j.hashtag,mx=num(h.max,1,10),lg=num(h.larghi,0,10),ev=list(h.evitare,30,41);
+    if(mx!=null)R.hashtag.max=Math.round(mx);if(lg!=null)R.hashtag.larghi=Math.round(lg);R.hashtag.larghi=Math.max(0,Math.min(R.hashtag.larghi||0,R.hashtag.max-1));
+    if(ev)R.hashtag.evitare=ev.map(x=>x.toLowerCase()).filter(x=>TAG.test(x))}
+  const hs=num(j.hookSecondi,1,10);if(hs!=null)R.hookSecondi=hs;
+  const pm=num(j.pausaMin,0.3,3);if(pm!=null)R.pausaMin=pm;
+  if(isObj(j.obiettivi)){const o=j.obiettivi,c=num(o.completamento,1,100),rw=num(o.rewatch,0,100),po=num(o.primaOraMinuti,5,180),fq=str(o.frequenza,80);
+    if(c!=null)R.obiettivi.completamento=Math.round(c);if(rw!=null)R.obiettivi.rewatch=Math.round(rw);if(po!=null)R.obiettivi.primaOraMinuti=Math.round(po);if(fq)R.obiettivi.frequenza=fq}
+  if(isObj(j.orari))for(let d=0;d<7;d++){const a=list(j.orari[d],6,5)||[];const ok=[...new Set(a.map(x=>x.replace(/^(\d):/,'0$1:')).filter(x=>HM.test(x)))].sort();if(ok.length)R.orari[d]=ok}
+  const sg=list(j.segnali,15,200);if(sg&&sg.length)R.segnali=sg;
+  const nv=list(j.novita,20,400);if(nv&&nv.length)R.novita=nv;
+  if(isObj(j.tendenze)){const t=j.tendenze;
+    R.tendenze={settimana:str(t.settimana,80),
+      format:objs(t.format,8,f=>str(f.nome,60)?{nome:str(f.nome,60),come:str(f.come,300)}:null)||[],
+      hashtag:objs(t.hashtag,12,h=>{const g=str(h.tag,41).toLowerCase();return TAG.test(g)?{tag:g,nota:str(h.nota,80),nicchia:str(h.nicchia,30)}:null})||[],
+      suoni:objs(t.suoni,8,s=>str(s.nome,80)?{nome:str(s.nome,80),nota:str(s.nota,120)}:null)||[],
+      nota:str(t.nota,300)}}
+  const fo=objs(j.fonti,10,f=>{const u=str(f.url,400);return /^https:\/\//i.test(u)?{titolo:str(f.titolo,120)||u,url:u}:null});if(fo)R.fonti=fo;
+  const ce=list(j.checklistExtra,8,200);if(ce)R.checklistExtra=ce;
+  return R}
 let RULES=DEFAULT_RULES;
-try{const c=JSON.parse(localStorage.getItem(KEY+'_rules'));if(c&&c.version&&c.version>=DEFAULT_RULES.version)RULES=Object.assign({},DEFAULT_RULES,c)}catch(_){}
-function applyRules(){if(RULES.orari)BEST=RULES.orari;renderRulesCard();try{renderBest()}catch(_){}}
+try{const c=JSON.parse(localStorage.getItem(KEY+'_rules'));if(c&&c.version){const S=sanitizeRules(c);if(S.version>=DEFAULT_RULES.version)RULES=S}}catch(_){}
+function applyRules(){if(RULES.orari)BEST=RULES.orari;renderRulesCard();try{renderBest()}catch(_){}try{if($('#p-check').style.display!=='none')renderChecklist()}catch(_){}}
 async function updateRules(manual){
   if(location.protocol==='file:'){if(manual)toast('Gli aggiornamenti arrivano quando l\'app è online (GitHub Pages)');return}
   try{const r=await fetch('spinta-regole.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();if(!j||!j.version)throw 0;
-    const isNew=j.version>RULES.version;
-    if(j.version>=DEFAULT_RULES.version){RULES=Object.assign({},DEFAULT_RULES,j);try{localStorage.setItem(KEY+'_rules',JSON.stringify(j))}catch(_){}applyRules()}
+    const S=sanitizeRules(j),isNew=S.version>RULES.version;
+    if(S.version>=DEFAULT_RULES.version){RULES=S;try{localStorage.setItem(KEY+'_rules',JSON.stringify(S))}catch(_){}applyRules();if(VA&&$('#o-trim'))schedScore()}
     if(isNew)toast('📡 Regole TikTok aggiornate');else if(manual)toast('Hai già le regole più recenti ✓');
   }catch(_){if(manual)toast('File spinta-regole.json non trovato accanto all\'app')}}
 const safeUrl=u=>/^https:\/\//i.test(u||'')?u:'#';
@@ -1805,33 +1894,36 @@ function renderAutoCard(){
    <div id="a-trend"></div>
    <button class="btn alt" onclick="goStep(4)">Avanti: montaggio ↓</button></div>`;
   if(DB.nextHook&&!curHook()){$('#a-hookedit').value=DB.nextHook;hookEdited(true);$('#a-hookscore').insertAdjacentHTML('beforebegin','<div class="tag o" style="margin-top:6px">📋 Hook dal piano del prossimo video</div>')}
-  hookPreview();renderTrendBox()}
+  if($('#o-trim'))hookPreview();renderTrendBox()}
 const A_STEPS=['Ascolto il video','Capisco l\'argomento','Scelgo l\'hook migliore','Scrivo caption e hashtag','Imposto correzioni e sottotitoli'];
 function aStep(i,state,txt){VA.st=VA.st||A_STEPS.map(n=>({n,state:'wait',txt:''}));VA.st[i]={n:A_STEPS[i],state,txt:txt||''};
   const ic={wait:'⚪',run:'⏳',ok:'✅',warn:'⚠️'};
   $('#a-steps').innerHTML=VA.st.map(x=>`<div class="step"><span>${ic[x.state]}</span><span><b>${esc(x.n)}</b>${x.txt?`<br><span style="color:var(--mut);font-size:12.5px">${esc(x.txt)}</span>`:''}</span></div>`).join('')}
 async function autoPrepare(){
-  if(!VA||VA.busy)return;VA.busy=true;VA.st=null;$('#a-go').disabled=true;
+  if(!VA||VA.busy)return;const me=VA;me.busy=true;me.st=null;$('#a-go').disabled=true;const wk=wakeOn('asr');
+  try{
   A_STEPS.forEach((_,i)=>aStep(i,'wait'));
   let transcript='',subs=[];
-  if(VA.ab&&VA.audio&&VA.audio.hasSound){
+  if(me.ab&&me.audio&&me.audio.hasSound){
     try{aStep(0,'run','Preparo il modello di trascrizione…');const t0=Date.now();
-      const asr=await getASR($('#a-model').value,p=>{if(p&&p.status==='progress'&&p.total)aStep(0,'run',`Scarico il modello (solo la prima volta)… ${Math.round(p.loaded/p.total*100)}%`)});
+      const asr=await getASR($('#a-model').value,p=>{if(VA===me&&p&&p.status==='progress'&&p.total)aStep(0,'run',`Scarico il modello (solo la prima volta)… ${Math.round(p.loaded/p.total*100)}%`)});
+      if(VA!==me)return;
       aStep(0,'run','Trascrivo il parlato… può volerci un minuto');
-      const tick=setInterval(()=>aStep(0,'run',`Trascrivo il parlato… ${Math.round((Date.now()-t0)/1000)} s`),1000);
-      let out;try{out=await asr(await pcm16k(VA.ab),{language:'italian',task:'transcribe',chunk_length_s:30,stride_length_s:5,return_timestamps:true})}finally{clearInterval(tick)}
+      const tmr=setInterval(()=>{if(VA===me)aStep(0,'run',`Trascrivo il parlato… ${Math.round((Date.now()-t0)/1000)} s`)},1000);
+      let out;try{out=await asr(await pcm16k(me.ab),{language:'italian',task:'transcribe',chunk_length_s:30,stride_length_s:5,return_timestamps:true})}finally{clearInterval(tmr)}
+      if(VA!==me)return;
       subs=makeSubs(out.chunks||[]);
       transcript=subs.length?(out.text||subs.map(x=>x.t).join(' ')).replace(/[^.?!]*(amara\.org|sottotitoli (creati|a cura))[^.?!]*[.?!]?/gi,'').replace(/\s+/g,' ').trim():'';
       aStep(0,transcript?'ok':'warn',transcript?`${wordsOf(transcript).length} parole riconosciute · ${subs.length} righe di sottotitoli`:'Nessuna voce riconosciuta');
-    }catch(e){console.error(e);aStep(0,'warn','Trascrizione non riuscita su questo dispositivo (serve connessione e memoria). Scrivi l\'argomento qui sotto.')}
+    }catch(e){console.error(e);if(VA!==me)return;aStep(0,'warn','Trascrizione non riuscita su questo dispositivo (serve connessione e memoria). Scrivi l\'argomento qui sotto.')}
   }else aStep(0,'warn','Nel video non c\'è parlato da trascrivere');
-  VA.transcript=transcript;VA.subs=subs;
+  me.transcript=transcript;me.subs=subs;
   const kw=keywords(transcript),topic=kw.bi[0]||kw.top[0]||'';
-  VA.pkg={topic,topicOk:false,kw:kw.top.slice(0,4),kwSure:kw.top.filter(w=>kw.cnt[w]>=3).slice(0,3),niche:detectNiche(wordsOf(transcript))};
-  aStep(1,topic?'warn':'warn',topic?`Ho capito: "${topic}" · nicchia: ${NICHES[VA.pkg.niche].n}. Confermalo qui sotto (col dialetto la trascrizione può sbagliare)`:'Non l\'ho capito dal parlato: scrivilo tu');
+  me.pkg={topic,topicOk:false,kw:kw.top.slice(0,4),kwSure:kw.top.filter(w=>kw.cnt[w]>=3).slice(0,3),niche:detectNiche(wordsOf(transcript))};
+  aStep(1,'warn',topic?`Ho capito: "${topic}" · nicchia: ${NICHES[me.pkg.niche].n}. Confermalo qui sotto (col dialetto la trascrizione può sbagliare)`:'Non l\'ho capito dal parlato: scrivilo tu');
   renderAutoResult();
   if(transcript)regenPkg(true);else{aStep(2,'warn','In attesa dell\'argomento');aStep(3,'warn','In attesa dell\'argomento');setTimeout(()=>$('#a-topic').focus(),200)}
-  VA.busy=false;$('#a-go').disabled=false;$('#a-go').textContent='↻ Rifai l\'analisi automatica';
+  }finally{wakeOff(wk);me.busy=false;if(VA===me){const b=$('#a-go');if(b){b.disabled=false;b.textContent='↻ Rifai l\'analisi automatica'}}}
 }
 function renderAutoResult(){const P=VA.pkg;$('#a-topic').value=P.topic||'';$('#a-niche').value=P.niche||'generale';$('#a-ok').style.display='';
   $('#a-tnote').textContent=P.topic?'Controllalo e correggilo: col dialetto la trascrizione può sbagliare. Finché non lo confermi, l\'hook viene solo dalle frasi del tuo video.':'Non l\'ho capito dal parlato: scrivilo tu e conferma.';
@@ -1853,7 +1945,7 @@ function regenPkg(auto){
   const tags=tagsFor('',tw,niche);
   const ser=curSeries();let tg=tags.split(' ').filter(Boolean);if(ser)tg=[ser.tag,...tg.filter(t=>t!==ser.tag)].slice(0,RULES.hashtag.max);
   $('#a-cap').value=(ser?`Parte ${ser.ep} · `:'')+(captionLine(tArt,VA.transcript||'')||hooks[0].s.replace(/\n/g,' '))+'\n'+pick(CTA[goal])+'\n\n'+tg.join(' ');
-  aStep(3,'ok',`${tags.split(' ').length} hashtag (max ${RULES.hashtag.max})${useT?'':' · conferma l\'argomento per hashtag più precisi'}`);
+  aStep(3,'ok',`${tg.length} hashtag (max ${RULES.hashtag.max})${useT?'':' · conferma l\'argomento per hashtag più precisi'}`);
   $('#a-pkg').style.display='';selectHook(0);applyAutoOptions();schedScore();
 }
 function selectHook(i){const hs=VA.pkg.hooks;VA.pkg.sel=i;VA.pkg.edited=false;
@@ -1869,18 +1961,23 @@ function hookEdited(fromSync){
   if(!clean){$('#a-hookscore').textContent='Scrivi un hook';hookPreview();schedScore();return}
   const a=hookAnalysis(clean),n=clean.split(/\s+/).length;const col=a.sc>=75?'var(--ok)':a.sc>=50?'var(--warn)':'var(--pink)';
   $('#a-hookscore').innerHTML=`<b style="color:${col}">Punteggio ${a.sc}/100</b> · ${n} parole${n>12?' (troppe: si legge male in 3 secondi)':''}${a.tips[0]?`<br>💡 ${esc(a.tips[0])}`:''}`;
-  clearTimeout(hookEdited._t);hookEdited._t=setTimeout(hookPreview,150);schedScore();stpSum(3,'“'+clean.slice(0,46)+(clean.length>46?'…':'')+'”')}
+  clearTimeout(hookEdited._t);hookEdited._t=setTimeout(hookPreview,150);schedScore();stpSum(3,'“'+cutTxt(clean,46)+'”')}
 function addEmoji(e){const el=$('#a-hookedit');el.value=el.value.replace(/\s+$/,'')+' '+e;hookEdited()}
 function hookCase(){const el=$('#a-hookedit');const v=el.value;el.value=v===v.toUpperCase()?v.charAt(0)+v.slice(1).toLowerCase():v.toUpperCase();hookEdited()}
 function resetHook(){if(VA.pkg&&VA.pkg.hooks)selectHook(VA.pkg.sel||0)}
+/* anteprima con le stesse proporzioni del video finale (ritagliato a 9:16 solo se il ritaglio è attivo) */
 async function hookPreview(){
-  const cv=$('#a-hprev');if(!cv||!VA)return;const ctx=cv.getContext('2d');const W=cv.width,H=cv.height;
-  if(!VA.prevFrame&&!VA.prevLoading){VA.prevLoading=true;const v=hiddenVideo(vURL,true);
-    try{await waitMeta(v);try{await v.play();v.pause()}catch(_){}await seekTo(v,Math.min(1,VA.dur/2));
-      const o=readOpts();const {sx,sy,sw,sh}=cropRect(o,true);const f=document.createElement('canvas');f.width=W;f.height=H;f.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,W,H);VA.prevFrame=f}
-    catch(_){}finally{v.removeAttribute('src');v.load();v.remove();VA.prevLoading=false}}
-  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);if(VA.prevFrame)ctx.drawImage(VA.prevFrame,0,0);
-  const txt=curHook().trim();const o=readOpts();if(txt)drawCaption(ctx,txt,W,H,o.hookPos,1);if(o.part&&o.series)drawPill(ctx,'PARTE '+o.series.ep,W,H,o.hookPos,txt,1)}
+  const cv=$('#a-hprev');if(!cv||!VA)return;const me=VA,url=vURL,o=readOpts();
+  const {sx,sy,sw,sh}=cropRect(o,false),key=[sx,sy,sw,sh].map(Math.round).join('|');
+  const W=360,H=Math.max(160,Math.round(W*sh/sw));if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H;cv.style.width=H/W<1.2?'100%':'56%'}
+  if(me.prevKey!==key&&!me.prevLoading){me.prevLoading=true;me.prevKey=key;me.prevFrame=null;const v=hiddenVideo(url,true);
+    try{await waitMeta(v);try{await v.play();v.pause()}catch(_){}await seekTo(v,Math.min(1,me.dur/2));if(VA!==me)return;
+      const f=document.createElement('canvas');f.width=W;f.height=H;f.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,W,H);me.prevFrame=f}
+    catch(_){}finally{v.removeAttribute('src');v.load();v.remove();me.prevLoading=false}
+    if(VA===me)return hookPreview()}
+  if(VA!==me)return;const ctx=cv.getContext('2d');
+  ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);if(me.prevFrame&&me.prevKey===key)ctx.drawImage(me.prevFrame,0,0,cv.width,cv.height);
+  const txt=curHook().trim();if(txt)drawCaption(ctx,txt,cv.width,cv.height,o.hookPos,1);if(o.part&&o.series)drawPill(ctx,'PARTE '+o.series.ep,cv.width,cv.height,o.hookPos,txt,1)}
 function applyAutoOptions(){
   refreshSubsOpt();const on=id=>{const e=$('#'+id);if(e&&!e.disabled)e.checked=true};
   if(VA.subs.length&&!VA.hasSubs)on('o-subs');if(curHook().trim())on('o-hook');if(VA.sug.bar)on('o-bar');on('o-end');if(curSeries())on('o-part');
@@ -1889,11 +1986,10 @@ function applyAutoOptions(){
 }
 /* ---------- backup ---------- */
 function openSettings(){openModal('m-set')}
-function exportData(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}));
-  a.download='spinta-backup-'+todayISO()+'.json';a.click();toast('Backup scaricato')}
+function exportData(){downloadBlob(new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}),'spinta-backup-'+todayISO()+'.json');toast('Backup scaricato')}
 function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.posts)||!Array.isArray(d.stats))throw 0;DB=Object.assign({checklist:{}},d);normDB();save();renderSeriesSel();renderPlan();renderStats();closeModal('m-set');toast('Backup importato ✓')}catch(_){toast('File non valido')}};r.readAsText(f)}
-function wipeData(){if(!confirm('Cancellare piano, statistiche, serie e checklist?'))return;DB={posts:[],stats:[],checklist:{},series:[],pending:[]};save();renderSeriesSel();renderPlan();renderStats();closeModal('m-set');toast('Dati cancellati')}
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.posts)||!Array.isArray(d.stats))throw 0;DB=Object.assign({checklist:{}},d);normDB();save();renderSeriesSel();renderPlan();renderStats();renderReady();scheduleNotifs();closeModal('m-set');toast('Backup importato ✓')}catch(_){toast('File non valido')}};r.readAsText(f)}
+function wipeData(){if(!confirm('Cancellare piano, statistiche, serie e checklist?'))return;DB={posts:[],stats:[],checklist:{},series:[],pending:[]};save();renderSeriesSel();renderPlan();renderStats();renderReady();scheduleNotifs();closeModal('m-set');toast('Dati cancellati')}
 /* articolo per un argomento scritto a mano: "pesca a spinning" → "la pesca a spinning" */
 function guessArt(t){const w=t.trim().split(/\s+/)[0].toLowerCase();if(!w||/^(come|perché|quando|cosa|fare|\d)/.test(w)||/(are|ere|ire)$/.test(w))return t;
   if(/^[aeiouàèéìòù]/.test(w))return "l'"+t;
@@ -1941,7 +2037,7 @@ function scoreModel(o,pk){
   add('hook','Movimento iniziale',8,moving?8:(ht?6:3),moving?'Immagine in movimento da subito':'Primi secondi quasi fermi','Parti già in azione, o compensa con un hook forte.',null);
   // RITENZIONE (30)
   const D=RULES.durata;
-  add('ret','Durata',8,outDur<D.min?4:outDur<=D.ideale[1]?8:outDur<=D.max?5:2,`${outDur.toFixed(1)} s${Math.abs(outDur-dur)>0.3?` (era ${dur.toFixed(1)} s)`:''}`,outDur>D.ideale[1]?'Oltre il minuto serve una visione completa altissima: taglia o dividi in parti.':'Molto corto: funziona solo come loop.',outDur>D.ideale[1]&&hasA&&A.pauses.length&&!o.pause?'o-pause':null);
+  add('ret','Durata',8,outDur<D.min?4:outDur<=D.ideale[1]?8:outDur<=D.max?5:2,`${outDur.toFixed(1)} s${Math.abs(outDur-dur)>0.3?` (era ${dur.toFixed(1)} s)`:''}`,outDur>D.ideale[1]?`Oltre i ${D.ideale[1]} secondi serve una visione completa altissima: taglia o dividi in parti.`:'Molto corto: funziona solo come loop.',outDur>D.ideale[1]&&hasA&&A.pauses.length&&!o.pause?'o-pause':null);
   const pt=hasA&&!o.pause?A.pauses.reduce((a,p)=>a+p.e-p.s,0):0;const pr=pt/Math.max(1,outDur);
   add('ret','Tempi morti',9,pr<0.05?9:pr<0.12?6:pr<0.2?3:0,pt>0.3?`${A.pauses.length} pause · ${pt.toFixed(1)} s di silenzio`:'Nessuna pausa lunga','Ogni pausa è un punto in cui la gente scorre via.',pt>0.3?'o-pause':null);
   const sz=VA.static.length;
@@ -2032,23 +2128,24 @@ function parseNum(str){const m=String(str).replace(/\s/g,'').match(/(\d+(?:[.,]\
   if(suf)return Math.round(parseFloat(n.replace(',','.'))*(suf==='k'||suf==='mila'?1e3:suf==='b'?1e9:1e6));
   if(/^\d{1,3}([.,]\d{3})+$/.test(n))return parseInt(n.replace(/[.,]/g,''));return parseFloat(n.replace(',','.'))}
 function parseSecs(str){let m=str.match(/(\d+):(\d{2})/);if(m)return +m[1]*60+ +m[2];
-  m=str.match(/(?:(\d+)\s*m(?:in)?\s*)?(\d+(?:[.,]\d+)?)\s*s\b/i);if(m)return Math.round(((m[1]?+m[1]*60:0)+parseFloat(m[2].replace(',','.')))*10)/10;return null}
+  m=str.match(/(?:(\d+)\s*m(?:in)?\s*)?(\d+(?:[.,]\d+)?)\s*s(?:ec(?:ondi|onds?)?)?\b/i);if(m)return Math.round(((m[1]?+m[1]*60:0)+parseFloat(m[2].replace(',','.')))*10)/10;return null}
 const OCR_LABELS=[['watch',/tempo medio|visione media|media di visione|average watch|avg\.? watch/i,'sec'],
   ['full',/video complet|visualizzazion\w* complet|watched (the )?full|full video|completamento/i,'pct'],
   ['follows',/nuovi follower|new follower|follower acquisiti|followers? gained/i,'num'],
   ['views',/visualizzazion|video views|\bviews\b|riproduzioni del video/i,'num'],['likes',/mi piace|\blikes?\b/i,'num'],['comm',/commenti|comments?/i,'num'],
   ['shares',/condivision|\bshares?\b/i,'num'],['saves',/salvat|preferit|\bsaves?\b|favorit/i,'num'],['len',/durata del video|video length|durata video/i,'sec']];
 function parseStatsText(t){const L=t.split(/\n/).map(x=>x.trim()).filter(Boolean),out={};
-  const valFrom=(s,kind)=>{if(!s)return null;if(kind==='sec')return parseSecs(s);
-    if(kind==='pct'){const m=s.match(/(\d+(?:[.,]\d+)?)\s*[%9]?/);if(!m)return null;let v=parseFloat(m[1].replace(',','.'));while(v>100)v=Math.floor(v/10);return v}
+  const valFrom=(s,kind,near)=>{if(!s)return null;if(kind==='sec')return parseSecs(s);
+    if(kind==='pct'){if(near&&!/%|\d\s?9\s*$/.test(s))return null;const m=s.match(/(\d+(?:[.,]\d+)?)\s*[%9]?/);if(!m)return null;let v=parseFloat(m[1].replace(',','.'));while(v>100)v=Math.floor(v/10);return v}
     const m=s.replace(/\d+(?:[.,]\d+)?\s*%/g,'').match(/\d[\d.,]*\s*(?:k|m|mila|mln)?(?![a-z])/i);return m?parseNum(m[0]):null};
   L.forEach((line,i)=>{if(/totale|total/i.test(line))return;
     for(const [k,re,kind] of OCR_LABELS){if(!re.test(line))continue;if(out[k]!=null)break;
-      let v=valFrom(line.replace(re,' '),kind);if(v==null)v=valFrom(L[i+1],kind);if(v==null)v=valFrom(L[i-1],kind);if(v!=null)out[k]=v;break}});
+      let v=valFrom(line.replace(re,' '),kind);if(v==null)v=valFrom(L[i+1],kind,1);if(v==null)v=valFrom(L[i-1],kind,1);if(v!=null)out[k]=v;break}});
   if(out.views==null)for(const line of L){if(/[a-z]{4,}/i.test(line))continue;const nums=(line.match(/\d[\d.,]*\s*[kKmM]?/g)||[]).map(parseNum).filter(x=>x!=null);
     if(nums.length>=4&&nums.length<=6){['views','likes','comm','shares','saves'].forEach((k,j)=>{if(out[k]==null&&nums[j]!=null)out[k]=nums[j]});break}}
   return out}
-async function ocrStats(e){const files=[...(e.target.files||[])];e.target.value='';if(!files.length)return;const box=$('#s-ocr');
+async function ocrStats(e){const files=[...(e.target.files||[])];e.target.value='';if(!files.length)return;const wk=wakeOn('ocr');try{await ocrRun(files)}finally{wakeOff(wk)}}
+async function ocrRun(files){const box=$('#s-ocr');
   const say=h=>box.innerHTML=h;let found={},txtAll='';
   try{say('⏳ Preparo il lettore di testo… (la prima volta scarica circa 10 MB)');
     const w=await getOCR(m=>{if(m&&m.status&&m.progress!=null&&/load|init/i.test(m.status))say(`⏳ Preparo il lettore di testo… ${Math.round(m.progress*100)}%`)});
@@ -2064,10 +2161,10 @@ async function ocrStats(e){const files=[...(e.target.files||[])];e.target.value=
    <details style="margin-top:6px"><summary>Testo letto</summary><div style="white-space:pre-wrap;margin-top:6px">${esc(txtAll.trim().slice(0,1500))}</div></details>`)}
 
 /* ---------- PROSSIMO VIDEO: il seguito costruito sui dati ---------- */
-function renderNext(){const el=$('#g-next');if(!el)return;const has=DB.stats.length||DB.pending.length;
+function renderNext(){const el=$('#g-next');if(!el)return;const has=DB.stats.length||DB.pending.length,idea=($('#nx-idea')||{}).value||'';
   el.innerHTML=has?`<div class="card"><h3>🎬 Prossimo video</h3><div style="color:var(--mut);font-size:13px;margin:4px 0 2px">Preparo il seguito partendo dall'ultimo video e da quello che ha funzionato sul tuo canale: hook, scaletta secondo per secondo, durata e orario.</div>
    <label>Idea o commento da cui partire (facoltativo)</label><textarea id="nx-idea" style="min-height:60px" placeholder="es. «Fai un'app per dividere il conto in pizzeria»"></textarea>
-   <button class="btn" onclick="genNext()">🎬 Prepara il prossimo video</button><div id="nx-out"></div></div>`:'';}
+   <button class="btn" onclick="genNext()">🎬 Prepara il prossimo video</button><div id="nx-out"></div></div>`:'';if(has&&idea)$('#nx-idea').value=idea}
 function lastVideo(){const items=[...DB.stats.map(s=>({...s,_t:s.pubAt||Date.parse((s.date||'1970-01-01')+'T'+(s.hour||'12:00'))})),...DB.pending.map(p=>({...p,_t:p.pubAt}))];
   return items.sort((a,b)=>b._t-a._t)[0]||null}
 function genNext(){
@@ -2090,7 +2187,7 @@ function genNext(){
   if(!hk&&bestHk&&S.length>=3){hk=bestHk.k;notes.push(`🎣 Il tipo di hook che ti rende di più: <b>${esc(hk)}</b>.`)}
   // orario
   const slotOf=h=>{const x=+h.split(':')[0];return x<11?[0,11]:x<15?[11,15]:x<19?[15,19]:x<22?[19,22]:[22,24]};
-  const bestSlot=groups(s=>s.hour?slotOf(s.hour).join('-'):null)[0];let when=nextSlot();
+  const bestSlot=groups(s=>s.hour?slotOf(s.hour).join('-'):null)[0];let when=nextSlot()||new Date(Date.now()+864e5);
   if(bestSlot&&S.length>=3){const [a,b]=bestSlot.k.split('-').map(Number);const now=new Date();
     outer:for(let d=0;d<8;d++){const day=new Date(now);day.setDate(now.getDate()+d);for(const h of BEST[day.getDay()]){const [hh,mm]=h.split(':').map(Number);if(hh>=a&&hh<b){const dt=new Date(day);dt.setHours(hh,mm,0,0);if(dt-now>20*60e3){when=dt;break outer}}}}}
   // hook proposti
@@ -2105,7 +2202,7 @@ function genNext(){
   if(tArt&&H.length<4)H.push({k:'Fino alla fine',s:fixIt(cap1(`Guarda fino alla fine: con ${tArt} succede una cosa assurda.`))});
   const hooks=H.map(h=>({...h,sc:hookAnalysis(h.s).sc})).sort((a,b)=>(b.sc+(b.bonus||0))-(a.sc+(a.bonus||0))).slice(0,4);
   // scaletta
-  const T=len,b1=Math.min(8,Math.round(T*0.2)),b3=Math.max(b1+4,T-6);
+  const T=clamp(Math.round(len)||30,15,Math.max(15,RULES.durata.max||180)),b1=Math.min(8,Math.max(5,Math.round(T*0.2))),b3=Math.max(b1+4,T-6);
   const beats=[[`0–3 s`,'Hook',hooks[0]?hooks[0].s:'La posta in gioco in una frase'],
     [`3–${b1} s`,ser&&ep>1?'Riassunto lampo':'Contesto',ser&&ep>1?`In una frase cosa è successo nella Parte ${ep-1}${prevHook?` («${cut(prevHook)}»)`:''}.`:'Chi sei e cosa sta per succedere, in una frase.'],
     [`${b1}–${b3} s`,'Sviluppo',`${idea?`Il cuore: ${idea}. `:''}Un cambio (inquadratura, numero o oggetto a schermo) ogni 6-8 secondi, niente pause.`],
@@ -2127,10 +2224,12 @@ function genNext(){
 function useNextHook(i,silent){const h=window._nx&&window._nx.hooks[i];if(!h)return;DB.nextHook=h.s;save();
   document.querySelectorAll('#nx-out .hk').forEach((e,j)=>e.classList.toggle('on',j===i));if(!silent)toast('Lo trovi nello Studio al passo 3')}
 function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>String(n).padStart(2,'0');
-  DB.posts.push({id:uid(),title:(DB.nextHook||x.hooks[0].s),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
+  DB.posts.push({id:uid(),title:(DB.nextHook||(x.hooks[0]||{}).s||'Prossimo video'),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
 
 /* ---------- avvio ---------- */
-fitPhone();load();normDB();fillNiches();$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();scheduleNotifs();updateRules(false);
+try{history.scrollRestoration='manual'}catch(_){}
+fitPhone();load();normDB();fillNiches();$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();renderReady();scheduleNotifs();updateRules(false);
+document.querySelectorAll('.stp-h').forEach(h=>{h.setAttribute('role','button');h.tabIndex=0;h.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();h.click()}})});
 if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
