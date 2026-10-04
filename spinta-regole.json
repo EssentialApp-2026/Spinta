@@ -1,0 +1,66 @@
+{
+  "version": "2026.10.04",
+  "aggiornato": "4 ottobre 2026",
+  "prossimoAggiornamento": "lunedì 12 ottobre",
+  "durata": { "min": 10, "ideale": [15, 90], "max": 180 },
+  "hashtag": { "max": 5, "larghi": 0, "evitare": ["#fyp", "#foryou", "#viral", "#perte", "#neiperte"] },
+  "hookSecondi": 3,
+  "pausaMin": 0.6,
+  "obiettivi": { "completamento": 70, "rewatch": 15, "frequenza": "3-5 video a settimana", "primaOraMinuti": 30 },
+  "orari": {
+    "0": ["11:00", "18:00", "20:30"],
+    "1": ["12:30", "19:00", "20:00"],
+    "2": ["12:30", "19:00", "20:00"],
+    "3": ["13:00", "19:00", "20:00"],
+    "4": ["12:30", "18:30", "20:00"],
+    "5": ["13:00", "18:00", "21:00"],
+    "6": ["11:30", "15:00", "20:30"]
+  },
+  "segnali": [
+    "Tempo di visione e percentuale di visione completa (obiettivo: oltre il 70%)",
+    "Rewatch: oltre il 15-20% è un segnale forte",
+    "Condivisioni",
+    "Commenti lunghi e veloci nella prima ora",
+    "Nuovi follower dal video",
+    "Salvataggi",
+    "Like (il segnale più debole)"
+  ],
+  "novita": [
+    "I video più lunghi (60-180 s) vengono spinti di più, ma solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.",
+    "La soglia per diventare virali si è alzata: serve circa il 70% di visione completa.",
+    "TikTok funziona sempre più come motore di ricerca: dì l'argomento a voce, scrivilo a schermo e nella caption.",
+    "Hashtag generici come #fyp e #viral non aiutano più: usa da 1 a 5 hashtag specifici della tua nicchia.",
+    "L'audio originale (la tua voce) viene favorito; i suoni di tendenza aiutano solo se li usi entro 24-48 ore da quando esplodono.",
+    "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.",
+    "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.",
+    "Le serie a puntate e i format ripetibili fanno tornare il pubblico sul profilo.",
+    "Restare in una nicchia precisa rende più dei profili che parlano di tutto.",
+    "Costanza: meglio 3-5 video a settimana regolari che tanti video in pochi giorni.",
+    "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."
+  ],
+  "tendenze": {
+    "settimana": "28 settembre – 4 ottobre 2026",
+    "format": [
+      { "nome": "Serie a tema", "come": "Puntate numerate con lo stesso inizio e lo stesso personaggio: chi trova una puntata guarda le altre." },
+      { "nome": "Video-domanda", "come": "Apri o chiudi con una domanda diretta al pubblico: le analisi riportano circa il 26% di commenti in più." },
+      { "nome": "Problema → soluzione", "come": "Mostra subito un problema reale del tuo pubblico e risolvilo entro il video." },
+      { "nome": "Storytelling 60-90 s", "come": "Una mini-storia con posta in gioco, sviluppo e finale chiaro: i video più lunghi crescono se tengono fino alla fine." },
+      { "nome": "Format ripetibile", "come": "Stessa struttura ogni volta (es. «Giorno X di Y», «Valuto i vostri…»): l'algoritmo e il pubblico la riconoscono." }
+    ],
+    "hashtag": [],
+    "suoni": [],
+    "nota": "TikTok non rende pubblici i dati sui suoni e gli hashtag di tendenza in Italia: per quelli del momento apri il TikTok Creative Center dal tuo account."
+  },
+  "fonti": [
+    { "titolo": "Hootsuite – How the TikTok algorithm works in 2026", "url": "https://blog.hootsuite.com/tiktok-algorithm/" },
+    { "titolo": "Socialync – TikTok Algorithm 2026: the 7 signals (agg. luglio 2026)", "url": "https://www.socialync.io/blog/tiktok-algorithm-2026-what-works-now" },
+    { "titolo": "Metricool – TikTok Trends 2026 (agg. agosto 2026)", "url": "https://metricool.com/tiktok-trends/" },
+    { "titolo": "DeRev – Algoritmo di TikTok 2026", "url": "https://derev.com/2026/07/algoritmo-tiktok-2026/" },
+    { "titolo": "OpusClip – TikTok's new algorithm 2026", "url": "https://www.opus.pro/blog/tiktoks-new-algorithm-2026" }
+  ],
+  "checklistExtra": [
+    "Etichetta \"Contenuto generato con AI\" se usi voci, immagini o personaggi creati con l'AI",
+    "Nessuna filigrana di altre app (CapCut, Instagram…)",
+    "Hashtag specifici della nicchia, niente #fyp o #viral"
+  ]
+}

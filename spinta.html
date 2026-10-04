@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08080d">
+<meta name="description" content="Spinta: analizza, migliora e pubblica i tuoi video TikTok per farli arrivare nei Per Te.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Spinta">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Spinta · Studio video</title>
+<style>
+:root{
+  --bg:#08080d;--card:#13131c;--card2:#1b1b27;--line:#262636;--line2:#34344a;
+  --txt:#f5f5fa;--mut:#9a9ab2;--pink:#ff2d6f;--cyan:#25f4ee;--ok:#2fd67b;--warn:#ffb020;--r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-size:15px;line-height:1.45}
+body{padding-bottom:calc(84px + env(safe-area-inset-bottom));background:radial-gradient(900px 420px at 50% -180px,rgba(255,45,111,.13),transparent 65%),var(--bg);min-height:100vh}
+header.top{position:sticky;top:0;z-index:5;background:rgba(8,8,13,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+.logo{font-weight:900;font-size:21px;letter-spacing:-.6px;display:flex;align-items:baseline;gap:5px}
+.logo i{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo small{font-size:9.5px;font-weight:800;color:var(--mut);letter-spacing:1px;text-transform:uppercase}
+.sp{flex:1}
+.topscore{display:none;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:5px 11px;font-weight:900;font-size:14px;cursor:pointer}
+.iconbtn{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:7px 11px;font-size:14px;font-weight:600;cursor:pointer}
+main{max-width:720px;margin:0 auto;padding:16px}
+.tab{display:none}.tab.on{display:block;animation:f .2s}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+h2{font-size:24px;letter-spacing:-.4px;margin-bottom:4px}
+h3{font-size:16px}
+.sub{color:var(--mut);font-size:13.5px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+label{display:block;font-size:12px;color:var(--mut);margin:12px 0 5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:11px 12px;font-size:15px;font-family:inherit}
+textarea{min-height:70px;resize:vertical;line-height:1.4}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan)}
+input:disabled{opacity:.5}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:14px;padding:14px;border:0;border-radius:14px;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(100deg,var(--pink),#ff5a3c);cursor:pointer;box-shadow:0 6px 20px -8px rgba(255,45,111,.6);text-decoration:none}
+.btn:disabled{opacity:.5}
+.btn.alt{background:var(--card2);border:1px solid var(--line);box-shadow:none}
+.btn.cy{background:linear-gradient(100deg,#0fb9b1,var(--cyan));color:#06232a;box-shadow:0 6px 20px -8px rgba(37,244,238,.5)}
+.btn.sm{width:auto;margin:0;padding:8px 12px;font-size:13px;border-radius:10px;box-shadow:none}
+.out{margin-top:12px}
+.item{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;position:relative}
+.item .t{font-weight:700;margin-bottom:4px;padding-right:58px}
+.item .m{color:var(--mut);font-size:13px}
+.item .copy{position:absolute;top:10px;right:10px}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;background:rgba(37,244,238,.12);color:var(--cyan);margin-right:4px;margin-bottom:4px}
+.tag.p{background:rgba(255,45,111,.14);color:var(--pink)}
+.tag.o{background:rgba(47,214,123,.14);color:var(--ok)}
+.tag.w{background:rgba(255,176,32,.14);color:var(--warn)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--card2);border:1px solid var(--line);border-radius:20px;padding:6px 11px;font-size:13px;cursor:pointer;color:var(--txt)}
+.chip.on{border-color:var(--pink);color:var(--pink)}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:6;background:rgba(12,12,19,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+nav button{background:none;border:0;color:var(--mut);font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;cursor:pointer}
+nav button b{font-size:21px;line-height:1}
+nav button.on{color:var(--txt)}
+nav button.on b{filter:drop-shadow(0 0 7px var(--pink))}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.kpi .v{font-size:22px;font-weight:900}
+.kpi .l{font-size:12px;color:var(--mut)}
+.meter{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin:8px 0}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--cyan))}
+.check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check:last-child{border-bottom:0}
+.check input{width:20px;height:20px;flex:none;accent-color:var(--pink);margin-top:1px}
+.check.done span{color:var(--mut);text-decoration:line-through}
+.banner{background:linear-gradient(90deg,rgba(255,45,111,.16),rgba(37,244,238,.10));border:1px solid rgba(255,45,111,.6);border-radius:14px;padding:12px;margin-bottom:12px;font-size:14px}
+.empty{color:var(--mut);text-align:center;padding:18px;font-size:14px}
+.acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.seg{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:12px}
+.seg button{flex:1;background:none;border:0;color:var(--mut);padding:9px 4px;border-radius:9px;font-weight:800;font-size:13px;cursor:pointer}
+.seg button.on{background:var(--card);color:var(--txt);box-shadow:0 1px 0 var(--line2)}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#fff;color:#000;padding:10px 16px;border-radius:30px;font-weight:800;font-size:14px;opacity:0;transition:.25s;z-index:40;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:30;display:none;align-items:flex-end;justify-content:center}
+.modal.on{display:flex}
+.sheet{background:var(--card);width:100%;max-width:720px;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+small.n{display:block;color:var(--mut);font-size:12px;margin-top:6px}
+a{color:var(--cyan)}
+svg text{fill:var(--mut);font-size:10px}
+label.opt{display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font-size:15px;font-weight:700;color:var(--txt);margin:0;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+label.opt:last-of-type{border-bottom:0}
+label.opt input{width:20px;height:20px;flex:none;accent-color:var(--pink);margin-top:1px}
+label.opt small{display:block;color:var(--mut);font-weight:400;font-size:12.5px;margin-top:2px}
+label.opt.dis{opacity:.45}
+.hk{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px;cursor:pointer;font-weight:700}
+.hk.on{border-color:var(--pink);box-shadow:0 0 0 1px var(--pink)}
+.hk small{display:block;color:var(--mut);font-weight:400;font-size:12px}
+.step{display:flex;gap:8px;font-size:14px;padding:4px 0}
+details{margin-top:10px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--mut)}
+summary{cursor:pointer;color:var(--txt);font-weight:700}
+.vid{width:100%;max-height:60vh;border-radius:14px;background:#000;display:block;margin-top:12px}
+input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:var(--pink)}
+/* Studio */
+.hero{padding:6px 2px 14px}
+.hero h1{font-size:28px;line-height:1.12;letter-spacing:-.8px}
+.hero h1 i{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.feat div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;font-size:11.5px;color:var(--mut);line-height:1.3}
+.feat b{display:block;color:var(--txt);font-size:13px;margin:4px 0 2px}
+.stp{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.stp.open{border-color:var(--line2)}
+.stp-h{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;user-select:none}
+.num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;background:var(--card2);border:1px solid var(--line);flex:none}
+.stp[data-state=ready] .num{background:linear-gradient(135deg,var(--pink),#ff5a3c);border:0}
+.stp[data-state=done] .num{background:var(--ok);border:0;color:#04120a}
+.stp[data-state=locked]{opacity:.55}
+.stp-h small{display:block;color:var(--mut);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
+.chev{margin-left:auto;color:var(--mut);transition:transform .2s;font-size:18px}
+.stp.open .chev{transform:rotate(180deg)}
+.stp-b{display:none;padding:0 14px 16px}
+.stp.open .stp-b{display:block}
+.drop{position:relative;border:2px dashed var(--line2);border-radius:16px;padding:22px 12px;text-align:center;background:rgba(255,255,255,.015)}
+.drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0}
+.scorebox{display:flex;gap:16px;align-items:center}
+.ring{position:relative;width:116px;height:116px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .v b{font-size:38px;font-weight:900;line-height:1;display:block}
+.ring .v small{font-size:11px;color:var(--mut)}
+.pil{margin:6px 0}
+.pil .lb{display:flex;justify-content:space-between;font-size:12.5px;font-weight:800}
+.pil .lb span{color:var(--mut);font-weight:700}
+.bar{position:relative;height:7px;border-radius:7px;background:var(--line);overflow:hidden;margin-top:3px}
+.bar i{position:absolute;top:0;bottom:0;left:0;border-radius:7px}
+.bar .g{background:rgba(255,255,255,.2)}
+.bar .f{background:linear-gradient(90deg,var(--pink),var(--cyan))}
+.tl{margin-top:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:10px}
+.lg{display:flex;flex-wrap:wrap;gap:10px;font-size:11.5px;color:var(--mut);margin-top:6px}
+.lg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.h4{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin:16px 0 2px}
+.fix{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line)}
+.fix .pt{margin-left:auto;font-size:12px;font-weight:900;color:var(--warn);white-space:nowrap;padding-left:6px}
+.grp{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:10px}
+.grp h4{font-size:11.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin:10px 0 0}
+.grp label.opt{border-bottom-color:#2c2c3e}
+.vs{font-size:11px;font-weight:900;padding:2px 7px;border-radius:20px}
+.vs.up{background:rgba(47,214,123,.15);color:var(--ok)}
+.vs.dn{background:rgba(255,45,111,.15);color:var(--pink)}
+@media (max-width:380px){.feat{grid-template-columns:1fr}.ring{width:96px;height:96px}.ring .v b{font-size:30px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">⚡<i>Spinta</i><small>Studio</small></div>
+  <span class="sp"></span>
+  <div class="topscore" id="topscore" onclick="goTab('studio');stpOpen(2,true);$('#s2').scrollIntoView({behavior:'smooth',block:'start'})"></div>
+  <button class="iconbtn" id="btn-install" style="display:none" onclick="installApp()">⬇︎ Installa</button>
+  <button class="iconbtn" onclick="openSettings()" aria-label="Impostazioni">⚙︎</button>
+</header>
+
+<main>
+
+<!-- ================= STUDIO ================= -->
+<section class="tab on" id="t-studio">
+  <div class="hero" id="hero">
+    <h1>Il tuo video,<br><i>pronto per i Per Te</i></h1>
+    <p class="sub" style="margin:8px 0 0">Lo analizzo come lo valuta TikTok, lo correggo e ti preparo tutto per pubblicarlo. Il video non lascia mai il telefono.</p>
+    <div class="feat">
+      <div>🎯<b>Punteggio virale</b>i 5 fattori dell'algoritmo</div>
+      <div>✨<b>Hook e testi</b>scritti dal tuo parlato</div>
+      <div>🚀<b>Pubblica</b>all'ora giusta e cresci</div>
+    </div>
+  </div>
+
+  <article class="stp open" id="s1" data-state="ready">
+    <div class="stp-h" onclick="stpToggle(1)"><span class="num">1</span><div><h3>Carica il video</h3><small id="s1-sum">Dalla galleria o dai file</small></div><span class="chev">⌄</span></div>
+    <div class="stp-b">
+      <div id="v-warn"></div>
+      <div id="v-drop" class="drop">
+        <div style="font-size:30px">🎞️</div>
+        <b>Tocca per scegliere un video</b>
+        <div style="color:var(--mut);font-size:12.5px;margin-top:4px">MP4, MOV o WebM · verticale 9:16 ideale</div>
+        <input type="file" accept="video/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv" id="v-file" aria-label="Scegli un video">
+      </div>
+      <div id="v-name" style="color:var(--mut);font-size:13px;margin-top:8px"></div>
+      <video id="v-prev" class="vid" playsinline controls style="display:none"></video>
+      <div id="v-prog"></div>
+      <div class="row">
+        <div><label>Serie</label><select id="ser-sel" onchange="serChange()"></select></div>
+        <div><label>Puntata</label><input id="ser-ep" type="number" min="1" inputmode="numeric" onchange="serEp(this.value)" disabled></div>
+      </div>
+      <div id="ser-new" style="display:none;margin-top:8px">
+        <div style="display:flex;gap:8px"><input id="ser-name" placeholder="Nome della serie"><button class="btn sm" onclick="serCreate()">Crea</button></div>
+        <small class="n">Creo l'hashtag della serie dal nome e tengo il conto delle puntate.</small>
+      </div>
+    </div>
+  </article>
+
+  <article class="stp" id="s2" data-state="locked">
+    <div class="stp-h" onclick="stpToggle(2)"><span class="num">2</span><div><h3>Punteggio virale</h3><small id="s2-sum">Come lo vede l'algoritmo</small></div><span class="chev">⌄</span></div>
+    <div class="stp-b"><div id="v-score"></div></div>
+  </article>
+
+  <article class="stp" id="s3" data-state="locked">
+    <div class="stp-h" onclick="stpToggle(3)"><span class="num">3</span><div><h3>Hook, sottotitoli e caption</h3><small id="s3-sum">Scritti dal tuo parlato</small></div><span class="chev">⌄</span></div>
+    <div class="stp-b"><div id="v-auto"></div></div>
+  </article>
+
+  <article class="stp" id="s4" data-state="locked">
+    <div class="stp-h" onclick="stpToggle(4)"><span class="num">4</span><div><h3>Montaggio</h3><small id="s4-sum">Tagli, immagine, audio, testi</small></div><span class="chev">⌄</span></div>
+    <div class="stp-b"><div id="v-fix"></div></div>
+  </article>
+
+  <article class="stp" id="s5" data-state="locked">
+    <div class="stp-h" onclick="stpToggle(5)"><span class="num">5</span><div><h3>Esporta e pubblica</h3><small id="s5-sum">Video, copertina, caption e orario</small></div><span class="chev">⌄</span></div>
+    <div class="stp-b">
+      <button class="btn" id="o-go" onclick="exportVideo()">🚀 Crea il video finale</button>
+      <small class="n">Tieni l'app aperta e lo schermo acceso: l'elaborazione dura circa quanto il video.</small>
+      <div id="v-out"></div>
+    </div>
+  </article>
+</section>
+
+<!-- ================= PIANO ================= -->
+<section class="tab" id="t-plan">
+  <div class="card" id="p-pending-card" style="display:none"></div>
+
+  <h2>Planner di pubblicazione</h2>
+  <p class="sub">Programma i video, esporta i promemoria nel calendario del telefono e usa la checklist prima di pubblicare.</p>
+  <div id="p-banner"></div>
+  <div class="seg" id="p-seg">
+    <button class="on" data-v="list">Calendario</button>
+    <button data-v="check">Checklist</button>
+  </div>
+
+  <div id="p-list">
+    <div class="card">
+      <label>Titolo / idea del video</label>
+      <input id="p-title" placeholder="es. Puntata 3 – la bancarella sotto la pioggia">
+      <div class="row">
+        <div><label>Data</label><input type="date" id="p-date"></div>
+        <div><label>Ora</label><input type="time" id="p-time" value="19:00"></div>
+      </div>
+      <label>Orari consigliati</label>
+      <div class="chips" id="p-best"></div>
+      <small class="n">Orari medi per l'Italia: controlla in TikTok Studio → Analytics → Follower quando è online il tuo pubblico.</small>
+      <label>Note</label>
+      <input id="p-note" placeholder="hook, musica, hashtag…">
+      <button class="btn" onclick="addPost()">📅 Aggiungi al piano</button>
+    </div>
+    <div class="acts" style="margin-bottom:10px">
+      <button class="btn sm alt" onclick="exportICS()">⬇︎ Esporta tutto nel calendario (.ics)</button>
+      <button class="btn sm alt" onclick="askNotif()">🔔 Attiva avvisi</button>
+    </div>
+    <div id="p-items"></div>
+  </div>
+
+  <div id="p-check" style="display:none">
+    <div class="card">
+      <div class="meter"><i id="ck-bar" style="width:0"></i></div>
+      <div id="ck-items"></div>
+      <button class="btn alt" onclick="resetChecklist()">↺ Azzera per il prossimo video</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ================= CRESCITA ================= -->
+<section class="tab" id="t-grow">
+  <h2>Crescita</h2>
+  <p class="sub">TikTok mostra ogni video a un piccolo pubblico e lo spinge solo se trattiene più della media del tuo account. Inserisci i dati dopo 48 ore: qui vedi la tua media e cosa la batte.</p>
+  <div id="g-pending"></div>
+  <div id="s-kpis" class="kpis"></div>
+  <div id="s-insight"></div>
+  <div class="card" id="s-chartbox" style="display:none">
+    <h3 style="font-size:15px;margin-bottom:8px">View medie per formato</h3>
+    <div id="s-chart"></div>
+  </div>
+  <button class="btn" onclick="openStatForm()">＋ Aggiungi i dati di un video</button>
+  <div id="s-items" class="out"></div>
+</section>
+
+<!-- ================= STRUMENTI ================= -->
+<section class="tab" id="t-tools">
+  <h2>Strumenti</h2>
+  <p class="sub">Per scrivere e pianificare anche senza un video pronto.</p>
+  <div class="seg" id="tool-seg">
+    <button class="on" data-k="hook">Hook</button>
+    <button data-k="cap">Caption</button>
+    <button data-k="ideas">Idee</button>
+    <button data-k="algo">Algoritmo</button>
+  </div>
+  <div class="tool" id="tool-hook">
+  <h2>Generatore di hook</h2>
+  <p class="sub">I primi 2 secondi decidono se il video viene spinto. Genera frasi d'apertura e testo a schermo.</p>
+  <div class="card">
+    <label>Di cosa parla il video?</label>
+    <input id="h-topic" placeholder="es. frittata di pasta, trading, pesca a spinning…">
+    <div class="row">
+      <div><label>Nicchia</label><select id="h-niche"></select></div>
+      <div><label>Tono</label>
+        <select id="h-tone">
+          <option value="diretto">Diretto</option>
+          <option value="ironico">Ironico</option>
+          <option value="misterioso">Misterioso</option>
+          <option value="educativo">Educativo</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="genHooks()">✨ Genera 10 hook</button>
+  </div>
+  <div id="h-out" class="out"></div>
+
+  <div class="card">
+    <h3 style="font-size:17px;margin-bottom:4px">Valuta il tuo hook</h3>
+    <p class="sub" style="margin-bottom:0">Incolla la frase con cui apri il video.</p>
+    <textarea id="h-check" placeholder="es. Nessuno ti dice questo sulla pesca a spinning…"></textarea>
+    <button class="btn cy" onclick="scoreHook()">Analizza</button>
+    <div id="h-score" class="out"></div>
+  </div>
+</div>
+  <div class="tool" id="tool-cap" style="display:none">
+  <h2>Caption e hashtag</h2>
+  <p class="sub">Didascalie che spingono commenti e salvataggi, con un mix di hashtag larghi e di nicchia.</p>
+  <div class="card">
+    <label>Argomento del video</label>
+    <input id="c-topic" placeholder="es. ricetta della genovese">
+    <label>Parole chiave extra (separate da virgola)</label>
+    <input id="c-kw" placeholder="es. napoli, ricetta veloce, nonna">
+    <div class="row">
+      <div><label>Nicchia</label><select id="c-niche"></select></div>
+      <div><label>Obiettivo</label>
+        <select id="c-goal">
+          <option value="commenti">Più commenti</option>
+          <option value="salvataggi">Più salvataggi</option>
+          <option value="follow">Più follower</option>
+          <option value="condivisioni">Più condivisioni</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="genCaptions()">✍️ Genera caption + hashtag</button>
+  </div>
+  <div id="c-out" class="out"></div>
+</div>
+  <div class="tool" id="tool-ideas" style="display:none">
+  <h2>Idee, serie e trend</h2>
+  <p class="sub">Le serie a puntate fanno tornare le persone sul profilo. I format di tendenza danno una spinta extra.</p>
+  
+  <div class="card">
+    <label>Tema del tuo canale</label>
+    <input id="i-topic" placeholder="es. robottino AI che vende alla bancarella">
+    <button class="btn" onclick="genSeries()">🎬 Genera 5 serie</button>
+  </div>
+  <div id="i-out" class="out"></div>
+  <div class="card">
+    <h3 style="font-size:17px;margin-bottom:4px">Format di tendenza</h3>
+    <p class="sub" style="margin-bottom:6px">Adattati al tuo tema (inseriscilo sopra). Per i suoni e gli hashtag del momento guarda il <a href="https://ads.tiktok.com/business/creativecenter/" target="_blank" rel="noopener">TikTok Creative Center</a>.</p>
+    <button class="btn cy" onclick="genTrends()">🔥 Adatta i format al mio tema</button>
+    <div id="i-trends" class="out"></div>
+  </div>
+</div>
+  <div class="tool" id="tool-algo" style="display:none"><div class="card" id="rules-card"></div></div>
+</section>
+
+</main>
+
+<nav id="nav">
+  <button class="on" data-t="studio"><b>🎬</b>Studio</button>
+  <button data-t="plan"><b>📅</b>Piano</button>
+  <button data-t="grow"><b>📊</b>Crescita</button>
+  <button data-t="tools"><b>🧰</b>Strumenti</button>
+</nav>
+
+<!-- Modal dati video -->
+<div class="modal" id="m-stat"><div class="sheet">
+  <h2 id="ms-title">Dati del video</h2>
+  <p class="sub" style="margin:0">Li trovi in TikTok Studio → Analytics del video.</p>
+  <input type="hidden" id="s-id"><input type="hidden" id="s-pid"><input type="hidden" id="s-score"><input type="hidden" id="s-series">
+  <label>Titolo</label><input id="s-title" placeholder="es. Puntata 1 – il primo cliente">
+  <div class="row">
+    <div><label>Data</label><input type="date" id="s-date"></div>
+    <div><label>Ora di pubblicazione</label><input type="time" id="s-hour"></div>
+  </div>
+  <div class="row">
+    <div><label>Formato</label><select id="s-format"></select></div>
+    <div><label>Tipo di hook</label><select id="s-hk"></select></div>
+  </div>
+  <div class="row3">
+    <div><label>View</label><input type="number" inputmode="numeric" id="s-views"></div>
+    <div><label>Like</label><input type="number" inputmode="numeric" id="s-likes"></div>
+    <div><label>Commenti</label><input type="number" inputmode="numeric" id="s-comm"></div>
+  </div>
+  <div class="row3">
+    <div><label>Condivisioni</label><input type="number" inputmode="numeric" id="s-shares"></div>
+    <div><label>Salvataggi</label><input type="number" inputmode="numeric" id="s-saves"></div>
+    <div><label>Follower +</label><input type="number" inputmode="numeric" id="s-follows"></div>
+  </div>
+  <div class="row">
+    <div><label>Durata video (s)</label><input type="number" inputmode="decimal" id="s-len"></div>
+    <div><label>Visione media (s)</label><input type="number" inputmode="decimal" id="s-watch"></div>
+  </div>
+  <label>% visione completa</label><input type="number" inputmode="decimal" id="s-full" placeholder="es. 18">
+  <button class="btn" onclick="saveStat()">Salva</button>
+  <button class="btn alt" onclick="closeModal('m-stat')">Annulla</button>
+</div></div>
+
+<!-- Modal impostazioni -->
+<div class="modal" id="m-set"><div class="sheet">
+  <h2>Impostazioni</h2>
+  <p class="sub">I dati restano solo su questo dispositivo. Esporta un backup per non perderli o per passarli su un altro telefono.</p>
+  <button class="btn cy" onclick="exportData()">⬇︎ Esporta backup (.json)</button>
+  <label class="btn alt" style="text-transform:none;letter-spacing:0;font-size:15px;color:var(--txt)">⬆︎ Importa backup
+    <input type="file" accept="application/json" style="display:none" onchange="importData(event)">
+  </label>
+  <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
+  <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.0 · regole algoritmo <span id="set-rules"></span></small>
+</div></div>
+
+<div class="toast" id="toast"></div>
+<script>
+/* fix-webm-duration 1.0.6 — MIT License (c) 2018 Yury Sitnikov — aggiunge la durata ai WebM registrati */
+(function(){var define=undefined,module=undefined;
+(function (name, definition) {
+    if (typeof define === 'function' && define.amd) { // RequireJS / AMD
+        define(definition);
+    } else if (typeof module !== 'undefined' && module.exports) { // CommonJS / Node.js
+        module.exports = definition();
+    } else { // Direct include
+        window.ysFixWebmDuration = definition();
+    }
+})('fix-webm-duration', function () {
+    /*
+     * This is the list of possible WEBM file sections by their IDs.
+     * Possible types: Container, Binary, Uint, Int, String, Float, Date
+     */
+    var sections = {
+        0xa45dfa3: { name: 'EBML', type: 'Container' },
+        0x286: { name: 'EBMLVersion', type: 'Uint' },
+        0x2f7: { name: 'EBMLReadVersion', type: 'Uint' },
+        0x2f2: { name: 'EBMLMaxIDLength', type: 'Uint' },
+        0x2f3: { name: 'EBMLMaxSizeLength', type: 'Uint' },
+        0x282: { name: 'DocType', type: 'String' },
+        0x287: { name: 'DocTypeVersion', type: 'Uint' },
+        0x285: { name: 'DocTypeReadVersion', type: 'Uint' },
+        0x6c: { name: 'Void', type: 'Binary' },
+        0x3f: { name: 'CRC-32', type: 'Binary' },
+        0xb538667: { name: 'SignatureSlot', type: 'Container' },
+        0x3e8a: { name: 'SignatureAlgo', type: 'Uint' },
+        0x3e9a: { name: 'SignatureHash', type: 'Uint' },
+        0x3ea5: { name: 'SignaturePublicKey', type: 'Binary' },
+        0x3eb5: { name: 'Signature', type: 'Binary' },
+        0x3e5b: { name: 'SignatureElements', type: 'Container' },
+        0x3e7b: { name: 'SignatureElementList', type: 'Container' },
+        0x2532: { name: 'SignedElement', type: 'Binary' },
+        0x8538067: { name: 'Segment', type: 'Container' },
+        0x14d9b74: { name: 'SeekHead', type: 'Container' },
+        0xdbb: { name: 'Seek', type: 'Container' },
+        0x13ab: { name: 'SeekID', type: 'Binary' },
+        0x13ac: { name: 'SeekPosition', type: 'Uint' },
+        0x549a966: { name: 'Info', type: 'Container' },
+        0x33a4: { name: 'SegmentUID', type: 'Binary' },
+        0x3384: { name: 'SegmentFilename', type: 'String' },
+        0x1cb923: { name: 'PrevUID', type: 'Binary' },
+        0x1c83ab: { name: 'PrevFilename', type: 'String' },
+        0x1eb923: { name: 'NextUID', type: 'Binary' },
+        0x1e83bb: { name: 'NextFilename', type: 'String' },
+        0x444: { name: 'SegmentFamily', type: 'Binary' },
+        0x2924: { name: 'ChapterTranslate', type: 'Container' },
+        0x29fc: { name: 'ChapterTranslateEditionUID', type: 'Uint' },
+        0x29bf: { name: 'ChapterTranslateCodec', type: 'Uint' },
+        0x29a5: { name: 'ChapterTranslateID', type: 'Binary' },
+        0xad7b1: { name: 'TimecodeScale', type: 'Uint' },
+        0x489: { name: 'Duration', type: 'Float' },
+        0x461: { name: 'DateUTC', type: 'Date' },
+        0x3ba9: { name: 'Title', type: 'String' },
+        0xd80: { name: 'MuxingApp', type: 'String' },
+        0x1741: { name: 'WritingApp', type: 'String' },
+        // 0xf43b675: { name: 'Cluster', type: 'Container' },
+        0x67: { name: 'Timecode', type: 'Uint' },
+        0x1854: { name: 'SilentTracks', type: 'Container' },
+        0x18d7: { name: 'SilentTrackNumber', type: 'Uint' },
+        0x27: { name: 'Position', type: 'Uint' },
+        0x2b: { name: 'PrevSize', type: 'Uint' },
+        0x23: { name: 'SimpleBlock', type: 'Binary' },
+        0x20: { name: 'BlockGroup', type: 'Container' },
+        0x21: { name: 'Block', type: 'Binary' },
+        0x22: { name: 'BlockVirtual', type: 'Binary' },
+        0x35a1: { name: 'BlockAdditions', type: 'Container' },
+        0x26: { name: 'BlockMore', type: 'Container' },
+        0x6e: { name: 'BlockAddID', type: 'Uint' },
+        0x25: { name: 'BlockAdditional', type: 'Binary' },
+        0x1b: { name: 'BlockDuration', type: 'Uint' },
+        0x7a: { name: 'ReferencePriority', type: 'Uint' },
+        0x7b: { name: 'ReferenceBlock', type: 'Int' },
+        0x7d: { name: 'ReferenceVirtual', type: 'Int' },
+        0x24: { name: 'CodecState', type: 'Binary' },
+        0x35a2: { name: 'DiscardPadding', type: 'Int' },
+        0xe: { name: 'Slices', type: 'Container' },
+        0x68: { name: 'TimeSlice', type: 'Container' },
+        0x4c: { name: 'LaceNumber', type: 'Uint' },
+        0x4d: { name: 'FrameNumber', type: 'Uint' },
+        0x4b: { name: 'BlockAdditionID', type: 'Uint' },
+        0x4e: { name: 'Delay', type: 'Uint' },
+        0x4f: { name: 'SliceDuration', type: 'Uint' },
+        0x48: { name: 'ReferenceFrame', type: 'Container' },
+        0x49: { name: 'ReferenceOffset', type: 'Uint' },
+        0x4a: { name: 'ReferenceTimeCode', type: 'Uint' },
+        0x2f: { name: 'EncryptedBlock', type: 'Binary' },
+        0x654ae6b: { name: 'Tracks', type: 'Container' },
+        0x2e: { name: 'TrackEntry', type: 'Container' },
+        0x57: { name: 'TrackNumber', type: 'Uint' },
+        0x33c5: { name: 'TrackUID', type: 'Uint' },
+        0x3: { name: 'TrackType', type: 'Uint' },
+        0x39: { name: 'FlagEnabled', type: 'Uint' },
+        0x8: { name: 'FlagDefault', type: 'Uint' },
+        0x15aa: { name: 'FlagForced', type: 'Uint' },
+        0x1c: { name: 'FlagLacing', type: 'Uint' },
+        0x2de7: { name: 'MinCache', type: 'Uint' },
+        0x2df8: { name: 'MaxCache', type: 'Uint' },
+        0x3e383: { name: 'DefaultDuration', type: 'Uint' },
+        0x34e7a: { name: 'DefaultDecodedFieldDuration', type: 'Uint' },
+        0x3314f: { name: 'TrackTimecodeScale', type: 'Float' },
+        0x137f: { name: 'TrackOffset', type: 'Int' },
+        0x15ee: { name: 'MaxBlockAdditionID', type: 'Uint' },
+        0x136e: { name: 'Name', type: 'String' },
+        0x2b59c: { name: 'Language', type: 'String' },
+        0x6: { name: 'CodecID', type: 'String' },
+        0x23a2: { name: 'CodecPrivate', type: 'Binary' },
+        0x58688: { name: 'CodecName', type: 'String' },
+        0x3446: { name: 'AttachmentLink', type: 'Uint' },
+        0x1a9697: { name: 'CodecSettings', type: 'String' },
+        0x1b4040: { name: 'CodecInfoURL', type: 'String' },
+        0x6b240: { name: 'CodecDownloadURL', type: 'String' },
+        0x2a: { name: 'CodecDecodeAll', type: 'Uint' },
+        0x2fab: { name: 'TrackOverlay', type: 'Uint' },
+        0x16aa: { name: 'CodecDelay', type: 'Uint' },
+        0x16bb: { name: 'SeekPreRoll', type: 'Uint' },
+        0x2624: { name: 'TrackTranslate', type: 'Container' },
+        0x26fc: { name: 'TrackTranslateEditionUID', type: 'Uint' },
+        0x26bf: { name: 'TrackTranslateCodec', type: 'Uint' },
+        0x26a5: { name: 'TrackTranslateTrackID', type: 'Binary' },
+        0x60: { name: 'Video', type: 'Container' },
+        0x1a: { name: 'FlagInterlaced', type: 'Uint' },
+        0x13b8: { name: 'StereoMode', type: 'Uint' },
+        0x13c0: { name: 'AlphaMode', type: 'Uint' },
+        0x13b9: { name: 'OldStereoMode', type: 'Uint' },
+        0x30: { name: 'PixelWidth', type: 'Uint' },
+        0x3a: { name: 'PixelHeight', type: 'Uint' },
+        0x14aa: { name: 'PixelCropBottom', type: 'Uint' },
+        0x14bb: { name: 'PixelCropTop', type: 'Uint' },
+        0x14cc: { name: 'PixelCropLeft', type: 'Uint' },
+        0x14dd: { name: 'PixelCropRight', type: 'Uint' },
+        0x14b0: { name: 'DisplayWidth', type: 'Uint' },
+        0x14ba: { name: 'DisplayHeight', type: 'Uint' },
+        0x14b2: { name: 'DisplayUnit', type: 'Uint' },
+        0x14b3: { name: 'AspectRatioType', type: 'Uint' },
+        0xeb524: { name: 'ColourSpace', type: 'Binary' },
+        0xfb523: { name: 'GammaValue', type: 'Float' },
+        0x383e3: { name: 'FrameRate', type: 'Float' },
+        0x61: { name: 'Audio', type: 'Container' },
+        0x35: { name: 'SamplingFrequency', type: 'Float' },
+        0x38b5: { name: 'OutputSamplingFrequency', type: 'Float' },
+        0x1f: { name: 'Channels', type: 'Uint' },
+        0x3d7b: { name: 'ChannelPositions', type: 'Binary' },
+        0x2264: { name: 'BitDepth', type: 'Uint' },
+        0x62: { name: 'TrackOperation', type: 'Container' },
+        0x63: { name: 'TrackCombinePlanes', type: 'Container' },
+        0x64: { name: 'TrackPlane', type: 'Container' },
+        0x65: { name: 'TrackPlaneUID', type: 'Uint' },
+        0x66: { name: 'TrackPlaneType', type: 'Uint' },
+        0x69: { name: 'TrackJoinBlocks', type: 'Container' },
+        0x6d: { name: 'TrackJoinUID', type: 'Uint' },
+        0x40: { name: 'TrickTrackUID', type: 'Uint' },
+        0x41: { name: 'TrickTrackSegmentUID', type: 'Binary' },
+        0x46: { name: 'TrickTrackFlag', type: 'Uint' },
+        0x47: { name: 'TrickMasterTrackUID', type: 'Uint' },
+        0x44: { name: 'TrickMasterTrackSegmentUID', type: 'Binary' },
+        0x2d80: { name: 'ContentEncodings', type: 'Container' },
+        0x2240: { name: 'ContentEncoding', type: 'Container' },
+        0x1031: { name: 'ContentEncodingOrder', type: 'Uint' },
+        0x1032: { name: 'ContentEncodingScope', type: 'Uint' },
+        0x1033: { name: 'ContentEncodingType', type: 'Uint' },
+        0x1034: { name: 'ContentCompression', type: 'Container' },
+        0x254: { name: 'ContentCompAlgo', type: 'Uint' },
+        0x255: { name: 'ContentCompSettings', type: 'Binary' },
+        0x1035: { name: 'ContentEncryption', type: 'Container' },
+        0x7e1: { name: 'ContentEncAlgo', type: 'Uint' },
+        0x7e2: { name: 'ContentEncKeyID', type: 'Binary' },
+        0x7e3: { name: 'ContentSignature', type: 'Binary' },
+        0x7e4: { name: 'ContentSigKeyID', type: 'Binary' },
+        0x7e5: { name: 'ContentSigAlgo', type: 'Uint' },
+        0x7e6: { name: 'ContentSigHashAlgo', type: 'Uint' },
+        0xc53bb6b: { name: 'Cues', type: 'Container' },
+        0x3b: { name: 'CuePoint', type: 'Container' },
+        0x33: { name: 'CueTime', type: 'Uint' },
+        0x37: { name: 'CueTrackPositions', type: 'Container' },
+        0x77: { name: 'CueTrack', type: 'Uint' },
+        0x71: { name: 'CueClusterPosition', type: 'Uint' },
+        0x70: { name: 'CueRelativePosition', type: 'Uint' },
+        0x32: { name: 'CueDuration', type: 'Uint' },
+        0x1378: { name: 'CueBlockNumber', type: 'Uint' },
+        0x6a: { name: 'CueCodecState', type: 'Uint' },
+        0x5b: { name: 'CueReference', type: 'Container' },
+        0x16: { name: 'CueRefTime', type: 'Uint' },
+        0x17: { name: 'CueRefCluster', type: 'Uint' },
+        0x135f: { name: 'CueRefNumber', type: 'Uint' },
+        0x6b: { name: 'CueRefCodecState', type: 'Uint' },
+        0x941a469: { name: 'Attachments', type: 'Container' },
+        0x21a7: { name: 'AttachedFile', type: 'Container' },
+        0x67e: { name: 'FileDescription', type: 'String' },
+        0x66e: { name: 'FileName', type: 'String' },
+        0x660: { name: 'FileMimeType', type: 'String' },
+        0x65c: { name: 'FileData', type: 'Binary' },
+        0x6ae: { name: 'FileUID', type: 'Uint' },
+        0x675: { name: 'FileReferral', type: 'Binary' },
+        0x661: { name: 'FileUsedStartTime', type: 'Uint' },
+        0x662: { name: 'FileUsedEndTime', type: 'Uint' },
+        0x43a770: { name: 'Chapters', type: 'Container' },
+        0x5b9: { name: 'EditionEntry', type: 'Container' },
+        0x5bc: { name: 'EditionUID', type: 'Uint' },
+        0x5bd: { name: 'EditionFlagHidden', type: 'Uint' },
+        0x5db: { name: 'EditionFlagDefault', type: 'Uint' },
+        0x5dd: { name: 'EditionFlagOrdered', type: 'Uint' },
+        0x36: { name: 'ChapterAtom', type: 'Container' },
+        0x33c4: { name: 'ChapterUID', type: 'Uint' },
+        0x1654: { name: 'ChapterStringUID', type: 'String' },
+        0x11: { name: 'ChapterTimeStart', type: 'Uint' },
+        0x12: { name: 'ChapterTimeEnd', type: 'Uint' },
+        0x18: { name: 'ChapterFlagHidden', type: 'Uint' },
+        0x598: { name: 'ChapterFlagEnabled', type: 'Uint' },
+        0x2e67: { name: 'ChapterSegmentUID', type: 'Binary' },
+        0x2ebc: { name: 'ChapterSegmentEditionUID', type: 'Uint' },
+        0x23c3: { name: 'ChapterPhysicalEquiv', type: 'Uint' },
+        0xf: { name: 'ChapterTrack', type: 'Container' },
+        0x9: { name: 'ChapterTrackNumber', type: 'Uint' },
+        0x0: { name: 'ChapterDisplay', type: 'Container' },
+        0x5: { name: 'ChapString', type: 'String' },
+        0x37c: { name: 'ChapLanguage', type: 'String' },
+        0x37e: { name: 'ChapCountry', type: 'String' },
+        0x2944: { name: 'ChapProcess', type: 'Container' },
+        0x2955: { name: 'ChapProcessCodecID', type: 'Uint' },
+        0x50d: { name: 'ChapProcessPrivate', type: 'Binary' },
+        0x2911: { name: 'ChapProcessCommand', type: 'Container' },
+        0x2922: { name: 'ChapProcessTime', type: 'Uint' },
+        0x2933: { name: 'ChapProcessData', type: 'Binary' },
+        0x254c367: { name: 'Tags', type: 'Container' },
+        0x3373: { name: 'Tag', type: 'Container' },
+        0x23c0: { name: 'Targets', type: 'Container' },
+        0x28ca: { name: 'TargetTypeValue', type: 'Uint' },
+        0x23ca: { name: 'TargetType', type: 'String' },
+        0x23c5: { name: 'TagTrackUID', type: 'Uint' },
+        0x23c9: { name: 'TagEditionUID', type: 'Uint' },
+        0x23c4: { name: 'TagChapterUID', type: 'Uint' },
+        0x23c6: { name: 'TagAttachmentUID', type: 'Uint' },
+        0x27c8: { name: 'SimpleTag', type: 'Container' },
+        0x5a3: { name: 'TagName', type: 'String' },
+        0x47a: { name: 'TagLanguage', type: 'String' },
+        0x484: { name: 'TagDefault', type: 'Uint' },
+        0x487: { name: 'TagString', type: 'String' },
+        0x485: { name: 'TagBinary', type: 'Binary' }
+    };
+
+    function doInherit(newClass, baseClass) {
+        newClass.prototype = Object.create(baseClass.prototype);
+        newClass.prototype.constructor = newClass;
+    }
+
+    function WebmBase(name, type) {
+        this.name = name || 'Unknown';
+        this.type = type || 'Unknown';
+    }
+    WebmBase.prototype.updateBySource = function() { };
+    WebmBase.prototype.setSource = function(source) {
+        this.source = source;
+        this.updateBySource();
+    };
+    WebmBase.prototype.updateByData = function() { };
+    WebmBase.prototype.setData = function(data) {
+        this.data = data;
+        this.updateByData();
+    };
+
+    function WebmUint(name, type) {
+        WebmBase.call(this, name, type || 'Uint');
+    }
+    doInherit(WebmUint, WebmBase);
+    function padHex(hex) {
+        return hex.length % 2 === 1 ? '0' + hex : hex;
+    }
+    WebmUint.prototype.updateBySource = function() {
+        // use hex representation of a number instead of number value
+        this.data = '';
+        for (var i = 0; i < this.source.length; i++) {
+            var hex = this.source[i].toString(16);
+            this.data += padHex(hex);
+        }
+    };
+    WebmUint.prototype.updateByData = function() {
+        var length = this.data.length / 2;
+        this.source = new Uint8Array(length);
+        for (var i = 0; i < length; i++) {
+            var hex = this.data.substr(i * 2, 2);
+            this.source[i] = parseInt(hex, 16);
+        }
+    };
+    WebmUint.prototype.getValue = function() {
+        return parseInt(this.data, 16);
+    };
+    WebmUint.prototype.setValue = function(value) {
+        this.setData(padHex(value.toString(16)));
+    };
+
+    function WebmFloat(name, type) {
+        WebmBase.call(this, name, type || 'Float');
+    }
+    doInherit(WebmFloat, WebmBase);
+    WebmFloat.prototype.getFloatArrayType = function() {
+        return this.source && this.source.length === 4 ? Float32Array : Float64Array;
+    };
+    WebmFloat.prototype.updateBySource = function() {
+        var byteArray = this.source.reverse();
+        var floatArrayType = this.getFloatArrayType();
+        var floatArray = new floatArrayType(byteArray.buffer);
+        this.data = floatArray[0];
+    };
+    WebmFloat.prototype.updateByData = function() {
+        var floatArrayType = this.getFloatArrayType();
+        var floatArray = new floatArrayType([ this.data ]);
+        var byteArray = new Uint8Array(floatArray.buffer);
+        this.source = byteArray.reverse();
+    };
+    WebmFloat.prototype.getValue = function() {
+        return this.data;
+    };
+    WebmFloat.prototype.setValue = function(value) {
+        this.setData(value);
+    };
+
+    function WebmContainer(name, type) {
+        WebmBase.call(this, name, type || 'Container');
+    }
+    doInherit(WebmContainer, WebmBase);
+    WebmContainer.prototype.readByte = function() {
+        return this.source[this.offset++];
+    };
+    WebmContainer.prototype.readUint = function() {
+        var firstByte = this.readByte();
+        var bytes = 8 - firstByte.toString(2).length;
+        var value = firstByte - (1 << (7 - bytes));
+        for (var i = 0; i < bytes; i++) {
+            // don't use bit operators to support x86
+            value *= 256;
+            value += this.readByte();
+        }
+        return value;
+    };
+    WebmContainer.prototype.updateBySource = function() {
+        this.data = [];
+        for (this.offset = 0; this.offset < this.source.length; this.offset = end) {
+            var id = this.readUint();
+            var len = this.readUint();
+            var end = Math.min(this.offset + len, this.source.length);
+            var data = this.source.slice(this.offset, end);
+
+            var info = sections[id] || { name: 'Unknown', type: 'Unknown' };
+            var ctr = WebmBase;
+            switch (info.type) {
+                case 'Container':
+                    ctr = WebmContainer;
+                    break;
+                case 'Uint':
+                    ctr = WebmUint;
+                    break;
+                case 'Float':
+                    ctr = WebmFloat;
+                    break;
+            }
+            var section = new ctr(info.name, info.type);
+            section.setSource(data);
+            this.data.push({
+                id: id,
+                idHex: id.toString(16),
+                data: section
+            });
+        }
+    };
+    WebmContainer.prototype.writeUint = function(x, draft) {
+        for (var bytes = 1, flag = 0x80; x >= flag && bytes < 8; bytes++, flag *= 0x80) { }
+
+        if (!draft) {
+            var value = flag + x;
+            for (var i = bytes - 1; i >= 0; i--) {
+                // don't use bit operators to support x86
+                var c = value % 256;
+                this.source[this.offset + i] = c;
+                value = (value - c) / 256;
+            }
+        }
+
+        this.offset += bytes;
+    };
+    WebmContainer.prototype.writeSections = function(draft) {
+        this.offset = 0;
+        for (var i = 0; i < this.data.length; i++) {
+            var section = this.data[i],
+                content = section.data.source,
+                contentLength = content.length;
+            this.writeUint(section.id, draft);
+            this.writeUint(contentLength, draft);
+            if (!draft) {
+                this.source.set(content, this.offset);
+            }
+            this.offset += contentLength;
+        }
+        return this.offset;
+    };
+    WebmContainer.prototype.updateByData = function() {
+        // run without accessing this.source to determine total length - need to know it to create Uint8Array
+        var length = this.writeSections('draft');
+        this.source = new Uint8Array(length);
+        // now really write data
+        this.writeSections();
+    };
+    WebmContainer.prototype.getSectionById = function(id) {
+        for (var i = 0; i < this.data.length; i++) {
+            var section = this.data[i];
+            if (section.id === id) {
+                return section.data;
+            }
+        }
+        return null;
+    };
+
+    function WebmFile(source) {
+        WebmContainer.call(this, 'File', 'File');
+        this.setSource(source);
+    }
+    doInherit(WebmFile, WebmContainer);
+    WebmFile.prototype.fixDuration = function(duration, options) {
+        var logger = options && options.logger;
+        if (logger === undefined) {
+            logger = function(message) {
+                console.log(message);
+            };
+        } else if (!logger) {
+            logger = function() { };
+        }
+
+        var segmentSection = this.getSectionById(0x8538067);
+        if (!segmentSection) {
+            logger('[fix-webm-duration] Segment section is missing');
+            return false;
+        }
+
+        var infoSection = segmentSection.getSectionById(0x549a966);
+        if (!infoSection) {
+            logger('[fix-webm-duration] Info section is missing');
+            return false;
+        }
+
+        var timeScaleSection = infoSection.getSectionById(0xad7b1);
+        if (!timeScaleSection) {
+            logger('[fix-webm-duration] TimecodeScale section is missing');
+            return false;
+        }
+
+        var durationSection = infoSection.getSectionById(0x489);
+        if (durationSection) {
+            if (durationSection.getValue() <= 0) {
+                logger(`[fix-webm-duration] Duration section is present, but the value is ${durationSection.getValue()}`);
+                durationSection.setValue(duration);
+            } else {
+                logger(`[fix-webm-duration] Duration section is present, and the value is ${durationSection.getValue()}`);
+                return false;
+            }
+        } else {
+            logger('[fix-webm-duration] Duration section is missing');
+            // append Duration section
+            durationSection = new WebmFloat('Duration', 'Float');
+            durationSection.setValue(duration);
+            infoSection.data.push({
+                id: 0x489,
+                data: durationSection
+            });
+        }
+
+        // set default time scale to 1 millisecond (1000000 nanoseconds)
+        timeScaleSection.setValue(1000000);
+        infoSection.updateByData();
+        segmentSection.updateByData();
+        this.updateByData();
+
+        return true;
+    };
+    WebmFile.prototype.toBlob = function(mimeType) {
+        return new Blob([ this.source.buffer ], { type: mimeType || 'video/webm' });
+    };
+
+    function fixWebmDuration(blob, duration, callback, options) {
+        // The callback may be omitted - then the third argument is options
+        if (typeof callback === "object") {
+            options = callback;
+            callback = undefined;
+        }
+
+        if (!callback) {
+            return new Promise(function(resolve) {
+                fixWebmDuration(blob, duration, resolve, options);
+            });
+        }
+
+        try {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                try {
+                    var file = new WebmFile(new Uint8Array(reader.result));
+                    if (file.fixDuration(duration, options)) {
+                        blob = file.toBlob(blob.type);
+                    }
+                } catch (ex) {
+                    // ignore
+                }
+                callback(blob);
+            };
+            reader.readAsArrayBuffer(blob);
+        } catch (ex) {
+            callback(blob);
+        }
+    }
+
+    // Support AMD import default
+    fixWebmDuration.default = fixWebmDuration;
+
+    return fixWebmDuration;
+});
+
+})();
+</script>
+<script>
+/* ---------- utility ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const fmt=n=>{n=Number(n)||0;return n>=1e6?(n/1e6).toFixed(1).replace('.0','')+'M':n>=1e3?(n/1e3).toFixed(1).replace('.0','')+'K':String(Math.round(n))};
+const KEY='spinta_v1';
+let DB={posts:[],stats:[],checklist:{},series:[],pending:[]};
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d)DB=Object.assign(DB,d)}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){toast('Memoria non disponibile')}}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1800)}
+function copy(txt){(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('Copiato ✓')).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Copiato ✓')})}
+function copyBtn(txt){return `<button class="btn sm alt copy" onclick="copy(decodeURIComponent('${encodeURIComponent(txt)}'))">Copia</button>`}
+function openModal(id){$('#'+id).classList.add('on')}
+function closeModal(id){$('#'+id).classList.remove('on')}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on')}));
+
+/* ---------- navigazione ---------- */
+function goTab(t){document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.id==='t-'+t));window.scrollTo({top:0});
+  if(t==='plan')renderPlan();if(t==='grow')renderStats();if(t==='tools')renderRulesCard()}
+$('#nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)goTab(b.dataset.t)});
+$('#tool-seg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#tool-seg button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.tool').forEach(x=>x.style.display=x.id==='tool-'+b.dataset.k?'':'none');if(b.dataset.k==='algo')renderRulesCard()});
+/* passi dello Studio */
+function stp(n,state){const el=$('#s'+n);if(el&&state)el.dataset.state=state}
+function stpToggle(n){const el=$('#s'+n);if(el.dataset.state==='locked'){toast('Prima carica un video');return}el.classList.toggle('open')}
+function stpOpen(n,open){const el=$('#s'+n);if(el&&el.dataset.state!=='locked')el.classList.toggle('open',open!==false)}
+function stpSum(n,txt){const el=$('#s'+n+'-sum');if(el&&txt)el.textContent=txt}
+function goStep(n){stpOpen(n,true);setTimeout(()=>$('#s'+n).scrollIntoView({behavior:'smooth',block:'start'}),60)}
+const hhmm=d=>`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+function normDB(){DB.posts=DB.posts||[];DB.stats=DB.stats||[];DB.checklist=DB.checklist||{};DB.series=DB.series||[];DB.pending=DB.pending||[]}
+/* installazione PWA */
+let _dip=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dip=e;$('#btn-install').style.display=''});
+function installApp(){if(!_dip)return;_dip.prompt();(_dip.userChoice||Promise.resolve()).finally(()=>{_dip=null;$('#btn-install').style.display='none'})}
+
+/* ---------- dati nicchie ---------- */
+const NICHES={
+  generale:{n:'Generale',tags:['#perte','#neiperte','#fyp','#viral','#tiktokitalia','#italia','#trend']},
+  cibo:{n:'Cibo e ricette',tags:['#ricetta','#cucinaitaliana','#ricettefacili','#foodtiktok','#cibo','#streetfood','#cucina','#ricetteveloci']},
+  comicita:{n:'Comicità',tags:['#comicità','#ridere','#humor','#divertente','#sketch','#comedy','#risate']},
+  business:{n:'Business e soldi',tags:['#finanzapersonale','#soldi','#business','#imprenditore','#investimenti','#trading','#risparmio']},
+  tech:{n:'Tech e AI',tags:['#intelligenzaartificiale','#ai','#tech','#tecnologia','#chatgpt','#robot','#app']},
+  fitness:{n:'Fitness',tags:['#fitness','#palestra','#allenamento','#gym','#workout','#motivazione','#salute']},
+  viaggi:{n:'Viaggi',tags:['#viaggi','#travel','#viaggiare','#italiadascoprire','#vacanze','#weekend','#borghi']},
+  beauty:{n:'Moda e beauty',tags:['#outfit','#moda','#makeup','#skincare','#beauty','#ootd','#stile']},
+  outdoor:{n:'Pesca e outdoor',tags:['#pesca','#fishing','#spinning','#pescainmare','#outdoor','#natura','#mare']},
+  diy:{n:'Fai da te',tags:['#faidate','#diy','#lavoretti','#restauro','#bricolage','#lifehack','#trucchi']},
+  motivazione:{n:'Motivazione',tags:['#motivazione','#crescitapersonale','#mindset','#successo','#disciplina','#ispirazione']},
+  locale:{n:'Napoli e locale',tags:['#napoli','#napoletani','#campania','#sud','#napolitiktok','#tradizione','#vicoli']}
+};
+function fillNiches(){const o=Object.entries(NICHES).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join('');$('#h-niche').innerHTML=o;$('#c-niche').innerHTML=o}
+
+/* ---------- HOOK ---------- */
+const HOOKS=[
+ {k:'Curiosità',s:'Nessuno ti dice questo su {t}…',o:'IL SEGRETO CHE NESSUNO DICE 🤫'},
+ {k:'Errore',s:'Ho sbagliato {t} per anni. Ecco cosa ho capito.',o:'L\'ERRORE CHE FANNO TUTTI ❌'},
+ {k:'Lista',s:'3 cose su {t} che avrei voluto sapere prima.',o:'3 COSE CHE NON SAI 👇'},
+ {k:'Fino alla fine',s:'Guarda fino alla fine: con {t} succede una cosa assurda.',o:'ASPETTA LA FINE 😳'},
+ {k:'POV',s:'POV: provi {t} per la prima volta.',o:'POV: prima volta 👀'},
+ {k:'Stop',s:'Fermati. Se fai {t} così, stai sbagliando.',o:'STAI SBAGLIANDO ⛔'},
+ {k:'Esperimento',s:'Ho provato {t} per 7 giorni. Risultato?',o:'7 GIORNI DI PROVA ⏳'},
+ {k:'Controintuitivo',s:'{T} è sopravvalutato. E ti spiego perché.',o:'OPINIONE IMPOPOLARE 🔥'},
+ {k:'Salvataggio',s:'Se ti interessa {t}, salva questo video.',o:'SALVALO PER DOPO 📌'},
+ {k:'Sfida',s:'Scommetto che non sapevi questo su {t}.',o:'LO SAPEVI? 🤔'},
+ {k:'Velocità',s:'{T} spiegato in 30 secondi.',o:'IN 30 SECONDI ⏱️'},
+ {k:'Risposta',s:'Rispondo a chi dice che {t} non funziona.',o:'«NON FUNZIONA» 🙄'},
+ {k:'Serie',s:'Parte 1: comincio {t} da zero.',o:'PARTE 1 🎬'},
+ {k:'Semplice',s:'Ti spiego {t} come se avessi 5 anni.',o:'SPIEGATO FACILE 🧒'},
+ {k:'Prima/Dopo',s:'Prima e dopo {t}: guarda la differenza.',o:'PRIMA ➜ DOPO'},
+ {k:'Classifica',s:'Classifica: da peggiore a migliore, {t}.',o:'DAL PEGGIORE AL MIGLIORE 🏆'},
+ {k:'Storia',s:'Oggi con {t} è successa una cosa che non ci crederai.',o:'NON CI CREDERAI 😮'},
+ {k:'Domanda',s:'Perché nessuno parla di {t}?',o:'PERCHÉ NESSUNO NE PARLA?'}
+];
+const TONE={
+ diretto:{pre:['','Ascolta. ','Ok, '],emo:false},
+ ironico:{pre:['Allora… ','Ok raga, ','Ditemi che non sono l\'unico: '],emo:true},
+ misterioso:{pre:['Non dovrei dirlo, ma ','Pochi lo sanno: ',''],emo:false},
+ educativo:{pre:['Regola numero uno: ','Te lo dico da esperto: ',''],emo:false}
+};
+const VISUAL=['Inizia già in movimento: niente saluti, niente "ciao a tutti".','Mostra subito il risultato finale, poi torna indietro.','Primo piano stretto sul viso o sull\'oggetto nel primo secondo.','Testo grande al centro, leggibile in 1 secondo.','Taglio rapido a 1,5 s per cambiare inquadratura.','Un suono o un rumore forte nel primo istante.'];
+function cap1(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function genHooks(){
+  const t=$('#h-topic').value.trim();if(!t){toast('Scrivi l\'argomento');return}
+  const tone=TONE[$('#h-tone').value];
+  const list=shuffle(HOOKS).slice(0,10).map(h=>{
+    let s=h.s.replace(/\{t\}/g,t).replace(/\{T\}/g,cap1(t));
+    const p=pick(tone.pre);if(p)s=p+s.charAt(0).toLowerCase()+s.slice(1);
+    if(tone.emo)s+=' '+pick(['😅','💀','😂','🤡']);
+    return {k:h.k,s:cap1(s),o:h.o,v:pick(VISUAL)};
+  });
+  $('#h-out').innerHTML=list.map(h=>`<div class="item"><span class="tag p">${h.k}</span>${copyBtn(h.s+'\n'+h.o)}
+  <div class="t" style="margin-top:6px">🗣️ ${esc(h.s)}</div>
+  <div class="m">📱 Testo a schermo: <b style="color:var(--txt)">${esc(h.o)}</b></div>
+  <div class="m" style="margin-top:4px">🎥 ${esc(h.v)}</div></div>`).join('');
+}
+function scoreHook(){
+  const s=$('#h-check').value.trim();if(!s){toast('Incolla un hook');return}
+  const {sc,good,tips}=hookAnalysis(s);const col=sc>=75?'var(--ok)':sc>=50?'var(--warn)':'var(--pink)';
+  $('#h-score').innerHTML=`<div class="item"><div class="t" style="font-size:20px;color:${col}">${sc}/100</div>
+  <div class="meter"><i style="width:${sc}%"></i></div>
+  ${good.map(g=>`<div class="m">✅ ${esc(g)}</div>`).join('')}
+  ${tips.map(g=>`<div class="m" style="margin-top:4px">💡 ${esc(g)}</div>`).join('')}</div>`;
+}
+function hookAnalysis(s){
+  const words=s.split(/\s+/).filter(Boolean).length;let sc=0;const tips=[],good=[];
+  if(words<=12){sc+=25;good.push('Breve: si legge e si ascolta in 2-3 secondi')}else tips.push(`Troppo lungo (${words} parole): punta a massimo 12.`);
+  if(/\d/.test(s)){sc+=15;good.push('Contiene un numero (crea aspettativa)')}else tips.push('Aggiungi un numero: "3 errori", "in 7 giorni", "30 secondi".');
+  if(/\b(tu|ti|tuo|tua|te|fai|sai|vuoi|stai|hai)\b/i.test(s)){sc+=15;good.push('Parla direttamente allo spettatore')}else tips.push('Parla al "tu": "stai sbagliando", "non sai che…".');
+  if(/(nessuno|segreto|mai|errore|sbagli|non sapevi|assurd|incredibil|vero|perché|fine|prima|dopo|stop|attenzione|entro|sfratt|perd|rischi|ultim|scadenz|o mi |o perdo|o chiudo|stut|speg|se nun|si nun|se non|altrimenti|sennò|sinnò)/i.test(s)){sc+=20;good.push('Usa una leva di curiosità')}else tips.push('Aggiungi curiosità: "nessuno ti dice", "l\'errore che fanno tutti", "aspetta la fine".');
+  if(/[?…]\s*\S{0,3}$|\.\.\.\s*\S{0,3}$|…/.test(s)){sc+=10;good.push('Lascia la frase aperta')}else tips.push('Prova a chiudere con una domanda o con i puntini, per lasciare in sospeso.');
+  if(/^(ciao|salve|buongiorno|eccomi|oggi vi|benvenut)/i.test(s))tips.unshift('Elimina il saluto iniziale: è il motivo n.1 per cui si scorre via.');else sc+=15;
+  return{sc:Math.min(100,sc),good,tips};
+}
+
+/* ---------- CAPTION ---------- */
+const CAPS={
+ commenti:['{T}: voi come lo fate? Scrivetelo nei commenti 👇','Siete d\'accordo o no? Ditemelo sotto 👇 {T}','Una parola per descrivere questo video? 👇','Squadra A o squadra B? Commenta 👇 #{t0}'],
+ salvataggi:['Salvalo così non lo perdi 📌 {T}','Ti servirà, fidati: salva il video 📌','Guida veloce su {t}. Salva e riprova dopo 📌'],
+ follow:['Seguimi per la parte 2 ➜ {T}','Ogni giorno una puntata nuova: segui per non perderti la prossima 🔔','Domani vi faccio vedere come va a finire. Segui 🔔'],
+ condivisioni:['Mandalo a chi deve vederlo 👀','Tagga quell\'amico che fa sempre così 😂','Condividilo con chi ama {t} ❤️']
+};
+const BROAD=['#perte','#neiperte','#fyp','#tiktokitalia','#viral'];
+function toTag(w){return '#'+w.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'')}
+function tagsFor(t,kw,nicheKey){const niche=NICHES[nicheKey]||NICHES.generale;const Rh=RULES.hashtag;const ev=new Set((Rh.evitare||[]).map(x=>x.toLowerCase()));
+  const own=[...new Set([toTag(t||''),...kw.map(toTag)])].filter(x=>x.length>3&&x.length<26&&!ev.has(x)).slice(0,Math.max(1,Rh.max-(Rh.larghi||0)-1));
+  const nt=shuffle(niche.tags.filter(x=>!ev.has(x))),br=shuffle(BROAD.filter(x=>!ev.has(x)));
+  const nn=Math.max(1,Rh.max-(Rh.larghi||0)-own.length);
+  return [...new Set([...own,...nt.slice(0,nn),...br.slice(0,Rh.larghi||0)])].slice(0,Rh.max).join(' ')}
+function genCaptions(){
+  const t=$('#c-topic').value.trim();if(!t){toast('Scrivi l\'argomento');return}
+  const kw=$('#c-kw').value.split(',').map(x=>x.trim()).filter(Boolean);
+  const niche=NICHES[$('#c-niche').value];const goal=$('#c-goal').value;
+  const t0=toTag(t).slice(1);
+  const caps=shuffle(CAPS[goal]).slice(0,3).map(c=>c.replace(/\{T\}/g,cap1(t)).replace(/\{t\}/g,t).replace(/\{t0\}/g,t0));
+  const mixes=[0,1,2].map(()=>tagsFor(t,kw,$('#c-niche').value));
+  $('#c-out').innerHTML=`<h3 style="font-size:16px;margin:4px 0 8px">Caption</h3>`+
+   caps.map((c,i)=>{const full=c+'\n\n'+mixes[i];return `<div class="item">${copyBtn(full)}<div class="t">${esc(c)}</div><div class="m" style="color:var(--cyan)">${esc(mixes[i])}</div></div>`}).join('')+
+   `<div class="card"><div class="m" style="color:var(--mut);font-size:13px">💡 Usa al massimo ${RULES.hashtag.max} hashtag specifici: pochi e mirati funzionano meglio delle liste generiche. Scrivi le parole chiave anche nel parlato e nel testo a schermo: TikTok le legge e le usa per la ricerca.</div></div>`;
+}
+
+/* ---------- PIANO ---------- */
+let BEST={0:['11:00','18:00','20:30'],1:['12:30','19:00','21:00'],2:['12:30','19:00','21:30'],3:['13:00','19:00','21:00'],4:['12:30','18:30','21:30'],5:['13:00','17:00','22:00'],6:['11:30','15:00','21:00']};
+const DAYS=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+const STATUS=[{k:'idea',n:'Da girare',c:'w'},{k:'edit',n:'Montato',c:''},{k:'pub',n:'Pubblicato',c:'o'}];
+function todayISO(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function renderBest(){const d=$('#p-date').value?new Date($('#p-date').value+'T12:00'):new Date();
+  $('#p-best').innerHTML=BEST[d.getDay()].map(h=>`<button class="chip ${$('#p-time').value===h?'on':''}" onclick="$('#p-time').value='${h}';renderBest()">${h}</button>`).join('')+`<span class="m" style="align-self:center;color:var(--mut);font-size:12px">(${DAYS[d.getDay()]})</span>`}
+$('#p-date').addEventListener('change',renderBest);$('#p-time').addEventListener('change',renderBest);
+function addPost(){
+  const title=$('#p-title').value.trim(),date=$('#p-date').value,time=$('#p-time').value;
+  if(!title||!date||!time){toast('Titolo, data e ora');return}
+  DB.posts.push({id:uid(),title,date,time,note:$('#p-note').value.trim(),st:'idea'});save();
+  $('#p-title').value='';$('#p-note').value='';renderPlan();scheduleNotifs();toast('Aggiunto ✓');
+}
+function cycleSt(id){const p=DB.posts.find(x=>x.id===id);const i=STATUS.findIndex(s=>s.k===p.st);p.st=STATUS[(i+1)%3].k;save();renderPlan()}
+function delPost(id){if(!confirm('Eliminare questo video dal piano?'))return;DB.posts=DB.posts.filter(x=>x.id!==id);save();renderPlan()}
+function renderPlan(){
+  renderBest();renderPendingPlan();
+  const now=new Date();const ps=DB.posts.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const soon=ps.filter(p=>{if(p.st==='pub')return false;const dt=new Date(p.date+'T'+p.time);return dt-now<=3*3600e3&&dt-now>-3600e3});
+  $('#p-banner').innerHTML=soon.length?`<div class="banner">⏰ <b>In arrivo:</b> ${soon.map(p=>esc(p.title)+' alle '+p.time).join(', ')}<br><span style="font-size:13px;color:var(--mut)">Apri la checklist prima di pubblicare.</span></div>`:'';
+  if(!ps.length){$('#p-items').innerHTML='<div class="empty">Nessun video in programma.</div>';return}
+  const upcoming=ps.filter(p=>p.st!=='pub'||new Date(p.date+'T'+p.time)>now);
+  const done=ps.filter(p=>!upcoming.includes(p));
+  const card=p=>{const d=new Date(p.date+'T'+p.time);const s=STATUS.find(x=>x.k===p.st);const late=p.st!=='pub'&&d<now;
+    return `<div class="item"><div class="t">${esc(p.title)}</div>
+    <div class="m">${DAYS[d.getDay()]} ${d.toLocaleDateString('it-IT',{day:'numeric',month:'short'})} · ${p.time} ${late?'<span class="tag p">in ritardo</span>':''}</div>
+    ${p.note?`<div class="m" style="margin-top:3px">📝 ${esc(p.note)}</div>`:''}
+    <div class="acts"><button class="btn sm alt" onclick="cycleSt('${p.id}')"><span class="tag ${s.c}" style="margin:0">${s.n}</span> ↻</button>
+    <button class="btn sm alt" onclick="exportICS('${p.id}')">📅 Calendario</button>
+    <button class="btn sm alt" onclick="delPost('${p.id}')">🗑</button></div></div>`};
+  $('#p-items').innerHTML=upcoming.map(card).join('')+(done.length?`<h3 style="font-size:14px;color:var(--mut);margin:14px 0 8px">Già pubblicati</h3>`+done.reverse().map(card).join(''):'');
+}
+function icsDate(d){return d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}
+function exportICS(id){
+  const list=id?DB.posts.filter(p=>p.id===id):DB.posts.filter(p=>p.st!=='pub');
+  if(!list.length){toast('Niente da esportare');return}
+  const ev=list.map(p=>{const s=new Date(p.date+'T'+p.time);const e=new Date(s.getTime()+15*60e3);
+    return ['BEGIN:VEVENT','UID:'+p.id+'@spinta','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(s),'DTEND:'+icsDate(e),
+    'SUMMARY:🎬 Pubblica: '+p.title.replace(/[,;]/g,' '),'DESCRIPTION:'+(p.note||'Controlla la checklist in Spinta').replace(/[,;\n]/g,' '),
+    'BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:Tra 30 minuti pubblica il video','END:VALARM','END:VEVENT'].join('\r\n')}).join('\r\n');
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Spinta//IT',ev,'END:VCALENDAR'].join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download=id?'video.ics':'piano-video.ics';a.click();
+  toast('Aprilo per aggiungerlo al calendario');
+}
+let notifTimers=[];
+function askNotif(){if(!('Notification'in window)){toast('Avvisi non supportati qui: usa l\'export calendario');return}
+  Notification.requestPermission().then(r=>{toast(r==='granted'?'Avvisi attivi (con app aperta)':'Permesso negato');scheduleNotifs()})}
+function scheduleNotifs(){notifTimers.forEach(clearTimeout);notifTimers=[];
+  if(!('Notification'in window)||Notification.permission!=='granted')return;
+  const at=(ms,body)=>{if(ms>0&&ms<24*3600e3)notifTimers.push(setTimeout(()=>{try{new Notification('Spinta ⚡',{body})}catch(_){}},ms))};
+  DB.posts.filter(p=>p.st!=='pub').forEach(p=>at(new Date(p.date+'T'+p.time)-Date.now()-10*60e3,'Tra 10 minuti: '+p.title));
+  (DB.pending||[]).forEach(p=>{at(p.pubAt+30*60e3-Date.now(),'💬 Rispondi ai commenti: '+p.title);at(p.pubAt+48*3600e3-Date.now(),'📊 Inserisci i dati: '+p.title)})}
+$('#p-seg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#p-seg button').forEach(x=>x.classList.toggle('on',x===b));
+  $('#p-list').style.display=b.dataset.v==='list'?'':'none';$('#p-check').style.display=b.dataset.v==='check'?'':'none';renderChecklist()});
+let CHECK=[
+ 'Hook nei primi 2 secondi, senza saluti',
+ 'Testo a schermo grande e dentro la zona sicura (non coperto da caption e pulsanti)',
+ 'Video verticale 9:16, ben illuminato, audio pulito',
+ 'Durata giusta: taglia ogni secondo morto',
+ 'Sottotitoli inseriti (tanti guardano senza audio)',
+ 'Suono di tendenza (anche a volume basso sotto la voce)',
+ 'Parole chiave dette a voce e scritte nella caption',
+ 'Caption con domanda o invito all\'azione',
+ 'Massimo 5 hashtag specifici (non liste generiche)',
+ 'Copertina con titolo leggibile (per chi visita il profilo)',
+ 'Pubblicato nell\'orario in cui il pubblico è online',
+ 'Resto 15-30 minuti a rispondere ai primi commenti'
+];
+function renderChecklist(){const c=DB.checklist||{};const L=CHECK.concat(RULES.checklistExtra||[]);const n=L.filter((_,i)=>c[i]).length;
+  $('#ck-bar').style.width=(n/L.length*100)+'%';
+  $('#ck-items').innerHTML=L.map((t,i)=>`<label class="check ${c[i]?'done':''}" style="text-transform:none;letter-spacing:0;font-size:15px;font-weight:400;color:var(--txt);margin:0"><input type="checkbox" ${c[i]?'checked':''} onchange="tick(${i},this.checked)"><span>${esc(t)}</span></label>`).join('')+
+  (n===L.length?'<div class="banner" style="margin:10px 0 0">🚀 Tutto pronto: pubblica!</div>':'')}
+function tick(i,v){DB.checklist[i]=v;save();renderChecklist()}
+function resetChecklist(){DB.checklist={};save();renderChecklist()}
+
+/* ---------- STATS ---------- */
+const FORMATS=['Tutorial','Storia / vlog','Sketch comico','Serie (puntata)','Trend / suono','Prima e dopo','Lista / classifica','Risposta a commento','Reazione','Altro'];
+const HKTYPES=['Posta in gioco','Frase dal tuo video','Curiosità','Errore','Lista','Fino alla fine','POV','Stop','Esperimento','Controintuitivo','Salvataggio','Sfida','Velocità','Risposta','Serie','Semplice','Prima/Dopo','Classifica','Storia','Domanda','Personalizzato','Nessuno'];
+function openStatForm(id,pid){
+  $('#s-format').innerHTML=FORMATS.map(f=>`<option>${f}</option>`).join('');
+  $('#s-hk').innerHTML='<option value="">—</option>'+HKTYPES.map(f=>`<option>${f}</option>`).join('');
+  const s=id?DB.stats.find(x=>x.id===id):pid?DB.pending.find(x=>x.id===pid):null;const isPend=!id&&!!pid;
+  $('#ms-title').textContent=id?'Modifica dati':isPend?'Dati dopo 48 ore':'Nuovo video';
+  $('#s-id').value=id||'';$('#s-pid').value=isPend?pid:'';$('#s-score').value=s&&s.score!=null?s.score:'';$('#s-series').value=s&&s.series||'';
+  $('#s-title').value=s?s.title:'';$('#s-date').value=s?s.date:todayISO();$('#s-hour').value=s&&s.hour||'';
+  $('#s-format').value=s&&s.format?s.format:FORMATS[0];$('#s-hk').value=s&&s.hk||'';
+  ['views','likes','comm','shares','saves','follows','len','watch','full'].forEach(k=>$('#s-'+k).value=s&&s[k]!=null&&s[k]!==''?s[k]:'');
+  openModal('m-stat');
+}
+function saveStat(){
+  const title=$('#s-title').value.trim();const views=+$('#s-views').value;
+  if(!title||!views){toast('Titolo e view sono obbligatori');return}
+  const o={id:$('#s-id').value||uid(),title,date:$('#s-date').value,hour:$('#s-hour').value,format:$('#s-format').value,hk:$('#s-hk').value,views,
+    series:$('#s-series').value,score:$('#s-score').value===''?null:+$('#s-score').value};
+  ['likes','comm','shares','saves','follows','len','watch','full'].forEach(k=>{const v=$('#s-'+k).value;o[k]=v===''?'':+v});
+  const i=DB.stats.findIndex(x=>x.id===o.id);if(i>=0)DB.stats[i]=o;else DB.stats.push(o);
+  const pid=$('#s-pid').value;if(pid)DB.pending=DB.pending.filter(x=>x.id!==pid);
+  save();closeModal('m-stat');renderStats();renderPlan();toast('Salvato ✓');
+}
+function delStat(id){if(!confirm('Eliminare questo video?'))return;DB.stats=DB.stats.filter(x=>x.id!==id);save();renderStats()}
+const er=s=>s.views?((+s.likes||0)+(+s.comm||0)+(+s.shares||0)+(+s.saves||0))/s.views*100:0;
+const ret=s=>s.len&&s.watch?Math.min(100,s.watch/s.len*100):null;
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+function renderStats(){
+  renderPendingGrow();
+  const S=DB.stats.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if(!S.length){$('#s-kpis').innerHTML='';$('#s-chartbox').style.display='none';
+    $('#s-insight').innerHTML=`<div class="card"><b>Come funziona</b><div style="color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.55">1. Pubblica dallo Studio e tocca "L'ho pubblicato".<br>2. Dopo 48 ore inserisci view, visione media e interazioni.<br>3. Dopo 3 video ti mostro la formula del tuo canale: tipo di hook, orario, durata e formato che ti rendono di più.</div></div>`;
+    $('#s-items').innerHTML='';return}
+  const av=avg(S.map(s=>s.views)),aer=avg(S.map(er));const rets=S.map(ret).filter(x=>x!=null);const avRet=rets.length?avg(rets):null;
+  const fol=S.reduce((a,b)=>a+(+b.follows||0),0);
+  $('#s-kpis').innerHTML=`<div class="kpi"><div class="v">${fmt(av)}</div><div class="l">View medie</div></div>
+  <div class="kpi"><div class="v">${avRet!=null?avRet.toFixed(0)+'%':'–'}</div><div class="l">Visione media / durata</div></div>
+  <div class="kpi"><div class="v">${aer.toFixed(1)}%</div><div class="l">Engagement medio</div></div>
+  <div class="kpi"><div class="v">+${fmt(fol)}</div><div class="l">Follower dai video</div></div>`;
+  const groups=fn=>{const m={};S.forEach(s=>{const k=fn(s);if(!k)return;(m[k]=m[k]||[]).push(s)});return Object.entries(m).map(([k,a])=>({k,n:a.length,v:avg(a.map(x=>x.views))})).sort((a,b)=>b.v-a.v)};
+  const slot=h=>{if(!h)return null;const x=+h.split(':')[0];return x<11?'Mattina (prima delle 11)':x<15?'Pranzo (11-15)':x<19?'Pomeriggio (15-19)':x<22?'Sera (19-22)':'Notte (dopo le 22)'};
+  const lenB=s=>!s.len?null:s.len<15?'Sotto i 15 s':s.len<30?'15-30 s':s.len<=60?'30-60 s':'Oltre 60 s';
+  const pct=v=>{const p=(v/av-1)*100;return `<span class="vs ${p>=0?'up':'dn'}">${p>=0?'+':''}${p.toFixed(0)}%</span>`};
+  let formula='';
+  if(S.length>=3){const rows=[['🎬','Formato',groups(s=>s.format)],['🎣','Tipo di hook',groups(s=>s.hk)],['⏰','Orario',groups(s=>slot(s.hour))],['⏱️','Durata',groups(lenB)]].filter(r=>r[2].length>=2);
+    formula=rows.length?`<div class="card"><h3>🧬 La formula del tuo canale</h3><div style="color:var(--mut);font-size:12.5px;margin:2px 0 6px">Cosa porta più view rispetto alla tua media</div>`+
+      rows.map(([ic,n,g])=>`<div class="fix"><span>${ic}</span><div style="flex:1"><b style="font-size:14px">${esc(g[0].k)}</b><div style="color:var(--mut);font-size:12.5px">${n} · ${g[0].n} video${g[0].n<2?' (pochi dati)':''}</div></div>${pct(g[0].v)}</div>`).join('')+'</div>'
+      :`<div class="card" style="color:var(--mut);font-size:13.5px">🧬 Per la formula del canale servono video con orari, durate o tipi di hook diversi.</div>`}
+  else formula=`<div class="card" style="color:var(--mut);font-size:13.5px">🧬 Ancora ${3-S.length} ${3-S.length===1?'video':'video'} e ti mostro la formula del tuo canale.</div>`;
+  const tips=[];
+  tips.push(`🎯 <b>Obiettivo prossimo video:</b> superare ${fmt(av)} view${avRet!=null?` e una visione media oltre il ${Math.min(95,Math.round(avRet+5))}%`:''}. È la soglia oltre cui TikTok lo spinge a più persone.`);
+  const fl=S.filter(s=>s.full!==''&&s.full!=null);if(fl.length){const af=avg(fl.map(s=>+s.full)),tg=(RULES.obiettivi||{}).completamento||70;tips.push(`🏁 Visione completa media: <b>${af.toFixed(0)}%</b>. Secondo le analisi più recenti, per diventare virali serve circa il ${tg}%.`)}
+  if(avRet!=null){if(avRet<40)tips.push('⏱️ Si guarda meno del 40% del video: accorcia, togli le pause e metti il momento migliore prima.');else if(avRet>=70)tips.push('🔥 Ritenzione ottima: puoi provare video un po\' più lunghi.')}
+  if(aer<4)tips.push('💬 Engagement sotto il 4%: chiudi con una domanda o con "Parte 2" e usa il testo finale.');
+  const hi=S.filter(s=>s.score!=null&&s.score>=80),lo=S.filter(s=>s.score!=null&&s.score<80);
+  if(hi.length&&lo.length)tips.push(`📈 I video con punteggio Spinta da 80 in su fanno in media <b>${fmt(avg(hi.map(s=>s.views)))}</b> view, contro ${fmt(avg(lo.map(s=>s.views)))} degli altri.`);
+  $('#s-insight').innerHTML=formula+`<div class="card">${tips.map(t=>`<div style="margin-bottom:8px;font-size:14px">${t}</div>`).join('')}</div>`;
+  const rows=groups(s=>s.format);$('#s-chartbox').style.display=rows.length>1?'':'none';
+  if(rows.length>1){const mx=Math.max(...rows.map(r=>r.v))||1;const W=320,bh=24,gap=10,H=rows.length*(bh+gap);
+    $('#s-chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ff2d6f"/><stop offset="1" stop-color="#25f4ee"/></linearGradient></defs>`+
+     rows.map((r,i)=>{const y=i*(bh+gap);const w=Math.max(4,r.v/mx*(W-150));return `<text x="0" y="${y+16}" style="font-size:11px">${esc(r.k.slice(0,18))}</text><rect x="118" y="${y+2}" width="${w}" height="${bh-4}" rx="6" fill="url(#g)"/><text x="${122+w}" y="${y+16}" style="fill:#f5f5fa;font-weight:700;font-size:11px">${fmt(r.v)} (${r.n})</text>`}).join('')+'</svg>'}
+  $('#s-items').innerHTML=`<h4 class="h4">I tuoi video</h4>`+S.map(s=>{const r=ret(s);return `<div class="item"><div class="t">${esc(s.title)}</div>
+  <div class="m">${s.date?new Date(s.date+'T12:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}):''}${s.hour?' · '+s.hour:''} · <span class="tag">${esc(s.format)}</span>${s.hk?`<span class="tag p">${esc(s.hk)}</span>`:''} ${pct(s.views)}</div>
+  <div class="m" style="margin-top:4px">👁 ${fmt(s.views)} · ❤️ ${fmt(s.likes)} · 💬 ${fmt(s.comm)} · ↗︎ ${fmt(s.shares)} · 📌 ${fmt(s.saves)}</div>
+  <div class="m">ER ${er(s).toFixed(1)}%${r!=null?' · visione '+r.toFixed(0)+'%':''}${s.full!==''&&s.full!=null?' · completa '+s.full+'%':''}${s.follows?' · +'+s.follows+' follower':''}${s.score!=null?' · Spinta '+s.score:''}</div>
+  <div class="acts"><button class="btn sm alt" onclick="openStatForm('${s.id}')">✏️ Modifica</button><button class="btn sm alt" onclick="delStat('${s.id}')">🗑</button></div></div>`}).join('');
+}
+function renderPendingGrow(){const el=$('#g-pending');const P=DB.pending||[];if(!P.length){el.innerHTML='';return}
+  el.innerHTML=`<div class="card"><h3>📥 Da aggiornare</h3>${P.map(p=>{const due=new Date(p.pubAt+48*3600e3),ready=Date.now()>=due;
+   return `<div class="fix"><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(p.title)}</b><div style="color:var(--mut);font-size:12.5px">${ready?'Pronto: inserisci i dati di TikTok Studio':'Dati affidabili da '+slotLabel(due)}</div></div><button class="btn sm ${ready?'':'alt'}" onclick="openStatForm(null,'${p.id}')">Inserisci</button></div>`}).join('')}</div>`}
+function renderPendingPlan(){const el=$('#p-pending-card');if(!el)return;const P=DB.pending||[];if(!P.length){el.style.display='none';return}
+  el.style.display='';const now=Date.now();
+  el.innerHTML=`<h3>⏱️ Dopo la pubblicazione</h3>`+P.map(p=>{const c=p.pubAt+60*60e3,due=p.pubAt+48*3600e3;
+    const line=now<c?`💬 Rispondi ai commenti fino alle <b>${hhmm(new Date(c))}</b>`:now<due?`📊 Dati da ${slotLabel(new Date(due))}`:'📊 <b>Inserisci i dati adesso</b>';
+    return `<div class="fix"><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(p.title)}</b><div style="font-size:13px;color:var(--mut)">${line}</div></div><button class="btn sm alt" onclick="goTab('grow');openStatForm(null,'${p.id}')">Dati</button></div>`}).join('')}
+/* ---------- IDEE ---------- */
+const SERIES=[
+ {n:'Giorno X di Y',d:'Una sfida a tappe con un obiettivo finale chiaro.',e:['Giorno 1 di 30: inizio {t}','Giorno 7: il primo problema serio','Giorno 15: a metà strada, i numeri','Giorno 30: com\'è finita']},
+ {n:'Dietro le quinte',d:'Mostra come nasce quello che fai: la gente ama vedere il "come".',e:['Come preparo un video su {t}','Cosa non vedete mai di {t}','Il giorno peggiore con {t}','Le spese reali di {t}']},
+ {n:'Errori da evitare',d:'Ogni puntata un errore, con la soluzione.',e:['Errore n.1 con {t}','Errore n.2: questo lo fanno tutti','Errore n.3: il più costoso','Il mio errore più grande con {t}']},
+ {n:'Rispondo ai commenti',d:'Trasforma i commenti in puntate: aumenta la partecipazione.',e:['Mi avete chiesto: {t} funziona davvero?','Rispondo all\'hater su {t}','Le vostre domande su {t}, parte 1','Il commento più assurdo che ho ricevuto']},
+ {n:'Personaggio fisso',d:'Un personaggio riconoscibile con un tormentone: crea affezione.',e:['Il primo incontro con {t}','Quando {t} va storto','Il cliente impossibile','Il colpo di scena della settimana']},
+ {n:'Prima e dopo',d:'Trasformazioni visive: guardate fino alla fine per definizione.',e:['Prima/dopo: {t} in 24 ore','Ho rimesso a posto {t}','Il risultato che non mi aspettavo','Rifaccio il mio primo video su {t}']},
+ {n:'Classifiche',d:'Valutazioni e confronti: scatenano disaccordo nei commenti.',e:['Top 5 {t}','Il peggiore e il migliore di {t}','Valuto i vostri {t} da 1 a 10','{T}: economico contro costoso']},
+ {n:'Esperimenti',d:'"Ho provato…": curiosità sul risultato.',e:['Ho provato {t} con 10€','Ho provato {t} come un principiante','Ho seguito i consigli dell\'AI su {t}','Ho chiesto ai passanti di {t}']}
+];
+function genSeries(){const t=$('#i-topic').value.trim();if(!t){toast('Scrivi il tema');return}
+  $('#i-out').innerHTML=shuffle(SERIES).slice(0,5).map(s=>{const eps=s.e.map(x=>x.replace(/\{t\}/g,t).replace(/\{T\}/g,cap1(t)));
+  return `<div class="item">${copyBtn(s.n+'\n'+eps.map((e,i)=>`Ep.${i+1}: ${e}`).join('\n'))}<div class="t">🎬 ${esc(s.n)}</div><div class="m" style="margin-bottom:6px">${esc(s.d)}</div>
+  ${eps.map((e,i)=>`<div class="m" style="color:var(--txt)"><span class="tag">Ep.${i+1}</span>${esc(e)}</div>`).join('')}</div>`}).join('')+
+  `<div class="card"><div class="m" style="color:var(--mut);font-size:13px">💡 Scrivi "Parte 1, 2, 3" nel testo a schermo e crea una playlist sul profilo: chi trova una puntata guarda anche le altre.</div></div>`}
+const TRENDS=[
+ {n:'Green screen',h:'Metti dietro di te uno screenshot, una notizia o una foto e commentala.',x:'Commento una notizia su {t}'},
+ {n:'Stitch',h:'Prendi i primi secondi del video di un altro creator e rispondi.',x:'Stitch: "{t} non serve a niente" – ecco la mia risposta'},
+ {n:'Duetto',h:'Reagisci affiancato a un video famoso della tua nicchia.',x:'Duetto: rifaccio {t} meglio (o peggio)'},
+ {n:'Suono di tendenza + testo',h:'Suono virale, testo a schermo con una situazione della tua nicchia.',x:'Quando qualcuno ti chiede di {t}…'},
+ {n:'Foto carosello',h:'Post a foto (5-10 immagini) con testo: TikTok li spinge molto.',x:'5 cose su {t} in foto'},
+ {n:'Tutorial in 15 secondi',h:'Un solo trucco, veloce, rivedibile in loop.',x:'Il trucco più veloce per {t}'},
+ {n:'Loop perfetto',h:'La fine si collega all\'inizio: aumenta i rewatch.',x:'Loop: {t} che non finisce mai'},
+ {n:'ASMR / suoni reali',h:'Niente voce, solo i suoni dell\'azione, ripresi da vicino.',x:'{T} – solo suoni'},
+ {n:'Live breve',h:'Live di 15-20 minuti dopo un video andato bene: porta follower fedeli.',x:'In live rispondo su {t}'}
+];
+function genTrends(){const t=$('#i-topic').value.trim()||'il tuo tema';
+  $('#i-trends').innerHTML=TRENDS.map(f=>{const x=f.x.replace(/\{t\}/g,t).replace(/\{T\}/g,cap1(t));
+  return `<div class="item">${copyBtn(x)}<div class="t">🔥 ${esc(f.n)}</div><div class="m">${esc(f.h)}</div><div class="m" style="color:var(--cyan);margin-top:4px">➜ ${esc(x)}</div></div>`}).join('')}
+
+/* ---------- VIDEO: analisi ---------- */
+let vFile=null,vURL=null,VA=null,exporting=false,cancelExport=null;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const median=a=>{const s=a.slice().sort((x,y)=>x-y);return s.length?s[Math.floor(s.length/2)]:0};
+const FILTER_OK=(()=>{try{const c=document.createElement('canvas').getContext('2d');c.filter='brightness(1.1)';return c.filter==='brightness(1.1)'}catch(_){return false}})();
+function vProg(msg,pct){$('#v-prog').innerHTML=msg?`<div style="margin-top:10px;color:var(--mut);font-size:13px">${msg}</div>${pct!=null?`<div class="meter"><i style="width:${pct}%"></i></div>`:''}`:''}
+function hiddenVideo(url,muted){const v=document.createElement('video');v.playsInline=true;v.setAttribute('playsinline','');v.muted=muted;v.preload='auto';
+  v.style.cssText='position:fixed;left:0;top:0;width:2px;height:2px;opacity:0;pointer-events:none';document.body.appendChild(v);v.src=url;return v}
+function waitMeta(v){return new Promise((res,rej)=>{if(v.readyState>=1)return res();
+  const msg='Il browser non riesce a leggere questo video. Spesso succede con i video HEVC dell\'iPhone aperti su Android o PC: esportalo in MP4 (H.264) o registralo con "Più compatibile" (Impostazioni → Fotocamera → Formati).';
+  const to=setTimeout(()=>rej(new Error(msg)),20000);
+  v.addEventListener('loadedmetadata',()=>{clearTimeout(to);res()},{once:true});
+  v.addEventListener('error',()=>{clearTimeout(to);rej(new Error(msg))},{once:true})})}
+function seekTo(v,t){return new Promise(res=>{let done=false;const f=()=>{if(done)return;done=true;v.removeEventListener('seeked',f);res()};
+  v.addEventListener('seeked',f);v.currentTime=t;setTimeout(f,4000)})}
+
+function loadVideoFile(f){if(!f)return;
+  if(f.type&&!f.type.startsWith('video/')&&!/\.(mp4|mov|m4v|webm|3gp|mkv)$/i.test(f.name)){toast('Questo non è un video');return}
+  if(exporting&&cancelExport)cancelExport();
+  if(vURL)URL.revokeObjectURL(vURL);vFile=f;vURL=URL.createObjectURL(f);VA=null;
+  $('#v-name').textContent=`📄 ${f.name} · ${(f.size/1048576).toFixed(1)} MB`;
+  const p=$('#v-prev');p.src=vURL;p.style.display='block';$('#hero').style.display='none';
+  ['v-score','v-auto','v-fix','v-out'].forEach(id=>$('#'+id).innerHTML='');
+  [2,3,4,5].forEach(n=>{$('#s'+n).classList.remove('open');stp(n,'locked')});
+  stpSum(2,'Come lo vede l\'algoritmo');stpSum(3,'Scritti dal tuo parlato');stpSum(4,'Tagli, immagine, audio, testi');stpSum(5,'Video, copertina, caption e orario');
+  $('#topscore').style.display='none';analyzeVideo()}
+$('#v-file').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];loadVideoFile(f);e.target.value=''});
+(()=>{const d=$('#v-drop');
+  ['dragenter','dragover'].forEach(t=>d.addEventListener(t,e=>{e.preventDefault();d.style.borderColor='var(--pink)'}));
+  ['dragleave','drop'].forEach(t=>d.addEventListener(t,e=>{e.preventDefault();d.style.borderColor=''}));
+  d.addEventListener('drop',e=>loadVideoFile(e.dataTransfer.files[0]));
+  let framed=false;try{framed=window.self!==window.top}catch(_){framed=true}
+  const ua=navigator.userAgent;const inApp=/FBAN|FBAV|Instagram|TikTok|musical_ly|Line\/|; wv\)/i.test(ua);
+  if(framed||inApp||location.protocol==='content:')$('#v-warn').innerHTML=`<div class="banner">⚠️ Stai usando l'app dentro un'anteprima o un browser interno: qui la scelta dei video può essere bloccata.<br><b>Aprila in Chrome o Safari</b> (menu ⋮ → "Apri nel browser"), oppure dal tuo sito GitHub Pages.</div>`;
+})();
+
+async function analyzeVideo(){
+  const runURL=vURL;let v;
+  try{
+    vProg('Leggo il video…',2);
+    v=hiddenVideo(vURL,true);await waitMeta(v);
+    let dur=v.duration;if(!isFinite(dur)||!dur){await seekTo(v,1e7);dur=v.currentTime}
+    try{await v.play();v.pause()}catch(_){}
+    const W=v.videoWidth,H=v.videoHeight;if(!W||!H)throw new Error('Leggo l\'audio ma non le immagini: il formato video (probabilmente HEVC) non è supportato da questo browser. Esportalo in MP4 H.264.');
+    const times=[];for(let t=0.05;t<Math.min(3,dur);t+=0.25)times.push(t);
+    if(dur>3){const n=Math.min(110,Math.ceil((dur-3)/0.4));const st=(dur-3)/n;for(let i=0;i<n;i++)times.push(3+i*st+st/2)}
+    const cw=96,ch=Math.max(16,Math.round(96*H/W));const c=document.createElement('canvas');c.width=cw;c.height=ch;
+    const cx=c.getContext('2d',{willReadFrequently:true});const frames=[];let prev=null,g0=null,gL=null;
+    // fascia bassa vs centro: bordi bianco/nero tipici del testo dei sottotitoli
+    const bw=180,bh=Math.max(32,Math.round(180*H/W));const c2=document.createElement('canvas');c2.width=bw;c2.height=bh;const cx2=c2.getContext('2d',{willReadFrequently:true});
+    const bandEdges=()=>{cx2.drawImage(v,0,0,bw,bh);const d=cx2.getImageData(0,0,bw,bh).data;const L=i=>(0.299*d[i]+0.587*d[i+1]+0.114*d[i+2])/255;
+      const band=(y0,y1)=>{let c=0,n=0;for(let y=Math.floor(bh*y0);y<Math.floor(bh*y1);y++)for(let x=0;x<bw-2;x++){const a=L((y*bw+x)*4),b=L((y*bw+x+2)*4);n++;if((a>0.82&&b<0.35)||(b>0.82&&a<0.35))c++}return n?c/n:0};
+      return[band(0.6,0.92),band(0.25,0.5),band(0.06,0.32)]};
+    for(let i=0;i<times.length;i++){
+      if(runURL!==vURL)return;
+      await seekTo(v,times[i]);cx.drawImage(v,0,0,cw,ch);
+      const d=cx.getImageData(0,0,cw,ch).data,n=cw*ch,g=new Float32Array(n);let s=0,sat=0;
+      for(let p=0,q=0;p<n;p++,q+=4){const r=d[q],gg=d[q+1],b=d[q+2];const y=(0.299*r+0.587*gg+0.114*b)/255;g[p]=y;s+=y;sat+=(Math.max(r,gg,b)-Math.min(r,gg,b))/255}
+      const mean=s/n;let vs=0;for(let p=0;p<n;p++)vs+=(g[p]-mean)**2;
+      let lm=0,lv=0,cnt=0;for(let y=1;y<ch-1;y++)for(let x=1;x<cw-1;x++){const p=y*cw+x;const l=4*g[p]-g[p-1]-g[p+1]-g[p-cw]-g[p+cw];lm+=l;lv+=l*l;cnt++}
+      let diff=0;if(prev){for(let p=0;p<n;p++)diff+=Math.abs(g[p]-prev[p]);diff/=n}
+      const [sb,mb,tb]=bandEdges();
+      frames.push({t:times[i],luma:mean,con:Math.sqrt(vs/n),sat:sat/n,sharp:cnt?lv/cnt-(lm/cnt)**2:0,diff,sb,mb,tb});prev=g;if(!g0)g0=g;gL=g;
+      vProg(`Analizzo le immagini… ${i+1}/${times.length}`,3+72*(i+1)/times.length);
+    }
+    let audio=null,audioErr='',audioBuf=null;
+    if(vFile.size>400*1024*1024)audioErr='File troppo grande per analizzare l\'audio sul telefono.';
+    else{vProg('Analizzo l\'audio…',82);
+      try{const buf=await vFile.arrayBuffer();const AC=window.AudioContext||window.webkitAudioContext;const ac=new AC();
+        const ab=await new Promise((res,rej)=>{const p=ac.decodeAudioData(buf,res,rej);if(p&&p.then)p.then(res,rej)});
+        audio=analyzeAudio(ab);audioBuf=ab;try{ac.close()}catch(_){}}
+      catch(_){audioErr='Audio assente o non leggibile.'}}
+    if(runURL!==vURL)return;
+    const md=median(frames.slice(1).map(f=>f.diff));const thr=Math.max(0.09,md*3.5);
+    const cuts=frames.filter((f,i)=>i>0&&f.diff>thr).map(f=>f.t);
+    const sbs=frames.map(f=>f.sb),mbs=frames.map(f=>f.mb);
+    const hasSubs=median(sbs)>0.018&&median(sbs)>2.5*Math.max(median(mbs),0.002)&&sbs.filter(x=>x>0.01).length/frames.length>=0.6;
+    let mad=1;if(g0&&gL&&g0!==gL){mad=0;for(let p=0;p<g0.length;p++)mad+=Math.abs(g0[p]-gL[p]);mad/=g0.length}
+    VA={dur,W,H,frames,audio,audioErr,cuts,thr,ab:audioBuf,subs:[],transcript:'',hasSubs,loop:clamp(1-mad*5,0,1)};
+    vProg('',null);renderVideoReport();
+  }catch(err){vProg('❌ '+esc(err.message||err),null)}
+  finally{if(v){v.removeAttribute('src');v.load();v.remove()}}
+}
+
+function analyzeAudio(ab){
+  const sr=ab.sampleRate,len=ab.length,c0=ab.getChannelData(0),c1=ab.numberOfChannels>1?ab.getChannelData(1):null;
+  const win=Math.max(1,Math.round(sr*0.05)),nW=Math.floor(len/win),db=new Float32Array(nW);let clip=0;
+  for(let w=0;w<nW;w++){let ss=0;const a=w*win,b=a+win;
+    for(let i=a;i<b;i++){const x=c1?(c0[i]+c1[i])/2:c0[i];ss+=x*x;if(c0[i]>0.99||c0[i]<-0.99)clip++}
+    db[w]=10*Math.log10(ss/win+1e-12)}
+  const sorted=Array.from(db).sort((a,b)=>a-b);const p90=sorted[Math.floor(nW*0.9)]??-100;
+  const hasSound=p90>-55,thr=Math.max(-50,p90-26),T=w=>w*0.05,adur=len/sr;
+  let first=-1,last=-1;for(let w=0;w<nW;w++)if(db[w]>thr){if(first<0)first=w;last=w}
+  const pauses=[];
+  if(first>=0){let run=-1;for(let w=first;w<=last+1;w++){const sil=w<=last&&db[w]<=thr;
+    if(sil&&run<0)run=w;if(!sil&&run>=0){if(w-run>=Math.round((RULES.pausaMin||0.6)/0.05))pauses.push({s:T(run)+0.15,e:T(w)-0.15});run=-1}}}
+  let e=0,k=0;for(let w=0;w<nW;w++)if(db[w]>thr){e+=Math.pow(10,db[w]/10);k++}
+  const env=[];const P=160;for(let i=0;i<P;i++){const a=Math.floor(i*nW/P),b=Math.max(a+1,Math.floor((i+1)*nW/P));let m=-120;for(let w=a;w<b&&w<nW;w++)m=Math.max(m,db[w]);env.push(clamp((m+60)/60,0,1))}
+  return{hasSound,lead:first<0?0:T(first),trail:last<0?0:Math.max(0,adur-T(last+1)),pauses,loud:k?10*Math.log10(e/k):-100,clipPct:clip/len*100,env,adur}
+}
+
+function renderVideoReport(){
+  const {dur,W,H,frames,audio:A,cuts}=VA;const sug={};const ratio=W/H;
+  const L=avg(frames.map(f=>f.luma)),C=avg(frames.map(f=>f.con)),S=avg(frames.map(f=>f.sat));
+  Object.assign(VA,{L,C,S});
+  VA.filter=`brightness(${clamp(0.5/Math.max(L,0.05),0.85,1.5).toFixed(2)}) contrast(${C<0.16?1.18:1.06}) saturate(${S<0.18?1.25:1.1})`;
+  const ms=median(frames.map(f=>f.sharp));VA.blur=frames.filter(f=>f.sharp<ms*0.3&&f.luma>0.1&&f.con>0.06).length/frames.length;
+  VA.m1=avg(frames.filter((f,i)=>i>0&&f.t<=1.6).map(f=>f.diff));VA.firstCut=cuts.find(t=>t<2.5);
+  const tbStart=avg(frames.filter(f=>f.t<2).map(f=>f.tb)),tbRest=median(frames.filter(f=>f.t>4).map(f=>f.tb));
+  VA.topText=tbStart>0.012&&tbStart>1.8*Math.max(tbRest,0.003);
+  VA.static=staticZones();
+  if(ratio>0.6)sug.crop=1;
+  if(A&&A.hasSound){if(A.lead>0.5||A.trail>1)sug.trim=1;if(A.pauses.length)sug.pause=1;if(A.loud<-26||A.loud>-9)sug.vol=1}
+  if(L<0.3||L>0.75||C<0.13||S<0.12)sug.light=1;
+  if(VA.static.length&&dur>8)sug.speed=1;
+  sug.hook=!VA.topText;sug.bar=dur>=20;
+  VA.sug=sug;VA.pkg={topic:'',topicOk:false,kw:[],kwSure:[],niche:'generale'};
+  [2,3,4,5].forEach(n=>stp(n,'ready'));
+  renderAutoCard();renderFixPanel();renderScore();
+  stp(1,'done');stpSum(1,`${dur.toFixed(1)} s · ${W}×${H}${curSeries()?' · '+curSeries().name+' P'+curSeries().ep:''}`);
+  $('#s1').classList.remove('open');goStep(2);
+}
+function staticZones(){const F=VA.frames.filter(f=>f.t>0.3);if(F.length<3)return[];const md=median(F.map(f=>f.diff));const lim=Math.max(0.006,md*0.45);const out=[];let st=null,lastQ=null;
+  F.forEach((f,i)=>{const quiet=f.diff<lim;if(quiet){if(st==null)st=f.t;lastQ=f.t}
+    if((!quiet||i===F.length-1)&&st!=null){if(lastQ-st>=5)out.push({s:st,e:lastQ});st=null}});return out}
+function timelineSVG(o){
+  const {dur,frames,audio:A,cuts,thr}=VA;const W=320,H=84,x=t=>clamp(t/dur*W,0,W);const plan=getPlan(o);
+  let s=`<svg viewBox="0 0 ${W} ${H+14}" width="100%" role="img" aria-label="Linea del tempo del video">`;
+  const away=[{s:0,e:plan.start},...plan.skips,{s:plan.end,e:dur}].filter(p=>p.e-p.s>0.05);
+  s+=away.map(p=>`<rect x="${x(p.s)}" y="0" width="${Math.max(1.5,x(p.e)-x(p.s))}" height="${H}" fill="#4a4a5e" opacity=".6"/>`).join('');
+  s+=riskZones(o).map(p=>`<rect x="${x(p.s)}" y="0" width="${Math.max(2,x(p.e)-x(p.s))}" height="${H}" fill="#ff2d6f" opacity=".38"/>`).join('');
+  const mx=Math.max(thr,...frames.map(f=>f.diff));
+  s+=frames.map(f=>{const h=Math.max(1,f.diff/mx*36);return `<rect x="${x(f.t)-1}" y="${38-h}" width="2" height="${h}" fill="#9a9ab2" opacity=".65"/>`}).join('');
+  if(A&&A.env){const pts=A.env.map((v,i)=>`${(i/(A.env.length-1))*Math.min(W,x(A.adur))},${H-v*36}`).join(' ');s+=`<polyline points="${pts}" fill="none" stroke="#25f4ee" stroke-width="1.3" opacity=".85"/>`}
+  else s+=`<text x="4" y="70">audio non disponibile</text>`;
+  s+=cuts.map(t=>`<line x1="${x(t)}" x2="${x(t)}" y1="0" y2="${H}" stroke="#25f4ee" stroke-width="1.2" opacity=".8"/>`).join('');
+  s+=`<text x="0" y="${H+12}">0 s</text><text x="${W}" y="${H+12}" text-anchor="end">${dur.toFixed(1)} s</text></svg>`;return s}
+function riskZones(o){const A=VA.audio,z=[],plan=getPlan(o);
+  const cutAway=[{s:0,e:plan.start},...plan.skips,{s:plan.end,e:VA.dur}];const removed=p=>cutAway.some(c=>p.s>=c.s-0.2&&p.e<=c.e+0.2);
+  if(A&&A.hasSound){if(A.lead>0.5)z.push({s:0,e:A.lead});A.pauses.forEach(p=>z.push(p));if(A.trail>1)z.push({s:VA.dur-A.trail,e:VA.dur})}
+  VA.static.forEach(p=>z.push(p));return z.filter(p=>!removed(p))}
+/* ---------- VIDEO: miglioramento ---------- */
+function renderFixPanel(){
+  const g=VA.sug,A=VA.audio,ratio=VA.W/VA.H,hasA=A&&A.hasSound,ser=curSeries();
+  const opt=(id,lab,desc,on,dis)=>`<label class="opt ${dis?'dis':''}" id="${id}-l"><input type="checkbox" id="${id}" ${on&&!dis?'checked':''} ${dis?'disabled':''} onchange="updEst()"><span>${lab}<small id="${id}-d">${desc}</small></span></label>`;
+  const np=hasA?A.pauses.length:0;
+  $('#v-fix').innerHTML=`<p class="sub" style="margin:0">Ho già attivato le correzioni consigliate. Ogni modifica aggiorna il punteggio.</p>
+  <div class="grp"><h4>✂️ Taglio e ritmo</h4>
+   ${opt('o-trim','Taglia silenzi iniziali e finali',hasA?`Inizio ${A.lead.toFixed(1)} s · fine ${A.trail.toFixed(1)} s`:'Serve l\'audio per trovarli',g.trim,!hasA)}
+   ${opt('o-pause','Rimuovi le pause lunghe',!hasA?'Serve l\'audio per trovarle':!np?'Nessuna pausa lunga da togliere':(np===1?'1 pausa trovata':np+' pause trovate')+' · tagli senza scatti',g.pause,!np)}
+   ${opt('o-speed','Accelera leggermente (1,1×)','Più ritmo senza cambiare il tono della voce',g.speed,false)}</div>
+  <div class="grp"><h4>🖼️ Immagine</h4>
+   ${opt('o-crop','Ritaglia a 9:16',ratio>0.6?'Riempie tutto lo schermo del telefono':'Il video è già verticale',g.crop,ratio<=0.6)}
+   <div id="o-cropbox" style="display:none"><label>Posizione del ritaglio (sinistra ↔ destra)</label><input type="range" id="o-croppos" min="-100" max="100" value="0" onchange="VA.prevFrame=null;hookPreview()"></div>
+   ${opt('o-light','Correggi luce e colori',FILTER_OK?'Luminosità, contrasto e saturazione automatici':'Non supportato da questo browser',g.light,!FILTER_OK)}</div>
+  <div class="grp"><h4>🔊 Audio</h4>
+   ${opt('o-vol','Normalizza il volume',hasA?`Ora ${A.loud.toFixed(0)} dB · porta la voce al livello di TikTok`:'Nessun audio',g.vol,!hasA)}</div>
+  <div class="grp"><h4>🔤 Testi a schermo</h4>
+   ${opt('o-hook','Hook nei primi secondi','Il testo che scegli nel passo 3',g.hook,false)}
+   ${opt('o-subs','Sottotitoli automatici',subsDesc(),false,true)}
+   ${opt('o-part','Etichetta "PARTE N"',ser?`Sopra l'hook: PARTE ${ser.ep}`:'Imposta una serie nel passo 1',!!ser,!ser)}
+   ${opt('o-end','Testo finale','Negli ultimi 2,5 secondi: porta follow e commenti',true,false)}
+   <div id="o-endbox" style="padding-bottom:8px"><input id="o-endtxt" value="${esc(defaultEnd())}" oninput="VA.endEdited=true;schedScore()"></div>
+   ${opt('o-bar','Barra di avanzamento','Fa vedere quanto manca: aiuta a guardare fino alla fine',g.bar,false)}</div>
+  <div id="o-est" style="color:var(--mut);font-size:13px;margin-top:10px"></div>
+  <button class="btn alt" onclick="goStep(5)">Avanti: esporta ↓</button>`;
+  refreshSubsOpt();updEst()}
+function subsDesc(){return VA.hasSubs?'Il video ha già i suoi sottotitoli: li lascio così':VA.subs&&VA.subs.length?`${VA.subs.length} righe dal parlato`:'Si creano con il pilota automatico (passo 3)'}
+function refreshSubsOpt(){const e=$('#o-subs');if(!e)return;const ok=!!(VA.subs&&VA.subs.length)&&!VA.hasSubs;e.disabled=!ok;if(!ok)e.checked=false;$('#o-subs-l').classList.toggle('dis',!ok);$('#o-subs-d').textContent=subsDesc()}
+function readOpts(){const g=id=>{const e=$('#'+id);return !!(e&&e.checked&&!e.disabled)};const ser=curSeries();
+  return{trim:g('o-trim'),pause:g('o-pause'),crop:g('o-crop'),light:g('o-light'),vol:g('o-vol'),hook:g('o-hook'),subs:g('o-subs'),bar:g('o-bar'),speed:g('o-speed'),end:g('o-end'),part:g('o-part')&&!!ser,
+    pos:+(($('#o-croppos')||{}).value||0),hookTxt:(($('#a-hookedit')||{}).value||'').trim(),endTxt:(($('#o-endtxt')||{}).value||'').trim(),series:ser,
+    hookDur:+(($('#a-hdur')||{}).value||3),hookPos:+(($('#a-hpos')||{}).value||0.24)}}
+function getPlan(o){const A=VA.audio;let start=0,end=VA.dur;
+  if(o.trim&&A&&A.hasSound){start=Math.max(0,A.lead-0.1);end=Math.min(VA.dur,VA.dur-A.trail+0.2)}
+  if(end-start<1){start=0;end=VA.dur}
+  const skips=o.pause&&A?A.pauses.filter(p=>p.s>=start&&p.e<=end&&p.e-p.s>0.2):[];
+  const outT=t=>{let x=t-start;for(const s of skips){if(t>=s.e)x-=s.e-s.s;else if(t>s.s)x-=t-s.s}return x};
+  const rate=o.speed?1.1:1;return{start,end,skips,outT,rate,outDur:outT(end)/rate}}
+function updEst(){if(!VA||!$('#o-trim'))return;const o=readOpts(),p=getPlan(o);
+  $('#o-cropbox').style.display=o.crop?'':'none';$('#o-endbox').style.display=o.end?'':'none';
+  const n=['trim','pause','crop','light','vol','subs','hook','bar','speed','end','part'].filter(k=>o[k]).length;
+  $('#o-est').textContent=`Durata finale: ${p.outDur.toFixed(1)} s (era ${VA.dur.toFixed(1)} s)`;
+  stpSum(4,`${n} correzioni attive · ${p.outDur.toFixed(1)} s`);schedScore()}
+function cropRect(o,force){let sx=0,sy=0,sw=VA.W,sh=VA.H;const r=9/16;
+  if((o.crop||force)&&sw/sh>r){const nw=sh*r;sx=(VA.W-nw)/2*(1+o.pos/100);sw=nw}
+  else if(force&&sw/sh<r){const nh=sw/r;sy=(VA.H-nh)/2;sh=nh}
+  return{sx,sy,sw,sh}}
+function captionLines(ctx,txt,W){const lines=[];
+  txt.split(/\n/).forEach(par=>{const words=par.trim().split(/\s+/).filter(Boolean);let cur='';
+    for(const w of words){const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>W*0.84&&cur){lines.push(cur);cur=w}else cur=t}if(cur)lines.push(cur)});return lines}
+function fitCaption(ctx,txt,W,base){const manual=txt.split(/\n/).filter(x=>x.trim()).length;let best=null;
+  for(let k=0;k<=6;k++){const fs=Math.round(base*(1-k*0.04));ctx.font=`900 ${fs}px -apple-system,"Segoe UI",Roboto,sans-serif`;
+    const lines=captionLines(ctx,txt,W);const orphan=lines.length>manual&&lines.some(l=>l.split(' ').length===1&&l.length<9);
+    if(!best)best={fs,lines};if(lines.length<=manual||!orphan){best={fs,lines};break}}
+  ctx.font=`900 ${best.fs}px -apple-system,"Segoe UI",Roboto,sans-serif`;return best}
+function drawCaption(ctx,txt,W,H,yFrac,alpha,fsMul){
+  ctx.save();ctx.globalAlpha=alpha;const {fs,lines}=fitCaption(ctx,txt,W,Math.round(W*(fsMul||0.075)));
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';
+  const lh=fs*1.18,y0=H*yFrac-(lines.length-1)*lh/2;
+  lines.forEach((l,i)=>{const y=y0+i*lh;ctx.lineWidth=fs*0.2;ctx.strokeStyle='#000';ctx.strokeText(l,W/2,y);ctx.fillStyle='#fff';ctx.fillText(l,W/2,y)});
+  ctx.restore()}
+function drawPill(ctx,label,W,H,yFrac,hookTxt,alpha){
+  ctx.save();let fs=Math.round(W*0.075),n=1;if(hookTxt){const f=fitCaption(ctx,hookTxt,W,fs);fs=f.fs;n=f.lines.length}
+  const top=H*yFrac-(n-1)*fs*1.18/2-fs*0.62;
+  const ps=Math.round(W*0.038);ctx.font=`900 ${ps}px -apple-system,"Segoe UI",Roboto,sans-serif`;
+  const tw=ctx.measureText(label).width,pw=tw+ps*1.6,ph=ps*1.7,px=(W-pw)/2,py=top-ph-ps*0.5;
+  ctx.globalAlpha=alpha;ctx.fillStyle='#ff2d6f';ctx.beginPath();
+  if(ctx.roundRect)ctx.roundRect(px,py,pw,ph,ph/2);else ctx.rect(px,py,pw,ph);ctx.fill();
+  ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,W/2,py+ph/2+1);ctx.restore()}
+function pickMime(){if(!window.MediaRecorder)return '';
+  return ['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']
+   .find(m=>{try{return MediaRecorder.isTypeSupported(m)}catch(_){return false}})||''}
+
+function exportVideo(light){
+  if(exporting||!VA)return;
+  if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){toast('Il browser non supporta l\'esportazione video: aggiorna Chrome');return}
+  const o=readOpts();o.light720=!!light;
+  if(o.hook&&!o.hookTxt){toast('Scrivi il testo dell\'hook');goStep(3);setTimeout(()=>$('#a-hookedit').focus(),400);return}
+  // parte sincrona: serve il tocco dell'utente per audio e riproduzione
+  const AC=window.AudioContext||window.webkitAudioContext;const ac=new AC();try{ac.resume()}catch(_){}
+  const v=hiddenVideo(vURL,false);let src=null;try{src=ac.createMediaElementSource(v)}catch(_){}
+  // secondo lettore già posizionato dopo ogni pausa: i tagli avvengono senza fermo immagine
+  let v2=getPlan(o).skips.length?hiddenVideo(vURL,false):null,src2=null;if(v2){try{src2=ac.createMediaElementSource(v2)}catch(_){v2.remove();v2=null}}
+  const dest=ac.createMediaStreamDestination();const A=VA.audio;
+  if(src){let node=src;if(src2){const mix=ac.createGain();src.connect(mix);src2.connect(mix);node=mix}if(o.vol&&A&&A.hasSound){const g=ac.createGain();g.gain.value=clamp(Math.pow(10,(-16-A.loud)/20),0.5,5);
+    const cp=ac.createDynamicsCompressor();cp.threshold.value=-14;cp.knee.value=6;cp.ratio.value=4;cp.attack.value=0.005;cp.release.value=0.2;node.connect(g);g.connect(cp);node=cp}
+    node.connect(dest)}
+  v.play().catch(()=>{});if(v2)v2.play().catch(()=>{});
+  exporting=true;const g=$('#o-go');if(g)g.disabled=true;runExport(o,v,ac,src,dest,v2);
+}
+// prova più formati finché il registratore del telefono ne accetta uno
+function makeRecorder(stream,light){
+  const sup=m=>{try{return MediaRecorder.isTypeSupported(m)}catch(_){return false}};
+  const mp4=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a','video/mp4'];
+  const webm=['video/webm;codecs=vp8,opus','video/webm;codecs=vp9,opus','video/webm'];
+  const order=(light?[...webm,...mp4]:[...mp4,...webm]).filter(sup);
+  const vb=light?3e6:6e6;
+  const tries=[...order.map(m=>({mimeType:m,videoBitsPerSecond:vb,audioBitsPerSecond:128000})),...order.map(m=>({mimeType:m})),{}];
+  let last=null;
+  for(const opt of tries){let r=null;
+    try{r=new MediaRecorder(stream,opt);r.start(500);return{rec:r,mime:opt.mimeType||r.mimeType||''}}
+    catch(e){last=e;try{r&&r.state!=='inactive'&&r.stop()}catch(_){}}}
+  throw last||new Error('Nessun formato video accettato dal registratore');
+}
+async function runExport(o,v,ac,src,dest,v2){
+  const plan=getPlan(o),{start,end,skips,outT,rate}=plan,total=outT(end);
+  const vA=v,vB=v2;let nx=v2||null,si=0;
+  const MW=o.light720?720:1080,MH=o.light720?1280:1920;
+  const {sx,sy,sw,sh}=cropRect(o,false);const sc=Math.min(1,MW/sw,MH/sh);
+  const outW=Math.max(2,Math.round(sw*sc/2)*2),outH=Math.max(2,Math.round(sh*sc/2)*2);
+  const c=document.createElement('canvas');c.width=outW;c.height=outH;const ctx=c.getContext('2d');
+  const filt=o.light&&FILTER_OK?VA.filter:'none';let finished=false,busy=false,rec=null,mime='',tracks=[],lastUi=0;
+  const out=$('#v-out');
+  const ui=p=>{const now=Date.now();if(now-lastUi<250&&p<1)return;lastUi=now;
+    out.innerHTML=`<div class="card"><b>Creo la versione migliorata${o.light720?' (720p)':''}…</b><div class="meter"><i style="width:${(p*100).toFixed(0)}%"></i></div>
+    <div style="color:var(--mut);font-size:13px">Tieni l'app aperta e lo schermo acceso fino alla fine.</div>
+    <button class="btn alt" onclick="cancelExport&&cancelExport()">Annulla</button></div>`};
+  const cleanup=()=>{tracks.forEach(t=>t.stop());try{ac.close()}catch(_){}[vA,vB].forEach(x=>{if(!x)return;x.pause();x.removeAttribute('src');x.load();x.remove()});exporting=false;cancelExport=null;const b=$('#o-go');if(b)b.disabled=false};
+  const fail=err=>{if(finished&&!err)return;finished=true;try{rec&&rec.state!=='inactive'&&rec.stop()}catch(_){}cleanup();
+    const det=err?`${err.name||'Errore'}${err.message?': '+err.message:''}`:'il registratore non ha prodotto dati';
+    out.innerHTML=`<div class="card">❌ <b>Non sono riuscito a creare il video.</b>
+      <div style="color:var(--mut);font-size:12.5px;margin-top:6px">Dettaglio: ${esc(det)}</div>
+      ${o.light720?'':`<button class="btn" onclick="exportVideo(true)">⚡ Riprova in modalità leggera (720p)</button>`}
+      <small class="n">La modalità leggera usa un formato e una risoluzione che quasi tutti i telefoni registrano senza problemi. Se fallisce ancora, mandami il dettaglio dell'errore.</small></div>`};
+  const draw=()=>{ctx.fillStyle='#000';ctx.fillRect(0,0,outW,outH);if(filt!=='none')ctx.filter=filt;
+    ctx.drawImage(v,sx,sy,sw,sh,0,0,outW,outH);ctx.filter='none';const ot=outT(v.currentTime)/rate;
+    if(o.subs&&VA.subs){const ct=v.currentTime;const sb=VA.subs.find(x=>ct>=x.s&&ct<x.e);if(sb)drawCaption(ctx,sb.t,outW,outH,0.68,1,0.064)}
+    const hd=o.hookDur||3,ha=ot>hd-0.2?clamp((hd+0.2-ot)/0.4,0,1):1;if(o.hook&&ot<hd+0.2)drawCaption(ctx,o.hookTxt,outW,outH,o.hookPos||0.24,ha);
+    if(o.part&&o.series&&ot<hd+0.2)drawPill(ctx,'PARTE '+o.series.ep,outW,outH,o.hookPos||0.24,o.hook?o.hookTxt:'',ha);
+    if(o.end&&o.endTxt){const rem=(total-outT(v.currentTime))/rate;if(rem<2.6)drawCaption(ctx,o.endTxt,outW,outH,0.24,clamp((2.6-rem)/0.3,0,1))}
+    if(o.bar){const h=Math.max(6,Math.round(outH*0.007));ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillRect(0,outH-h,outW,h);
+      const gr=ctx.createLinearGradient(0,0,outW,0);gr.addColorStop(0,'#ff2d6f');gr.addColorStop(1,'#25f4ee');ctx.fillStyle=gr;ctx.fillRect(0,outH-h,outW*clamp(outT(v.currentTime)/total,0,1),h)}};
+  const playOrAsk=async()=>{try{await v.play()}catch(e){if(e&&e.name==='NotAllowedError'){
+      await new Promise(res=>{out.innerHTML=`<div class="card"><b>Il telefono chiede un tocco per avviare l'audio</b><button class="btn" id="x-play">▶️ Avvia</button></div>`;
+        $('#x-play').onclick=()=>{try{ac.resume()}catch(_){}v.play().then(res,res)}})}else throw e}};
+  try{
+    await waitMeta(v);v.pause();v.playbackRate=rate;try{v.preservesPitch=true;v.webkitPreservesPitch=true}catch(_){}
+    if(nx){try{await waitMeta(nx);nx.pause();nx.playbackRate=rate;try{nx.preservesPitch=true;nx.webkitPreservesPitch=true}catch(_){}}catch(_){nx=null}}
+    await seekTo(v,start);draw();
+    await playOrAsk();v.pause();await seekTo(v,start);draw();
+    const vs=c.captureStream(30);tracks=[...vs.getVideoTracks()];if(src)tracks.push(...dest.stream.getAudioTracks());
+    ({rec,mime}=makeRecorder(new MediaStream(tracks),o.light720));
+    let recT0=performance.now(),pausedMs=0,pauseAt=0;const recMs=()=>performance.now()-recT0-pausedMs;
+    const _p=rec.pause.bind(rec),_r=rec.resume.bind(rec);rec.pause=()=>{pauseAt=performance.now();_p()};rec.resume=()=>{if(pauseAt){pausedMs+=performance.now()-pauseAt;pauseAt=0}_r()};
+    const chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+    rec.onerror=e=>fail(e.error||e);
+    const stop=cancel=>{if(finished)return;finished=true;[vA,vB].forEach(x=>x&&x.pause());
+      rec.onstop=()=>{cleanup();if(cancel){out.innerHTML='';toast('Annullato');return}
+        if(!chunks.length){finished=false;fail(null);return}
+        const type=((rec.mimeType||mime||'video/webm').split(';')[0])||'video/webm';let blob=new Blob(chunks,{type});
+        const done=b=>showResult(b,type,o,plan);
+        if(type.includes('webm')&&window.ysFixWebmDuration){out.innerHTML='<div class="card"><b>Rifinisco il file…</b></div>';
+          Promise.race([window.ysFixWebmDuration(blob,Math.round(recMs()),{logger:false}),new Promise(r=>setTimeout(()=>r(blob),8000))]).then(done,()=>done(blob))}
+        else done(blob)};
+      try{rec.stop()}catch(_){rec.onstop()}};
+    cancelExport=()=>stop(true);
+    [vA,vB].forEach(x=>x&&x.addEventListener('ended',()=>{if(x===v){draw();stop(false)}}));
+    const prep=()=>{if(!nx)return;nx.ready=false;const sk=skips[si];if(!sk)return;nx.pause();const me=nx;seekTo(me,sk.e).then(()=>{if(me===nx)me.ready=true})};
+    prep();
+    const loop=async()=>{if(finished)return;const t=v.currentTime;
+      if(t>=end-0.03){draw();stop(false);return}
+      while(skips[si]&&t>=skips[si].e)si++;
+      const sk=skips[si];
+      if(sk&&t>=sk.s&&!busy){
+        if(nx&&nx.ready){const old=v;v=nx;nx=old;v.play().catch(()=>{});old.pause();si++;prep()}
+        else{busy=true;try{rec.pause()}catch(_){}v.pause();await seekTo(v,sk.e);draw();try{rec.resume()}catch(_){}await v.play().catch(()=>{});si++;prep();busy=false}}
+      if(!busy)draw();ui(clamp(outT(v.currentTime)/total,0,1));requestAnimationFrame(loop)};
+    ui(0);await v.play();requestAnimationFrame(loop);
+  }catch(err){fail(err)}
+}
+function showResult(blob,type,o,plan){
+  const ext=type.includes('mp4')?'mp4':'webm';
+  const name=(o.series?`${toTag(o.series.name).slice(1)}-parte-${o.series.ep}`:'spinta-video')+'.'+ext,url=URL.createObjectURL(blob);
+  const cap=(($('#a-cap')||{}).value||'').trim();window._spintaCap=cap;
+  const done=[o.trim&&'silenzi tagliati',o.pause&&(plan.skips.length===1?'1 pausa rimossa':`${plan.skips.length} pause rimosse`),o.speed&&'1,1×',o.crop&&'9:16',o.light&&'luce',o.vol&&'volume',o.hook&&'hook',o.subs&&'sottotitoli',o.part&&'PARTE '+o.series.ep,o.end&&'testo finale',o.bar&&'barra'].filter(Boolean);
+  const file=new File([blob],name,{type});const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
+  window._spintaFile=file;const slot=nextSlot();const slotTxt=slot?slotLabel(slot):'';
+  $('#v-out').innerHTML=`<div class="card" style="margin-top:14px;background:var(--card2)"><h3>✅ Video pronto</h3>
+   <div style="color:var(--mut);font-size:12.5px;margin-top:4px">${esc(done.join(' · ')||'nessuna modifica')} · ${plan.outDur.toFixed(1)} s · ${(blob.size/1048576).toFixed(1)} MB${VA.score?` · punteggio ${VA.score.total}`:''}</div>
+   <video class="vid" src="${url}" controls playsinline></video>
+   <div class="acts"><a class="btn sm" href="${url}" download="${name}">⬇︎ Scarica</a>
+   ${canShare?`<button class="btn sm cy" onclick="shareFinal()">📤 Condividi su TikTok</button>`:''}</div>
+   ${cap?`<label>Caption pronta</label><div class="item" style="white-space:pre-wrap;padding-right:70px">${esc(cap)}${copyBtn(cap)}</div>`:'<small class="n">Nessuna caption: scrivila nel passo 3.</small>'}
+   <small class="n">📤 Condividi copia la caption e apre TikTok con il video: tieni premuto nella descrizione → Incolla → Pubblica.</small>
+   ${ext==='webm'?'<small class="n">Formato WebM: dal sito di TikTok si carica senza problemi. Se l\'app del telefono non lo vede, convertilo in MP4 (es. con CapCut).</small>':''}
+   <div id="v-cover"></div></div>
+   <div class="card" style="background:var(--card2)"><h3>🚀 Pubblica al momento giusto</h3>
+   ${slot?`<div style="font-size:14px;margin-top:6px">⏰ Prossimo orario consigliato: <b>${slotTxt}</b></div>`:''}
+   <div style="color:var(--mut);font-size:13px;margin-top:8px;line-height:1.6">☑️ Etichetta "Contenuto generato con AI" se usi voci o personaggi AI<br>☑️ Copertina caricata<br>☑️ Resta 30 minuti a rispondere ai primi commenti</div>
+   <div class="acts">${slot?`<button class="btn sm alt" onclick="planFromPkg()">📅 Programma</button>`:''}<button class="btn sm" onclick="markPublished()">✅ L'ho pubblicato</button></div>
+   <div id="pub-next"></div></div>`;
+  stp(5,'done');stpSum(5,`Pronto · ${plan.outDur.toFixed(1)} s · ${(blob.size/1048576).toFixed(1)} MB`);
+  makeCover();
+}
+function nextSlot(){const now=new Date();
+  for(let d=0;d<8;d++){const day=new Date(now);day.setDate(now.getDate()+d);
+    for(const h of BEST[day.getDay()]){const [hh,mm]=h.split(':').map(Number);const dt=new Date(day);dt.setHours(hh,mm,0,0);if(dt-now>20*60e3)return dt}}return null}
+function slotLabel(d){const t=new Date();const tm=new Date();tm.setDate(t.getDate()+1);
+  const day=d.toDateString()===t.toDateString()?'oggi':d.toDateString()===tm.toDateString()?'domani':DAYS[d.getDay()];return `${day} alle ${hhmm(d)}`}
+function shareFinal(){const cap=window._spintaCap||'';if(cap)copy(cap);
+  setTimeout(()=>navigator.share({files:[window._spintaFile],text:cap}).catch(()=>{}),cap?150:0)}
+function planFromPkg(){const slot=nextSlot();if(!slot){toast('Nessun orario disponibile');return}
+  const pad=n=>String(n).padStart(2,'0');const date=`${slot.getFullYear()}-${pad(slot.getMonth()+1)}-${pad(slot.getDate())}`;
+  const o=readOpts();DB.posts.push({id:uid(),title:(o.hookTxt||'Video').replace(/\n/g,' '),date,time:hhmm(slot),note:(window._spintaCap||'').split('\n')[0].slice(0,90),st:'edit'});save();scheduleNotifs();
+  toast(`Nel piano: ${slotLabel(slot)}`)}
+function markPublished(){
+  const o=readOpts(),ser=curSeries(),now=new Date(),P=VA.pkg||{};const h=P.hooks?P.hooks[P.sel||0]:null;
+  const item={id:uid(),title:(o.hookTxt||vFile.name).replace(/\n/g,' ').slice(0,90),date:todayISO(),hour:hhmm(now),
+    hk:!o.hookTxt?'Nessuno':P.edited||!h?'Personalizzato':h.k,len:+getPlan(o).outDur.toFixed(1),
+    format:ser?'Serie (puntata)':'Altro',series:ser?`${ser.name} · P${ser.ep}`:'',score:VA.score?VA.score.total:null,pubAt:now.getTime()};
+  DB.pending.push(item);if(ser)ser.ep++;DB.checklist={};save();scheduleNotifs();renderSeriesSel();
+  const d1=new Date(now.getTime()+45*60e3),d2=new Date(now.getTime()+48*3600e3);
+  $('#pub-next').innerHTML=`<div class="banner" style="margin:12px 0 0">🎉 Pubblicato! Prossimi passi:<br>💬 <b>Entro le ${hhmm(d1)}</b> rispondi ai primi commenti: TikTok guarda l'interazione della prima ora.<br>📊 <b>${slotLabel(d2)}</b> inserisci i dati nella scheda Crescita.
+    <div class="acts"><button class="btn sm alt" onclick="exportFollowICS('${item.id}')">🔔 Promemoria nel calendario</button></div></div>`;
+  toast('Ottimo! Ti ricordo i prossimi passi');}
+function exportFollowICS(id){const p=DB.pending.find(x=>x.id===id);if(!p)return;
+  const ev=[[30*60e3,'💬 Rispondi ai commenti: '],[48*3600e3,'📊 Inserisci i dati in Spinta: ']].map(([d,t],i)=>{const s=new Date(p.pubAt+d),e=new Date(s.getTime()+15*60e3);
+    return ['BEGIN:VEVENT','UID:'+p.id+'-'+i+'@spinta','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(s),'DTEND:'+icsDate(e),'SUMMARY:'+(t+p.title).replace(/[,;\n]/g,' ').slice(0,120),'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:Spinta','END:VALARM','END:VEVENT'].join('\r\n')}).join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Spinta//IT',ev,'END:VCALENDAR'].join('\r\n')],{type:'text/calendar'}));a.download='spinta-promemoria.ics';a.click();toast('Aprilo per aggiungerlo al calendario')}
+async function makeCover(){
+  if(!VA)return;const o=readOpts();const prev=$('#v-prev');let t;
+  if(prev.paused&&prev.currentTime>0.05)t=prev.currentTime;
+  else{const cand=VA.frames.filter(f=>f.t>0.4&&f.luma>0.22&&f.luma<0.82);const pool=cand.length?cand:VA.frames;
+    t=pool.reduce((a,f)=>{const s=f.sharp*(0.5+f.con)*(1-Math.abs(f.luma-0.5));return s>a.s?{s,t:f.t}:a},{s:-1,t:pool[0].t}).t}
+  const v=hiddenVideo(vURL,true);
+  try{await waitMeta(v);try{await v.play();v.pause()}catch(_){}await seekTo(v,t);
+    const {sx,sy,sw,sh}=cropRect(o,true);const W=1080,H=1920;const c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');
+    if(o.light&&FILTER_OK)ctx.filter=VA.filter;ctx.drawImage(v,sx,sy,sw,sh,0,0,W,H);ctx.filter='none';
+    const txt=o.hookTxt;if(txt){const gr=ctx.createLinearGradient(0,H*0.3,0,H*0.6);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.5,'rgba(0,0,0,.35)');gr.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gr;ctx.fillRect(0,H*0.3,W,H*0.3);drawCaption(ctx,txt,W,H,0.45,1)}
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.92));const url=URL.createObjectURL(blob);
+    const file=new File([blob],'spinta-copertina.jpg',{type:'image/jpeg'});window._spintaCover=file;
+    const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
+    ($('#v-cover')||$('#v-out')).insertAdjacentHTML('beforeend',`<div style="margin-top:14px"><h3 style="font-size:16px">🖼️ Copertina (a ${t.toFixed(1)} s)</h3>
+      <img src="${url}" style="width:60%;display:block;margin:12px auto;border-radius:12px">
+      ${txt?'':'<small class="n">Scrivi un testo hook nel campo qui sopra per avere il titolo sulla copertina.</small>'}
+      <div class="acts"><a class="btn sm" href="${url}" download="spinta-copertina.jpg" style="text-decoration:none">⬇︎ Scarica</a>
+      ${canShare?'<button class="btn sm cy" onclick="navigator.share({files:[window._spintaCover]}).catch(()=>{})">📤 Condividi</button>':''}</div>
+      <small class="n">Su TikTok: Modifica copertina → Carica dalla galleria, se la tua versione lo permette. Altrimenti mettila come primo fotogramma o pubblicala come post foto.</small></div>`);
+  }catch(_){toast('Copertina non riuscita')}
+  finally{v.removeAttribute('src');v.load();v.remove()}
+}
+
+/* ---------- REGOLE ALGORITMO (aggiornabili da spinta-regole.json) ---------- */
+const DEFAULT_RULES={"version": "2026.10.04", "aggiornato": "4 ottobre 2026", "prossimoAggiornamento": "lunedì 12 ottobre", "durata": {"min": 10, "ideale": [15, 90], "max": 180}, "hashtag": {"max": 5, "larghi": 0, "evitare": ["#fyp", "#foryou", "#viral", "#perte", "#neiperte"]}, "hookSecondi": 3, "pausaMin": 0.6, "obiettivi": {"completamento": 70, "rewatch": 15, "frequenza": "3-5 video a settimana", "primaOraMinuti": 30}, "orari": {"0": ["11:00", "18:00", "20:30"], "1": ["12:30", "19:00", "20:00"], "2": ["12:30", "19:00", "20:00"], "3": ["13:00", "19:00", "20:00"], "4": ["12:30", "18:30", "20:00"], "5": ["13:00", "18:00", "21:00"], "6": ["11:30", "15:00", "20:30"]}, "segnali": ["Tempo di visione e percentuale di visione completa (obiettivo: oltre il 70%)", "Rewatch: oltre il 15-20% è un segnale forte", "Condivisioni", "Commenti lunghi e veloci nella prima ora", "Nuovi follower dal video", "Salvataggi", "Like (il segnale più debole)"], "novita": ["I video più lunghi (60-180 s) vengono spinti di più, ma solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.", "La soglia per diventare virali si è alzata: serve circa il 70% di visione completa.", "TikTok funziona sempre più come motore di ricerca: dì l'argomento a voce, scrivilo a schermo e nella caption.", "Hashtag generici come #fyp e #viral non aiutano più: usa da 1 a 5 hashtag specifici della tua nicchia.", "L'audio originale (la tua voce) viene favorito; i suoni di tendenza aiutano solo se li usi entro 24-48 ore da quando esplodono.", "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.", "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.", "Le serie a puntate e i format ripetibili fanno tornare il pubblico sul profilo.", "Restare in una nicchia precisa rende più dei profili che parlano di tutto.", "Costanza: meglio 3-5 video a settimana regolari che tanti video in pochi giorni.", "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."], "tendenze": {"settimana": "28 settembre – 4 ottobre 2026", "format": [{"nome": "Serie a tema", "come": "Puntate numerate con lo stesso inizio e lo stesso personaggio: chi trova una puntata guarda le altre."}, {"nome": "Video-domanda", "come": "Apri o chiudi con una domanda diretta al pubblico: le analisi riportano circa il 26% di commenti in più."}, {"nome": "Problema → soluzione", "come": "Mostra subito un problema reale del tuo pubblico e risolvilo entro il video."}, {"nome": "Storytelling 60-90 s", "come": "Una mini-storia con posta in gioco, sviluppo e finale chiaro: i video più lunghi crescono se tengono fino alla fine."}, {"nome": "Format ripetibile", "come": "Stessa struttura ogni volta (es. «Giorno X di Y», «Valuto i vostri…»): l'algoritmo e il pubblico la riconoscono."}], "hashtag": [], "suoni": [], "nota": "TikTok non rende pubblici i dati sui suoni e gli hashtag di tendenza in Italia: per quelli del momento apri il TikTok Creative Center dal tuo account."}, "fonti": [{"titolo": "Hootsuite – How the TikTok algorithm works in 2026", "url": "https://blog.hootsuite.com/tiktok-algorithm/"}, {"titolo": "Socialync – TikTok Algorithm 2026: the 7 signals (agg. luglio 2026)", "url": "https://www.socialync.io/blog/tiktok-algorithm-2026-what-works-now"}, {"titolo": "Metricool – TikTok Trends 2026 (agg. agosto 2026)", "url": "https://metricool.com/tiktok-trends/"}, {"titolo": "DeRev – Algoritmo di TikTok 2026", "url": "https://derev.com/2026/07/algoritmo-tiktok-2026/"}, {"titolo": "OpusClip – TikTok's new algorithm 2026", "url": "https://www.opus.pro/blog/tiktoks-new-algorithm-2026"}], "checklistExtra": ["Etichetta \"Contenuto generato con AI\" se usi voci, immagini o personaggi creati con l'AI", "Nessuna filigrana di altre app (CapCut, Instagram…)", "Hashtag specifici della nicchia, niente #fyp o #viral"]};
+let RULES=DEFAULT_RULES;
+try{const c=JSON.parse(localStorage.getItem(KEY+'_rules'));if(c&&c.version&&c.version>=DEFAULT_RULES.version)RULES=Object.assign({},DEFAULT_RULES,c)}catch(_){}
+function applyRules(){if(RULES.orari)BEST=RULES.orari;renderRulesCard();try{renderBest()}catch(_){}}
+async function updateRules(manual){
+  if(location.protocol==='file:'){if(manual)toast('Gli aggiornamenti arrivano quando l\'app è online (GitHub Pages)');return}
+  try{const r=await fetch('spinta-regole.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();if(!j||!j.version)throw 0;
+    const isNew=j.version>RULES.version;
+    if(j.version>=DEFAULT_RULES.version){RULES=Object.assign({},DEFAULT_RULES,j);try{localStorage.setItem(KEY+'_rules',JSON.stringify(j))}catch(_){}applyRules()}
+    if(isNew)toast('📡 Regole TikTok aggiornate');else if(manual)toast('Hai già le regole più recenti ✓');
+  }catch(_){if(manual)toast('File spinta-regole.json non trovato accanto all\'app')}}
+const safeUrl=u=>/^https:\/\//i.test(u||'')?u:'#';
+function renderRulesCard(){const sr=$('#set-rules');if(sr)sr.textContent=RULES.aggiornato;const el=$('#rules-card');if(!el)return;const T=RULES.tendenze||{},O=RULES.obiettivi;
+  const head=t=>`<b style="font-size:14px;display:block;margin-top:14px">${t}</b>`;
+  el.innerHTML=`<h3 style="font-size:17px">📡 Algoritmo e tendenze</h3>
+  <div style="color:var(--mut);font-size:12.5px;margin-top:2px">Aggiornato al ${esc(RULES.aggiornato)}${RULES.prossimoAggiornamento?` · prossimo aggiornamento ${esc(RULES.prossimoAggiornamento)}`:''}</div>
+  ${T.format&&T.format.length?head(`🔥 Format che funzionano${T.settimana?' · '+esc(T.settimana):''}`)+T.format.map(f=>`<div class="fix"><div><b style="font-size:14px">${esc(f.nome)}</b><div style="color:var(--mut);font-size:13px">${esc(f.come)}</div></div></div>`).join(''):''}
+  ${T.hashtag&&T.hashtag.length?head('#️⃣ Hashtag in crescita')+`<div class="chips">${T.hashtag.map(h=>`<span class="chip">${esc(h.tag)}${h.nota?` <span style="color:var(--mut)">· ${esc(h.nota)}</span>`:''}</span>`).join('')}</div>`:''}
+  ${T.suoni&&T.suoni.length?head('🎵 Suoni in tendenza')+T.suoni.map(s=>`<div style="font-size:13.5px;margin-top:5px">• ${esc(s.nome)}${s.nota?` <span style="color:var(--mut)">– ${esc(s.nota)}</span>`:''}</div>`).join(''):''}
+  ${T.nota?`<small class="n">${esc(T.nota)} <a href="https://ads.tiktok.com/business/creativecenter/" target="_blank" rel="noopener">Apri il Creative Center</a></small>`:''}
+  ${O?`<div class="kpis" style="margin:14px 0 0"><div class="kpi"><div class="v">${O.completamento}%</div><div class="l">visione completa per diventare virale</div></div><div class="kpi"><div class="v">${O.rewatch}%</div><div class="l">rewatch: segnale forte</div></div></div>${O.frequenza?`<small class="n">Frequenza consigliata: ${esc(O.frequenza)}</small>`:''}`:''}
+  ${head('Cosa pesa di più, in ordine')}
+  ${RULES.segnali.map((x,i)=>`<div style="font-size:13.5px;margin-top:5px"><span class="tag">${i+1}</span>${esc(x)}</div>`).join('')}
+  ${head('Cosa funziona adesso')}
+  ${RULES.novita.map(x=>`<div style="font-size:13.5px;margin-top:6px;color:var(--mut)">• ${esc(x)}</div>`).join('')}
+  ${RULES.fonti&&RULES.fonti.length?`<details><summary>Fonti (${RULES.fonti.length})</summary>${RULES.fonti.map(f=>`<div style="margin-top:6px"><a href="${esc(safeUrl(f.url))}" target="_blank" rel="noopener">${esc(f.titolo)}</a></div>`).join('')}<div style="margin-top:8px">TikTok non pubblica il suo algoritmo: queste sono analisi di esperti, raccolte e aggiornate ogni settimana.</div></details>`:''}
+  <button class="btn alt" onclick="updateRules(true)">↻ Controlla aggiornamenti</button>`;
+  renderTrendBox()}
+function renderTrendBox(){const el=$('#a-trend');if(!el)return;const T=RULES.tendenze||{};const nk=($('#a-niche')||{}).value;
+  const tags=(T.hashtag||[]).filter(h=>!h.nicchia||h.nicchia===nk||h.nicchia==='generale').slice(0,8),f=(T.format||[]).slice(0,2);
+  if(!tags.length&&!f.length){el.innerHTML='';return}
+  el.innerHTML=`<div class="grp" style="padding:10px 12px;margin-top:12px"><b style="font-size:13.5px">🔥 Questa settimana su TikTok</b>
+   ${tags.length?`<div class="chips">${tags.map(h=>`<button class="chip" data-t="${esc(h.tag)}" onclick="addTag(this.dataset.t)">${esc(h.tag)}</button>`).join('')}</div><small class="n">Tocca un hashtag per aggiungerlo alla caption.</small>`:''}
+   ${f.map(x=>`<div style="font-size:13px;margin-top:6px"><b>${esc(x.nome)}</b> <span style="color:var(--mut)">– ${esc(x.come)}</span></div>`).join('')}
+   <div style="margin-top:8px;font-size:12.5px"><a href="#" onclick="goTab('tools');document.querySelector('#tool-seg button[data-k=algo]').click();return false">Tutte le tendenze →</a></div></div>`}
+function addTag(t){const c=$('#a-cap');const tags=c.value.match(/#[^\s#]+/g)||[];if(tags.includes(t)){toast('Già presente');return}
+  if(tags.length>=RULES.hashtag.max){const last=tags[tags.length-1];const i=c.value.lastIndexOf(last);c.value=c.value.slice(0,i)+t+c.value.slice(i+last.length)}
+  else c.value=c.value.replace(/\s*$/,'')+(tags.length?' ':'\n\n')+t;schedScore();toast('Aggiunto '+t)}
+/* ---------- PILOTA AUTOMATICO ---------- */
+const STOP=new Set(('a ad al alla alle allo agli ai anche ancora avere aveva avete abbiamo hanno ho ha hai che chi ci come con contro cosa così cosi da dal dalla dalle dai dei del della delle dello degli dentro di dopo dove due e è ed era erano essere fa fare fatto gli già il in io la le lei li lo loro lui ma me mi mio mia miei mie molto ne nei nel nella nelle nello noi non nostro nostra o oggi ogni per perché perche però pero più piu poi prima quando quale quali quanto quella quelle quelli quello questa queste questi questo qui se sei sempre senza si sia siamo siete sono sopra sotto sta stai stato stata su sua sue suo suoi sul sulla sulle sullo tra fra tu tua tuo tutti tutto tutta tutte un una uno va vi voi vostro allora cioè cioe ecco proprio niente nulla tipo dire detto bene bello bella sì no ok okay eh ah oh uh poco tanto tanta tante tanti fai faccio vado devo deve devi posso può puoi vuoi voglio sai so dice dico guarda guardate vedi vediamo adesso ora qua là lì quindi comunque infatti mentre ciao ragazzi raga gente volta volte cose stare avete altro altra altri altre stesso stessa ogni nessuno qualcosa qualche mai fatto fatta molto molta molti molte veramente davvero solo anche like likes follow follower followers segui seguite seguitemi seguimi iscriviti commenta commentate commenti condividi condividete video tiktok canale profilo parte puntata episodio domani ieri grazie amici fratelli ehi tipo ovvero praticamente diciamo insomma').split(' '));
+const NICHE_KW={cibo:['ricetta','cucina','pasta','pizza','mangiare','sugo','forno','dolce','panino','friggitoria','ragù','pranzo','cena'],
+  business:['soldi','euro','trading','investire','vendere','vendita','lavoro','prezzo','guadagno','guadagnare','bancarella','cliente','clienti','negozio','affari','sfida'],
+  tech:['robot','robottino','intelligenza','artificiale','app','telefono','computer','tecnologia','chatgpt','programma'],
+  outdoor:['pesca','pesce','pesci','mare','canna','esca','spinning','amo','scogliera','spiaggia'],
+  comicita:['ridere','scherzo','battuta','divertente','assurdo'],
+  fitness:['palestra','allenamento','muscoli','peso','dieta','corsa'],
+  viaggi:['viaggio','città','visitare','hotel','vacanza','borgo'],
+  beauty:['trucco','pelle','capelli','outfit','vestito','moda'],
+  diy:['costruire','legno','riparare','attrezzi','restauro','montare'],
+  locale:['napoli','napoletano','napoletana','vicolo','quartiere','campania','casoria','vesuvio'],
+  motivazione:['obiettivo','sogno','successo','vita','cambiare','disciplina']};
+function wordsOf(t){return (t.toLowerCase().match(/[a-zàèéìòóù]+/g)||[])}
+function keywords(t){const w=wordsOf(t).filter(x=>x.length>=4&&!STOP.has(x));const c={},b={};
+  w.forEach((x,i)=>{c[x]=(c[x]||0)+1;if(i&&w[i-1]!==x){const k=w[i-1]+' '+x;b[k]=(b[k]||0)+1}});
+  return{cnt:c,top:Object.entries(c).sort((a,b)=>b[1]-a[1]).map(e=>e[0]),bi:Object.entries(b).filter(e=>e[1]>=2).sort((a,b)=>b[1]-a[1]).map(e=>e[0])}}
+function detectNiche(ws){let best='generale',bs=0;
+  for(const [k,list] of Object.entries(NICHE_KW)){const tagw=NICHES[k].tags.map(x=>x.slice(1));
+    const sc=ws.reduce((a,w)=>a+(list.includes(w)?2:0)+(tagw.includes(w)?1:0),0);if(sc>bs){bs=sc;best=k}}
+  return best}
+const ART=/^(il|lo|la|i|gli|le|un|una|uno|l')(\s|$)|^l'/i;
+function withArticle(topic,transcript){if(!topic||ART.test(topic))return topic;
+  const e=topic.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const m=(transcript||'').toLowerCase().match(new RegExp("\\b(il|lo|la|i|gli|le|un|una|uno)\\s+"+e+"|\\bl'"+e));
+  return m?m[0]:guessArt(topic)}
+function fixIt(s){const P={su:['sul','sullo','sulla','sui','sugli','sulle',"sull'"],di:['del','dello','della','dei','degli','delle',"dell'"],a:['al','allo','alla','ai','agli','alle',"all'"],da:['dal','dallo','dalla','dai','dagli','dalle',"dall'"],in:['nel','nello','nella','nei','negli','nelle',"nell'"]};
+  const arts=['il','lo','la','i','gli','le'];
+  for(const [pr,f] of Object.entries(P)){arts.forEach((a,i)=>{s=s.replace(new RegExp('\\b'+pr+' '+a+'\\b','gi'),f[i])});s=s.replace(new RegExp('\\b'+pr+" l'",'gi'),f[6])}
+  return s}
+// modelli che suonano bene con un nome (es. "il robottino") e con un'attività (es. "pescare a spinning")
+const HOOK_NOUN=new Set(['Curiosità','Lista','Fino alla fine','Controintuitivo','Salvataggio','Sfida','Velocità','Risposta','Semplice','Prima/Dopo','Storia','Domanda','Esperimento','POV']);
+const STAKE=/(sfratt|affitt|fitto|perd|rischi|scadenz|entro|ultim|licenzi|chiud|fallis|sold|euro|like|follower|sfida|domenic|dummeneca|giorn|settiman|semmana|vinc|stut|speg)/gi;
+function stakeScore(x){const m=(x.match(STAKE)||[]).length;return Math.min(30,m*10)+(/\d|cento|mille/i.test(x)?15:0)+(/[!?]/.test(x)?5:0)}
+function stakesHook(tr){const t=tr.toLowerCase();
+  const num=t.match(/(\d[\d.]*|cento|duecento|trecento|cinquecento|mille)\s*(like|euro|€|follower|giorni|ore)/);if(!num)return null;
+  const st=[[/sfratt/,'mi sfrattano'],[/licenzi/,'mi licenziano'],[/chiud/,'chiudo tutto'],[/stut|speg/,'mi spengono'],[/perd/,'perdo tutto']].find(([r])=>r.test(t));if(!st)return null;
+  const day=(t.match(/\b(lunedì|martedì|mercoledì|giovedì|venerdì|sabato|domenica|dummeneca)\b/)||[])[1];
+  return `${num[1]} ${num[2]==='€'?'euro':num[2]} entro ${day?(day==='dummeneca'?'domenica':day):'fine settimana'}… o ${st[1]} 😳`}
+function videoLines(tr){const ss=(tr.match(/[^.?!…]+[.?!…]?/g)||[]).map(x=>x.trim()).filter(Boolean),out=[];
+  ss.forEach((x,i)=>{const n=x.split(/\s+/).length;if(n>=3&&n<=14)out.push(x);
+    if(i<ss.length-1){const y=x+' '+ss[i+1];if(y.split(/\s+/).length<=14&&n<=9)out.push(y)}});return out}
+function bestHooks(topic,transcript,useT){
+  const c=[];
+  if(useT&&topic){const isNoun=ART.test(topic);
+    HOOKS.filter(h=>!isNoun||HOOK_NOUN.has(h.k)).forEach(h=>{const x=fixIt(cap1(h.s.replace(/\{t\}/g,topic).replace(/\{T\}/g,cap1(topic))));c.push({k:h.k,s:x,sc:hookAnalysis(x).sc+Math.random()*6})})}
+  if(transcript){const sh=stakesHook(transcript);if(sh)c.push({k:'Posta in gioco',s:sh,sc:100});
+    videoLines(transcript).forEach(x=>c.push({k:'Frase dal tuo video',s:cap1(x),sc:hookAnalysis(x).sc*0.6+stakeScore(x)+20}))}
+  c.sort((a,b)=>b.sc-a.sc);const seen=new Set(),out=[];
+  for(const h of c){const key=h.k==='Frase dal tuo video'?h.s:h.k;if(seen.has(key))continue;seen.add(key);out.push(h);if(out.length>=4)break}
+  const own=c.find(h=>h.k==='Frase dal tuo video');if(own&&!out.includes(own)&&out.length>=4)out[3]=own;
+  return out}
+const CTA={commenti:['Voi cosa ne pensate? Scrivetelo nei commenti 👇','Com\'è finita secondo voi? Ditemelo sotto 👇','Siete d\'accordo? Rispondo a tutti nei commenti 👇'],
+  condivisioni:['Mandalo a chi deve vederlo 👀','Tagga un amico che farebbe lo stesso 😂','Condividilo con chi ne ha bisogno ❤️'],
+  follow:['Segui per la prossima puntata 🔔','La parte 2 arriva domani: segui per non perderla 🔔','Ogni giorno una puntata nuova: segui 🔔'],
+  salvataggi:['Salvalo così non lo perdi 📌','Salva il video e riguardalo dopo 📌']};
+function captionLine(topicArt,transcript){const key=topicArt.replace(ART,'').trim().split(' ')[0];
+  const sents=(transcript.match(/[^.?!…]+[.?!…]?/g)||[]).map(x=>x.trim()).filter(x=>{const n=x.split(/\s+/).length;return n>=4&&n<=22});
+  if(!sents.length)return '';
+  return sents.map(x=>({x,sc:stakeScore(x)+(key&&x.toLowerCase().includes(key)?20:0)})).sort((a,b)=>b.sc-a.sc)[0].x}
+function makeSubs(chunks){const out=[];
+  chunks.forEach(ch=>{const txt=(ch.text||'').trim();if(!txt||/amara\.org|sottotitoli (creati|a cura)|grazie per la visione/i.test(txt))return;
+    const s=ch.timestamp?.[0]??0,e=ch.timestamp?.[1]??s+3;const w=txt.split(/\s+/).filter(Boolean);if(e<=s)return;
+    const n=Math.ceil(w.length/4);for(let i=0;i<n;i++)out.push({s:s+(e-s)*i/n,e:s+(e-s)*(i+1)/n,t:w.slice(i*4,i*4+4).join(' ')})});
+  return out}
+let ASR=null,ASRmodel='';
+async function getASR(model,onP){if(ASR&&ASRmodel===model)return ASR;
+  const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3');T.env.allowLocalModels=false;
+  ASR=await T.pipeline('automatic-speech-recognition',model,{dtype:'q8',device:'wasm',progress_callback:onP});ASRmodel=model;return ASR}
+async function pcm16k(ab){const oc=new OfflineAudioContext(1,Math.ceil(ab.duration*16000),16000);
+  const s=oc.createBufferSource();s.buffer=ab;s.connect(oc.destination);s.start();return (await oc.startRendering()).getChannelData(0)}
+
+function renderAutoCard(){
+  const goals=[['commenti','Più commenti'],['condivisioni','Più condivisioni'],['follow','Più follower'],['salvataggi','Più salvataggi']];
+  const hasA=VA.audio&&VA.audio.hasSound;
+  $('#v-auto').innerHTML=`<div class="grp" style="padding:12px">
+   <b>✨ Pilota automatico</b>
+   <div style="color:var(--mut);font-size:13px;margin:4px 0 8px">${hasA?'Ascolto il video, capisco l\'argomento e scrivo hook, sottotitoli, caption e hashtag secondo le regole attuali di TikTok.':'Il video non ha parlato da ascoltare: scrivi l\'argomento qui sotto e preparo hook e caption.'}</div>
+   ${hasA?`<select id="a-model"><option value="onnx-community/whisper-base">Trascrizione precisa (~80 MB la prima volta)</option><option value="onnx-community/whisper-tiny">Trascrizione veloce (~40 MB)</option></select>
+   <button class="btn" id="a-go" onclick="autoPrepare()">✨ Prepara tutto in automatico</button>`:''}
+   <div id="a-steps" style="margin-top:8px"></div></div>
+   <label>Argomento del video</label>
+   <div style="display:flex;gap:8px;align-items:center"><input id="a-topic" placeholder="es. robottino alla bancarella" oninput="$('#a-ok').style.display=''"><button class="btn sm" id="a-ok" style="white-space:nowrap" onclick="regenPkg(false)">✅ Conferma</button></div>
+   <small class="n" id="a-tnote">${hasA?'Lo capisce il pilota automatico, oppure scrivilo tu e conferma.':'Scrivilo e conferma.'}</small>
+   <div class="row"><div><label>Nicchia</label><select id="a-niche" onchange="renderTrendBox()">${Object.entries(NICHES).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join('')}</select></div>
+   <div><label>Obiettivo</label><select id="a-goal" onchange="goalChange()">${goals.map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select></div></div>
+   <div id="a-tr"></div>
+   <div id="a-pkg">
+   <label>Hook proposti</label><div id="a-hooks"><div class="empty" style="padding:10px;font-size:13px">Usa il pilota automatico o conferma l'argomento per ricevere le proposte. Puoi anche scriverlo tu qui sotto.</div></div>
+   <label>✏️ Il tuo hook</label>
+   <textarea id="a-hookedit" style="min-height:70px" oninput="hookEdited()" placeholder="Scrivi o modifica l'hook. Vai a capo per decidere tu le righe."></textarea>
+   <div class="chips">${['😳','🔥','😂','👀','💀','⚠️','🤯','👇','🔋'].map(e=>`<button class="chip" onclick="addEmoji('${e}')">${e}</button>`).join('')}
+     <button class="chip" onclick="hookCase()">Aa↔AA</button><button class="chip" onclick="resetHook()">↺ Originale</button></div>
+   <div id="a-hookscore" style="font-size:12.5px;color:var(--mut);margin-top:8px"></div>
+   <div class="row"><div><label>Durata a schermo</label><select id="a-hdur" onchange="hookPreview();updEst()"><option value="2">2 secondi</option><option value="3" selected>3 secondi</option><option value="4">4 secondi</option><option value="5">5 secondi</option></select></div>
+   <div><label>Posizione</label><select id="a-hpos" onchange="hookPreview();updEst()"><option value="0.24" selected>In alto</option><option value="0.42">Al centro</option><option value="0.58">In basso</option></select></div></div>
+   ${VA.topText?'<div class="banner" style="margin-top:10px;font-size:13px">⚠️ Questo video ha già un testo in alto nei primi secondi: il nuovo hook ci andrebbe sopra. Carica il video originale senza testo, oppure sposta l\'hook o spegnilo nel passo 4.</div>':''}
+   <label>Anteprima</label><canvas id="a-hprev" width="360" height="640" style="width:56%;display:block;margin:0 auto;border-radius:12px;background:#000"></canvas>
+   <label>Caption e hashtag</label><textarea id="a-cap" style="min-height:120px" oninput="schedScore()" placeholder="La caption appare qui. Puoi scriverla o modificarla."></textarea>
+   <div id="a-trend"></div>
+   <button class="btn alt" onclick="goStep(4)">Avanti: montaggio ↓</button></div>`;
+  hookPreview();renderTrendBox()}
+const A_STEPS=['Ascolto il video','Capisco l\'argomento','Scelgo l\'hook migliore','Scrivo caption e hashtag','Imposto correzioni e sottotitoli'];
+function aStep(i,state,txt){VA.st=VA.st||A_STEPS.map(n=>({n,state:'wait',txt:''}));VA.st[i]={n:A_STEPS[i],state,txt:txt||''};
+  const ic={wait:'⚪',run:'⏳',ok:'✅',warn:'⚠️'};
+  $('#a-steps').innerHTML=VA.st.map(x=>`<div class="step"><span>${ic[x.state]}</span><span><b>${esc(x.n)}</b>${x.txt?`<br><span style="color:var(--mut);font-size:12.5px">${esc(x.txt)}</span>`:''}</span></div>`).join('')}
+async function autoPrepare(){
+  if(!VA||VA.busy)return;VA.busy=true;VA.st=null;$('#a-go').disabled=true;
+  A_STEPS.forEach((_,i)=>aStep(i,'wait'));
+  let transcript='',subs=[];
+  if(VA.ab&&VA.audio&&VA.audio.hasSound){
+    try{aStep(0,'run','Preparo il modello di trascrizione…');const t0=Date.now();
+      const asr=await getASR($('#a-model').value,p=>{if(p&&p.status==='progress'&&p.total)aStep(0,'run',`Scarico il modello (solo la prima volta)… ${Math.round(p.loaded/p.total*100)}%`)});
+      aStep(0,'run','Trascrivo il parlato… può volerci un minuto');
+      const tick=setInterval(()=>aStep(0,'run',`Trascrivo il parlato… ${Math.round((Date.now()-t0)/1000)} s`),1000);
+      let out;try{out=await asr(await pcm16k(VA.ab),{language:'italian',task:'transcribe',chunk_length_s:30,stride_length_s:5,return_timestamps:true})}finally{clearInterval(tick)}
+      subs=makeSubs(out.chunks||[]);
+      transcript=subs.length?(out.text||subs.map(x=>x.t).join(' ')).replace(/[^.?!]*(amara\.org|sottotitoli (creati|a cura))[^.?!]*[.?!]?/gi,'').replace(/\s+/g,' ').trim():'';
+      aStep(0,transcript?'ok':'warn',transcript?`${wordsOf(transcript).length} parole riconosciute · ${subs.length} righe di sottotitoli`:'Nessuna voce riconosciuta');
+    }catch(e){console.error(e);aStep(0,'warn','Trascrizione non riuscita su questo dispositivo (serve connessione e memoria). Scrivi l\'argomento qui sotto.')}
+  }else aStep(0,'warn','Nel video non c\'è parlato da trascrivere');
+  VA.transcript=transcript;VA.subs=subs;
+  const kw=keywords(transcript),topic=kw.bi[0]||kw.top[0]||'';
+  VA.pkg={topic,topicOk:false,kw:kw.top.slice(0,4),kwSure:kw.top.filter(w=>kw.cnt[w]>=3).slice(0,3),niche:detectNiche(wordsOf(transcript))};
+  aStep(1,topic?'warn':'warn',topic?`Ho capito: "${topic}" · nicchia: ${NICHES[VA.pkg.niche].n}. Confermalo qui sotto (col dialetto la trascrizione può sbagliare)`:'Non l\'ho capito dal parlato: scrivilo tu');
+  renderAutoResult();
+  if(transcript)regenPkg(true);else{aStep(2,'warn','In attesa dell\'argomento');aStep(3,'warn','In attesa dell\'argomento');setTimeout(()=>$('#a-topic').focus(),200)}
+  VA.busy=false;$('#a-go').disabled=false;$('#a-go').textContent='↻ Rifai l\'analisi automatica';
+}
+function renderAutoResult(){const P=VA.pkg;$('#a-topic').value=P.topic||'';$('#a-niche').value=P.niche||'generale';$('#a-ok').style.display='';
+  $('#a-tnote').textContent=P.topic?'Controllalo e correggilo: col dialetto la trascrizione può sbagliare. Finché non lo confermi, l\'hook viene solo dalle frasi del tuo video.':'Non l\'ho capito dal parlato: scrivilo tu e conferma.';
+  $('#a-tr').innerHTML=VA.transcript?`<details><summary>Trascrizione del video</summary><div style="margin-top:6px;white-space:pre-wrap">${esc(VA.transcript)}</div></details>`:'';
+  refreshSubsOpt();schedScore()}
+function regenPkg(auto){
+  const topic=$('#a-topic').value.trim();
+  if(!auto){if(!topic){toast('Scrivi l\'argomento');$('#a-topic').focus();return}VA.pkg.topicOk=true;$('#a-ok').style.display='none';
+    $('#a-tnote').textContent='Argomento confermato ✓';aStep(1,'ok',`Argomento: "${topic}"`)}
+  const useT=VA.pkg.topicOk&&!!topic;
+  const niche=$('#a-niche').value,goal=$('#a-goal').value;VA.pkg.topic=topic;VA.pkg.niche=niche;
+  const tArt=topic?withArticle(topic,VA.transcript):'';
+  const hooks=bestHooks(tArt,VA.transcript,useT);
+  if(!hooks.length){aStep(2,'warn','Nessuna frase adatta nel video: conferma l\'argomento');$('#a-topic').focus();return}
+  VA.pkg.hooks=hooks;
+  aStep(2,'ok',useT?`${hooks.length} hook valutati, scelto il migliore`:`Scelto dalle frasi del tuo video${hooks[0].k==='Posta in gioco'?' (posta in gioco)':''}`);
+  // hashtag propri solo dalle parole dell'argomento confermato (la trascrizione del dialetto può inventare parole)
+  const tw=useT?wordsOf(topic).filter(w=>w.length>=4&&!STOP.has(w)&&!['alla','della','sulla','nella','dalla'].includes(w)):[];
+  const tags=tagsFor('',tw,niche);
+  const ser=curSeries();let tg=tags.split(' ').filter(Boolean);if(ser)tg=[ser.tag,...tg.filter(t=>t!==ser.tag)].slice(0,RULES.hashtag.max);
+  $('#a-cap').value=(ser?`Parte ${ser.ep} · `:'')+(captionLine(tArt,VA.transcript||'')||hooks[0].s.replace(/\n/g,' '))+'\n'+pick(CTA[goal])+'\n\n'+tg.join(' ');
+  aStep(3,'ok',`${tags.split(' ').length} hashtag (max ${RULES.hashtag.max})${useT?'':' · conferma l\'argomento per hashtag più precisi'}`);
+  $('#a-pkg').style.display='';selectHook(0);applyAutoOptions();schedScore();
+}
+function selectHook(i){const hs=VA.pkg.hooks;VA.pkg.sel=i;VA.pkg.edited=false;
+  $('#a-hooks').innerHTML=hs.map((h,j)=>`<div class="hk ${j===i?'on':''}" onclick="selectHook(${j})">${esc(h.s)}<small>${esc(h.k)} · punteggio ${Math.min(99,Math.round(h.sc))}</small></div>`).join('');
+  const e=$('#a-hookedit');if(e)e.value=hs[i].s;const t=$('#o-hooktxt');if(t)t.value=hs[i].s;hookEdited(true)}
+function curHook(){const e=$('#a-hookedit');return e?e.value:''}
+function hookEdited(fromSync){
+  const txt=curHook();const t=$('#o-hooktxt');if(t&&!fromSync)t.value=txt.replace(/\n/g,' ⏎ ');
+  const h=VA.pkg&&VA.pkg.hooks?VA.pkg.hooks[VA.pkg.sel||0]:null;
+  if(!fromSync&&h&&txt!==h.s&&!VA.pkg.edited){VA.pkg.edited=true;const on=document.querySelector('#a-hooks .hk.on small');if(on)on.textContent+=' · modificato ✏️'}
+  const ho=$('#o-hook');if(ho&&txt.trim())ho.checked=true;
+  const clean=txt.replace(/\n/g,' ').trim();
+  if(!clean){$('#a-hookscore').textContent='Scrivi un hook';hookPreview();schedScore();return}
+  const a=hookAnalysis(clean),n=clean.split(/\s+/).length;const col=a.sc>=75?'var(--ok)':a.sc>=50?'var(--warn)':'var(--pink)';
+  $('#a-hookscore').innerHTML=`<b style="color:${col}">Punteggio ${a.sc}/100</b> · ${n} parole${n>12?' (troppe: si legge male in 3 secondi)':''}${a.tips[0]?`<br>💡 ${esc(a.tips[0])}`:''}`;
+  clearTimeout(hookEdited._t);hookEdited._t=setTimeout(hookPreview,150);schedScore();stpSum(3,'“'+clean.slice(0,46)+(clean.length>46?'…':'')+'”')}
+function addEmoji(e){const el=$('#a-hookedit');el.value=el.value.replace(/\s+$/,'')+' '+e;hookEdited()}
+function hookCase(){const el=$('#a-hookedit');const v=el.value;el.value=v===v.toUpperCase()?v.charAt(0)+v.slice(1).toLowerCase():v.toUpperCase();hookEdited()}
+function resetHook(){if(VA.pkg&&VA.pkg.hooks)selectHook(VA.pkg.sel||0)}
+async function hookPreview(){
+  const cv=$('#a-hprev');if(!cv||!VA)return;const ctx=cv.getContext('2d');const W=cv.width,H=cv.height;
+  if(!VA.prevFrame&&!VA.prevLoading){VA.prevLoading=true;const v=hiddenVideo(vURL,true);
+    try{await waitMeta(v);try{await v.play();v.pause()}catch(_){}await seekTo(v,Math.min(1,VA.dur/2));
+      const o=readOpts();const {sx,sy,sw,sh}=cropRect(o,true);const f=document.createElement('canvas');f.width=W;f.height=H;f.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,W,H);VA.prevFrame=f}
+    catch(_){}finally{v.removeAttribute('src');v.load();v.remove();VA.prevLoading=false}}
+  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);if(VA.prevFrame)ctx.drawImage(VA.prevFrame,0,0);
+  const txt=curHook().trim();const o=readOpts();if(txt)drawCaption(ctx,txt,W,H,o.hookPos,1);if(o.part&&o.series)drawPill(ctx,'PARTE '+o.series.ep,W,H,o.hookPos,txt,1)}
+function applyAutoOptions(){
+  refreshSubsOpt();const on=id=>{const e=$('#'+id);if(e&&!e.disabled)e.checked=true};
+  if(VA.subs.length&&!VA.hasSubs)on('o-subs');if(curHook().trim())on('o-hook');if(VA.sug.bar)on('o-bar');on('o-end');if(curSeries())on('o-part');
+  updEst();const o=readOpts();
+  aStep(4,'ok',[o.subs&&'sottotitoli',VA.hasSubs&&'sottotitoli originali tenuti',o.hook&&'hook',o.part&&'PARTE N',o.end&&'testo finale',o.bar&&'barra',o.trim&&'taglio silenzi',o.pause&&'pause',o.crop&&'9:16',o.light&&'luce',o.vol&&'volume',o.speed&&'1,1×'].filter(Boolean).join(' · '));
+}
+/* ---------- backup ---------- */
+function openSettings(){openModal('m-set')}
+function exportData(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}));
+  a.download='spinta-backup-'+todayISO()+'.json';a.click();toast('Backup scaricato')}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.posts)||!Array.isArray(d.stats))throw 0;DB=Object.assign({checklist:{}},d);normDB();save();renderSeriesSel();renderPlan();renderStats();closeModal('m-set');toast('Backup importato ✓')}catch(_){toast('File non valido')}};r.readAsText(f)}
+function wipeData(){if(!confirm('Cancellare piano, statistiche, serie e checklist?'))return;DB={posts:[],stats:[],checklist:{},series:[],pending:[]};save();renderSeriesSel();renderPlan();renderStats();closeModal('m-set');toast('Dati cancellati')}
+/* articolo per un argomento scritto a mano: "pesca a spinning" → "la pesca a spinning" */
+function guessArt(t){const w=t.trim().split(/\s+/)[0].toLowerCase();if(!w||/^(come|perché|quando|cosa|fare|\d)/.test(w)||/(are|ere|ire)$/.test(w))return t;
+  if(/^[aeiouàèéìòù]/.test(w))return "l'"+t;
+  if(/a$/.test(w))return 'la '+t;if(/o$/.test(w))return(/^(s[^aeiou]|z|gn|ps|x|y)/.test(w)?'lo ':'il ')+t;
+  if(/i$/.test(w))return(/^(s[^aeiou]|z|gn|ps)/.test(w)?'gli ':'i ')+t;if(/e$/.test(w)&&w.length>3)return 'le '+t;return t}
+
+/* ---------- SERIE ---------- */
+function curSeries(){const id=DB.serSel;return id?(DB.series||[]).find(s=>s.id===id)||null:null}
+function renderSeriesSel(){const s=$('#ser-sel');if(!s)return;const c=curSeries();
+  s.innerHTML=`<option value="">Video singolo</option>`+(DB.series||[]).map(x=>`<option value="${x.id}" ${c&&x.id===c.id?'selected':''}>${esc(x.name)}</option>`).join('')+`<option value="__new">＋ Nuova serie…</option>`;
+  $('#ser-ep').disabled=!c;$('#ser-ep').value=c?c.ep:''}
+function serChange(){const v=$('#ser-sel').value;
+  if(v==='__new'){$('#ser-new').style.display='';$('#ser-name').focus();renderSeriesSel();return}
+  DB.serSel=v||null;save();$('#ser-new').style.display='none';renderSeriesSel();onSeriesChanged()}
+function serCreate(){const n=$('#ser-name').value.trim();if(!n){toast('Scrivi il nome della serie');return}
+  const s={id:uid(),name:n,tag:toTag(n),ep:1};DB.series.push(s);DB.serSel=s.id;save();$('#ser-name').value='';$('#ser-new').style.display='none';
+  renderSeriesSel();onSeriesChanged();toast('Serie creata · '+s.tag)}
+function serEp(v){const c=curSeries();if(!c)return;c.ep=Math.max(1,parseInt(v)||1);save();onSeriesChanged()}
+function onSeriesChanged(){if(!VA||!$('#o-part'))return;const c=curSeries();const p=$('#o-part');p.disabled=!c;p.checked=!!c;
+  $('#o-part-l').classList.toggle('dis',!c);$('#o-part-d').textContent=c?`Sopra l'hook: PARTE ${c.ep}`:'Imposta una serie nel passo 1';
+  if(!VA.endEdited)$('#o-endtxt').value=defaultEnd();hookPreview();updEst()}
+function defaultEnd(){const c=curSeries();if(c)return `Parte ${c.ep+1} in arrivo: segui 🔔`;const g=($('#a-goal')||{}).value||'commenti';
+  return {commenti:'E tu? Scrivilo nei commenti 👇',condivisioni:'Mandalo a chi deve vederlo 👀',follow:'Segui per la parte 2 🔔',salvataggi:'Salvalo per dopo 📌'}[g]}
+function goalChange(){if(VA&&!VA.endEdited&&$('#o-endtxt'))$('#o-endtxt').value=defaultEnd();schedScore()}
+
+/* ---------- PUNTEGGIO VIRALE ---------- */
+let _scT;function schedScore(){clearTimeout(_scT);_scT=setTimeout(renderScore,120)}
+const PIL=[['hook','Aggancio'],['ret','Ritenzione'],['qual','Qualità'],['disc','Scoperta'],['int','Interazione']];
+const PNAME=Object.fromEntries(PIL);
+function noOpts(){return{trim:0,pause:0,crop:0,light:0,vol:0,hook:0,subs:0,bar:0,speed:0,end:0,part:0,pos:0,hookTxt:'',endTxt:'',series:null,hookDur:3,hookPos:.24}}
+function curPkg(){const P=VA.pkg||{};const tw=P.topicOk&&P.topic?wordsOf(P.topic).filter(w=>w.length>=4&&!STOP.has(w)):[];
+  return{cap:(($('#a-cap')||{}).value||''),kws:[...new Set([...tw,...(P.kwSure||[])])],series:curSeries()}}
+function scoreModel(o,pk){
+  const {dur,W,H,audio:A}=VA;const hasA=!!(A&&A.hasSound);const items=[];
+  const add=(p,k,max,pts,msg,tip,fix)=>items.push({p,k,max,pts:Math.round(clamp(pts,0,max)*10)/10,msg,tip,fix});
+  const outDur=getPlan(o).outDur;
+  // AGGANCIO (30)
+  const lead=hasA?(o.trim?Math.min(A.lead,0.1):A.lead):0;
+  add('hook','Avvio immediato',10,lead<=0.5?10:lead<=1?5:0,lead<=0.5?'Voce o azione partono subito':`${lead.toFixed(1)} s di silenzio all'inizio`,'Chi scorre se ne va prima che succeda qualcosa.',lead>0.5?'o-trim':null);
+  const ht=o.hook&&o.hookTxt?hookAnalysis(o.hookTxt.replace(/\n/g,' ')).sc:0;
+  if(ht)add('hook','Hook a schermo',12,6+6*ht/100,`"${o.hookTxt.replace(/\n/g,' ').slice(0,60)}" · ${ht}/100`,'Rendilo più forte nel passo 3: numeri, posta in gioco, parla al "tu".',null);
+  else if(VA.topText)add('hook','Hook a schermo',12,8,'C\'è già un testo in alto all\'inizio','Puoi sostituirlo con un hook più forte nel passo 3.','o-hook');
+  else add('hook','Hook a schermo',12,0,'Nessun testo nei primi secondi','È il primo motivo per cui ci si ferma: aggiungilo nel passo 3.','o-hook');
+  const moving=VA.m1>=0.015||VA.firstCut!=null;
+  add('hook','Movimento iniziale',8,moving?8:(ht?6:3),moving?'Immagine in movimento da subito':'Primi secondi quasi fermi','Parti già in azione, o compensa con un hook forte.',null);
+  // RITENZIONE (30)
+  const D=RULES.durata;
+  add('ret','Durata',8,outDur<D.min?4:outDur<=D.ideale[1]?8:outDur<=D.max?5:2,`${outDur.toFixed(1)} s${Math.abs(outDur-dur)>0.3?` (era ${dur.toFixed(1)} s)`:''}`,outDur>D.ideale[1]?'Oltre il minuto serve una visione completa altissima: taglia o dividi in parti.':'Molto corto: funziona solo come loop.',outDur>D.ideale[1]&&hasA&&A.pauses.length&&!o.pause?'o-pause':null);
+  const pt=hasA&&!o.pause?A.pauses.reduce((a,p)=>a+p.e-p.s,0):0;const pr=pt/Math.max(1,outDur);
+  add('ret','Tempi morti',9,pr<0.05?9:pr<0.12?6:pr<0.2?3:0,pt>0.3?`${A.pauses.length} pause · ${pt.toFixed(1)} s di silenzio`:'Nessuna pausa lunga','Ogni pausa è un punto in cui la gente scorre via.',pt>0.3?'o-pause':null);
+  const sz=VA.static.length;
+  add('ret','Ritmo',6,sz===0?6:o.speed?(sz===1?5:3):(sz===1?4:1),sz?`${sz} ${sz===1?'tratto':'tratti'} con immagine ferma oltre 5 s`:'Nessun tratto fermo','Aggiungi un taglio o uno zoom, oppure accelera leggermente.',sz&&!o.speed?'o-speed':null);
+  const trail=hasA?(o.trim?Math.min(A.trail,0.2):A.trail):0;
+  add('ret','Finale secco',4,trail<=1?4:1,trail<=1?'Finisce senza tempi morti':`${trail.toFixed(1)} s di silenzio alla fine`,'Un finale lento fa uscire prima della fine e niente rewatch.',trail>1?'o-trim':null);
+  const lp=VA.loop>0.85;
+  add('ret','Rewatch',3,lp?3:o.bar?1.5:0.5,lp?'La fine si ricollega all\'inizio: invoglia a rivederlo':o.bar?'Barra di avanzamento attiva':'Fine e inizio scollegati','Chiudi sull\'inquadratura iniziale o con una frase che rimanda all\'inizio: i rewatch pesano molto.',!lp&&!o.bar?'o-bar':null);
+  // QUALITÀ (15)
+  const ratio=W/H,ok916=Math.abs(ratio-9/16)<0.03||(o.crop&&ratio>0.6);
+  add('qual','Formato 9:16',5,ok916?5:ratio<1?3:0,ok916?(o.crop?'Ritagliato a tutto schermo':'Verticale a tutto schermo'):ratio<1?'Verticale ma non 9:16':'Orizzontale: appare piccolo con bande nere','Ritaglia a 9:16.',ok916?null:'o-crop');
+  const res=Math.min(W,H);add('qual','Risoluzione',2,res>=720?2:0.5,res>=1080?'Full HD':res>=720?'HD':`Bassa (${res}p)`,'Registra in 1080p.',null);
+  const badLight=VA.L<0.3||VA.L>0.75||VA.C<0.13||VA.S<0.12,lightOk=o.light||!badLight;
+  add('qual','Luce e colori',3,lightOk?3:VA.L<0.3?0.5:1.5,lightOk?(o.light&&badLight?'Corretti automaticamente':'Esposizione e colori buoni'):VA.L<0.3?'Video scuro':VA.L>0.75?'Troppo chiaro':'Colori spenti','Correggili in automatico.',lightOk?null:'o-light');
+  add('qual','Nitidezza',2,VA.blur>0.15?0.5:2,VA.blur>0.15?'Alcuni momenti mossi o sfocati':'Nitido','Appoggia il telefono e tocca lo schermo per mettere a fuoco.',null);
+  if(!hasA)add('qual','Audio',3,0,A?'Video muto':'Audio non analizzabile','I video senza suono vengono spinti molto meno: aggiungi voce o un suono di tendenza.',null);
+  else{const vOk=o.vol||(A.loud>=-26&&A.loud<=-9);add('qual','Audio',3,(vOk?3:1)-(A.clipPct>0.1&&!o.vol?1:0),vOk?(o.vol&&(A.loud<-26||A.loud>-9)?'Volume normalizzato':'Volume giusto'):A.loud<-26?'Volume basso':'Volume troppo alto','Normalizzalo.',vOk?null:'o-vol')}
+  // SCOPERTA (13)
+  const subsOn=VA.hasSubs||o.subs;
+  add('disc','Sottotitoli',5,subsOn?5:0,VA.hasSubs?'Già presenti nel video':o.subs?'Aggiunti dal parlato':'Assenti','Molti guardano senza audio, e TikTok legge il testo per capire l\'argomento.',subsOn?null:(VA.subs&&VA.subs.length?'o-subs':'auto'));
+  if(!VA.transcript)add('disc','Argomento detto subito',3,hasA?1:0,hasA?'Da verificare con il pilota automatico':'Nessun parlato','Nomina l\'argomento nei primi 5 secondi: TikTok lo usa per la ricerca.',hasA?'auto':null);
+  else{const early=VA.subs.filter(s=>s.s<6).map(s=>s.t.toLowerCase()).join(' ');const hit=pk.kws.length?pk.kws.some(k=>early.includes(k)):null;
+    add('disc','Argomento detto subito',3,hit===null?2:hit?3:1,hit===null?'Conferma l\'argomento nel passo 3 per verificarlo':hit?'L\'argomento si capisce nei primi secondi':'L\'argomento arriva tardi nel parlato','Nominalo nei primi 5 secondi: TikTok lo usa per la ricerca.',null)}
+  const cap=pk.cap||'';const tagN=(cap.match(/#[^\s#]+/g)||[]).length;const capTxt=cap.replace(/#\S+/g,'').toLowerCase();
+  const capKw=!!cap.trim()&&(pk.kws.length?pk.kws.some(k=>capTxt.includes(k)):capTxt.trim().split(/\s+/).length>=5);
+  add('disc','Caption con parole chiave',2,capKw?2:0,cap.trim()?(capKw?'La caption racconta l\'argomento':'La caption non nomina l\'argomento'):'Caption non ancora scritta','Scrivi di cosa parla il video con parole che la gente cercherebbe.',cap.trim()?null:'auto');
+  const mx=RULES.hashtag.max,ev=new Set((RULES.hashtag.evitare||[]).map(x=>x.toLowerCase()));const gen=(cap.match(/#[^\s#]+/g)||[]).filter(x=>ev.has(x.toLowerCase()));
+  add('disc','Hashtag',3,!tagN?0:tagN>mx?1:gen.length?1.5:3,!tagN?'Nessun hashtag':gen.length?`${tagN} hashtag, generici: ${gen.join(' ')}`:`${tagN} hashtag specifici`,tagN>mx?`Usane al massimo ${mx}, specifici.`:gen.length?'Gli hashtag generici non aiutano più: usa quelli della tua nicchia.':'Aggiungi da 1 a 5 hashtag specifici.',tagN?null:'auto');
+  // INTERAZIONE (12)
+  const last=(VA.subs||[]).filter(s=>s.s>VA.dur-8).map(s=>s.t).join(' ');
+  const speechCta=/\?|comment|scriv|segui|like|lascia|ditemelo|dimmi|vot/i.test(last);const endOn=o.end&&o.endTxt;
+  add('int','Invito finale',5,endOn?5:speechCta?4:0,endOn?`Testo finale: "${o.endTxt}"`:speechCta?'Nel finale chiedi di interagire':VA.transcript||!hasA?'Il video finisce senza invito':'Da verificare','Chiudi con "Parte 2 in arrivo 🔔" o una domanda: porta follow e commenti.',endOn||speechCta?null:'o-end');
+  const capQ=/\?|comment|scrivete|ditemelo|dimmi/i.test(cap);
+  add('int','Domanda nella caption',4,capQ?4:0,capQ?'La caption invita a commentare':'Nessuna domanda nella caption','I commenti lunghi sono un segnale forte per l\'algoritmo.',capQ?null:'auto');
+  const ser=pk.series;
+  add('int','Serie a puntate',3,ser?(o.part?3:2.5):1,ser?`${ser.name} · Parte ${ser.ep}${o.part?'':' (etichetta spenta)'}`:'Video singolo','Le serie fanno tornare il pubblico sul profilo: imposta la serie nel passo 1.',ser?(o.part?null:'o-part'):'serie');
+  const P={hook:0,ret:0,qual:0,disc:0,int:0},MX={hook:30,ret:30,qual:15,disc:13,int:12};items.forEach(i=>P[i.p]+=i.pts);
+  return{total:Math.round(Object.values(P).reduce((a,b)=>a+b,0)),P,MX,items}}
+function ringSVG(v,b){const r=50,c=2*Math.PI*r;const col=v>=75?'#2fd67b':v>=55?'#ffb020':'#ff2d6f';
+  return `<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="#262636" stroke-width="11"/>
+  <circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="11" stroke-dasharray="${c*b/100} ${c}" stroke-linecap="round"/>
+  <circle cx="60" cy="60" r="${r}" fill="none" stroke="${col}" stroke-width="11" stroke-dasharray="${c*v/100} ${c}" stroke-linecap="round"/></svg>`}
+function renderScore(){if(!VA||!$('#o-trim')||!$('#v-score'))return;
+  const o=readOpts(),pk=curPkg();const B=scoreModel(noOpts(),{cap:'',kws:pk.kws,series:null}),S=scoreModel(o,pk);VA.score=S;VA.scoreBefore=B.total;
+  const verdict=S.total>=85?'Pronto per spingere 🚀':S.total>=72?'Buono, ancora qualche ritocco':S.total>=55?'Può fare molto meglio':'Rischia di essere scrollato via';
+  const todo=S.items.filter(i=>i.pts<i.max*0.8).sort((a,b)=>(b.max-b.pts)-(a.max-a.pts)),okI=S.items.filter(i=>i.pts>=i.max*0.8);
+  const col=S.total>=75?'var(--ok)':S.total>=55?'var(--warn)':'var(--pink)';
+  $('#v-score').innerHTML=`<div class="scorebox"><div class="ring">${ringSVG(S.total,B.total)}<div class="v"><div><b style="color:${col}">${S.total}</b><small>su 100</small></div></div></div>
+   <div style="flex:1;min-width:0"><b style="font-size:16px">${verdict}</b>
+   <div style="color:var(--mut);font-size:12.5px;margin:2px 0 4px">Originale ${B.total} → con Spinta <b style="color:var(--txt)">${S.total}</b>${S.total>B.total?` <span class="tag o">+${S.total-B.total}</span>`:''}</div>
+   ${PIL.map(([k,n])=>`<div class="pil"><div class="lb">${n}<span>${fmtP(Math.round(S.P[k]*10)/10)}/${S.MX[k]}</span></div><div class="bar"><i class="g" style="width:${B.P[k]/B.MX[k]*100}%"></i><i class="f" style="width:${S.P[k]/S.MX[k]*100}%"></i></div></div>`).join('')}
+   </div></div>
+   <div class="tl">${timelineSVG(o)}<div class="lg"><span><i style="background:#ff2d6f"></i>rischio uscita</span><span><i style="background:#4a4a5e"></i>tagliato</span><span><i style="background:#25f4ee"></i>cambio scena · voce</span><span><i style="background:#9a9ab2"></i>movimento</span></div></div>
+   ${todo.length?`<h4 class="h4">Da migliorare · in ordine di impatto</h4>`+todo.map(itemRow).join(''):'<div class="banner" style="margin-top:12px">🎉 Hai sistemato tutto quello che conta per l\'algoritmo.</div>'}
+   ${todo.some(i=>i.fix&&i.fix.startsWith('o-'))?`<button class="btn" onclick="applyAllFixes()">⚡ Applica tutte le correzioni</button>`:''}
+   <details><summary>Già a posto (${okI.length})</summary>${okI.map(itemRow).join('')}</details>`;
+  const ts=$('#topscore');ts.style.display='flex';ts.innerHTML=`<span style="color:var(--mut)">${B.total}</span><span style="color:var(--mut);font-weight:400">→</span><span style="color:${col}">${S.total}</span>`;
+  stpSum(2,`${B.total} → ${S.total} su 100 · ${verdict}`)}
+function itemRow(i){const full=i.pts>=i.max*0.8;
+  const lab={auto:'✨ Pilota automatico',serie:'Imposta la serie'}[i.fix]||'Correggi';
+  const btn=i.fix&&!full?`<div style="margin-top:7px"><button class="btn sm ${i.fix==='auto'?'cy':''}" onclick="applyFix('${i.fix}')">${lab}</button></div>`:'';
+  return `<div class="fix"><span>${full?'✅':i.pts<=i.max*0.3?'❌':'⚠️'}</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(i.k)}</b> <span style="color:var(--mut);font-size:11px;font-weight:700">${PNAME[i.p].toUpperCase()}</span>
+   <div style="font-size:13px">${esc(i.msg)}</div>${!full&&i.tip?`<div style="color:var(--mut);font-size:12.5px;margin-top:2px">💡 ${esc(i.tip)}</div>`:''}${btn}</div>
+   <span class="pt" style="${full?'color:var(--ok)':''}">${fmtP(i.pts)}/${i.max}</span></div>`}
+function fmtP(x){return Number.isInteger(x)?String(x):x.toFixed(1).replace('.',',')}
+function applyFix(id){
+  if(id==='auto'){goStep(3);if(!VA.transcript&&$('#a-go'))toast('Tocca "Prepara tutto in automatico"');else setTimeout(()=>$('#a-topic').focus(),400);return}
+  if(id==='serie'){$('#s1').classList.add('open');goStep(1);setTimeout(()=>$('#ser-sel').focus(),400);return}
+  const e=$('#'+id);if(!e||e.disabled){toast('Non disponibile per questo video');return}e.checked=true;
+  if(id==='o-hook'&&!curHook().trim()){goStep(3);setTimeout(()=>$('#a-hookedit').focus(),400);toast('Scrivi o scegli l\'hook')}
+  updEst();renderScore()}
+function applyAllFixes(){(VA.score.items||[]).filter(i=>i.fix&&i.fix.startsWith('o-')&&i.pts<i.max*0.8).forEach(i=>{const e=$('#'+i.fix);if(e&&!e.disabled)e.checked=true});
+  updEst();renderScore();if(readOpts().hook&&!curHook().trim()){goStep(3);toast('Ora scegli l\'hook')}else toast('Correzioni applicate ✓')}
+
+/* ---------- avvio ---------- */
+load();normDB();fillNiches();$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();scheduleNotifs();updateRules(false);
+if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
