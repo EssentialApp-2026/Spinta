@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#08080d">
-<meta name="description" content="Spinta: analizza, migliora e pubblica i tuoi video TikTok per farli arrivare nei Per Te.">
+<meta name="description" content="Spinta: analizza e migliora i tuoi video TikTok prima di pubblicarli, e impara dai risultati del tuo canale.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -167,12 +167,12 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   <div class="banner" id="desk-warn" style="display:none;font-size:13px">📱 Chrome è in modalità <b>"Sito desktop"</b>: ho adattato la grafica, ma per la resa migliore apri il menu ⋮ di Chrome e togli la spunta a "Sito desktop".</div>
   <div class="card" id="ready" style="display:none;border-color:rgba(255,45,111,.6)"></div>
   <div class="hero" id="hero">
-    <h1>Il tuo video,<br><i>pronto per i Per Te</i></h1>
-    <p class="sub" style="margin:8px 0 0">Lo analizzo come lo valuta TikTok, lo correggo e ti preparo tutto per pubblicarlo. Il video non lascia mai il telefono.</p>
+    <h1>Il tuo video,<br><i>più forte prima di pubblicarlo</i></h1>
+    <p class="sub" style="margin:8px 0 0">Analizzo aggancio, ritmo, audio e formato, correggo quello che fa scorrere via e ti preparo tutto per pubblicare. Poi imparo dai risultati dei tuoi video. Il video non lascia mai il telefono.</p>
     <div class="feat">
-      <div>🎯<b>Punteggio virale</b>i 5 fattori dell'algoritmo</div>
+      <div>🎯<b>Spinta Score</b>cosa trattiene chi guarda</div>
       <div>✨<b>Hook e testi</b>scritti dal tuo parlato</div>
-      <div>🚀<b>Pubblica</b>all'ora giusta e cresci</div>
+      <div>📈<b>Impara</b>dai risultati del tuo canale</div>
     </div>
   </div>
 
@@ -201,7 +201,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </article>
 
   <article class="stp" id="s2" data-state="locked">
-    <div class="stp-h" onclick="stpToggle(2)"><span class="num">2</span><div><h3>Punteggio virale</h3><small id="s2-sum">Come lo vede l'algoritmo</small></div><span class="chev">⌄</span></div>
+    <div class="stp-h" onclick="stpToggle(2)"><span class="num">2</span><div><h3>Spinta Score</h3><small id="s2-sum">Quanto trattiene chi guarda</small></div><span class="chev">⌄</span></div>
     <div class="stp-b"><div id="v-score"></div></div>
   </article>
 
@@ -272,7 +272,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 <!-- ================= CRESCITA ================= -->
 <section class="tab" id="t-grow">
   <h2>Crescita</h2>
-  <p class="sub">TikTok mostra ogni video a un piccolo pubblico e lo spinge solo se trattiene più della media del tuo account. Inserisci i dati dopo 48 ore: qui vedi la tua media e cosa la batte.</p>
+  <p class="sub">Dopo 48 ore inserisci i dati di ogni video: Spinta li confronta con la tua media e impara cosa funziona sul tuo canale.</p>
   <div id="g-pending"></div>
   <div id="g-next"></div>
   <div id="s-kpis" class="kpis"></div>
@@ -297,7 +297,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </div>
   <div class="tool" id="tool-hook">
   <h2>Generatore di hook</h2>
-  <p class="sub">I primi 2 secondi decidono se il video viene spinto. Genera frasi d'apertura e testo a schermo.</p>
+  <p class="sub">Nei primi 2 secondi chi scorre decide se fermarsi. Genera frasi d'apertura e testo a schermo.</p>
   <div class="card">
     <label>Di cosa parla il video?</label>
     <input id="h-topic" placeholder="es. frittata di pasta, trading, pesca a spinning…">
@@ -349,7 +349,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 </div>
   <div class="tool" id="tool-ideas" style="display:none">
   <h2>Idee, serie e trend</h2>
-  <p class="sub">Le serie a puntate fanno tornare le persone sul profilo. I format di tendenza danno una spinta extra.</p>
+  <p class="sub">Le serie a puntate fanno tornare le persone sul profilo. I format di tendenza possono dare una spinta in più.</p>
   
   <div class="card">
     <label>Tema del tuo canale</label>
@@ -423,7 +423,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.1 · regole algoritmo <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.2 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -1109,7 +1109,7 @@ function genCaptions(){
   const mixes=[0,1,2].map(()=>tagsFor(t,kw,$('#c-niche').value));
   $('#c-out').innerHTML=`<h3 style="font-size:16px;margin:4px 0 8px">Caption</h3>`+
    caps.map((c,i)=>{const full=c+'\n\n'+mixes[i];return `<div class="item">${copyBtn(full)}<div class="t">${esc(c)}</div><div class="m" style="color:var(--cyan)">${esc(mixes[i])}</div></div>`}).join('')+
-   `<div class="card"><div class="m" style="color:var(--mut);font-size:13px">💡 Usa al massimo ${RULES.hashtag.max} hashtag specifici: pochi e mirati funzionano meglio delle liste generiche. Scrivi le parole chiave anche nel parlato e nel testo a schermo: TikTok le legge e le usa per la ricerca.</div></div>`;
+   `<div class="card"><div class="m" style="color:var(--mut);font-size:13px">💡 Usa al massimo ${RULES.hashtag.max} hashtag specifici: pochi e mirati funzionano meglio delle liste generiche. Scrivi le parole chiave anche nel parlato e nel testo a schermo: aiutano a farti trovare nella ricerca di TikTok.</div></div>`;
 }
 
 /* ---------- PIANO ---------- */
@@ -1215,7 +1215,7 @@ function saveStat(){
   const o={id:$('#s-id').value||uid(),title,date:$('#s-date').value,hour:$('#s-hour').value,format:$('#s-format').value,hk:$('#s-hk').value,views,
     series:$('#s-series').value,score:$('#s-score').value===''?null:+$('#s-score').value};
   ['likes','comm','shares','saves','follows','len','watch','full'].forEach(k=>{const v=$('#s-'+k).value;o[k]=v===''?'':+v});
-  const prev=DB.stats.find(x=>x.id===o.id)||DB.pending.find(x=>x.id===$('#s-pid').value)||{};['transcript','topic','end','niche','pubAt'].forEach(k=>{if(prev[k]!=null&&o[k]==null)o[k]=prev[k]});
+  const prev=DB.stats.find(x=>x.id===o.id)||DB.pending.find(x=>x.id===$('#s-pid').value)||{};['transcript','topic','end','niche','pubAt','f','miss'].forEach(k=>{if(prev[k]!=null&&o[k]==null)o[k]=prev[k]});
   const i=DB.stats.findIndex(x=>x.id===o.id);if(i>=0)DB.stats[i]=o;else DB.stats.push(o);
   const pid=$('#s-pid').value;if(pid)DB.pending=DB.pending.filter(x=>x.id!==pid);
   save();closeModal('m-stat');renderStats();renderPlan();toast('Salvato ✓');
@@ -1225,10 +1225,10 @@ const er=s=>s.views?((+s.likes||0)+(+s.comm||0)+(+s.shares||0)+(+s.saves||0))/s.
 const ret=s=>s.len&&s.watch?Math.min(100,s.watch/s.len*100):null;
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
 function renderStats(){
-  renderPendingGrow();renderNext();
+  const I=channelInsights();renderPendingGrow();renderNext(I);
   const S=DB.stats.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   if(!S.length){$('#s-kpis').innerHTML='';$('#s-chartbox').style.display='none';
-    $('#s-insight').innerHTML=`<div class="card"><b>Come funziona</b><div style="color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.55">1. Pubblica dallo Studio e tocca "L'ho pubblicato".<br>2. Dopo 48 ore inserisci view, visione media e interazioni.<br>3. Dopo 3 video ti mostro la formula del tuo canale: tipo di hook, orario, durata e formato che ti rendono di più.</div></div>`;
+    $('#s-insight').innerHTML=`<div class="card"><b>Come funziona</b><div style="color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.55">1. Pubblica dallo Studio e tocca "L'ho pubblicato": salvo anche come è montato il video.<br>2. Dopo 48 ore inserisci view, visione media e interazioni (anche da screenshot).<br>3. Dal 4° video ti mostro cosa funziona sul tuo canale e cosa fare la prossima volta.</div></div>`;
     $('#s-items').innerHTML='';return}
   const av=avg(S.map(s=>s.views)),aer=avg(S.map(er));const rets=S.map(ret).filter(x=>x!=null);const avRet=rets.length?avg(rets):null;
   const fol=S.reduce((a,b)=>a+(+b.follows||0),0);
@@ -1237,23 +1237,13 @@ function renderStats(){
   <div class="kpi"><div class="v">${aer.toFixed(1)}%</div><div class="l">Engagement medio</div></div>
   <div class="kpi"><div class="v">+${fmt(fol)}</div><div class="l">Follower dai video</div></div>`;
   const groups=fn=>{const m={};S.forEach(s=>{const k=fn(s);if(!k)return;(m[k]=m[k]||[]).push(s)});return Object.entries(m).map(([k,a])=>({k,n:a.length,v:avg(a.map(x=>x.views))})).sort((a,b)=>b.v-a.v)};
-  const slot=h=>{if(!h)return null;const x=+h.split(':')[0];return x<11?'Mattina (prima delle 11)':x<15?'Pranzo (11-15)':x<19?'Pomeriggio (15-19)':x<22?'Sera (19-22)':'Notte (dopo le 22)'};
-  const lenB=s=>!s.len?null:s.len<15?'Sotto i 15 s':s.len<30?'15-30 s':s.len<=60?'30-60 s':'Oltre 60 s';
   const pct=v=>{const p=(v/av-1)*100;return `<span class="vs ${p>=0?'up':'dn'}">${p>=0?'+':''}${p.toFixed(0)}%</span>`};
-  let formula='';
-  if(S.length>=3){const rows=[['🎬','Formato',groups(s=>s.format)],['🎣','Tipo di hook',groups(s=>s.hk)],['⏰','Orario',groups(s=>slot(s.hour))],['⏱️','Durata',groups(lenB)]].filter(r=>r[2].length>=2);
-    formula=rows.length?`<div class="card"><h3>🧬 La formula del tuo canale</h3><div style="color:var(--mut);font-size:12.5px;margin:2px 0 6px">Cosa porta più view rispetto alla tua media</div>`+
-      rows.map(([ic,n,g])=>`<div class="fix"><span>${ic}</span><div style="flex:1"><b style="font-size:14px">${esc(g[0].k)}</b><div style="color:var(--mut);font-size:12.5px">${n} · ${g[0].n} video${g[0].n<2?' (pochi dati)':''}</div></div>${pct(g[0].v)}</div>`).join('')+'</div>'
-      :`<div class="card" style="color:var(--mut);font-size:13.5px">🧬 Per la formula del canale servono video con orari, durate o tipi di hook diversi.</div>`}
-  else formula=`<div class="card" style="color:var(--mut);font-size:13.5px">🧬 Ancora ${3-S.length} ${3-S.length===1?'video':'video'} e ti mostro la formula del tuo canale.</div>`;
   const tips=[];
-  tips.push(`🎯 <b>Obiettivo prossimo video:</b> superare ${fmt(av)} view${avRet!=null?` e una visione media oltre il ${Math.min(95,Math.round(avRet+5))}%`:''}. È la soglia oltre cui TikTok lo spinge a più persone.`);
-  const fl=S.filter(s=>s.full!==''&&s.full!=null);if(fl.length){const af=avg(fl.map(s=>+s.full)),tg=(RULES.obiettivi||{}).completamento||70;tips.push(`🏁 Visione completa media: <b>${af.toFixed(0)}%</b>. Secondo le analisi più recenti, per diventare virali serve circa il ${tg}%.`)}
-  if(avRet!=null){if(avRet<40)tips.push('⏱️ Si guarda meno del 40% del video: accorcia, togli le pause e metti il momento migliore prima.');else if(avRet>=70)tips.push('🔥 Ritenzione ottima: puoi provare video un po\' più lunghi.')}
+  tips.push(`🎯 <b>Obiettivo prossimo video:</b> superare ${fmt(av)} view${avRet!=null?` e una visione media oltre il ${Math.min(95,Math.round(avRet+5))}%`:''}, cioè fare meglio della tua media.`);
+  const fl=S.filter(s=>s.full!==''&&s.full!=null);if(fl.length){const af=avg(fl.map(s=>+s.full)),tg=(RULES.obiettivi||{}).completamento||70;tips.push(`🏁 Visione completa media: <b>${af.toFixed(0)}%</b>. Le analisi di settore indicano circa il ${tg}% per i video che vanno meglio: è un riferimento, non una regola di TikTok.`)}
+  if(avRet!=null){if(avRet<40)tips.push('⏱️ Si guarda meno del 40% del video: accorcia, togli le pause e metti il momento migliore prima.');else if(avRet>=70)tips.push('🔥 Visione media ottima: puoi provare video un po\' più lunghi.')}
   if(aer<4)tips.push('💬 Engagement sotto il 4%: chiudi con una domanda o con "Parte 2" e usa il testo finale.');
-  const hi=S.filter(s=>s.score!=null&&s.score>=80),lo=S.filter(s=>s.score!=null&&s.score<80);
-  if(hi.length&&lo.length)tips.push(`📈 I video con punteggio Spinta da 80 in su fanno in media <b>${fmt(avg(hi.map(s=>s.views)))}</b> view, contro ${fmt(avg(lo.map(s=>s.views)))} degli altri.`);
-  $('#s-insight').innerHTML=formula+`<div class="card">${tips.map(t=>`<div style="margin-bottom:8px;font-size:14px">${t}</div>`).join('')}</div>`;
+  $('#s-insight').innerHTML=learnCard(I)+`<div class="card">${tips.map(t=>`<div style="margin-bottom:8px;font-size:14px">${t}</div>`).join('')}</div>`;
   const rows=groups(s=>s.format);$('#s-chartbox').style.display=rows.length>1?'':'none';
   if(rows.length>1){const mx=Math.max(...rows.map(r=>r.v))||1;const W=320,bh=24,gap=10,H=rows.length*(bh+gap);
     $('#s-chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ff2d6f"/><stop offset="1" stop-color="#25f4ee"/></linearGradient></defs>`+
@@ -1261,7 +1251,7 @@ function renderStats(){
   $('#s-items').innerHTML=`<h4 class="h4">I tuoi video</h4>`+S.map(s=>{const r=ret(s);return `<div class="item"><div class="t">${esc(s.title)}</div>
   <div class="m">${s.date?new Date(s.date+'T12:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}):''}${s.hour?' · '+s.hour:''} · <span class="tag">${esc(s.format)}</span>${s.hk?`<span class="tag p">${esc(s.hk)}</span>`:''} ${pct(s.views)}</div>
   <div class="m" style="margin-top:4px">👁 ${fmt(s.views)} · ❤️ ${fmt(s.likes)} · 💬 ${fmt(s.comm)} · ↗︎ ${fmt(s.shares)} · 📌 ${fmt(s.saves)}</div>
-  <div class="m">ER ${er(s).toFixed(1)}%${r!=null?' · visione '+r.toFixed(0)+'%':''}${s.full!==''&&s.full!=null?' · completa '+s.full+'%':''}${s.follows?' · +'+s.follows+' follower':''}${s.score!=null?' · Spinta '+s.score:''}</div>
+  <div class="m">ER ${er(s).toFixed(1)}%${r!=null?' · visione '+r.toFixed(0)+'%':''}${s.full!==''&&s.full!=null?' · completa '+s.full+'%':''}${s.follows?' · +'+s.follows+' follower':''}${s.score!=null&&s.score!==''?' · Spinta Score '+s.score:''}</div>
   <div class="acts"><button class="btn sm alt" onclick="openStatForm('${s.id}')">✏️ Modifica</button><button class="btn sm alt" onclick="delStat('${s.id}')">🗑</button></div></div>`}).join('');
 }
 function renderPendingGrow(){const el=$('#g-pending');const P=DB.pending||[];if(!P.length){el.innerHTML='';return}
@@ -1293,7 +1283,7 @@ const TRENDS=[
  {n:'Stitch',h:'Prendi i primi secondi del video di un altro creator e rispondi.',x:'Stitch: "{t} non serve a niente" – ecco la mia risposta'},
  {n:'Duetto',h:'Reagisci affiancato a un video famoso della tua nicchia.',x:'Duetto: rifaccio {t} meglio (o peggio)'},
  {n:'Suono di tendenza + testo',h:'Suono virale, testo a schermo con una situazione della tua nicchia.',x:'Quando qualcuno ti chiede di {t}…'},
- {n:'Foto carosello',h:'Post a foto (5-10 immagini) con testo: TikTok li spinge molto.',x:'5 cose su {t} in foto'},
+ {n:'Foto carosello',h:'Post a foto (5-10 immagini) con testo: spesso rendono bene.',x:'5 cose su {t} in foto'},
  {n:'Tutorial in 15 secondi',h:'Un solo trucco, veloce, rivedibile in loop.',x:'Il trucco più veloce per {t}'},
  {n:'Loop perfetto',h:'La fine si collega all\'inizio: aumenta i rewatch.',x:'Loop: {t} che non finisce mai'},
  {n:'ASMR / suoni reali',h:'Niente voce, solo i suoni dell\'azione, ripresi da vicino.',x:'{T} – solo suoni'},
@@ -1327,7 +1317,7 @@ function loadVideoFile(f){if(!f)return;
   const p=$('#v-prev');p.src=vURL;p.style.display='block';$('#hero').style.display='none';
   ['v-score','v-auto','v-fix','v-out'].forEach(id=>$('#'+id).innerHTML='');
   [2,3,4,5].forEach(n=>{$('#s'+n).classList.remove('open');stp(n,'locked')});
-  stpSum(2,'Come lo vede l\'algoritmo');stpSum(3,'Scritti dal tuo parlato');stpSum(4,'Tagli, immagine, audio, testi');stpSum(5,'Video, copertina, caption e orario');
+  stpSum(2,'Quanto trattiene chi guarda');stpSum(3,'Scritti dal tuo parlato');stpSum(4,'Tagli, immagine, audio, testi');stpSum(5,'Video, copertina, caption e orario');
   $('#topscore').style.display='none';analyzeVideo()}
 $('#v-file').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];loadVideoFile(f);e.target.value=''});
 (()=>{const d=$('#v-drop');
@@ -1464,7 +1454,7 @@ function renderFixPanel(){
    <div id="o-cropbox" style="display:none"><label>Posizione del ritaglio (sinistra ↔ destra)</label><input type="range" id="o-croppos" min="-100" max="100" value="0" onchange="updEst()"></div>
    ${opt('o-light','Correggi luce e colori',FILTER_OK?'Luminosità, contrasto e saturazione automatici':'Non supportato da questo browser',g.light,!FILTER_OK)}</div>
   <div class="grp"><h4>🔊 Audio</h4>
-   ${opt('o-vol','Normalizza il volume',hasA?`Ora ${A.loud.toFixed(0)} dB · porta la voce al livello di TikTok`:'Nessun audio',g.vol,!hasA)}</div>
+   ${opt('o-vol','Normalizza il volume',hasA?`Ora ${A.loud.toFixed(0)} dB · porta la voce al volume giusto per il telefono`:'Nessun audio',g.vol,!hasA)}</div>
   <div class="grp"><h4>🔤 Testi a schermo</h4>
    ${opt('o-hook','Hook nei primi secondi','Il testo che scegli nel passo 3',g.hook||!!curHook().trim(),false)}
    ${opt('o-subs','Sottotitoli automatici',subsDesc(),false,true)}
@@ -1626,7 +1616,8 @@ function freeOut(){['_resURL','_covURL'].forEach(k=>{if(window[k]){URL.revokeObj
 function pkgFromCurrent(o,plan,cap){const P=VA.pkg||{},h=P.hooks?P.hooks[P.sel||0]:null,ser=o.series;
   return{id:uid(),at:Date.now(),title:cutTxt((o.hookTxt||(vFile?vFile.name.replace(/\.[^.]+$/,''):'')||'Video').replace(/\s*\n\s*/g,' '),90),cap,
     hk:!o.hookTxt?'Nessuno':P.edited||!h?'Personalizzato':h.k,len:+plan.outDur.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep:ser.ep}:null,
-    score:VA.score?VA.score.total:null,transcript:(VA.transcript||'').slice(0,900),topic:P.topicOk?P.topic:'',end:o.end?o.endTxt:'',niche:($('#a-niche')||{}).value||''}}
+    score:VA.score?VA.score.total:null,transcript:(VA.transcript||'').slice(0,900),topic:P.topicOk?P.topic:'',end:o.end?o.endTxt:'',niche:($('#a-niche')||{}).value||'',
+    f:videoFeatures(o,plan,cap),miss:VA.score?VA.score.items.filter(i=>i.pts<i.max*0.8).sort((a,b)=>(b.max-b.pts)-(a.max-a.pts)).slice(0,4).map(i=>i.k):[]}}
 function showResult(blob,type,o,plan){
   const ext=type.includes('mp4')?'mp4':'webm';
   const name=(o.series?`${toTag(o.series.name).slice(1)}-parte-${o.series.ep}`:'spinta-video')+'.'+ext;
@@ -1635,7 +1626,7 @@ function showResult(blob,type,o,plan){
   DB.lastPkg=pkgFromCurrent(o,plan,cap);save();
   const done=[o.trim&&'silenzi tagliati',o.pause&&(plan.skips.length===1?'1 pausa rimossa':`${plan.skips.length} pause rimosse`),o.speed&&'1,1×',o.crop&&'9:16',o.light&&'luce',o.vol&&'volume',o.hook&&'hook',o.subs&&'sottotitoli',o.part&&'PARTE '+o.series.ep,o.end&&'testo finale',o.bar&&'barra'].filter(Boolean);
   const file=new File([blob],name,{type});const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
-  window._spintaFile=file;const slot=nextSlot();const slotTxt=slot?slotLabel(slot):'';
+  window._spintaFile=file;const ps=personalSlot(),slot=ps.when;const slotTxt=slot?slotLabel(slot):'';
   $('#v-out').innerHTML=`<div class="card" style="margin-top:14px;background:var(--card2)"><h3>✅ Video pronto</h3>
    <div style="color:var(--mut);font-size:12.5px;margin-top:4px">${esc(done.join(' · ')||'nessuna modifica')} · ${plan.outDur.toFixed(1)} s · ${(blob.size/1048576).toFixed(1)} MB${VA.score?` · punteggio ${VA.score.total}`:''}</div>
    <video class="vid" src="${url}" controls playsinline></video>
@@ -1646,7 +1637,7 @@ function showResult(blob,type,o,plan){
    ${ext==='webm'?'<small class="n">Formato WebM: dal sito di TikTok si carica senza problemi. Se l\'app del telefono non lo vede, convertilo in MP4 (es. con CapCut).</small>':''}
    <div id="v-cover"></div></div>
    <div class="card" style="background:var(--card2)"><h3>🚀 Pubblica al momento giusto</h3>
-   ${slot?`<div style="font-size:14px;margin-top:6px">⏰ Prossimo orario consigliato: <b>${slotTxt}</b></div>`:''}
+   ${slot?`<div style="font-size:14px;margin-top:6px">⏰ Prossimo orario consigliato: <b>${slotTxt}</b>${ps.why?`<div style="color:var(--mut);font-size:12.5px">${esc(ps.why)}: la fascia che rende di più sul tuo canale</div>`:''}</div>`:''}
    <div style="color:var(--mut);font-size:13px;margin-top:8px;line-height:1.6">☑️ Etichetta "Contenuto generato con AI" se usi voci o personaggi AI<br>☑️ Copertina caricata<br>☑️ Resta ${primaOra()} minuti a rispondere ai primi commenti</div>
    <div class="acts">${slot?`<button class="btn sm alt" onclick="planFromPkg()">📅 Programma</button>`:''}<button class="btn sm pub-btn" onclick="markPublished('pub-next')">✅ L'ho pubblicato</button></div>
    <div id="pub-next"></div></div>`;
@@ -1663,7 +1654,7 @@ function shareFinal(){const cap=window._spintaCap||'';if(cap)copy(cap);
 function planFromPkg(){const pk=DB.lastPkg;
   if(pk&&pk.published){toast('Questo video risulta già pubblicato');return}
   if(pk&&pk.planned&&DB.posts.some(p=>p.id===pk.planned)){toast('Già nel piano ✓');return}
-  const slot=nextSlot();if(!slot){toast('Nessun orario disponibile');return}
+  const slot=personalSlot().when;if(!slot){toast('Nessun orario disponibile');return}
   const pad=n=>String(n).padStart(2,'0');const date=`${slot.getFullYear()}-${pad(slot.getMonth()+1)}-${pad(slot.getDate())}`;
   const id=uid();DB.posts.push({id,title:pk?pk.title:'Video',date,time:hhmm(slot),note:cutTxt(((pk&&pk.cap)||'').split('\n')[0],90),st:'edit'});
   if(pk)pk.planned=id;save();scheduleNotifs();toast(`Nel piano: ${slotLabel(slot)}`)}
@@ -1672,13 +1663,13 @@ function markPublished(target){const pk=DB.lastPkg;if(!pk){toast('Prima crea il 
   const now=new Date();pk.published=now.getTime();
   const ser=pk.series?(DB.series||[]).find(s=>s.id===pk.series.id):null;
   const item={id:uid(),title:pk.title,date:todayISO(),hour:hhmm(now),hk:pk.hk,len:pk.len,format:pk.series?'Serie (puntata)':'Altro',
-    series:pk.series?`${pk.series.name} · P${pk.series.ep}`:'',score:pk.score,pubAt:now.getTime(),transcript:pk.transcript,topic:pk.topic,end:pk.end,niche:pk.niche};
+    series:pk.series?`${pk.series.name} · P${pk.series.ep}`:'',score:pk.score,pubAt:now.getTime(),transcript:pk.transcript,topic:pk.topic,end:pk.end,niche:pk.niche,f:pk.f||null,miss:pk.miss||[]};
   DB.pending.push(item);if(ser&&ser.ep===pk.series.ep)ser.ep++;DB.nextHook=null;DB.checklist={};
   const pl=pk.planned&&DB.posts.find(x=>x.id===pk.planned);if(pl){pl.st='pub';pl.date=item.date;pl.time=item.hour}
   save();scheduleNotifs();renderSeriesSel();onSeriesChanged();renderPlan();
   document.querySelectorAll('.pub-btn').forEach(b=>{b.disabled=true;b.textContent='✅ Registrato'});
   const d1=new Date(now.getTime()+primaOra()*60e3),d2=new Date(now.getTime()+48*3600e3);const box=$('#'+(target||'pub-next'));
-  if(box)box.innerHTML=`<div class="banner" style="margin:12px 0 0">🎉 Pubblicato! Prossimi passi:<br>💬 <b>Fino alle ${hhmm(d1)}</b> rispondi ai commenti: TikTok guarda l'interazione della prima ora.<br>📊 <b>${slotLabel(d2)}</b> inserisci i dati nella scheda Crescita.
+  if(box)box.innerHTML=`<div class="banner" style="margin:12px 0 0">🎉 Pubblicato! Prossimi passi:<br>💬 <b>Fino alle ${hhmm(d1)}</b> rispondi ai commenti: le prime interazioni aiutano il video a partire.<br>📊 <b>${slotLabel(d2)}</b> inserisci i dati nella scheda Crescita.
     <div class="acts"><button class="btn sm alt" onclick="exportFollowICS('${item.id}')">🔔 Promemoria nel calendario</button></div></div>`;
   toast('Ottimo! Ti ricordo i prossimi passi')}
 /* scheda "video pronto" dopo una riapertura dell'app */
@@ -1723,7 +1714,7 @@ async function makeCover(){
 }
 
 /* ---------- REGOLE ALGORITMO (aggiornabili da spinta-regole.json) ---------- */
-const DEFAULT_RULES={"version": "2026.10.04", "aggiornato": "4 ottobre 2026", "prossimoAggiornamento": "lunedì 12 ottobre", "durata": {"min": 10, "ideale": [15, 90], "max": 180}, "hashtag": {"max": 5, "larghi": 0, "evitare": ["#fyp", "#foryou", "#viral", "#perte", "#neiperte"]}, "hookSecondi": 3, "pausaMin": 0.6, "obiettivi": {"completamento": 70, "rewatch": 15, "frequenza": "3-5 video a settimana", "primaOraMinuti": 30}, "orari": {"0": ["11:00", "18:00", "20:30"], "1": ["12:30", "19:00", "20:00"], "2": ["12:30", "19:00", "20:00"], "3": ["13:00", "19:00", "20:00"], "4": ["12:30", "18:30", "20:00"], "5": ["13:00", "18:00", "21:00"], "6": ["11:30", "15:00", "20:30"]}, "segnali": ["Tempo di visione e percentuale di visione completa (obiettivo: oltre il 70%)", "Rewatch: oltre il 15-20% è un segnale forte", "Condivisioni", "Commenti lunghi e veloci nella prima ora", "Nuovi follower dal video", "Salvataggi", "Like (il segnale più debole)"], "novita": ["I video più lunghi (60-180 s) vengono spinti di più, ma solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.", "La soglia per diventare virali si è alzata: serve circa il 70% di visione completa.", "TikTok funziona sempre più come motore di ricerca: dì l'argomento a voce, scrivilo a schermo e nella caption.", "Hashtag generici come #fyp e #viral non aiutano più: usa da 1 a 5 hashtag specifici della tua nicchia.", "L'audio originale (la tua voce) viene favorito; i suoni di tendenza aiutano solo se li usi entro 24-48 ore da quando esplodono.", "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.", "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.", "Le serie a puntate e i format ripetibili fanno tornare il pubblico sul profilo.", "Restare in una nicchia precisa rende più dei profili che parlano di tutto.", "Costanza: meglio 3-5 video a settimana regolari che tanti video in pochi giorni.", "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."], "tendenze": {"settimana": "28 settembre – 4 ottobre 2026", "format": [{"nome": "Serie a tema", "come": "Puntate numerate con lo stesso inizio e lo stesso personaggio: chi trova una puntata guarda le altre."}, {"nome": "Video-domanda", "come": "Apri o chiudi con una domanda diretta al pubblico: le analisi riportano circa il 26% di commenti in più."}, {"nome": "Problema → soluzione", "come": "Mostra subito un problema reale del tuo pubblico e risolvilo entro il video."}, {"nome": "Storytelling 60-90 s", "come": "Una mini-storia con posta in gioco, sviluppo e finale chiaro: i video più lunghi crescono se tengono fino alla fine."}, {"nome": "Format ripetibile", "come": "Stessa struttura ogni volta (es. «Giorno X di Y», «Valuto i vostri…»): l'algoritmo e il pubblico la riconoscono."}], "hashtag": [], "suoni": [], "nota": "TikTok non rende pubblici i dati sui suoni e gli hashtag di tendenza in Italia: per quelli del momento apri il TikTok Creative Center dal tuo account."}, "fonti": [{"titolo": "Hootsuite – How the TikTok algorithm works in 2026", "url": "https://blog.hootsuite.com/tiktok-algorithm/"}, {"titolo": "Socialync – TikTok Algorithm 2026: the 7 signals (agg. luglio 2026)", "url": "https://www.socialync.io/blog/tiktok-algorithm-2026-what-works-now"}, {"titolo": "Metricool – TikTok Trends 2026 (agg. agosto 2026)", "url": "https://metricool.com/tiktok-trends/"}, {"titolo": "DeRev – Algoritmo di TikTok 2026", "url": "https://derev.com/2026/07/algoritmo-tiktok-2026/"}, {"titolo": "OpusClip – TikTok's new algorithm 2026", "url": "https://www.opus.pro/blog/tiktoks-new-algorithm-2026"}], "checklistExtra": ["Etichetta \"Contenuto generato con AI\" se usi voci, immagini o personaggi creati con l'AI", "Nessuna filigrana di altre app (CapCut, Instagram…)", "Hashtag specifici della nicchia, niente #fyp o #viral"]};
+const DEFAULT_RULES={"version": "2026.10.04", "aggiornato": "4 ottobre 2026", "prossimoAggiornamento": "lunedì 12 ottobre", "durata": {"min": 10, "ideale": [15, 90], "max": 180}, "hashtag": {"max": 5, "larghi": 0, "evitare": ["#fyp", "#foryou", "#viral", "#perte", "#neiperte"]}, "hookSecondi": 3, "pausaMin": 0.6, "obiettivi": {"completamento": 70, "rewatch": 15, "frequenza": "3-5 video a settimana", "primaOraMinuti": 30}, "orari": {"0": ["11:00", "18:00", "20:30"], "1": ["12:30", "19:00", "20:00"], "2": ["12:30", "19:00", "20:00"], "3": ["13:00", "19:00", "20:00"], "4": ["12:30", "18:30", "20:00"], "5": ["13:00", "18:00", "21:00"], "6": ["11:30", "15:00", "20:30"]}, "segnali": ["Tempo di visione e percentuale di visione completa (i video che vanno meglio superano circa il 70%)", "Rewatch: oltre il 15-20% è indicato come segnale forte", "Condivisioni", "Commenti lunghi e veloci nella prima ora", "Nuovi follower dal video", "Salvataggi", "Like (il segnale più debole)"], "novita": ["Secondo le analisi i video più lunghi (60-180 s) rendono di più solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.", "Secondo le analisi più recenti, i video che vanno meglio superano circa il 70% di visione completa.", "TikTok funziona sempre più come motore di ricerca: dì l'argomento a voce, scrivilo a schermo e nella caption.", "Secondo le analisi, hashtag generici come #fyp e #viral non aiutano più: usa da 1 a 5 hashtag specifici della tua nicchia.", "L'audio originale (la tua voce) sembra favorito; i suoni di tendenza aiutano soprattutto se li usi entro 24-48 ore da quando esplodono.", "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.", "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.", "Le serie a puntate e i format ripetibili fanno tornare il pubblico sul profilo.", "Restare in una nicchia precisa rende più dei profili che parlano di tutto.", "Costanza: meglio 3-5 video a settimana regolari che tanti video in pochi giorni.", "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."], "tendenze": {"settimana": "28 settembre – 4 ottobre 2026", "format": [{"nome": "Serie a tema", "come": "Puntate numerate con lo stesso inizio e lo stesso personaggio: chi trova una puntata guarda le altre."}, {"nome": "Video-domanda", "come": "Apri o chiudi con una domanda diretta al pubblico: le analisi riportano circa il 26% di commenti in più."}, {"nome": "Problema → soluzione", "come": "Mostra subito un problema reale del tuo pubblico e risolvilo entro il video."}, {"nome": "Storytelling 60-90 s", "come": "Una mini-storia con posta in gioco, sviluppo e finale chiaro: i video più lunghi crescono se tengono fino alla fine."}, {"nome": "Format ripetibile", "come": "Stessa struttura ogni volta (es. «Giorno X di Y», «Valuto i vostri…»): l'algoritmo e il pubblico la riconoscono."}], "hashtag": [], "suoni": [], "nota": "TikTok non rende pubblici i dati sui suoni e gli hashtag di tendenza in Italia: per quelli del momento apri il TikTok Creative Center dal tuo account."}, "fonti": [{"titolo": "Hootsuite – How the TikTok algorithm works in 2026", "url": "https://blog.hootsuite.com/tiktok-algorithm/"}, {"titolo": "Socialync – TikTok Algorithm 2026: the 7 signals (agg. luglio 2026)", "url": "https://www.socialync.io/blog/tiktok-algorithm-2026-what-works-now"}, {"titolo": "Metricool – TikTok Trends 2026 (agg. agosto 2026)", "url": "https://metricool.com/tiktok-trends/"}, {"titolo": "DeRev – Algoritmo di TikTok 2026", "url": "https://derev.com/2026/07/algoritmo-tiktok-2026/"}, {"titolo": "OpusClip – TikTok's new algorithm 2026", "url": "https://www.opus.pro/blog/tiktoks-new-algorithm-2026"}], "checklistExtra": ["Etichetta \"Contenuto generato con AI\" se usi voci, immagini o personaggi creati con l'AI", "Nessuna filigrana di altre app (CapCut, Instagram…)", "Hashtag specifici della nicchia, niente #fyp o #viral"]};
 /* ogni campo del file viene controllato: se uno è sbagliato uso il valore incorporato, così l'app non si blocca mai */
 function sanitizeRules(j){const D=DEFAULT_RULES,R=JSON.parse(JSON.stringify(D));const isObj=x=>!!x&&typeof x==='object'&&!Array.isArray(x);if(!isObj(j))return R;
   const str=(x,n)=>typeof x==='string'&&x.trim()?x.trim().slice(0,n||300):'';
@@ -1770,16 +1761,17 @@ function renderRulesCard(){const sr=$('#set-rules');if(sr)sr.textContent=RULES.a
   const head=t=>`<b style="font-size:14px;display:block;margin-top:14px">${t}</b>`;
   el.innerHTML=`<h3 style="font-size:17px">📡 Algoritmo e tendenze</h3>
   <div style="color:var(--mut);font-size:12.5px;margin-top:2px">Aggiornato al ${esc(RULES.aggiornato)}${RULES.prossimoAggiornamento?` · prossimo aggiornamento ${esc(RULES.prossimoAggiornamento)}`:''}</div>
+  <div style="font-size:13px;margin-top:8px;line-height:1.45">TikTok non pubblica il suo algoritmo: qui trovi le indicazioni di analisi e siti di settore, aggiornate ogni lunedì. Sono tendenze, non regole ufficiali.</div>
   ${T.format&&T.format.length?head(`🔥 Format che funzionano${T.settimana?' · '+esc(T.settimana):''}`)+T.format.map(f=>`<div class="fix"><div><b style="font-size:14px">${esc(f.nome)}</b><div style="color:var(--mut);font-size:13px">${esc(f.come)}</div></div></div>`).join(''):''}
   ${T.hashtag&&T.hashtag.length?head('#️⃣ Hashtag in crescita')+`<div class="chips">${T.hashtag.map(h=>`<span class="chip">${esc(h.tag)}${h.nota?` <span style="color:var(--mut)">· ${esc(h.nota)}</span>`:''}</span>`).join('')}</div>`:''}
   ${T.suoni&&T.suoni.length?head('🎵 Suoni in tendenza')+T.suoni.map(s=>`<div style="font-size:13.5px;margin-top:5px">• ${esc(s.nome)}${s.nota?` <span style="color:var(--mut)">– ${esc(s.nota)}</span>`:''}</div>`).join(''):''}
   ${T.nota?`<small class="n">${esc(T.nota)} <a href="https://ads.tiktok.com/business/creativecenter/" target="_blank" rel="noopener">Apri il Creative Center</a></small>`:''}
-  ${O?`<div class="kpis" style="margin:14px 0 0"><div class="kpi"><div class="v">${O.completamento}%</div><div class="l">visione completa per diventare virale</div></div><div class="kpi"><div class="v">${O.rewatch}%</div><div class="l">rewatch: segnale forte</div></div></div>${O.frequenza?`<small class="n">Frequenza consigliata: ${esc(O.frequenza)}</small>`:''}`:''}
-  ${head('Cosa pesa di più, in ordine')}
+  ${O?`<div class="kpis" style="margin:14px 0 0"><div class="kpi"><div class="v">${O.completamento}%</div><div class="l">visione completa dei video che vanno meglio (stima)</div></div><div class="kpi"><div class="v">${O.rewatch}%</div><div class="l">rewatch indicato come segnale forte</div></div></div>${O.frequenza?`<small class="n">Frequenza consigliata: ${esc(O.frequenza)}</small>`:''}`:''}
+  ${head('Cosa pesa di più secondo le analisi')}
   ${RULES.segnali.map((x,i)=>`<div style="font-size:13.5px;margin-top:5px"><span class="tag">${i+1}</span>${esc(x)}</div>`).join('')}
   ${head('Cosa funziona adesso')}
   ${RULES.novita.map(x=>`<div style="font-size:13.5px;margin-top:6px;color:var(--mut)">• ${esc(x)}</div>`).join('')}
-  ${RULES.fonti&&RULES.fonti.length?`<details><summary>Fonti (${RULES.fonti.length})</summary>${RULES.fonti.map(f=>`<div style="margin-top:6px"><a href="${esc(safeUrl(f.url))}" target="_blank" rel="noopener">${esc(f.titolo)}</a></div>`).join('')}<div style="margin-top:8px">TikTok non pubblica il suo algoritmo: queste sono analisi di esperti, raccolte e aggiornate ogni settimana.</div></details>`:''}
+  ${RULES.fonti&&RULES.fonti.length?`<details><summary>Fonti (${RULES.fonti.length})</summary>${RULES.fonti.map(f=>`<div style="margin-top:6px"><a href="${esc(safeUrl(f.url))}" target="_blank" rel="noopener">${esc(f.titolo)}</a></div>`).join('')}<div style="margin-top:8px">Le fonti vengono lette e riassunte ogni lunedì.</div></details>`:''}
   <button class="btn alt" onclick="updateRules(true)">↻ Controlla aggiornamenti</button>`;
   renderTrendBox()}
 function renderTrendBox(){const el=$('#a-trend');if(!el)return;const T=RULES.tendenze||{};const nk=($('#a-niche')||{}).value;
@@ -1869,7 +1861,7 @@ function renderAutoCard(){
   const hasA=VA.audio&&VA.audio.hasSound;
   $('#v-auto').innerHTML=`<div class="grp" style="padding:12px">
    <b>✨ Pilota automatico</b>
-   <div style="color:var(--mut);font-size:13px;margin:4px 0 8px">${hasA?'Ascolto il video, capisco l\'argomento e scrivo hook, sottotitoli, caption e hashtag secondo le regole attuali di TikTok.':'Il video non ha parlato da ascoltare: scrivi l\'argomento qui sotto e preparo hook e caption.'}</div>
+   <div style="color:var(--mut);font-size:13px;margin:4px 0 8px">${hasA?'Ascolto il video, capisco l\'argomento e scrivo hook, sottotitoli, caption e hashtag seguendo le indicazioni aggiornate ogni settimana.':'Il video non ha parlato da ascoltare: scrivi l\'argomento qui sotto e preparo hook e caption.'}</div>
    ${hasA?`<select id="a-model"><option value="onnx-community/whisper-base">Trascrizione precisa (~80 MB la prima volta)</option><option value="onnx-community/whisper-tiny">Trascrizione veloce (~40 MB)</option></select>
    <button class="btn" id="a-go" onclick="autoPrepare()">✨ Prepara tutto in automatico</button>`:''}
    <div id="a-steps" style="margin-top:8px"></div></div>
@@ -2015,7 +2007,7 @@ function defaultEnd(){const c=curSeries();if(c)return `Parte ${c.ep+1} in arrivo
   return {commenti:'E tu? Scrivilo nei commenti 👇',condivisioni:'Mandalo a chi deve vederlo 👀',follow:'Segui per la parte 2 🔔',salvataggi:'Salvalo per dopo 📌'}[g]}
 function goalChange(){if(VA&&!VA.endEdited&&$('#o-endtxt'))$('#o-endtxt').value=defaultEnd();schedScore()}
 
-/* ---------- PUNTEGGIO VIRALE ---------- */
+/* ---------- SPINTA SCORE (indice di Spinta, non un dato di TikTok) ---------- */
 let _scT;function schedScore(){clearTimeout(_scT);_scT=setTimeout(renderScore,120)}
 const PIL=[['hook','Aggancio'],['ret','Ritenzione'],['qual','Qualità'],['disc','Scoperta'],['int','Interazione']];
 const PNAME=Object.fromEntries(PIL);
@@ -2053,14 +2045,14 @@ function scoreModel(o,pk){
   const badLight=VA.L<0.3||VA.L>0.75||VA.C<0.13||VA.S<0.12,lightOk=o.light||!badLight;
   add('qual','Luce e colori',3,lightOk?3:VA.L<0.3?0.5:1.5,lightOk?(o.light&&badLight?'Corretti automaticamente':'Esposizione e colori buoni'):VA.L<0.3?'Video scuro':VA.L>0.75?'Troppo chiaro':'Colori spenti','Correggili in automatico.',lightOk?null:'o-light');
   add('qual','Nitidezza',2,VA.blur>0.15?0.5:2,VA.blur>0.15?'Alcuni momenti mossi o sfocati':'Nitido','Appoggia il telefono e tocca lo schermo per mettere a fuoco.',null);
-  if(!hasA)add('qual','Audio',3,0,A?'Video muto':'Audio non analizzabile','I video senza suono vengono spinti molto meno: aggiungi voce o un suono di tendenza.',null);
+  if(!hasA)add('qual','Audio',3,0,A?'Video muto':'Audio non analizzabile','I video senza suono di solito rendono molto meno: aggiungi voce o un suono di tendenza.',null);
   else{const vOk=o.vol||(A.loud>=-26&&A.loud<=-9);add('qual','Audio',3,(vOk?3:1)-(A.clipPct>0.1&&!o.vol?1:0),vOk?(o.vol&&(A.loud<-26||A.loud>-9)?'Volume normalizzato':'Volume giusto'):A.loud<-26?'Volume basso':'Volume troppo alto','Normalizzalo.',vOk?null:'o-vol')}
   // SCOPERTA (13)
   const subsOn=VA.hasSubs||o.subs;
-  add('disc','Sottotitoli',5,subsOn?5:0,VA.hasSubs?'Già presenti nel video':o.subs?'Aggiunti dal parlato':'Assenti','Molti guardano senza audio, e TikTok legge il testo per capire l\'argomento.',subsOn?null:(VA.subs&&VA.subs.length?'o-subs':'auto'));
-  if(!VA.transcript)add('disc','Argomento detto subito',3,hasA?1:0,hasA?'Da verificare con il pilota automatico':'Nessun parlato','Nomina l\'argomento nei primi 5 secondi: TikTok lo usa per la ricerca.',hasA?'auto':null);
+  add('disc','Sottotitoli',5,subsOn?5:0,VA.hasSubs?'Già presenti nel video':o.subs?'Aggiunti dal parlato':'Assenti','Molti guardano senza audio, e il testo aiuta anche a farti trovare nella ricerca.',subsOn?null:(VA.subs&&VA.subs.length?'o-subs':'auto'));
+  if(!VA.transcript)add('disc','Argomento detto subito',3,hasA?1:0,hasA?'Da verificare con il pilota automatico':'Nessun parlato','Nomina l\'argomento nei primi 5 secondi: aiuta a farti trovare nella ricerca.',hasA?'auto':null);
   else{const early=VA.subs.filter(s=>s.s<6).map(s=>s.t.toLowerCase()).join(' ');const hit=pk.kws.length?pk.kws.some(k=>early.includes(k)):null;
-    add('disc','Argomento detto subito',3,hit===null?2:hit?3:1,hit===null?'Conferma l\'argomento nel passo 3 per verificarlo':hit?'L\'argomento si capisce nei primi secondi':'L\'argomento arriva tardi nel parlato','Nominalo nei primi 5 secondi: TikTok lo usa per la ricerca.',null)}
+    add('disc','Argomento detto subito',3,hit===null?2:hit?3:1,hit===null?'Conferma l\'argomento nel passo 3 per verificarlo':hit?'L\'argomento si capisce nei primi secondi':'L\'argomento arriva tardi nel parlato','Nominalo nei primi 5 secondi: aiuta a farti trovare nella ricerca.',null)}
   const cap=pk.cap||'';const tagN=(cap.match(/#[^\s#]+/g)||[]).length;const capTxt=cap.replace(/#\S+/g,'').toLowerCase();
   const capKw=!!cap.trim()&&(pk.kws.length?pk.kws.some(k=>capTxt.includes(k)):capTxt.trim().split(/\s+/).length>=5);
   add('disc','Caption con parole chiave',2,capKw?2:0,cap.trim()?(capKw?'La caption racconta l\'argomento':'La caption non nomina l\'argomento'):'Caption non ancora scritta','Scrivi di cosa parla il video con parole che la gente cercherebbe.',cap.trim()?null:'auto');
@@ -2071,7 +2063,7 @@ function scoreModel(o,pk){
   const speechCta=/\?|comment|scriv|segui|like|lascia|ditemelo|dimmi|vot/i.test(last);const endOn=o.end&&o.endTxt;
   add('int','Invito finale',5,endOn?5:speechCta?4:0,endOn?`Testo finale: "${o.endTxt}"`:speechCta?'Nel finale chiedi di interagire':VA.transcript||!hasA?'Il video finisce senza invito':'Da verificare','Chiudi con "Parte 2 in arrivo 🔔" o una domanda: porta follow e commenti.',endOn||speechCta?null:'o-end');
   const capQ=/\?|comment|scrivete|ditemelo|dimmi/i.test(cap);
-  add('int','Domanda nella caption',4,capQ?4:0,capQ?'La caption invita a commentare':'Nessuna domanda nella caption','I commenti lunghi sono un segnale forte per l\'algoritmo.',capQ?null:'auto');
+  add('int','Domanda nella caption',4,capQ?4:0,capQ?'La caption invita a commentare':'Nessuna domanda nella caption','Una domanda porta commenti, e i commenti aiutano il video a girare.',capQ?null:'auto');
   const ser=pk.series;
   add('int','Serie a puntate',3,ser?(o.part?3:2.5):1,ser?`${ser.name} · Parte ${ser.ep}${o.part?'':' (etichetta spenta)'}`:'Video singolo','Le serie fanno tornare il pubblico sul profilo: imposta la serie nel passo 1.',ser?(o.part?null:'o-part'):'serie');
   const P={hook:0,ret:0,qual:0,disc:0,int:0},MX={hook:30,ret:30,qual:15,disc:13,int:12};items.forEach(i=>P[i.p]+=i.pts);
@@ -2082,7 +2074,7 @@ function ringSVG(v,b){const r=50,c=2*Math.PI*r;const col=v>=75?'#2fd67b':v>=55?'
   <circle cx="60" cy="60" r="${r}" fill="none" stroke="${col}" stroke-width="11" stroke-dasharray="${c*v/100} ${c}" stroke-linecap="round"/></svg>`}
 function renderScore(){if(!VA||!$('#o-trim')||!$('#v-score'))return;
   const o=readOpts(),pk=curPkg();const B=scoreModel(noOpts(),{cap:'',kws:pk.kws,series:null}),S=scoreModel(o,pk);VA.score=S;VA.scoreBefore=B.total;
-  const verdict=S.total>=85?'Pronto per spingere 🚀':S.total>=72?'Buono, ancora qualche ritocco':S.total>=55?'Può fare molto meglio':'Rischia di essere scrollato via';
+  const verdict=S.total>=85?'Pronto da pubblicare 🚀':S.total>=72?'Buono, ancora qualche ritocco':S.total>=55?'Può fare molto meglio':'Rischia di essere scrollato via';
   const todo=S.items.filter(i=>i.pts<i.max*0.8).sort((a,b)=>(b.max-b.pts)-(a.max-a.pts)),okI=S.items.filter(i=>i.pts>=i.max*0.8);
   const col=S.total>=75?'var(--ok)':S.total>=55?'var(--warn)':'var(--pink)';
   $('#v-score').innerHTML=`<div class="scorebox"><div class="ring">${ringSVG(S.total,B.total)}<div class="v"><div><b style="color:${col}">${S.total}</b><small>su 100</small></div></div></div>
@@ -2090,8 +2082,10 @@ function renderScore(){if(!VA||!$('#o-trim')||!$('#v-score'))return;
    <div style="color:var(--mut);font-size:12.5px;margin:2px 0 4px">Originale ${B.total} → con Spinta <b style="color:var(--txt)">${S.total}</b>${S.total>B.total?` <span class="tag o">+${S.total-B.total}</span>`:''}</div>
    ${PIL.map(([k,n])=>`<div class="pil"><div class="lb">${n}<span>${fmtP(Math.round(S.P[k]*10)/10)}/${S.MX[k]}</span></div><div class="bar"><i class="g" style="width:${B.P[k]/B.MX[k]*100}%"></i><i class="f" style="width:${S.P[k]/S.MX[k]*100}%"></i></div></div>`).join('')}
    </div></div>
+   <small class="n">Lo Spinta Score è una stima di Spinta su aggancio, ritmo, qualità, ricerca e interazione: non è un dato di TikTok e non garantisce visualizzazioni.</small>
+   ${chanBox(S,o,pk)}
    <div class="tl">${timelineSVG(o)}<div class="lg"><span><i style="background:#ff2d6f"></i>rischio uscita</span><span><i style="background:#4a4a5e"></i>tagliato</span><span><i style="background:#25f4ee"></i>cambio scena · voce</span><span><i style="background:#9a9ab2"></i>movimento</span></div></div>
-   ${todo.length?`<h4 class="h4">Da migliorare · in ordine di impatto</h4>`+todo.map(itemRow).join(''):'<div class="banner" style="margin-top:12px">🎉 Hai sistemato tutto quello che conta per l\'algoritmo.</div>'}
+   ${todo.length?`<h4 class="h4">Da migliorare · in ordine di impatto</h4>`+todo.map(itemRow).join(''):'<div class="banner" style="margin-top:12px">🎉 Hai sistemato tutto quello che Spinta controlla.</div>'}
    ${todo.some(i=>i.fix&&i.fix.startsWith('o-'))?`<button class="btn" onclick="applyAllFixes()">⚡ Applica tutte le correzioni</button>`:''}
    <details><summary>Già a posto (${okI.length})</summary>${okI.map(itemRow).join('')}</details>`;
   const ts=$('#topscore');ts.style.display='flex';ts.innerHTML=`<span style="color:var(--mut)">${B.total}</span><span style="color:var(--mut);font-weight:400">→</span><span style="color:${col}">${S.total}</span>`;
@@ -2106,6 +2100,8 @@ function fmtP(x){return Number.isInteger(x)?String(x):x.toFixed(1).replace('.','
 function applyFix(id){
   if(id==='auto'){goStep(3);if(!VA.transcript&&$('#a-go'))toast('Tocca "Prepara tutto in automatico"');else setTimeout(()=>$('#a-topic').focus(),400);return}
   if(id==='serie'){$('#s1').classList.add('open');goStep(1);setTimeout(()=>$('#ser-sel').focus(),400);return}
+  if(id==='hook'){goStep(3);setTimeout(()=>$('#a-hookedit').focus(),400);toast('Accorcia l\'hook: al massimo 8 parole');return}
+  if(id==='o-subs'&&$('#o-subs')&&$('#o-subs').disabled&&!VA.hasSubs){applyFix('auto');return}
   const e=$('#'+id);if(!e||e.disabled){toast('Non disponibile per questo video');return}e.checked=true;
   if(id==='o-hook'&&!curHook().trim()){goStep(3);setTimeout(()=>$('#a-hookedit').focus(),400);toast('Scrivi o scegli l\'hook')}
   updEst();renderScore()}
@@ -2160,11 +2156,116 @@ async function ocrRun(files){const box=$('#s-ocr');
   say(`✅ Ho letto <b>${got.length}</b> valori (bordo azzurro): ${got.map(k=>names[k]+' '+found[k]).join(' · ')}.${miss.length?`<br>Mancano: ${miss.join(', ')} — aggiungili a mano o carica un altro screenshot.`:''}<br><b>Controllali prima di salvare.</b>
    <details style="margin-top:6px"><summary>Testo letto</summary><div style="white-space:pre-wrap;margin-top:6px">${esc(txtAll.trim().slice(0,1500))}</div></details>`)}
 
+/* ---------- IMPARA DAI TUOI VIDEO: confronto i video del canale tra loro ---------- */
+const slotName=h=>{if(!h)return null;const x=+String(h).split(':')[0];if(isNaN(x))return null;return x<11?'Mattina (prima delle 11)':x<15?'Pranzo (11-15)':x<19?'Pomeriggio (15-19)':x<22?'Sera (19-22)':'Notte (dopo le 22)'};
+const SLOT_H={'Mattina (prima delle 11)':[6,11,'09:30'],'Pranzo (11-15)':[11,15,'12:30'],'Pomeriggio (15-19)':[15,19,'17:30'],'Sera (19-22)':[19,22,'20:30'],'Notte (dopo le 22)':[22,24,'22:30']};
+const lenBucket=l=>!+l?null:l<15?'Sotto i 15 s':l<30?'15-30 s':l<=60?'30-60 s':'Oltre 60 s';
+// come è montato il video finale (si salva quando lo pubblichi)
+function videoFeatures(o,plan,cap){const A=VA.audio,hasA=!!(A&&A.hasSound),r1=x=>x==null?null:Math.round(x*10)/10;
+  const lead=hasA?(o.trim?Math.min(A.lead,0.1):A.lead):null,pause=hasA?(o.pause?0:A.pauses.reduce((a,p)=>a+p.e-p.s,0)):null;
+  const kws=curPkg().kws;let topicAt=null;
+  if(VA.subs&&VA.subs.length&&kws.length){const s=VA.subs.find(x=>kws.some(k=>x.t.toLowerCase().includes(k)));if(s)topicAt=Math.max(0,plan.outT(Math.max(plan.start,s.s))/plan.rate)}
+  const cuts=(VA.cuts||[]).filter(t=>t>plan.start&&t<plan.end&&!plan.skips.some(k=>t>=k.s&&t<=k.e)).length;
+  const hk=o.hook&&o.hookTxt?o.hookTxt.replace(/\n/g,' '):'';
+  return{lead:r1(lead),pause:r1(pause),topicAt:r1(topicAt),pace:r1(cuts/Math.max(1,plan.outDur)*10),hookW:hk?hk.split(/\s+/).filter(Boolean).length:0,
+    subs:!!(VA.hasSubs||o.subs),end:!!(o.end&&o.endTxt),capQ:/\?|comment|scrivete|ditemelo|dimmi/i.test(cap||'')}}
+// le leve del montaggio: per ognuna confronto i tuoi video che la rispettano con quelli che no
+const LEVERS=[
+ {id:'start',n:'Partenza immediata',yes:'partono subito',no:'hanno un silenzio all\'inizio',get:f=>f.lead==null?null:f.lead<=0.5,fix:'o-trim',adv:'Parti subito: niente silenzio né saluto prima della prima frase'},
+ {id:'topic',n:'Argomento nei primi 3 secondi',yes:'dicono l\'argomento entro 3 secondi',no:'lo dicono più tardi',get:f=>f.topicAt==null?null:f.topicAt<=3,fix:null,adv:'Dì di cosa parla il video nei primi 3 secondi'},
+ {id:'pause',n:'Niente pause lunghe',yes:'non hanno pause lunghe',no:'hanno pause lunghe',get:f=>f.pause==null?null:f.pause<=0.5,fix:'o-pause',adv:'Togli le pause lunghe'},
+ {id:'subs',n:'Sottotitoli',yes:'hanno i sottotitoli',no:'non hanno sottotitoli',get:f=>!!f.subs,fix:'o-subs',adv:'Metti i sottotitoli'},
+ {id:'hook',n:'Hook scritto a schermo',yes:'hanno l\'hook scritto a schermo',no:'non ce l\'hanno',get:f=>f.hookW>0,fix:'o-hook',adv:'Metti l\'hook scritto nei primi secondi'},
+ {id:'short',n:'Hook di massimo 8 parole',yes:'hanno un hook di massimo 8 parole',no:'hanno un hook più lungo',get:f=>f.hookW>0?f.hookW<=8:null,fix:'hook',adv:'Tieni l\'hook entro 8 parole'},
+ {id:'end',n:'Invito finale',yes:'chiudono con un invito',no:'finiscono senza invito',get:f=>!!f.end,fix:'o-end',adv:'Chiudi con un invito: «Parte 2 in arrivo» o una domanda'},
+ {id:'capQ',n:'Domanda nella caption',yes:'hanno una domanda nella caption',no:'non ce l\'hanno',get:f=>!!f.capQ,fix:'auto',adv:'Metti una domanda nella caption'}];
+// A = video che rispettano la leva, B = gli altri; view confrontate in proporzione (media geometrica), visione media in punti
+function compareGroups(rows,test){const A=[],B=[];rows.forEach(x=>{const t=test(x);if(t===true)A.push(x);else if(t===false)B.push(x)});
+  if(A.length<2||B.length<2)return null;const m=a=>avg(a.map(x=>x.lv));
+  const ra=A.map(x=>x.r).filter(x=>x!=null),rb=B.map(x=>x.r).filter(x=>x!=null);
+  return{nA:A.length,nB:B.length,dv:Math.exp(m(A)-m(B))-1,dr:ra.length>=2&&rb.length>=2?avg(ra)-avg(rb):null,w:Math.abs(m(A)-m(B))*Math.sqrt(Math.min(A.length,B.length))}}
+function channelInsights(){const S=DB.stats.filter(s=>+s.views>0),out={n:S.length,nf:S.filter(s=>s.f).length,list:[],score:null};
+  if(S.length<4)return out;
+  const med=median(S.map(s=>+s.views))||1,rows=S.map(s=>({s,f:s.f||null,lv:Math.log(Math.max(1,+s.views)/med),r:ret(s)}));
+  const levers=LEVERS.slice(),paces=rows.filter(x=>x.f&&x.f.pace!=null).map(x=>x.f.pace);
+  if(paces.length>=4){const m=median(paces);if(m>0)levers.push({id:'pace',n:'Ritmo',yes:`cambiano scena almeno ${fmtP(m)} volte ogni 10 s`,no:'cambiano scena meno spesso',get:f=>f.pace==null?null:f.pace>=m,fix:null,adv:`Cambia inquadratura, zoom o testo almeno ogni ${Math.max(2,Math.round(10/m))} secondi`})}
+  levers.forEach(L=>{const c=compareGroups(rows,x=>x.f?L.get(x.f):null);if(!c)return;
+    const good=(c.dv>=0.15&&!(c.dr!=null&&c.dr<-5))||(c.dr!=null&&c.dr>=8&&c.dv>-0.05),bad=(c.dv<=-0.15&&!(c.dr!=null&&c.dr>5))||(c.dr!=null&&c.dr<=-8&&c.dv<0.05);
+    if(good||bad)out.list.push({kind:'lever',id:L.id,L,c,ok:good})});
+  [['format','Formato',s=>s.format||null],['hk','Tipo di hook',s=>s.hk&&s.hk!=='Nessuno'?s.hk:null],['slot','Orario',s=>slotName(s.hour)],['len','Durata',s=>lenBucket(s.len)]].forEach(([id,n,fn])=>{
+    let best=null;[...new Set(rows.map(x=>fn(x.s)).filter(Boolean))].forEach(k=>{const c=compareGroups(rows,x=>{const v=fn(x.s);return v?v===k:null});if(c&&c.dv>=0.15&&(!best||c.dv>best.c.dv))best={k,c}});
+    if(best)out.list.push({kind:'cat',id,n,k:best.k,c:best.c,ok:true})});
+  // lo Spinta Score si vede nelle tue view?
+  const sc=rows.map(x=>x.s.score).filter(v=>v!=null&&v!==''&&isFinite(+v)).map(Number);
+  if(sc.length>=4){const th=Math.round(median(sc)),c=compareGroups(rows,x=>{const v=x.s.score;return v==null||v===''||!isFinite(+v)?null:+v>=th});if(c){c.th=th;out.score=c}}
+  out.list.sort((a,b)=>(b.ok-a.ok)||(b.c.w-a.c.w));return out}
+const pctTxt=d=>{const p=Math.round(d*100);return(p>=0?'+':'−')+Math.abs(p)+'%'};
+const effTxt=c=>c.dv>=0.15||c.dv<=-0.15||c.dr==null?pctTxt(c.dv)+' view':(c.dr>=0?'+':'−')+Math.abs(Math.round(c.dr))+' punti di visione';
+const evid=c=>`${c.nA} contro ${c.nB} video${Math.min(c.nA,c.nB)<4?', pochi dati':''}`;
+function insightRow(x){const c=x.c,rt=c.dr!=null&&Math.abs(c.dr)>=3&&(c.dv>=0.15||c.dv<=-0.15)?` · visione media ${c.dr>=0?'+':'−'}${Math.abs(c.dr).toFixed(0)} punti`:'';
+  const badge=`<span class="vs ${x.ok?'up':'dn'}" style="white-space:nowrap">${effTxt(c)}</span>`;
+  if(x.kind==='cat')return `<div class="fix"><span>📊</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.n)}: ${esc(x.k)}</b><div style="color:var(--mut);font-size:12.5px">Rispetto agli altri tuoi video · ${evid(c)}${rt}</div></div>${badge}</div>`;
+  if(x.ok)return `<div class="fix"><span>✅</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.L.n)}</b><div style="color:var(--mut);font-size:12.5px">I tuoi video che ${esc(x.L.yes)} · ${evid(c)}${rt}</div></div>${badge}</div>`;
+  return `<div class="fix"><span>🤔</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.L.n)}: da verificare</b><div style="color:var(--mut);font-size:12.5px">Finora sono andati meglio i video che ${esc(x.L.no)} (${c.nB} contro ${c.nA}): può essere un caso, guarda i prossimi.</div></div>${badge}</div>`}
+function learnCard(I){const head=`<h3>🧠 Cosa funziona sul tuo canale</h3><div style="color:var(--mut);font-size:12.5px;margin:2px 0 6px">Confronto i tuoi video tra loro: sono i tuoi numeri, non regole di TikTok.</div>`;
+  if(I.n<4)return `<div class="card">${head}<div style="font-size:13.5px">Ho i dati di <b>${I.n}</b> video: dal 4° comincio a confrontarli e a dirti cosa funziona per te.</div><div class="meter"><i style="width:${I.n/4*100}%"></i></div><small class="n">Pubblica dallo Studio e inserisci i dati dopo 48 ore: così salvo anche come è montato ogni video.</small></div>`;
+  const ok=I.list.filter(x=>x.ok).slice(0,5),chk=I.list.filter(x=>!x.ok).slice(0,2),s=I.score;
+  const sc=!s?'':`<div class="fix"><span>🎯</span><div style="flex:1;min-width:0">${s.dv>=0.15?`<b style="font-size:14px">Lo Spinta Score funziona sul tuo canale</b><div style="color:var(--mut);font-size:12.5px">I video da ${s.th} in su hanno fatto ${pctTxt(s.dv)} view · ${evid(s)}</div>`:s.dv<=-0.15?`<b style="font-size:14px">Per ora lo Spinta Score non si vede nelle tue view</b><div style="color:var(--mut);font-size:12.5px">I video da ${s.th} in su sono andati peggio (${evid(s)}): conta di più quello che funziona sul tuo canale.</div>`:`<b style="font-size:14px">Lo Spinta Score per ora non fa differenza nelle tue view</b><div style="color:var(--mut);font-size:12.5px">${evid(s)}: servono altri dati per capirlo.</div>`}</div></div>`;
+  return `<div class="card">${head}${ok.length||chk.length?[...ok,...chk].map(insightRow).join(''):'<div style="font-size:13.5px;margin-top:6px">Per ora nessuna differenza netta tra i tuoi video: continua a pubblicare e a inserire i dati.</div>'}${sc}
+   <small class="n">Basato su ${I.n} video con i dati${I.nf<I.n?` · ${I.nf} con le misure del montaggio, che salvo quando pubblichi dallo Studio`:''}. Con pochi video i numeri cambiano facilmente: prendili come indizi, non come certezze.</small></div>`}
+// la prossima volta: prima i tuoi dati, poi le misure dell'ultimo video, poi i suoi punti deboli
+const MISS_ACT={'Avvio immediato':'Parti subito, senza silenzio iniziale','Hook a schermo':'Metti un hook scritto nei primi secondi','Movimento iniziale':'Parti già in movimento o con un primo piano',
+ 'Durata':'Taglia: tieni solo le parti forti','Tempi morti':'Togli le pause lunghe','Ritmo':'Cambia inquadratura o aggiungi uno zoom ogni 5-6 secondi','Finale secco':'Chiudi appena hai finito di parlare',
+ 'Rewatch':'Fai ricollegare la fine all\'inizio, così lo si riguarda','Formato 9:16':'Gira in verticale 9:16','Risoluzione':'Registra in 1080p','Luce e colori':'Gira con più luce, meglio davanti a una finestra',
+ 'Nitidezza':'Appoggia il telefono e metti a fuoco','Audio':'Cura l\'audio: voce chiara e volume giusto','Sottotitoli':'Metti i sottotitoli','Argomento detto subito':'Dì l\'argomento nei primi 3 secondi',
+ 'Caption con parole chiave':'Scrivi nella caption le parole che la gente cercherebbe','Hashtag':'Usa da 1 a 5 hashtag specifici della tua nicchia','Invito finale':'Chiudi con un invito: «Parte 2 in arrivo» o una domanda',
+ 'Domanda nella caption':'Metti una domanda nella caption','Serie a puntate':'Trasformalo in una serie a puntate'};
+const MISS_ID={'Avvio immediato':'start','Tempi morti':'pause','Sottotitoli':'subs','Hook a schermo':'hook','Invito finale':'end','Domanda nella caption':'capQ','Argomento detto subito':'topic','Durata':'len'};
+function catAdvice(x){if(x.id==='format')return `Usa il formato «${x.k}»`;if(x.id==='hk')return `Usa un hook di tipo «${x.k}»`;
+  if(x.id==='slot')return {'Mattina (prima delle 11)':'Pubblica la mattina, prima delle 11','Pranzo (11-15)':'Pubblica all\'ora di pranzo (11-15)','Pomeriggio (15-19)':'Pubblica il pomeriggio (15-19)','Sera (19-22)':'Pubblica la sera (19-22)','Notte (dopo le 22)':'Pubblica dopo le 22'}[x.k]||'Pubblica: '+x.k;
+  return 'Fai video '+(x.k.startsWith('Sotto')?'sotto i 15 secondi':x.k.startsWith('Oltre')?'oltre i 60 secondi':'da '+x.k.replace(' s',' secondi'))}
+function nextActions(I){const L=lastVideo(),lf=L&&L.f,acts=[],seen=new Set(),list=(I&&I.list)||[];
+  const add=(id,t,why)=>{if(acts.length>=3||seen.has(id))return;seen.add(id);acts.push({t,why})};
+  const okL=list.filter(x=>x.kind==='lever'&&x.ok);
+  okL.forEach(x=>{if(lf&&x.L.get(lf)===false)add(x.id,x.L.adv,`Nell'ultimo video mancava. Sul tuo canale: ${effTxt(x.c)} (${evid(x.c)}).`)});
+  if(lf){if(lf.lead!=null&&lf.lead>0.5)add('start',`Accorcia l'inizio di ${fmtP(lf.lead)} s`,'Era il silenzio prima della prima frase nel tuo ultimo video.');
+    if(lf.topicAt!=null&&lf.topicAt>3)add('topic','Dì l\'argomento entro 3 secondi',`Nel tuo ultimo video arrivava a ${fmtP(lf.topicAt)} s.`);
+    if(lf.pause!=null&&lf.pause>1)add('pause',`Togli ${fmtP(lf.pause)} s di pause`,'Erano rimaste nel tuo ultimo video.')}
+  list.filter(x=>x.kind==='cat').forEach(x=>{const cur={format:L&&L.format,hk:L&&L.hk,slot:L&&slotName(L.hour),len:L&&lenBucket(L.len)}[x.id];
+    if(cur!==x.k)add(x.id,catAdvice(x),`Sul tuo canale: ${effTxt(x.c)} rispetto agli altri tuoi video (${evid(x.c)}).`)});
+  okL.forEach(x=>add(x.id,'Continua così: '+x.L.adv.charAt(0).toLowerCase()+x.L.adv.slice(1),`Sul tuo canale: ${effTxt(x.c)} (${evid(x.c)}).`));
+  ((L&&L.miss)||[]).forEach(k=>add(MISS_ID[k]||k,MISS_ACT[k]||k,'Era tra i punti deboli del tuo ultimo video nello Spinta Score.'));
+  if(!acts.length)[['start','Parti subito, senza saluti né silenzi','Vale per quasi tutti i video: quando avrò i tuoi dati, i consigli diventano tuoi.'],['topic','Dì l\'argomento nei primi 3 secondi','Aiuta chi guarda a restare e la ricerca a trovarti.'],['end','Chiudi con un invito: «Parte 2 in arrivo» o una domanda','Porta commenti e follow.']].forEach(([i,t,w])=>add(i,t,w));
+  return acts}
+// punteggio medio dei tuoi ultimi video pubblicati
+function myScores(){const t=x=>x.pubAt||Date.parse((x.date||'1970-01-01')+'T'+(x.hour||'12:00'))||0;
+  const a=[...DB.stats,...DB.pending].filter(x=>x.score!=null&&x.score!==''&&isFinite(+x.score)).sort((p,q)=>t(q)-t(p)).slice(0,10).map(x=>+x.score);
+  return a.length>=2?{avg:Math.round(avg(a)),n:a.length}:null}
+// nello Studio: questo video confrontato con il tuo canale
+function chanBox(S,o,pk){const my=myScores(),I=channelInsights(),okL=I.list.filter(x=>x.kind==='lever'&&x.ok).slice(0,3);
+  if(!my&&!okL.length)return I.n>=1?`<small class="n">📈 Dal 4° video con i dati qui vedrai anche cosa funziona sul tuo canale (ora ${I.n}).</small>`:'';
+  const cf=videoFeatures(o,getPlan(o),pk.cap);
+  return `<div class="grp" style="padding:10px 12px;margin-top:12px"><b style="font-size:13.5px">📈 Dal tuo canale</b>
+   ${my?`<div style="font-size:13.5px;margin-top:4px">Media dei tuoi ultimi ${my.n} video: <b>${my.avg}</b> · questo <b>${S.total}</b> <span class="vs ${S.total>=my.avg?'up':'dn'}">${S.total>=my.avg?'+':'−'}${Math.abs(S.total-my.avg)}</span></div>`:''}
+   ${okL.map(x=>{const v=x.L.get(cf);return `<div class="fix" style="padding:8px 0"><span>${v===false?'⚠️':v?'✅':'•'}</span><div style="flex:1;min-width:0;font-size:13px"><b>${esc(x.L.n)}</b> · sul tuo canale ${effTxt(x.c)} (${evid(x.c)})${v===false?`<div style="color:var(--mut);margin-top:2px">Questo video no.${x.L.fix?` <button class="btn sm" style="margin-left:6px" onclick="applyFix('${x.L.fix}')">Correggi</button>`:''}</div>`:''}</div></div>`}).join('')}</div>`}
+// orario: la fascia che rende di più sul tuo canale, altrimenti gli orari consigliati
+function personalSlot(){const now=new Date(),I=DB.stats.filter(s=>+s.views>0&&s.hour).length>=4?channelInsights():null;
+  const best=I&&I.list.find(x=>x.kind==='cat'&&x.id==='slot'),r=best&&SLOT_H[best.k];
+  if(r)for(let d=0;d<8;d++){const day=new Date(now);day.setDate(now.getDate()+d);
+    let hs=(BEST[day.getDay()]||[]).filter(h=>{const x=+h.split(':')[0];return x>=r[0]&&x<r[1]});if(!hs.length)hs=[r[2]];
+    for(const h of hs){const [hh,mm]=h.split(':').map(Number),dt=new Date(day);dt.setHours(hh,mm,0,0);if(dt-now>20*60e3)return{when:dt,why:best.k}}}
+  return{when:nextSlot(),why:null}}
+
 /* ---------- PROSSIMO VIDEO: il seguito costruito sui dati ---------- */
-function renderNext(){const el=$('#g-next');if(!el)return;const has=DB.stats.length||DB.pending.length,idea=($('#nx-idea')||{}).value||'';
-  el.innerHTML=has?`<div class="card"><h3>🎬 Prossimo video</h3><div style="color:var(--mut);font-size:13px;margin:4px 0 2px">Preparo il seguito partendo dall'ultimo video e da quello che ha funzionato sul tuo canale: hook, scaletta secondo per secondo, durata e orario.</div>
+function renderNext(I){const el=$('#g-next');if(!el)return;const has=DB.stats.length||DB.pending.length,idea=($('#nx-idea')||{}).value||'';
+  if(!has){el.innerHTML='';return}
+  const acts=nextActions(I||channelInsights());
+  el.innerHTML=`<div class="card"><h3>👉 La prossima volta fai questo</h3>
+   ${acts.map((a,i)=>`<div class="fix"><span class="num" style="width:24px;height:24px;font-size:12px">${i+1}</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(a.t)}</b><div style="color:var(--mut);font-size:12.5px">${esc(a.why)}</div></div></div>`).join('')}
+   <h4 class="h4">🎬 Prossimo video</h4><div style="color:var(--mut);font-size:13px;margin:4px 0 2px">Preparo il seguito partendo dall'ultimo video e da quello che funziona sul tuo canale: hook, scaletta, durata e orario.</div>
    <label>Idea o commento da cui partire (facoltativo)</label><textarea id="nx-idea" style="min-height:60px" placeholder="es. «Fai un'app per dividere il conto in pizzeria»"></textarea>
-   <button class="btn" onclick="genNext()">🎬 Prepara il prossimo video</button><div id="nx-out"></div></div>`:'';if(has&&idea)$('#nx-idea').value=idea}
+   <button class="btn" onclick="genNext()">🎬 Prepara il prossimo video</button><div id="nx-out"></div></div>`;
+  if(idea)$('#nx-idea').value=idea}
 function lastVideo(){const items=[...DB.stats.map(s=>({...s,_t:s.pubAt||Date.parse((s.date||'1970-01-01')+'T'+(s.hour||'12:00'))})),...DB.pending.map(p=>({...p,_t:p.pubAt}))];
   return items.sort((a,b)=>b._t-a._t)[0]||null}
 function genNext(){
@@ -2180,16 +2281,14 @@ function genNext(){
     if(S.length>1&&p>=10){notes.push(`✅ L'ultimo video ha fatto <b>${fmt(Ls.views)}</b> view, il ${p.toFixed(0)}% sopra la tua media: tieni la stessa formula.`);hk=Ls.hk;if(Ls.len)len=Math.round(Ls.len)}
     else if(S.length>1)notes.push(`📉 L'ultimo video è ${p<0?'sotto':'in linea con'} la tua media (${fmt(Ls.views)} view): cambio un elemento alla volta.`);
     if(r!=null&&r<45){len=Math.max(15,Math.round(Math.min(len,(Ls.len||len)*0.7)));notes.push(`⏱️ Visione media al ${r.toFixed(0)}%: il prossimo dura meno (circa ${len} s) e va dritto al punto.`)}
-    if(Ls.full!==''&&Ls.full!=null&&+Ls.full<tgt)notes.push(`🏁 Visione completa ${Ls.full}% (obiettivo ${tgt}%): chiudi con un colpo di scena negli ultimi 3 secondi.`);
+    if(Ls.full!==''&&Ls.full!=null&&+Ls.full<tgt)notes.push(`🏁 Visione completa ${Ls.full}% (i video che vanno meglio superano circa il ${tgt}%): chiudi con un colpo di scena negli ultimi 3 secondi.`);
     if(e<4)notes.push('💬 Pochi commenti: finisci con una domanda a cui si risponde con una parola (A o B?).');
     else if(+Ls.comm>=10)notes.push('💬 Il pubblico commenta: rispondi al commento più votato dentro il video, citandolo a schermo.');
   }else notes.push('📥 Non ho ancora i numeri dell\'ultimo video: preparo il seguito sulla storia. Inserisci i dati dopo 48 ore per piani più precisi.');
   if(!hk&&bestHk&&S.length>=3){hk=bestHk.k;notes.push(`🎣 Il tipo di hook che ti rende di più: <b>${esc(hk)}</b>.`)}
-  // orario
-  const slotOf=h=>{const x=+h.split(':')[0];return x<11?[0,11]:x<15?[11,15]:x<19?[15,19]:x<22?[19,22]:[22,24]};
-  const bestSlot=groups(s=>s.hour?slotOf(s.hour).join('-'):null)[0];let when=nextSlot()||new Date(Date.now()+864e5);
-  if(bestSlot&&S.length>=3){const [a,b]=bestSlot.k.split('-').map(Number);const now=new Date();
-    outer:for(let d=0;d<8;d++){const day=new Date(now);day.setDate(now.getDate()+d);for(const h of BEST[day.getDay()]){const [hh,mm]=h.split(':').map(Number);if(hh>=a&&hh<b){const dt=new Date(day);dt.setHours(hh,mm,0,0);if(dt-now>20*60e3){when=dt;break outer}}}}}
+  // orario: la fascia che rende di più sul tuo canale
+  const ps=personalSlot(),when=ps.when||new Date(Date.now()+864e5);if(ps.why)notes.push(`⏰ Pubblico nella fascia che rende di più sul tuo canale: <b>${esc(ps.why)}</b>.`);
+  const acts=nextActions(channelInsights());
   // hook proposti
   const topic=L.topic||(ser?ser.name:'');const tArt=topic?withArticle(topic,L.transcript||''):'';const prevHook=(L.title||'').replace(/\s+/g,' ').trim();
   const H=[];
@@ -2210,7 +2309,7 @@ function genNext(){
     [`ultimi 3 s`,'Gancio finale',ser?`Cliffhanger + «Parte ${ep+1} in arrivo: segui 🔔»`:'Domanda secca al pubblico (A o B?) + invito a seguire']];
   const capQ=ser?`Parte ${ep} · ${idea?idea+' — ':''}secondo voi com'è andata? 👇`:`${idea||cap1(topic||'Il prossimo video')} — voi cosa ne pensate? 👇`;
   const tags=[ser?ser.tag:null,...tagsFor('',wordsOf(topic).filter(w=>w.length>=4&&!STOP.has(w)),L.niche||'generale').split(' ')].filter(Boolean);const capFull=capQ+'\n\n'+[...new Set(tags)].slice(0,RULES.hashtag.max).join(' ');
-  const plan=`${ser?`${ser.name} – Parte ${ep}`:'Prossimo video'}\nDurata: circa ${T} s · Pubblica: ${slotLabel(when)}\n\nHOOK (primi 3 s): ${hooks[0]?hooks[0].s:''}\n\nSCALETTA\n${beats.map(b=>`${b[0]} · ${b[1]}: ${b[2]}`).join('\n')}\n\nCAPTION\n${capFull}`;
+  const plan=`${ser?`${ser.name} – Parte ${ep}`:'Prossimo video'}\nDurata: circa ${T} s · Pubblica: ${slotLabel(when)}\n\nHOOK (primi 3 s): ${hooks[0]?hooks[0].s:''}\n\nSCALETTA\n${beats.map(b=>`${b[0]} · ${b[1]}: ${b[2]}`).join('\n')}\n\n${acts.length?`DA RICORDARE (dai dati del canale)\n${acts.map(a=>'- '+a.t).join('\n')}\n\n`:''}CAPTION\n${capFull}`;
   const ask=`Crea la ${ser?`Parte ${ep} di "${ser.name}"`:'prossima puntata'} per TikTok (verticale 9:16, circa ${T} secondi, sottotitoli inclusi), seguendo questo piano preparato da Spinta sui dati del mio canale.\n\n${plan}\n\nDati dell'ultimo video: ${Ls?`${fmt(Ls.views)} view, ${fmt(Ls.likes)} like, ${fmt(Ls.comm)} commenti${ret(Ls)!=null?`, visione media ${ret(Ls).toFixed(0)}%`:''}`:'non ancora disponibili'}.${L.transcript?`\nTesto dell'ultima puntata: «${L.transcript.slice(0,500)}»`:''}${idea?`\nIdea/commento da cui partire: ${idea}`:''}`;
   window._nx={hooks,plan,ask,when,cap:capFull};
   $('#nx-out').innerHTML=`<div style="margin-top:14px">${notes.map(x=>`<div style="font-size:13.5px;margin-bottom:6px">${x}</div>`).join('')}</div>

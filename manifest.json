@@ -1,7 +1,7 @@
 {
   "name": "Spinta · Studio video",
   "short_name": "Spinta",
-  "description": "Analizza, migliora e pubblica i tuoi video TikTok per farli arrivare nei Per Te.",
+  "description": "Analizza e migliora i tuoi video TikTok prima di pubblicarli, e impara dai risultati del tuo canale.",
   "lang": "it",
   "start_url": "./spinta.html",
   "scope": "./",
