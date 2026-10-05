@@ -425,7 +425,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.5 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.6 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -2359,7 +2359,7 @@ function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>Stri
 
 /* ---------- creatore video con Gennarino (crea.js, caricato solo quando serve) ---------- */
 function crea(fromPlan){if(window.crOpen)return window.crOpen(fromPlan);toast('Apro il creatore…');
-  loadScript('crea.js?v=2.5').then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
+  loadScript('crea.js?v=2.6').then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 
 /* ---------- avvio ---------- */
 try{history.scrollRestoration='manual'}catch(_){}

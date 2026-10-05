@@ -1,0 +1,27 @@
+{
+ "nota": "Cosa è già uscito nelle puntate scritte da Claude: serve per non ripetere idee, hook e battute.",
+ "settimane": [
+  {
+   "settimana": "2026-W41",
+   "idee": {
+    "A": "Dividi il conto in pizzeria",
+    "B": "Timer per la moka",
+    "C": "Lista della spesa a voce"
+   },
+   "hook": [
+    "Come nasce un'app su una bancarella? Ve lo dico io.",
+    "Stasera si chiude il voto: siete ancora in tempo!",
+    "Ha vinto la A: basta litigare per il conto in pizzeria!",
+    "Ha vinto la B: il caffè non brucerà più!",
+    "Ha vinto la C: la spesa si scrive con la voce!",
+    "È venerdì: il conto in pizzeria non è più un problema!",
+    "È venerdì: la moka adesso ha il suo timer!",
+    "È venerdì: la lista della spesa ve la scrivete parlando!"
+   ],
+   "parti": [
+    "dietro le quinte: come nasce un'app sul banco",
+    "ultime ore per votare"
+   ]
+  }
+ ]
+}
