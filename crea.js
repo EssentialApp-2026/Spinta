@@ -155,14 +155,16 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
       pop:idea?'idea':null,popTxt:idea?idea[2].replace(/[.!?…]+$/,''):'',popHead:idea?idea[1].toUpperCase():''}});
   // calendario della ricarica: una volta sola, sull'ultima frase che parla di domenica
   for(let i=n-2;i>0;i--){if(/domenic/i.test(items[i].text)&&!items[i].pop){items[i].pop='cal';break}}
-  // libreria: scene in più nelle frasi centrali. Prima le frasi che hanno parole in comune con il nome del file,
-  // poi, a frasi alterne, le altre scene a rotazione (al massimo 2 volte la stessa); mai la stessa scena in due frasi vicine
+  // libreria: scene in più. Prima le frasi che hanno parole in comune con le etichette della clip (tutte tranne l'hook),
+  // poi, a frasi alterne, le altre scene a rotazione nelle frasi centrali (al massimo 2 volte la stessa); mai la stessa scena in due frasi vicine
   if(lib&&lib.length&&n>3){const ok=it=>it.i>0&&it.i<n-1&&it.expr!=='wave',has=i=>!!(items[i]&&items[i].shot),
       near=(i,x)=>(items[i-1]&&items[i-1].shot===x)||(items[i+1]&&items[i+1].shot===x),uses=new Map(),use=(it,x)=>{it.shot=x;uses.set(x,(uses.get(x)||0)+1)};
-    items.forEach(it=>{if(!ok(it))return;const words=new Set(crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/));let best=null,bs=0;
+    items.forEach(it=>{if(it.i<1)return;const words=new Set(crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/));let best=null,bs=0;
       lib.forEach(x=>{const sc=x.tag.filter(t=>words.has(t)).length;if(sc>bs&&!near(it.i,x)){bs=sc;best=x}});if(best)use(it,best)});
     let k=ep||0;items.forEach(it=>{if(!ok(it)||it.shot||has(it.i-1)||has(it.i+1))return;
-      for(let a=0;a<lib.length;a++){const x=lib[(k+a)%lib.length];if(!near(it.i,x)&&(uses.get(x)||0)<2){use(it,x);k+=a+1;break}}})}
+      for(let a=0;a<lib.length;a++){const x=lib[(k+a)%lib.length];if(!near(it.i,x)&&(uses.get(x)||0)<2){use(it,x);k+=a+1;break}}});
+    // se una clip torna una seconda volta riparte da dove si era fermata, così non si vede ripetere lo stesso pezzo
+    const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
   const hook=crClean(lines[0]),sun=crNextSunday();
   return{items,vt,total:vt.total,hook,hookShow:Math.max(2.6,items[0]?items[0].e+0.15:2.6),ser,ep,likes:s.likes,goal:s.goal,sun,
     day:`DOM ${sun.getDate()}/${sun.getMonth()+1}`,endTxt:ser?`Parte ${ep+1} in arrivo: segui 🔔`:'Segui per non perderti il prossimo 🔔',subs:s.subs,bar:s.bar,seed:(ep||1)*7}}
@@ -277,6 +279,8 @@ function crMedia(c,el,t,t0){const vid=el.tagName==='VIDEO';if(vid?el.readyState<
 function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/1920,0,0);
   const it=st.items.find(x=>t>=x.s&&t<x.e+0.22)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
   let drawn=false;if(it&&it.shot&&media&&media.el&&media.cur===it){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,it.s)}
+  // sulle clip della libreria un'ombra morbida dietro ai sottotitoli, così si leggono anche sopra l'insegna
+  if(drawn&&st.subs&&it.i>0){const gr=c.createLinearGradient(0,1320,0,1700);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,'rgba(0,0,0,.42)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fillRect(0,1320,1080,380)}
   if(!drawn){c.drawImage(L.back,0,0,1080,1920);crRobot(c,t,st,it,mouth);c.drawImage(L.front,0,0,1080,1920);crJar(c,st,t,it&&it.hearts)}
   if(it&&it.pop)crPop(c,it,st,t);
   if(it&&it.stamp&&t>=it.stampAt)crStamp(c,it.stampAt,t);
@@ -316,13 +320,14 @@ async function crMake(){if(CR.busy)return;const lines=crLines();if(lines.length<
       ${s.light?'':'<button class="btn" onclick="$(\'#cr-light\').checked=true;crSaveSet();crMake()">⚡ Riprova in modalità leggera (720p)</button>'}<small class="n">La prima volta serve la connessione per scaricare la voce.</small></div>`)}}
   finally{wakeOff(wk);try{ac.close()}catch(_){}CR.busy=false;const b=$('#cr-go');if(b)b.disabled=false}}
 // prepara la clip della libreria per una scena (al massimo due lettori video aperti insieme)
-function crMediaFor(item){if(item.tipo==='immagine'){const im=new Image();im.decoding='async';im.src='libreria/'+encodeURIComponent(item.file);return im}
-  const v=hiddenVideo('libreria/'+encodeURIComponent(item.file),true);v.loop=true;return v}
+function crMediaFor(item,off){if(item.tipo==='immagine'){const im=new Image();im.decoding='async';im.src='libreria/'+encodeURIComponent(item.file);return im}
+  const v=hiddenVideo('libreria/'+encodeURIComponent(item.file),true);v.loop=true;
+  if(off>0)v.addEventListener('loadedmetadata',()=>{try{if(v.duration>0)v.currentTime=off%v.duration}catch(_){}},{once:true});return v}
 async function crRender(st,s,ac,onP){const W=s.light?720:1080,H=s.light?1280:1920,c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');
   const L=crLayers(W,H,st),dest=ac.createMediaStreamDestination(),src=ac.createBufferSource();src.buffer=st.vt.buf;src.connect(dest);
   // scene della libreria: una in onda (media.el) e la successiva già in caricamento (media.next), mai più di due lettori
   const shots=st.items.filter(x=>x.shot);const media={el:null,cur:null,next:null,nextAt:null};let si=0;
-  const prepNext=()=>{const nx=shots[si++];media.next=nx?crMediaFor(nx.shot):null;media.nextAt=nx||null};prepNext();
+  const prepNext=()=>{const nx=shots[si++];media.next=nx?crMediaFor(nx.shot,nx.shotOff||0):null;media.nextAt=nx||null};prepNext();
   const kill=el=>{if(el&&el.tagName==='VIDEO'){try{el.pause();el.removeAttribute('src');el.load();el.remove()}catch(_){}}};
   crDraw(ctx,W,H,0,st,L,null);
   const tracks=[...c.captureStream(30).getVideoTracks(),...dest.stream.getAudioTracks()];const {rec,mime}=makeRecorder(new MediaStream(tracks),s.light);
@@ -340,7 +345,7 @@ async function crRender(st,s,ac,onP){const W=s.light?720:1080,H=s.light?1280:192
       const it=st.items.find(x=>t>=x.s&&t<x.e+0.22);
       while(media.nextAt&&media.nextAt!==it&&t>=media.nextAt.e+0.22){kill(media.next);prepNext()}
       if(it&&media.nextAt===it){kill(media.el);media.el=media.next;media.cur=it;
-        if(media.el&&media.el.tagName==='VIDEO'){try{media.el.currentTime=0}catch(_){}media.el.play().catch(()=>{})}prepNext()}
+        if(media.el&&media.el.tagName==='VIDEO')media.el.play().catch(()=>{});prepNext()}
       else if(media.el&&media.cur&&media.cur!==it){kill(media.el);media.el=null;media.cur=null}   // scena finita: libero il lettore
       crDraw(ctx,W,H,t,st,L,media);onP(Math.min(1,t/st.total));
       // l'audio fa da orologio: se resta fermo per 8 secondi con l'app aperta, qualcosa non va

@@ -1,5 +1,54 @@
 {
   "versione": 1,
   "nota": "Clip e immagini di Gennarino usate dal creatore video di Spinta come scene in più. Per ogni elemento: file (nella cartella libreria), tipo (video o immagine), tag (parole che fanno scegliere la scena), poster (anteprima facoltativa).",
-  "elementi": []
+  "elementi": [
+    {
+      "file": "gennarino-saluta.mp4",
+      "tipo": "video",
+      "poster": "gennarino-saluta.jpg",
+      "descrizione": "Gennarino saluta dalla bancarella, la camera si avvicina al suo sorriso (8 s)",
+      "tag": [
+        "ciao",
+        "salve",
+        "uè",
+        "ue",
+        "guagliù",
+        "guagliu",
+        "sono",
+        "gennarino",
+        "eccomi",
+        "benvenuti",
+        "presento",
+        "presentazione",
+        "robottino"
+      ]
+    },
+    {
+      "file": "gennarino-idea.mp4",
+      "tipo": "video",
+      "poster": "gennarino-idea.jpg",
+      "descrizione": "Gennarino col dito alzato: ha un'idea, spiega, fa scegliere (8 s)",
+      "tag": [
+        "idea",
+        "idee",
+        "app",
+        "vota",
+        "votate",
+        "votare",
+        "voto",
+        "votazione",
+        "scegliete",
+        "scegli",
+        "quale",
+        "commenti",
+        "commentate",
+        "scrivete",
+        "scrivetelo",
+        "dite",
+        "preferite",
+        "consigliate",
+        "proposta"
+      ]
+    }
+  ]
 }
