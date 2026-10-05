@@ -174,6 +174,8 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
       <div>✨<b>Hook e testi</b>scritti dal tuo parlato</div>
       <div>📈<b>Impara</b>dai risultati del tuo canale</div>
     </div>
+    <button class="btn cy" style="margin-top:12px" onclick="crea()">🎬 Crea un video con Gennarino</button>
+    <small class="n" style="text-align:center">Scrive la puntata, le dà la voce e monta il video da solo.</small>
   </div>
 
   <article class="stp open" id="s1" data-state="ready">
@@ -423,7 +425,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.3 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.4 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -1380,9 +1382,10 @@ async function analyzeVideo(){
     const md=median(frames.slice(1).map(f=>f.diff));const thr=Math.max(0.09,md*3.5);
     const cuts=frames.filter((f,i)=>i>0&&f.diff>thr).map(f=>f.t);
     const sbs=frames.map(f=>f.sb),mbs=frames.map(f=>f.mb);
-    const hasSubs=median(sbs)>0.018&&median(sbs)>2.5*Math.max(median(mbs),0.002)&&sbs.filter(x=>x>0.01).length/frames.length>=0.6;
+    const made=(runFile&&runFile.spintaCrea)||null;
+    const hasSubs=!!(made&&made.subs)||(median(sbs)>0.018&&median(sbs)>2.5*Math.max(median(mbs),0.002)&&sbs.filter(x=>x>0.01).length/frames.length>=0.6);
     let mad=1;if(g0&&gL&&g0!==gL){mad=0;for(let p=0;p<g0.length;p++)mad+=Math.abs(g0[p]-gL[p]);mad/=g0.length}
-    VA={dur,W,H,frames,audio,audioErr,cuts,thr,ab:audioBuf,subs:[],transcript:'',hasSubs,loop:clamp(1-mad*5,0,1)};
+    VA={dur,W,H,frames,audio,audioErr,cuts,thr,ab:audioBuf,subs:[],transcript:'',hasSubs,made,loop:clamp(1-mad*5,0,1)};
     vProg('',null);renderVideoReport();
   }catch(err){vProg('❌ '+esc(err.message||err),null)}
   finally{wakeOff(wk);if(v){v.removeAttribute('src');v.load();v.remove()}}
@@ -1447,7 +1450,7 @@ function riskZones(o){const A=VA.audio,z=[],plan=getPlan(o);
   VA.static.forEach(p=>z.push(p));return z.filter(p=>!removed(p))}
 /* ---------- VIDEO: miglioramento ---------- */
 function renderFixPanel(){
-  const g=VA.sug,A=VA.audio,ratio=VA.W/VA.H,hasA=A&&A.hasSound,ser=curSeries();
+  const g=VA.sug,A=VA.audio,ratio=VA.W/VA.H,hasA=A&&A.hasSound,ser=curSeries(),mk=VA.made||{},già='Già nel video, messo dal creatore: lascialo spento per non doppiarlo';
   const opt=(id,lab,desc,on,dis)=>`<label class="opt ${dis?'dis':''}" id="${id}-l"><input type="checkbox" id="${id}" ${on&&!dis?'checked':''} ${dis?'disabled':''} onchange="updEst()"><span>${lab}<small id="${id}-d">${desc}</small></span></label>`;
   const np=hasA?A.pauses.length:0;
   $('#v-fix').innerHTML=`<p class="sub" style="margin:0">Ho già attivato le correzioni consigliate. Ogni modifica aggiorna il punteggio.</p>
@@ -1462,12 +1465,12 @@ function renderFixPanel(){
   <div class="grp"><h4>🔊 Audio</h4>
    ${opt('o-vol','Normalizza il volume',hasA?`Ora ${A.loud.toFixed(0)} dB · porta la voce al volume giusto per il telefono`:'Nessun audio',g.vol,!hasA)}</div>
   <div class="grp"><h4>🔤 Testi a schermo</h4>
-   ${opt('o-hook','Hook nei primi secondi','Il testo che scegli nel passo 3',g.hook||!!curHook().trim(),false)}
+   ${opt('o-hook','Hook nei primi secondi',mk.hook?già:'Il testo che scegli nel passo 3',!mk.hook&&(g.hook||!!curHook().trim()),false)}
    ${opt('o-subs','Sottotitoli automatici',subsDesc(),false,true)}
-   ${opt('o-part','Etichetta "PARTE N"',ser?`Sopra l'hook: PARTE ${ser.ep}`:'Imposta una serie nel passo 1',!!ser,!ser)}
-   ${opt('o-end','Testo finale','Negli ultimi 2,5 secondi: porta follow e commenti',true,false)}
+   ${opt('o-part','Etichetta "PARTE N"',mk.part?già:ser?`Sopra l'hook: PARTE ${ser.ep}`:'Imposta una serie nel passo 1',!!ser&&!mk.part,!ser)}
+   ${opt('o-end','Testo finale',mk.end?già:'Negli ultimi 2,5 secondi: porta follow e commenti',!mk.end,false)}
    <div id="o-endbox" style="padding-bottom:8px"><input id="o-endtxt" value="${esc(defaultEnd())}" oninput="VA.endEdited=true;schedScore()"></div>
-   ${opt('o-bar','Barra di avanzamento','Fa vedere quanto manca: aiuta a guardare fino alla fine',g.bar,false)}</div>
+   ${opt('o-bar','Barra di avanzamento',mk.bar?già:'Fa vedere quanto manca: aiuta a guardare fino alla fine',g.bar&&!mk.bar,false)}</div>
   <div id="o-est" style="color:var(--mut);font-size:13px;margin-top:10px"></div>
   <button class="btn alt" onclick="goStep(5)">Avanti: esporta ↓</button>`;
   refreshSubsOpt();updEst()}
@@ -1997,7 +2000,7 @@ async function hookPreview(){
   const txt=curHook().trim();if(txt)drawCaption(ctx,txt,cv.width,cv.height,o.hookPos,1);if(o.part&&o.series)drawPill(ctx,'PARTE '+o.series.ep,cv.width,cv.height,o.hookPos,txt,1)}
 function applyAutoOptions(){
   refreshSubsOpt();const on=id=>{const e=$('#'+id);if(e&&!e.disabled)e.checked=true};
-  if(VA.subs.length&&!VA.hasSubs)on('o-subs');if(curHook().trim())on('o-hook');if(VA.sug.bar)on('o-bar');on('o-end');if(curSeries())on('o-part');
+  const mk=VA.made||{};if(VA.subs.length&&!VA.hasSubs)on('o-subs');if(curHook().trim()&&!mk.hook)on('o-hook');if(VA.sug.bar&&!mk.bar)on('o-bar');if(!mk.end)on('o-end');if(curSeries()&&!mk.part)on('o-part');
   updEst();const o=readOpts();
   aStep(4,'ok',[o.subs&&'sottotitoli',VA.hasSubs&&'sottotitoli originali tenuti',o.hook&&'hook',o.part&&'PARTE N',o.end&&'testo finale',o.bar&&'barra',o.trim&&'taglio silenzi',o.pause&&'pause',o.crop&&'9:16',o.light&&'luce',o.vol&&'volume',o.speed&&'1,1×'].filter(Boolean).join(' · '));
 }
@@ -2047,7 +2050,9 @@ function scoreModel(o,pk){
   const lead=hasA?(o.trim?Math.min(A.lead,0.1):A.lead):0;
   add('hook','Avvio immediato',10,lead<=0.5?10:lead<=1?5:0,lead<=0.5?'Voce o azione partono subito':`${lead.toFixed(1)} s di silenzio all'inizio`,'Chi scorre se ne va prima che succeda qualcosa.',lead>0.5?'o-trim':null);
   const ht=o.hook&&o.hookTxt?hookAnalysis(o.hookTxt.replace(/\n/g,' ')).sc:0;
-  if(ht)add('hook','Hook a schermo',12,6+6*ht/100,`"${o.hookTxt.replace(/\n/g,' ').slice(0,60)}" · ${ht}/100`,'Rendilo più forte nel passo 3: numeri, posta in gioco, parla al "tu".',null);
+  const mk=VA.made||{},hm=!ht&&mk.hook?hookAnalysis(mk.hook).sc:0;
+  if(hm)add('hook','Hook a schermo',12,6+6*hm/100,`"${mk.hook.slice(0,60)}" · ${hm}/100 · già nel video`,'Per un hook più forte cambialo nel creatore e rifai il video.',null);
+  else if(ht)add('hook','Hook a schermo',12,6+6*ht/100,`"${o.hookTxt.replace(/\n/g,' ').slice(0,60)}" · ${ht}/100`,'Rendilo più forte nel passo 3: numeri, posta in gioco, parla al "tu".',null);
   else if(VA.topText)add('hook','Hook a schermo',12,8,'C\'è già un testo in alto all\'inizio','Puoi sostituirlo con un hook più forte nel passo 3.','o-hook');
   else add('hook','Hook a schermo',12,0,'Nessun testo nei primi secondi','È il primo motivo per cui ci si ferma: aggiungilo nel passo 3.','o-hook');
   const moving=VA.m1>=0.015||VA.firstCut!=null;
@@ -2061,8 +2066,8 @@ function scoreModel(o,pk){
   add('ret','Ritmo',6,sz===0?6:o.speed?(sz===1?5:3):(sz===1?4:1),sz?`${sz} ${sz===1?'tratto':'tratti'} con immagine ferma oltre 5 s`:'Nessun tratto fermo','Aggiungi un taglio o uno zoom, oppure accelera leggermente.',sz&&!o.speed?'o-speed':null);
   const trail=hasA?(o.trim?Math.min(A.trail,0.2):A.trail):0;
   add('ret','Finale secco',4,trail<=1?4:1,trail<=1?'Finisce senza tempi morti':`${trail.toFixed(1)} s di silenzio alla fine`,'Un finale lento fa uscire prima della fine e niente rewatch.',trail>1?'o-trim':null);
-  const lp=VA.loop>0.85;
-  add('ret','Rewatch',3,lp?3:o.bar?1.5:0.5,lp?'La fine si ricollega all\'inizio: invoglia a rivederlo':o.bar?'Barra di avanzamento attiva':'Fine e inizio scollegati','Chiudi sull\'inquadratura iniziale o con una frase che rimanda all\'inizio: i rewatch pesano molto.',!lp&&!o.bar?'o-bar':null);
+  const lp=VA.loop>0.85,bar=o.bar||mk.bar;
+  add('ret','Rewatch',3,lp?3:bar?1.5:0.5,lp?'La fine si ricollega all\'inizio: invoglia a rivederlo':bar?'Barra di avanzamento attiva':'Fine e inizio scollegati','Chiudi sull\'inquadratura iniziale o con una frase che rimanda all\'inizio: i rewatch pesano molto.',!lp&&!bar?'o-bar':null);
   // QUALITÀ (15)
   const ratio=W/H,ok916=Math.abs(ratio-9/16)<0.03||(o.crop&&ratio>0.6);
   add('qual','Formato 9:16',5,ok916?5:ratio<1?3:0,ok916?(o.crop?'Ritagliato a tutto schermo':'Verticale a tutto schermo'):ratio<1?'Verticale ma non 9:16':'Orizzontale: appare piccolo con bande nere','Ritaglia a 9:16.',ok916?null:'o-crop');
@@ -2085,12 +2090,13 @@ function scoreModel(o,pk){
   add('disc','Hashtag',3,!tagN?0:tagN>mx?1:gen.length?1.5:3,!tagN?'Nessun hashtag':gen.length?`${tagN} hashtag, generici: ${gen.join(' ')}`:`${tagN} hashtag specifici`,tagN>mx?`Usane al massimo ${mx}, specifici.`:gen.length?'Gli hashtag generici non aiutano più: usa quelli della tua nicchia.':'Aggiungi da 1 a 5 hashtag specifici.',tagN?null:'auto');
   // INTERAZIONE (12)
   const last=(VA.subs||[]).filter(s=>s.s>VA.dur-8).map(s=>s.t).join(' ');
-  const speechCta=/\?|comment|scriv|segui|like|lascia|ditemelo|dimmi|vot/i.test(last);const endOn=o.end&&o.endTxt;
-  add('int','Invito finale',5,endOn?5:speechCta?4:0,endOn?`Testo finale: "${o.endTxt}"`:speechCta?'Nel finale chiedi di interagire':VA.transcript||!hasA?'Il video finisce senza invito':'Da verificare','Chiudi con "Parte 2 in arrivo 🔔" o una domanda: porta follow e commenti.',endOn||speechCta?null:'o-end');
+  const speechCta=/\?|comment|scriv|segui|like|lascia|ditemelo|dimmi|vot/i.test(last);const endOn=(o.end&&o.endTxt)||mk.end;
+  add('int','Invito finale',5,endOn?5:speechCta?4:0,endOn?`Testo finale: "${o.end&&o.endTxt?o.endTxt:mk.end}"`:speechCta?'Nel finale chiedi di interagire':VA.transcript||!hasA?'Il video finisce senza invito':'Da verificare','Chiudi con "Parte 2 in arrivo 🔔" o una domanda: porta follow e commenti.',endOn||speechCta?null:'o-end');
   const capQ=/\?|comment|scrivete|ditemelo|dimmi/i.test(cap);
   add('int','Domanda nella caption',4,capQ?4:0,capQ?'La caption invita a commentare':'Nessuna domanda nella caption','Una domanda porta commenti, e i commenti aiutano il video a girare.',capQ?null:'auto');
   const ser=pk.series;
-  add('int','Serie a puntate',3,ser?(o.part?3:2.5):1,ser?`${ser.name} · Parte ${ser.ep}${o.part?'':' (etichetta spenta)'}`:'Video singolo','Le serie fanno tornare il pubblico sul profilo: imposta la serie nel passo 1.',ser?(o.part?null:'o-part'):'serie');
+  const partOn=o.part||(mk.part&&ser);
+  add('int','Serie a puntate',3,ser?(partOn?3:2.5):1,ser?`${ser.name} · Parte ${ser.ep}${partOn?'':' (etichetta spenta)'}`:'Video singolo','Le serie fanno tornare il pubblico sul profilo: imposta la serie nel passo 1.',ser?(partOn?null:'o-part'):'serie');
   const P={hook:0,ret:0,qual:0,disc:0,int:0},MX={hook:30,ret:30,qual:15,disc:13,int:12};items.forEach(i=>P[i.p]+=i.pts);
   return{total:Math.round(Object.values(P).reduce((a,b)=>a+b,0)),P,MX,items}}
 function ringSVG(v,b){const r=50,c=2*Math.PI*r;const col=v>=75?'#2fd67b':v>=55?'#ffb020':'#ff2d6f';
@@ -2336,12 +2342,13 @@ function genNext(){
   const tags=[ser?ser.tag:null,...tagsFor('',wordsOf(topic).filter(w=>w.length>=4&&!STOP.has(w)),L.niche||'generale').split(' ')].filter(Boolean);const capFull=capQ+'\n\n'+[...new Set(tags)].slice(0,RULES.hashtag.max).join(' ');
   const plan=`${ser?`${ser.name} – Parte ${ep}`:'Prossimo video'}\nDurata: circa ${T} s · Pubblica: ${slotLabel(when)}\n\nHOOK (primi 3 s): ${hooks[0]?hooks[0].s:''}\n\nSCALETTA\n${beats.map(b=>`${b[0]} · ${b[1]}: ${b[2]}`).join('\n')}\n\n${acts.length?`DA RICORDARE (dai dati del canale)\n${acts.map(a=>'- '+a.t).join('\n')}\n\n`:''}CAPTION\n${capFull}`;
   const ask=`Crea la ${ser?`Parte ${ep} di "${ser.name}"`:'prossima puntata'} per TikTok (verticale 9:16, circa ${T} secondi, sottotitoli inclusi), seguendo questo piano preparato da Spinta sui dati del mio canale.\n\n${plan}\n\nDati dell'ultimo video: ${Ls?`${fmt(Ls.views)} view, ${fmt(Ls.likes)} like, ${fmt(Ls.comm)} commenti${ret(Ls)!=null?`, visione media ${ret(Ls).toFixed(0)}%`:''}`:'non ancora disponibili'}.${L.transcript?`\nTesto dell'ultima puntata: «${L.transcript.slice(0,500)}»`:''}${idea?`\nIdea/commento da cui partire: ${idea}`:''}`;
-  window._nx={hooks,plan,ask,when,cap:capFull};
+  window._nx={hooks,plan,ask,when,cap:capFull,raw:{hook:hooks[0]?hooks[0].s:'',prevHook,idea,ep,ser:ser?ser.name:null}};
   $('#nx-out').innerHTML=`<div style="margin-top:14px">${notes.map(x=>`<div style="font-size:13.5px;margin-bottom:6px">${x}</div>`).join('')}</div>
    <h4 class="h4">Hook per il prossimo video</h4>${hooks.map((h,i)=>`<div class="hk ${i?'':'on'}" onclick="useNextHook(${i})">${esc(h.s)}<small>${esc(h.k)} · ${h.sc}/100 · tocca per usarlo nello Studio</small></div>`).join('')}
    <h4 class="h4">Scaletta · circa ${T} secondi</h4>${beats.map(b=>`<div class="fix"><span class="tag" style="white-space:nowrap">${b[0]}</span><div><b style="font-size:14px">${b[1]}</b><div style="font-size:13px;color:var(--mut)">${esc(b[2])}</div></div></div>`).join('')}
    <h4 class="h4">Caption</h4><div class="item" style="white-space:pre-wrap;padding-right:70px">${esc(capFull)}${copyBtn(capFull)}</div>
    <div style="font-size:13.5px;margin-top:8px">⏰ Pubblica: <b>${slotLabel(when)}</b></div>
+   <button class="btn cy" onclick="crea(true)">🎬 Crea il video con Gennarino</button>
    <div class="acts"><button class="btn sm" onclick="copy(window._nx.ask)">🤖 Copia la richiesta per Claude</button><button class="btn sm alt" onclick="copy(window._nx.plan)">📋 Copia il piano</button><button class="btn sm alt" onclick="nextToPlan()">📅 Metti nel piano</button></div>
    <small class="n">"Copia la richiesta per Claude" prepara un messaggio con piano e dati: incollalo in una chat con Claude per farti creare la puntata.</small>`;
   useNextHook(0,true)}
@@ -2349,6 +2356,10 @@ function useNextHook(i,silent){const h=window._nx&&window._nx.hooks[i];if(!h)ret
   document.querySelectorAll('#nx-out .hk').forEach((e,j)=>e.classList.toggle('on',j===i));if(!silent)toast('Lo trovi nello Studio al passo 3')}
 function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>String(n).padStart(2,'0');
   DB.posts.push({id:uid(),title:(DB.nextHook||(x.hooks[0]||{}).s||'Prossimo video'),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
+
+/* ---------- creatore video con Gennarino (crea.js, caricato solo quando serve) ---------- */
+function crea(fromPlan){if(window.crOpen)return window.crOpen(fromPlan);toast('Apro il creatore…');
+  loadScript('crea.js?v=2.4').then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 
 /* ---------- avvio ---------- */
 try{history.scrollRestoration='manual'}catch(_){}
