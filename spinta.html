@@ -423,7 +423,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.2 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.3 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -1301,11 +1301,17 @@ const FILTER_OK=(()=>{try{const c=document.createElement('canvas').getContext('2
 function vProg(msg,pct){$('#v-prog').innerHTML=msg?`<div style="margin-top:10px;color:var(--mut);font-size:13px">${msg}</div>${pct!=null?`<div class="meter"><i style="width:${pct}%"></i></div>`:''}`:''}
 function hiddenVideo(url,muted){const v=document.createElement('video');v.playsInline=true;v.setAttribute('playsinline','');v.muted=muted;v.preload='auto';
   v.style.cssText='position:fixed;left:0;top:0;width:2px;height:2px;opacity:0;pointer-events:none';document.body.appendChild(v);v.src=url;return v}
-function waitMeta(v){return new Promise((res,rej)=>{if(v.readyState>=1)return res();
+function waitMeta(v,ms){return new Promise((res,rej)=>{if(v.readyState>=1)return res();
   const msg='Il browser non riesce a leggere questo video. Spesso succede con i video HEVC dell\'iPhone aperti su Android o PC: esportalo in MP4 (H.264) o registralo con "Più compatibile" (Impostazioni → Fotocamera → Formati).';
-  const to=setTimeout(()=>rej(new Error(msg)),20000);
+  const to=setTimeout(()=>{const e=new Error(msg);e.code='tempo scaduto';rej(e)},ms||20000);
   v.addEventListener('loadedmetadata',()=>{clearTimeout(to);res()},{once:true});
-  v.addEventListener('error',()=>{clearTimeout(to);rej(new Error(msg))},{once:true})})}
+  v.addEventListener('error',()=>{clearTimeout(to);const me=v.error,e=new Error(msg);e.code=me?me.code:0;e.detail=me&&me.message?me.message:'';rej(e)},{once:true})})}
+/* l'anteprima del passo 1 tiene occupato un lettore video: con i video HEVC molti telefoni ne aprono uno o due alla volta,
+   quindi durante esportazione e copertina la libero e poi la rimetto com'era */
+function releasePrev(){const p=$('#v-prev');if(!p||p.dataset.released==='1'||!p.getAttribute('src'))return;
+  window._prevT=p.currentTime||0;window._prevPaused=p.paused;p.pause();p.removeAttribute('src');p.load();p.dataset.released='1'}
+function restorePrev(){const p=$('#v-prev');if(!p||p.dataset.released!=='1')return;delete p.dataset.released;if(!vURL)return;
+  const t=window._prevT||0;p.src=vURL;if(t>0.05)p.addEventListener('loadedmetadata',()=>{try{p.currentTime=t}catch(_){}},{once:true})}
 function seekTo(v,t){return new Promise(res=>{let done=false;const f=()=>{if(done)return;done=true;v.removeEventListener('seeked',f);res()};
   v.addEventListener('seeked',f);v.currentTime=t;setTimeout(f,4000)})}
 
@@ -1314,7 +1320,7 @@ function loadVideoFile(f){if(!f)return;
   if(exporting&&cancelExport)cancelExport();
   if(vURL)URL.revokeObjectURL(vURL);vFile=f;vURL=URL.createObjectURL(f);VA=null;freeOut();renderReady();
   $('#v-name').textContent=`📄 ${f.name} · ${(f.size/1048576).toFixed(1)} MB`;
-  const p=$('#v-prev');p.src=vURL;p.style.display='block';$('#hero').style.display='none';
+  const p=$('#v-prev');delete p.dataset.released;p.src=vURL;p.style.display='block';$('#hero').style.display='none';
   ['v-score','v-auto','v-fix','v-out'].forEach(id=>$('#'+id).innerHTML='');
   [2,3,4,5].forEach(n=>{$('#s'+n).classList.remove('open');stp(n,'locked')});
   stpSum(2,'Quanto trattiene chi guarda');stpSum(3,'Scritti dal tuo parlato');stpSum(4,'Tagli, immagine, audio, testi');stpSum(5,'Video, copertina, caption e orario');
@@ -1509,22 +1515,21 @@ function drawPill(ctx,label,W,H,yFrac,hookTxt,alpha){
   if(ctx.roundRect)ctx.roundRect(px,py,pw,ph,ph/2);else ctx.rect(px,py,pw,ph);ctx.fill();
   ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,W/2,py+ph/2+1);ctx.restore()}
 
-function exportVideo(light){
+function exportVideo(light,single){
   if(exporting||!VA)return;
   if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){toast('Il browser non supporta l\'esportazione video: aggiorna Chrome');return}
-  const o=readOpts();o.light720=!!light;
+  const o=readOpts();o.light720=!!light;o.single=!!single||!!light;
   if(o.hook&&!o.hookTxt){toast('Scrivi il testo dell\'hook');goStep(3);setTimeout(()=>$('#a-hookedit').focus(),400);return}
+  releasePrev();
   // parte sincrona: serve il tocco dell'utente per audio e riproduzione
   const AC=window.AudioContext||window.webkitAudioContext;const ac=new AC();try{ac.resume()}catch(_){}
   const v=hiddenVideo(vURL,false);let src=null;try{src=ac.createMediaElementSource(v)}catch(_){}
-  // secondo lettore già posizionato dopo ogni pausa: i tagli avvengono senza fermo immagine
-  let v2=getPlan(o).skips.length?hiddenVideo(vURL,false):null,src2=null;if(v2){try{src2=ac.createMediaElementSource(v2)}catch(_){v2.remove();v2=null}}
-  const dest=ac.createMediaStreamDestination();const A=VA.audio;
-  if(src){let node=src;if(src2){const mix=ac.createGain();src.connect(mix);src2.connect(mix);node=mix}if(o.vol&&A&&A.hasSound){const g=ac.createGain();g.gain.value=clamp(Math.pow(10,(-16-A.loud)/20),0.5,5);
+  const dest=ac.createMediaStreamDestination(),mix=ac.createGain(),A=VA.audio;let node=mix;
+  if(o.vol&&A&&A.hasSound){const g=ac.createGain();g.gain.value=clamp(Math.pow(10,(-16-A.loud)/20),0.5,5);
     const cp=ac.createDynamicsCompressor();cp.threshold.value=-14;cp.knee.value=6;cp.ratio.value=4;cp.attack.value=0.005;cp.release.value=0.2;node.connect(g);g.connect(cp);node=cp}
-    node.connect(dest)}
-  v.play().catch(()=>{});if(v2)v2.play().catch(()=>{});
-  exporting=true;const g=$('#o-go');if(g)g.disabled=true;runExport(o,v,ac,src,dest,v2);
+  node.connect(dest);if(src)src.connect(mix);
+  v.play().catch(()=>{});
+  exporting=true;const b=$('#o-go');if(b)b.disabled=true;runExport(o,v,ac,src,dest,mix);
 }
 // prova più formati finché il registratore del telefono ne accetta uno
 function makeRecorder(stream,light){
@@ -1540,9 +1545,9 @@ function makeRecorder(stream,light){
     catch(e){last=e;try{r&&r.state!=='inactive'&&r.stop()}catch(_){}}}
   throw last||new Error('Nessun formato video accettato dal registratore');
 }
-async function runExport(o,v,ac,src,dest,v2){
+async function runExport(o,v0,ac,src,dest,mix){
   const plan=getPlan(o),{start,end,skips,outT,rate}=plan,total=outT(end);
-  const vA=v,vB=v2;let nx=v2||null,si=0;
+  let v=v0,vA=v0,vB=null,nx=null,si=0;
   const MW=o.light720?720:1080,MH=o.light720?1280:1920;
   const {sx,sy,sw,sh}=cropRect(o,false);const sc=Math.min(1,MW/sw,MH/sh);
   const outW=Math.max(2,Math.round(sw*sc/2)*2),outH=Math.max(2,Math.round(sh*sc/2)*2);
@@ -1554,8 +1559,12 @@ async function runExport(o,v,ac,src,dest,v2){
     <div style="color:var(--mut);font-size:13px">Resta su questa schermata: se esci dall'app l'esportazione si mette in pausa e riprende quando torni.</div>
     <button class="btn alt" onclick="cancelExport&&cancelExport()">Annulla</button></div>`};
   const cleanup=()=>{wakeOff(wk);if(onVis)document.removeEventListener('visibilitychange',onVis);tracks.forEach(t=>t.stop());try{ac.close()}catch(_){}[vA,vB].forEach(x=>{if(!x)return;x.pause();x.removeAttribute('src');x.load();x.remove()});exporting=false;cancelExport=null;const b=$('#o-go');if(b)b.disabled=false};
-  const fail=err=>{if(finished&&!err)return;finished=true;try{rec&&rec.state!=='inactive'&&rec.stop()}catch(_){}cleanup();
+  const fail=err=>{if(finished&&!err)return;finished=true;try{rec&&rec.state!=='inactive'&&rec.stop()}catch(_){}cleanup();restorePrev();
     const det=err?`${err.name||'Errore'}${err.message?': '+err.message:''}`:'il registratore non ha prodotto dati';
+    if(err&&err.code!=null){out.innerHTML=`<div class="card">❌ <b>Il telefono non è riuscito ad aprire il video per crearlo.</b>
+      <div style="color:var(--mut);font-size:13px;margin-top:6px;line-height:1.5">L'analisi l'ha letto, quindi il video va bene: succede soprattutto con i video HEVC (H.265), che molti telefoni aprono uno alla volta. Chiudi le altre app (fotocamera, galleria, TikTok) e riprova.</div>
+      <button class="btn" onclick="exportVideo(${o.light720?'true':'false'},true)">🔁 Riprova</button>
+      <small class="n">Se non va ancora, salva il video in H.264 (per esempio esportandolo da CapCut) e ricaricalo qui. Codice: ${esc(String(err.code)+(err.detail?' · '+err.detail:''))}</small></div>`;return}
     out.innerHTML=`<div class="card">❌ <b>Non sono riuscito a creare il video.</b>
       <div style="color:var(--mut);font-size:12.5px;margin-top:6px">Dettaglio: ${esc(det)}</div>
       ${o.light720?'':`<button class="btn" onclick="exportVideo(true)">⚡ Riprova in modalità leggera (720p)</button>`}
@@ -1571,9 +1580,24 @@ async function runExport(o,v,ac,src,dest,v2){
   const playOrAsk=async()=>{try{await v.play()}catch(e){if(e&&e.name==='NotAllowedError'){
       await new Promise(res=>{out.innerHTML=`<div class="card"><b>Il telefono chiede un tocco per avviare l'audio</b><button class="btn" id="x-play">▶️ Avvia</button></div>`;
         $('#x-play').onclick=()=>{try{ac.resume()}catch(_){}v.play().then(res,res)}})}else throw e}};
+  let cancelled=false;cancelExport=()=>{cancelled=true};ui(0);
+  const prepPlayer=p=>{p.pause();p.playbackRate=rate;try{p.preservesPitch=true;p.webkitPreservesPitch=true}catch(_){}};
+  const kill=p=>{if(!p)return;try{p.pause();p.removeAttribute('src');p.load();p.remove()}catch(_){}};
+  const quit=()=>{finished=true;cleanup();restorePrev();out.innerHTML='';toast('Annullato')};
   try{
-    await waitMeta(v);v.pause();v.playbackRate=rate;try{v.preservesPitch=true;v.webkitPreservesPitch=true}catch(_){}
-    if(nx){try{await waitMeta(nx);nx.pause();nx.playbackRate=rate;try{nx.preservesPitch=true;nx.webkitPreservesPitch=true}catch(_){}}catch(_){nx=null}}
+    // lettore principale: se il telefono non lo apre, lo chiudo, aspetto che liberi il decodificatore e riprovo una volta
+    try{await waitMeta(v,12000)}
+    catch(e1){if(cancelled){quit();return}kill(v);await new Promise(r=>setTimeout(r,800));
+      v=hiddenVideo(vURL,false);vA=v;src=null;try{src=ac.createMediaElementSource(v);src.connect(mix)}catch(_){}
+      await waitMeta(v,20000)}
+    if(cancelled){quit();return}
+    prepPlayer(v);
+    // secondo lettore già posizionato dopo ogni pausa (tagli senza fermo immagine): solo se il telefono riesce ad aprirlo
+    if(skips.length&&!o.single){let w=null;
+      try{w=hiddenVideo(vURL,false);const s2=ac.createMediaElementSource(w);await waitMeta(w,6000);s2.connect(mix);
+        await Promise.race([w.play(),new Promise((_,rj)=>setTimeout(()=>rj(new Error('play')),4000))]);prepPlayer(w);nx=w;vB=w}
+      catch(_){kill(w);nx=null}}
+    if(cancelled){quit();return}
     await seekTo(v,start);draw();
     await playOrAsk();v.pause();await seekTo(v,start);draw();
     const vs=c.captureStream(30);tracks=[...vs.getVideoTracks()];if(src)tracks.push(...dest.stream.getAudioTracks());
@@ -1583,7 +1607,7 @@ async function runExport(o,v,ac,src,dest,v2){
     const chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
     rec.onerror=e=>fail(e.error||e);
     const stop=cancel=>{if(finished)return;finished=true;[vA,vB].forEach(x=>x&&x.pause());
-      rec.onstop=()=>{cleanup();if(cancel){out.innerHTML='';toast('Annullato');return}
+      rec.onstop=()=>{cleanup();if(cancel){restorePrev();out.innerHTML='';toast('Annullato');return}
         if(!chunks.length){finished=false;fail(null);return}
         const type=((rec.mimeType||mime||'video/webm').split(';')[0])||'video/webm';let blob=new Blob(chunks,{type});
         const done=b=>showResult(b,type,o,plan);
@@ -1609,7 +1633,7 @@ async function runExport(o,v,ac,src,dest,v2){
         else{busy=true;try{rec.pause()}catch(_){}v.pause();await seekTo(v,sk.e);draw();if(document.hidden)hidPaused=true;else{try{rec.resume()}catch(_){}await v.play().catch(()=>{})}si++;prep();busy=false}}
       if(!busy)draw();ui(clamp(outT(v.currentTime)/total,0,1));requestAnimationFrame(loop)};
     ui(0);await v.play().catch(e=>{if(!hidPaused)throw e});requestAnimationFrame(loop);
-  }catch(err){fail(err)}
+  }catch(err){if(cancelled&&!rec){quit();return}fail(err)}
 }
 function freeOut(){['_resURL','_covURL'].forEach(k=>{if(window[k]){URL.revokeObjectURL(window[k]);window[k]=null}});window._spintaFile=null;window._spintaCover=null}
 /* il pacchetto del video finale resta salvato: se Android chiude l'app mentre pubblichi su TikTok, al ritorno lo ritrovi */
@@ -1690,8 +1714,9 @@ function exportFollowICS(id){const p=DB.pending.find(x=>x.id===id);if(!p){toast(
     return ['BEGIN:VEVENT','UID:'+p.id+'-'+i+'@spinta','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(s),'DTEND:'+icsDate(e),'SUMMARY:'+(t+p.title).replace(/[,;\r\n]/g,' ').slice(0,120),'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:Spinta','END:VALARM','END:VEVENT'].join('\r\n')}).join('\r\n');
   downloadBlob(new Blob([['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Spinta//IT',ev,'END:VCALENDAR'].join('\r\n')],{type:'text/calendar'}),'spinta-promemoria.ics');toast('Aprilo per aggiungerlo al calendario')}
 async function makeCover(){
-  if(!VA)return;const me=VA,url0=vURL;const o=readOpts();const prev=$('#v-prev');let t;
-  if(prev.paused&&prev.currentTime>0.05)t=prev.currentTime;
+  if(!VA){restorePrev();return}const me=VA,url0=vURL;const o=readOpts();const prev=$('#v-prev'),rel=prev.dataset.released==='1';let t;
+  const pt=rel?(window._prevT||0):prev.currentTime,pp=rel?window._prevPaused!==false:prev.paused;
+  if(pp&&pt>0.05)t=pt;
   else{const cand=me.frames.filter(f=>f.t>0.4&&f.luma>0.22&&f.luma<0.82);const pool=cand.length?cand:me.frames;
     t=pool.reduce((a,f)=>{const s=f.sharp*(0.5+f.con)*(1-Math.abs(f.luma-0.5));return s>a.s?{s,t:f.t}:a},{s:-1,t:pool[0].t}).t}
   const v=hiddenVideo(url0,true);
@@ -1710,7 +1735,7 @@ async function makeCover(){
       ${canShare?'<button class="btn sm cy" onclick="navigator.share({files:[window._spintaCover]}).catch(()=>{})">📤 Condividi</button>':''}</div>
       <small class="n">Su TikTok: Modifica copertina → Carica dalla galleria, se la tua versione lo permette. Altrimenti mettila come primo fotogramma o pubblicala come post foto.</small></div>`);
   }catch(_){if(VA===me)toast('Copertina non riuscita')}
-  finally{v.removeAttribute('src');v.load();v.remove()}
+  finally{v.removeAttribute('src');v.load();v.remove();restorePrev()}
 }
 
 /* ---------- REGOLE ALGORITMO (aggiornabili da spinta-regole.json) ---------- */
@@ -1962,7 +1987,7 @@ async function hookPreview(){
   const cv=$('#a-hprev');if(!cv||!VA)return;const me=VA,url=vURL,o=readOpts();
   const {sx,sy,sw,sh}=cropRect(o,false),key=[sx,sy,sw,sh].map(Math.round).join('|');
   const W=360,H=Math.max(160,Math.round(W*sh/sw));if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H;cv.style.width=H/W<1.2?'100%':'56%'}
-  if(me.prevKey!==key&&!me.prevLoading){me.prevLoading=true;me.prevKey=key;me.prevFrame=null;const v=hiddenVideo(url,true);
+  if(me.prevKey!==key&&!me.prevLoading&&!exporting){me.prevLoading=true;me.prevKey=key;me.prevFrame=null;const v=hiddenVideo(url,true);
     try{await waitMeta(v);try{await v.play();v.pause()}catch(_){}await seekTo(v,Math.min(1,me.dur/2));if(VA!==me)return;
       const f=document.createElement('canvas');f.width=W;f.height=H;f.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,W,H);me.prevFrame=f}
     catch(_){}finally{v.removeAttribute('src');v.load();v.remove();me.prevLoading=false}
