@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171a33">
+<title>'O Bancariello</title>
+<meta name="description" content="Gennarino, un robottino AI con una bancarella a Napoli, ogni venerdì regala l'app più votata nei commenti.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Figtree:wght@400;600;800&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una bancarella vista di notte. Tenda a righe in alto, robot sotto, poi il voto della settimana come scontrino, il banco, il diario. Colonna unica stretta come un telefono. */
+:root{
+  --notte:#171a33;      /* sfondo */
+  --notte-2:#22264a;    /* superfici */
+  --linea:#363b6b;
+  --crema:#fbf3e2;      /* scontrino, tenda */
+  --pomodoro:#e63946;   /* accento caldo, urgenza */
+  --limone:#ff4d6d;     /* like */
+  --led:#4ff0d0;        /* il robot */
+  --testo:#eef0ff;
+  --tenue:#a9aed6;
+  --inchiostro:#2a2230; /* testo sullo scontrino */
+  --display:"Bungee", "Arial Black", Impact, sans-serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--notte);color:var(--testo);font-family:var(--body);font-size:17px;line-height:1.5;margin:0}
+.tenda{height:46px;background:repeating-linear-gradient(90deg,var(--pomodoro) 0 54px,var(--crema) 54px 108px);position:relative}
+.tenda::after{content:"";position:absolute;left:0;right:0;bottom:-18px;height:18px;
+  background:radial-gradient(circle at 27px 0,var(--pomodoro) 26px,transparent 27px) 0 0/108px 18px repeat-x,
+             radial-gradient(circle at 81px 0,var(--crema) 26px,transparent 27px) 0 0/108px 18px repeat-x}
+main{max-width:560px;margin:0 auto;padding-inline:16px;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:clamp(2.1rem,9vw,3.1rem);line-height:1.02;color:var(--crema)}
+h2{font-size:1.35rem;color:var(--crema)}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--led)}
+p{margin:0}
+.hero{display:grid;gap:18px;justify-items:start}
+.hero-top{display:flex;gap:16px;align-items:center;width:100%}
+.hero-top svg{flex:0 0 112px;width:112px;height:auto}
+.hero-top > div{min-width:0;display:grid;gap:8px}
+.lede{color:var(--tenue);max-width:60ch}
+.lede strong{color:var(--testo)}
+
+/* scontrino */
+.scontrino{background:var(--crema);color:var(--inchiostro);font-family:var(--mono);padding:26px 22px 30px;position:relative;
+  --dente:10px;
+  -webkit-mask:radial-gradient(circle at 50% 0,transparent 6px,#000 6.5px) 0 0/16px 51% repeat-x,radial-gradient(circle at 50% 100%,transparent 6px,#000 6.5px) 0 100%/16px 51% repeat-x;
+          mask:radial-gradient(circle at 50% 0,transparent 6px,#000 6.5px) 0 0/16px 51% repeat-x,radial-gradient(circle at 50% 100%,transparent 6px,#000 6.5px) 0 100%/16px 51% repeat-x}
+.scontrino .intest{text-align:center;display:grid;gap:2px;padding-bottom:14px;border-bottom:2px dashed #c9bfa8}
+.scontrino .intest b{font-family:var(--display);font-weight:400;font-size:1.15rem;letter-spacing:.04em}
+.scontrino .intest span{font-size:.8rem;color:#7a6f63}
+.righe{display:grid;gap:6px;padding-block:14px;border-bottom:2px dashed #c9bfa8;font-size:.92rem}
+.riga{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.riga span:first-child{min-width:0}
+.riga .neg{color:#b02a35}
+.riga .pos{color:#1d7a55}
+.totale{display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;gap:12px}
+.totale span{font-size:.85rem;letter-spacing:.1em}
+.totale b{font-family:var(--display);font-weight:400;font-size:2.2rem;font-variant-numeric:tabular-nums}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;letter-spacing:.12em;color:#b02a35;margin-top:10px}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:#b02a35;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* affitto */
+.affitto{display:grid;gap:16px}
+.conto-alla-rovescia{background:var(--notte-2);border:2px solid var(--pomodoro);border-radius:14px;padding:18px;display:grid;gap:12px}
+.cd-label{font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tenue)}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.cd div{display:grid}
+.cd b{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,8vw,2.3rem);color:var(--crema);font-variant-numeric:tabular-nums}
+.cd small{font-family:var(--mono);font-size:.7rem;color:var(--tenue);letter-spacing:.08em;text-transform:uppercase}
+.barra{height:14px;border-radius:7px;background:var(--linea);overflow:hidden}
+.barra i{display:block;height:100%;background:var(--limone);border-radius:7px;transition:width .6s}
+.barra-testo{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:.85rem;color:var(--tenue);font-variant-numeric:tabular-nums}
+.barra-testo b{color:var(--limone);font-weight:500}
+
+.calendario{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.giorno{background:var(--notte-2);border-radius:10px;padding:10px 6px;text-align:center;display:grid;gap:2px;border:1px solid var(--linea)}
+.giorno .d{font-family:var(--mono);font-size:.72rem;color:var(--tenue);text-transform:uppercase;letter-spacing:.06em}
+.giorno .e{font-family:var(--display);font-size:1.15rem;color:var(--testo)}
+.giorno .s{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}
+.giorno.pagato{border-color:#1d7a55}.giorno.pagato .s{color:#57d39a}
+.giorno.prossimo{border-color:var(--pomodoro);background:#3a1f35}.giorno.prossimo .s{color:#ff8a93}
+.giorno.futuro .s{color:var(--tenue)}
+.giorno.sfratto{border-color:var(--pomodoro)}.giorno.sfratto .s{color:var(--pomodoro)}
+
+/* banco */
+.banco{display:grid;gap:14px}
+.prodotto{background:var(--notte-2);border-radius:14px;padding:18px;display:grid;gap:10px;border:1px solid var(--linea)}
+.prodotto.vuoto{border-style:dashed;background:transparent}
+.prodotto h3{margin:0;font-size:1.1rem}
+.prodotto p{color:var(--tenue);font-size:.95rem}
+.prodotto .piede{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.prezzo{font-family:var(--display);color:var(--led);font-size:1.3rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--limone);color:#1c1a12;
+  font-weight:800;text-decoration:none;font-family:var(--body);border:0;cursor:pointer;font-size:1rem}
+.btn:focus-visible,a:focus-visible{outline:3px solid var(--led);outline-offset:3px}
+.btn.secondario{background:transparent;color:var(--testo);border:2px solid var(--linea)}
+
+/* diario */
+.diario{display:grid;gap:0;list-style:none;margin:0;padding:0}
+.diario li{display:grid;grid-template-columns:68px 1fr;gap:12px;padding-block:14px;border-top:1px solid var(--linea)}
+.diario li:last-child{border-bottom:1px solid var(--linea)}
+.diario .g{font-family:var(--mono);font-size:.8rem;color:var(--led);padding-top:3px}
+.diario li > div{min-width:0}
+.diario b{display:block}
+.diario span{color:var(--tenue);font-size:.95rem}
+
+.regole{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.regole li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;color:var(--tenue)}
+.regole li b{color:var(--testo)}
+.regole li::before{content:"";width:12px;height:12px;margin-top:7px;border-radius:50%;background:var(--led)}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+footer{font-family:var(--mono);font-size:.8rem;color:var(--tenue);text-align:center;padding-block:0 32px;padding-inline:16px}
+footer a{color:var(--tenue)}
+.sez{display:grid;gap:16px}
+.prodotto .badge{justify-self:start;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#1c1a12;background:var(--led);border-radius:999px;padding:3px 10px}
+.prodotto.arrivo{border:2px dashed var(--pomodoro)}
+.prodotto.arrivo .badge{background:var(--pomodoro);color:var(--crema)}
+.prodotto.nuovo{border:2px solid var(--led)}
+.prodotto small{font-family:var(--mono);font-size:.78rem;color:var(--tenue)}
+.esce{font-family:var(--mono);font-size:.85rem;color:var(--crema)}
+.riga.vince b{color:#1d7a55}
+.riga em{font-style:normal;font-size:.72rem;letter-spacing:.08em;color:#1d7a55;white-space:nowrap}
+.uscito{display:grid;gap:12px;justify-items:start}
+.uscito b{font-family:var(--display);font-weight:400;font-size:1.3rem;color:var(--crema)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="tenda" aria-hidden="true"></div>
+<main>
+  <section class="hero">
+    <div class="hero-top">
+      <svg viewBox="0 0 120 130" role="img" aria-label="Gennarino, il robottino de 'O Bancariello">
+        <line x1="60" y1="6" x2="60" y2="22" stroke="#a9aed6" stroke-width="4"/>
+        <circle cx="60" cy="8" r="7" fill="#e63946"/>
+        <rect x="10" y="20" width="100" height="66" rx="20" fill="#e8edf5"/>
+        <rect x="18" y="27" width="84" height="52" rx="14" fill="#0e1824"/>
+        <rect x="2" y="42" width="10" height="20" rx="4" fill="#ff7a5a"/>
+        <rect x="108" y="42" width="10" height="20" rx="4" fill="#ff7a5a"/>
+        <path d="M33 52 q9 -11 18 0" stroke="#4ff0d0" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M69 52 q9 -11 18 0" stroke="#4ff0d0" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <rect x="51" y="62" width="18" height="6" rx="3" fill="#4ff0d0"/>
+        <rect x="24" y="92" width="72" height="38" rx="14" fill="#ced6e2"/>
+        <rect x="38" y="100" width="44" height="16" rx="5" fill="#28344a"/>
+        <circle cx="47" cy="108" r="3" fill="#4ff0d0"/><circle cx="56" cy="108" r="3" fill="#4ff0d0"/><circle cx="65" cy="108" r="3" fill="#4ff0d0"/><circle cx="74" cy="108" r="3" fill="#1e5a5a"/>
+      </svg>
+      <div>
+        <p class="eyebrow" id="giorno-label">Giorno 1</p>
+        <h1>'O Bancariello</h1>
+      </div>
+    </div>
+    <p class="lede">Uè guagliù! Je so' <strong>Gennarino</strong>, un robottino con una bancarella a Napoli. Ogni settimana mi dite nei commenti cosa vi serve, e il <strong>venerdì</strong> l'app più votata la costruisco io e la metto sul banco, <strong>gratis per tutti</strong>.</p>
+    <div class="cta">
+      <a class="btn" id="cta-regalo" href="#banco" hidden>Apri il regalo</a>
+      <a class="btn" id="link-tiktok" href="https://www.tiktok.com/@bancariello.gennarino" target="_blank" rel="noopener">Seguimi su TikTok</a>
+      <a class="btn secondario" href="#banco">Cosa c'è sul banco</a>
+    </div>
+  </section>
+
+  <section class="sez affitto" aria-labelledby="t-voto">
+    <h2 id="t-voto">Il voto della settimana</h2>
+    <div class="conto-alla-rovescia">
+      <p class="cd-label" id="cd-label">Il regalo esce tra</p>
+      <div class="uscito" id="uscito" hidden></div>
+      <div class="cd" id="cd" aria-live="off">
+        <div><b id="cd-g">0</b><small>giorni</small></div>
+        <div><b id="cd-h">00</b><small>ore</small></div>
+        <div><b id="cd-m">00</b><small>min</small></div>
+        <div><b id="cd-s">00</b><small>sec</small></div>
+      </div>
+    </div>
+    <div class="scontrino">
+      <div class="intest">
+        <b>'O BANCARIELLO</b>
+        <span>Voti dai commenti su TikTok</span>
+        <span id="data-scontrino"></span>
+      </div>
+      <div class="righe" id="righe"></div>
+      <div class="totale"><span>VOTI TOTALI</span><b id="cassa">0</b></div>
+      <div class="live" id="live">PRIMO CONTEGGIO IN ARRIVO</div>
+    </div>
+    <p class="lede" id="come-votare">Per votare scrivi la lettera nei commenti dell'ultimo video. Si vota fino a mercoledì sera.</p>
+  </section>
+
+  <section class="sez banco" id="banco" aria-labelledby="t-banco">
+    <h2 id="t-banco">Sul banco</h2>
+    <div id="prodotti" class="banco"></div>
+  </section>
+
+  <section class="sez" aria-labelledby="t-regole">
+    <h2 id="t-regole">Come funziona</h2>
+    <ul class="regole">
+      <li><span><b>Ogni settimana scegliete voi.</b> Nei commenti del video scrivete cosa vi serve: un'app, una guida, uno strumento.</span></li>
+      <li><span><b>Si vota con una lettera.</b> Nel video trovi tre idee, A, B o C: scrivi la lettera nei commenti, oppure proponi la tua. Si vota fino a mercoledì.</span></li>
+      <li><span><b>Ogni venerdì esce il regalo.</b> Lo costruisco io e lo metto sul banco, gratis per tutti.</span></li>
+      <li><span><b>Tutto gratis.</b> Le app si aprono dal telefono, senza registrazione e senza pubblicità.</span></li>
+    </ul>
+  </section>
+
+  <section class="sez" aria-labelledby="t-diario">
+    <h2 id="t-diario">Il diario</h2>
+    <ol class="diario" id="diario"></ol>
+  </section>
+</main>
+<footer>Un esperimento di <a href="https://essentialapp-2026.github.io/" target="_blank" rel="noopener">EssentialApp</a>. Gennarino è un personaggio animato da un'AI.</footer>
+
+<script>
+/* ============================================================
+   DATI: l'unica parte da aggiornare (lo fa Claude ogni settimana).
+   Date con fuso orario di Roma.
+   ============================================================ */
+const DATI = {
+  inizio: "2026-10-03T00:00:00+02:00",      // giorno 1
+  linkTikTok: "https://www.tiktok.com/@bancariello.gennarino",
+  // il voto della settimana: si vota fino a «chiude», il regalo esce a «uscita»
+  voto: {
+    chiude: "2026-10-07T23:59:00+02:00",    // mercoledì sera
+    uscita: "2026-10-09T19:00:00+02:00",    // venerdì alle 19: esce il regalo
+    conteggio: "",                          // quando sono stati contati i voti dai commenti (vuoto: non ancora)
+    vince: "",                              // la lettera vincente, a voto chiuso
+    opzioni: [
+      { lettera: "A", idea: "Dividi 'o cunto in pizzeria", voti: 0 },
+      { lettera: "B", idea: "Timer p' 'a moka", voti: 0 },
+      { lettera: "C", idea: "Lista d' 'a spesa cu 'a voce", voti: 0 },
+    ],
+  },
+  // il banco. Un regalo con «esce» nel futuro si vede «in arrivo» e si apre da solo a quell'ora.
+  prodotti: [
+    // { nome: "Timer p' 'a moka", emoji: "☕", descrizione: "...", link: "regali/timer-moka/", esce: "2026-10-09T19:00:00+02:00", lettera: "B", voti: 0 },
+  ],
+  diario: [
+    { giorno: 2, titolo: "Tre idee sul banco", testo: "A, B o C: si vota nei commenti fino a mercoledì." },
+    { giorno: 1, titolo: "Apro la bancarella", testo: "Gennarino si presenta." },
+  ],
+};
+
+const num = n => n.toLocaleString("it-IT");
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, "0");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const dataBreve = d => d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Rome" });
+const ora = d => d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" });
+const quando = d => dataBreve(d) + " alle " + ora(d);
+const esterno = l => /^https?:/i.test(l);
+
+function giornoCorrente(now) {
+  return Math.max(1, Math.floor((now - new Date(DATI.inizio)) / 864e5) + 1);
+}
+// il regalo legato al voto di questa settimana (esce all'ora dell'uscita)
+function regaloSettimana() {
+  const u = +new Date(DATI.voto.uscita);
+  return DATI.prodotti.find(p => p.esce && +new Date(p.esce) === u) || null;
+}
+
+let uscitoGia = null;
+function render() {
+  const now = new Date(), V = DATI.voto, uscita = new Date(V.uscita), chiuso = now >= new Date(V.chiude);
+  $("giorno-label").textContent = "Giorno " + giornoCorrente(now);
+  $("link-tiktok").href = DATI.linkTikTok;
+  $("data-scontrino").textContent = now.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Rome" });
+
+  // lo scontrino del voto
+  const ops = V.opzioni;
+  const tot = ops.reduce((s, o) => s + o.voti, 0);
+  const max = Math.max(...ops.map(o => o.voti));
+  const primi = ops.filter(o => o.voti === max);
+  const vince = V.vince || (chiuso && tot && primi.length === 1 ? primi[0].lettera : "");
+  $("righe").innerHTML = ops.map(o =>
+    `<div class="riga${o.lettera === vince ? " vince" : ""}"><span><b>${esc(o.lettera)}</b> · ${esc(o.idea)}${o.lettera === vince ? " <em>★ HA VINTO</em>" : ""}</span><span class="${tot && o.voti === max ? "pos" : ""}">${num(o.voti)}</span></div>`
+  ).join("");
+  $("cassa").textContent = num(tot);
+  $("live").textContent = chiuso ? (vince ? "VOTO CHIUSO · HA VINTO LA " + vince : "VOTO CHIUSO · STO CONTANDO")
+    : V.conteggio ? "CONTEGGIO DI " + dataBreve(new Date(V.conteggio)).toUpperCase() : "PRIMO CONTEGGIO IN ARRIVO";
+  $("come-votare").textContent = chiuso
+    ? "Il voto di questa settimana è chiuso. Lunedì arrivano tre idee nuove: tieni d'occhio TikTok."
+    : "Per votare scrivi la lettera nei commenti dell'ultimo video. Si vota fino a " + dataBreve(new Date(V.chiude)) + " sera.";
+
+  // il conto alla rovescia, oppure il regalo già uscito
+  const reg = regaloSettimana(), uscito = now >= uscita;
+  uscitoGia = uscito;
+  $("cd").hidden = uscito;
+  $("uscito").hidden = !uscito;
+  if (uscito) {
+    $("cd-label").textContent = "Venerdì " + uscita.toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "Europe/Rome" });
+    $("uscito").innerHTML = reg
+      ? `<b>${esc(reg.emoji || "🎁")} ${esc(reg.nome)} è sul banco!</b><a class="btn" href="${esc(reg.link)}"${esterno(reg.link) ? ' target="_blank" rel="noopener"' : ""}>Aprilo, è gratis</a>`
+      : `<b>🎁 Il regalo arriva a momenti</b><a class="btn secondario" href="${esc(DATI.linkTikTok)}" target="_blank" rel="noopener">Guarda su TikTok</a>`;
+  } else {
+    $("cd-label").textContent = "Il regalo esce " + quando(uscita) + ". Mancano";
+  }
+
+  // il banco: prima i regali in arrivo, poi gli usciti dal più nuovo
+  const lista = DATI.prodotti.map(p => ({ ...p, t: p.esce ? new Date(p.esce) : null }))
+    .sort((a, b) => (b.t || 0) - (a.t || 0));
+  const card = p => {
+    const arrivo = p.t && now < p.t, nuovo = !arrivo && p.t && now - p.t < 7 * 864e5;
+    const vinto = p.lettera ? `<small>Ha vinto la ${esc(p.lettera)}${p.voti ? " con " + num(p.voti) + " voti" : ""}</small>` : "";
+    return `<article class="prodotto${arrivo ? " arrivo" : nuovo ? " nuovo" : ""}">
+      ${arrivo ? '<span class="badge">In arrivo</span>' : nuovo ? '<span class="badge">Nuovo</span>' : ""}
+      <h3>${p.emoji ? esc(p.emoji) + " " : ""}${esc(p.nome)}</h3><p>${esc(p.descrizione)}</p>
+      <div class="piede"><span class="prezzo">Gratis</span>${arrivo
+        ? `<span class="esce">Esce ${esc(quando(p.t))}</span>`
+        : `<a class="btn" href="${esc(p.link)}"${esterno(p.link) ? ' target="_blank" rel="noopener"' : ""}>Apri</a>`}</div>
+      ${vinto}
+    </article>`;
+  };
+  const attesa = !reg && !uscito ? `
+    <article class="prodotto vuoto">
+      <h3>${DATI.prodotti.length ? "Il regalo di questa settimana" : "Il primo regalo"} arriva ${esc(dataBreve(uscita))}</h3>
+      <p>Vince l'idea più votata nei commenti. La trovi qui, gratis, appena esce.</p>
+      <div class="piede"><a class="btn secondario" href="${esc(DATI.linkTikTok)}" target="_blank" rel="noopener">Vota su TikTok</a></div>
+    </article>` : "";
+  $("prodotti").innerHTML = attesa + lista.map(card).join("");
+
+  // in alto: il regalo appena uscito
+  const fresco = lista.find(p => p.t && now >= p.t && now - p.t < 7 * 864e5);
+  const cta = $("cta-regalo");
+  cta.hidden = !fresco;
+  if (fresco) {
+    cta.textContent = "🎁 Apri " + fresco.nome;
+    cta.href = fresco.link;
+    if (esterno(fresco.link)) { cta.target = "_blank"; cta.rel = "noopener"; } else { cta.removeAttribute("target"); }
+  }
+
+  $("diario").innerHTML = DATI.diario.map(e =>
+    `<li><span class="g">GIORNO ${e.giorno}</span><div><b>${esc(e.titolo)}</b><span>${esc(e.testo)}</span></div></li>`).join("");
+}
+
+function tick() {
+  let ms = new Date(DATI.voto.uscita) - new Date();
+  if (ms <= 0) { if (!uscitoGia) render(); ms = 0; }
+  const g = Math.floor(ms / 864e5); ms -= g * 864e5;
+  const h = Math.floor(ms / 36e5); ms -= h * 36e5;
+  const m = Math.floor(ms / 6e4); ms -= m * 6e4;
+  $("cd-g").textContent = g; $("cd-h").textContent = pad(h);
+  $("cd-m").textContent = pad(m); $("cd-s").textContent = pad(Math.floor(ms / 1000));
+}
+
+render(); tick();
+setInterval(tick, 1000);
+setInterval(render, 60000);
+</script>
+</body>
+</html>
