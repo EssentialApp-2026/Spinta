@@ -12,3 +12,8 @@ Se la libreria è vuota, Gennarino viene disegnato direttamente da Spinta.
 
 - `gennarino-saluta.mp4` — Gennarino saluta dalla bancarella, la camera si avvicina al sorriso (dalla Parte 1, senza scritte). Entra sulle frasi di saluto e presentazione.
 - `gennarino-idea.mp4` — Gennarino col dito alzato: ha un'idea e fa scegliere (dalla Parte 2, senza scritte). Entra sulle frasi con app, idea, voti, commenti, «che dite».
+- `gennarino-festeggia.mp4` — Gennarino alza le braccia tutto contento e la camera si avvicina. Entra sulle frasi di festa: vinto, evviva, grazie, il regalo è pronto, gratis.
+- `gennarino-spiega.mp4` — Gennarino saluta con la mano e racconta gesticolando. Entra quando spiega o risponde: domande, follower, leggo, rispondo, come nasce, dietro le quinte.
+
+Le ultime due hanno il marchio «KlingAI 3.0» piccolo in basso a destra, come escono da Kling.
+
