@@ -28,9 +28,9 @@ La pagina della serie è https://essentialapp-2026.github.io/bancariello/ (repos
 - in `DATI.voto`: le tre idee nuove in `opzioni` (con voti a 0), `chiude` il mercoledì alle 23:59, `uscita` il venerdì alle 19:00, `conteggio` e `vince` vuoti; una riga nel `diario`;
 - programma con send_later il promemoria del giovedì alle 9 (contare i voti, costruire l'app vincente e metterla sul banco).
 
-**Giovedì**: a voto chiuso (i voti li manda Sam dal conta-voti di Spinta con «Copia per Claude»), l'app vincente va in `regali/<nome>/` del repository bancariello (un file `index.html` con `manifest.webmanifest`, `sw.js` e icone, gratis, senza registrazione e senza pubblicità, dati solo sul telefono) e in `DATI.prodotti` con `esce` = `voto.uscita`: la pagina la mostra «In arrivo» e la apre da sola venerdì alle 19.
+**Giovedì**: a voto chiuso (i voti li manda Sam dal conta-voti di Spinta con «Copia per Claude»), Claude costruisce l'app vincente e la mette in `regali/<nome>/` del repository bancariello (un file `index.html` con `manifest.webmanifest`, `sw.js` e icone, gratis, senza registrazione e senza pubblicità, dati solo sul telefono) e in `DATI.prodotti` con `esce` = `voto.uscita`: la pagina la mostra «In arrivo» e la apre da sola venerdì alle 19.
 
-`regali-pronti/` tiene le app già costruite, pronte da mettere sul banco (questa settimana tutte e tre: A `dividi-cunto`, B `timer-moka`, C `lista-spesa`); un'idea che non vince può tornare al voto più avanti.
+Le app regalo non vanno su nessun sito prima dell'uscita: si mettono nel repository bancariello solo il giovedì, e solo quella vincente.
 
-Finché il repository bancariello non è scrivibile da Claude (push rifiutato: Sam deve aggiungerlo all'app Claude su GitHub), la pagina aggiornata aspetta nel ramo `bancariello-in-attesa` di questo repository e il regalo si apre da qui: `https://essentialapp-2026.github.io/Spinta/claude/regali-pronti/<nome>/`.
+Se il repository bancariello non fosse scrivibile (push rifiutato), Sam deve aggiungerlo all'app Claude su GitHub: https://github.com/apps/claude/installations/select_target
 
