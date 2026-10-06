@@ -1,6 +1,6 @@
 {
  "versione": 1,
- "nota": "Clip e immagini di Gennarino usate dal creatore video di Spinta come scene in più. Per ogni elemento: file (nella cartella libreria), tipo (video o immagine), tag (parole che fanno scegliere la scena), poster (anteprima facoltativa); umore \"festa\" per le clip di festa, che non entrano nelle puntate tristi o senza voti.",
+ "nota": "Clip e immagini di Gennarino usate dal creatore video di Spinta come scene in più. Per ogni elemento: file (nella cartella libreria), tipo (video o immagine), tag (parole che fanno scegliere la scena), poster (anteprima facoltativa), umore facoltativo: \"festa\" (mai nelle frasi tristi né nella puntata senza voti), \"lavoro\" (come festa: mai triste né senza voti) o \"triste\" (solo nelle frasi tristi).",
  "elementi": [
   {
    "file": "gennarino-saluta.mp4",
@@ -51,16 +51,18 @@
    ]
   },
   {
-   "file": "gennarino-festeggia.mp4",
+   "file": "gennarino-evviva.mp4",
    "tipo": "video",
-   "poster": "gennarino-festeggia.jpg",
-   "descrizione": "Gennarino alza le braccia tutto contento, la camera si avvicina (5 s)",
+   "poster": "gennarino-evviva.jpg",
+   "umore": "festa",
+   "descrizione": "Gennarino alza le braccia e festeggia tra i coriandoli, la camera si avvicina (6 s)",
    "tag": [
     "vinto",
     "vince",
     "vincitore",
     "evviva",
     "festa",
+    "festeggiamo",
     "grazie",
     "bravi",
     "fantastici",
@@ -69,38 +71,77 @@
     "finalmente",
     "regalo",
     "gratis",
-    "uscita",
-    "esce",
     "sorpresa",
     "contento",
-    "felice"
-   ],
-   "umore": "festa"
+    "felice",
+    "mantenuta"
+   ]
   },
   {
-   "file": "gennarino-spiega.mp4",
+   "file": "gennarino-lavora.mp4",
    "tipo": "video",
-   "poster": "gennarino-spiega.jpg",
-   "descrizione": "Gennarino saluta con la mano e racconta gesticolando (5 s)",
+   "poster": "gennarino-lavora.jpg",
+   "descrizione": "Gennarino scrive al portatile, salgono simboli di codice, alla fine la spunta verde: fatto (6 s)",
    "tag": [
-    "spiego",
-    "racconto",
-    "dico",
-    "ascolto",
-    "leggo",
+    "lavoro",
+    "lavorare",
+    "lavoro",
+    "costruisco",
+    "costruire",
+    "costruisce",
+    "programmo",
+    "notte",
+    "subito",
+    "preparo",
+    "sistemo",
+    "sistema",
+    "aggiusto",
+    "guardo"
+   ],
+   "umore": "lavoro"
+  },
+  {
+   "file": "gennarino-pensa.mp4",
+   "tipo": "video",
+   "poster": "gennarino-pensa.jpg",
+   "descrizione": "Gennarino ci pensa con la mano sul mento, poi si accende la lampadina (6 s)",
+   "tag": [
+    "pensa",
+    "penso",
+    "pensate",
+    "pensato",
+    "pensiero",
     "domanda",
     "domande",
-    "rispondo",
-    "risposta",
-    "follower",
-    "scritto",
-    "chiesto",
-    "pensate",
-    "penso",
-    "funziona",
-    "nasce",
-    "quinte",
-    "bancarella"
+    "chissà",
+    "secondo",
+    "dubbio",
+    "curiosi",
+    "curioso",
+    "vediamo",
+    "scegliere",
+    "volete",
+    "mettereste",
+    "votereste"
+   ]
+  },
+  {
+   "file": "gennarino-triste.mp4",
+   "tipo": "video",
+   "poster": "gennarino-triste.jpg",
+   "umore": "triste",
+   "descrizione": "Gennarino giù di morale con una nuvoletta di pioggia sulla testa (5 s)",
+   "tag": [
+    "dispiace",
+    "peccato",
+    "triste",
+    "niente",
+    "vuoto",
+    "nessuno",
+    "nessuna",
+    "zero",
+    "problema",
+    "guai"
    ]
   }
  ]

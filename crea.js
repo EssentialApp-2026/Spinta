@@ -242,7 +242,7 @@ async function crListen(){if(CR.busy)return;const l=crLines()[0];if(!l){toast('S
 /* ---------- libreria del repository ---------- */
 async function crLibLoad(){if(CR.lib)return CR.lib;let items=[];
   try{const r=await fetch('libreria/libreria.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();items=(j.elementi||[]).filter(x=>x&&x.file)}}catch(_){}
-  try{const known=new Set(items.map(x=>x.file)),r=await fetch(CR_BASE.api);if(r.ok){const j=await r.json();
+  try{const known=new Set(items.flatMap(x=>[x.file,x.poster].filter(Boolean))),r=await fetch(CR_BASE.api);if(r.ok){const j=await r.json();
     (Array.isArray(j)?j:[]).filter(f=>f.type==='file'&&/\.(mp4|webm|mov|m4v|jpe?g|png|webp)$/i.test(f.name)&&!known.has(f.name)&&!/poster|^_/i.test(f.name)).forEach(f=>items.push({file:f.name,tipo:/\.(jpe?g|png|webp)$/i.test(f.name)?'immagine':'video',tag:f.name.toLowerCase().replace(/\.[^.]+$/,'').split(/[^a-zàèéìòù0-9]+/).filter(w=>w.length>2)}))}}catch(_){}
   items.forEach(x=>{x.tipo=x.tipo||(/\.(jpe?g|png|webp)$/i.test(x.file)?'immagine':'video');x.tag=(x.tag||[]).map(t=>String(t).toLowerCase())});
   CR.lib=items;return items}
@@ -402,11 +402,13 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   // poi, a frasi alterne, le altre scene a rotazione nelle frasi centrali (al massimo 2 volte la stessa); mai la stessa scena in due frasi vicine
   // (mai mentre c'è la bolla del commento: coprirebbe la faccia di Gennarino nella clip)
   const bub=it=>!!com&&it.s<com.e;
-  // le clip di festa («umore»: "festa" in libreria.json) mai nella puntata senza voti né sulle frasi tristi
-  const LIB=(lib||[]).filter(x=>!(tipo==='nessuno'&&x.umore==='festa')),okFor=(it,x)=>!(x.umore==='festa'&&it.expr==='sad');
+  // clip con un umore (libreria.json): quelle di festa mai nella puntata senza voti né sulle frasi tristi, quelle tristi solo sulle frasi tristi
+  // (anche «lavoro»: Gennarino che lavora contento non va sulle frasi tristi né nella settimana senza app)
+  const allegra=x=>x.umore==='festa'||x.umore==='lavoro';
+  const LIB=(lib||[]).filter(x=>!(tipo==='nessuno'&&allegra(x))),okFor=(it,x)=>!(allegra(x)&&it.expr==='sad')&&!(x.umore==='triste'&&it.expr!=='sad');
   if(LIB.length&&n>3){const ok=it=>it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it),has=i=>!!(items[i]&&items[i].shot),
       near=(i,x)=>(items[i-1]&&items[i-1].shot===x)||(items[i+1]&&items[i+1].shot===x),uses=new Map(),use=(it,x)=>{it.shot=x;uses.set(x,(uses.get(x)||0)+1)};
-    items.forEach(it=>{if(it.i<1||bub(it))return;const words=new Set(crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/));let best=null,bs=0;
+    items.forEach(it=>{if(it.i<1||bub(it))return;const ws=crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/),words=new Set(ws.filter((w,j)=>ws[j-1]!=='non'));let best=null,bs=0;
       LIB.forEach(x=>{if(!okFor(it,x))return;const sc=x.tag.filter(t=>words.has(t)).length;if(sc>bs&&!near(it.i,x)){bs=sc;best=x}});if(best)use(it,best)});
     let k=ep||0;items.forEach(it=>{if(!ok(it)||it.shot||has(it.i-1)||has(it.i+1))return;
       for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<2){use(it,x);k+=a+1;break}}});
@@ -458,10 +460,10 @@ function crFrontL(c){const tg=c.createLinearGradient(0,1118,0,1162);tg.addColorS
 function crEyes(c,expr,blink,t){const y=758,L=468,R=612;c.save();c.shadowColor='#4ff0d0';c.shadowBlur=20;c.strokeStyle='#4ff0d0';c.fillStyle='#4ff0d0';c.lineCap='round';
   if(blink){c.lineWidth=12;[L,R].forEach(x=>{c.beginPath();c.moveTo(x-26,y+4);c.lineTo(x+26,y+4);c.stroke()})}
   else if(expr==='happy'||expr==='wave'){c.lineWidth=13;[L,R].forEach(x=>{c.beginPath();c.arc(x,y+16,30,Math.PI*1.12,Math.PI*1.88);c.stroke()})}
-  else if(expr==='sad'){[L,R].forEach(x=>crRR(c,x-14,y-8,28,38,14));c.lineWidth=10;c.beginPath();c.moveTo(L-34,y-30);c.lineTo(L+18,y-50);c.moveTo(R+34,y-30);c.lineTo(R-18,y-50);c.stroke()}
+  else if(expr==='sad'){[L,R].forEach(x=>crRR(c,x-14,y-8,28,38,14,'#4ff0d0'));c.lineWidth=10;c.beginPath();c.moveTo(L-34,y-30);c.lineTo(L+18,y-50);c.moveTo(R+34,y-30);c.lineTo(R-18,y-50);c.stroke()}
   else if(expr==='surprised'){c.lineWidth=11;[L,R].forEach(x=>{c.beginPath();c.arc(x,y,27,0,Math.PI*2);c.stroke()})}
-  else if(expr==='think'){const dx=Math.sin(t*1.5)*6;[L,R].forEach(x=>crRR(c,x-13+8+dx,y-30,26,40,13));c.lineWidth=9;c.beginPath();c.moveTo(R-24,y-56);c.quadraticCurveTo(R,y-70,R+26,y-60);c.stroke()}
-  else[L,R].forEach(x=>crRR(c,x-14,y-22,28,46,14));
+  else if(expr==='think'){const dx=Math.sin(t*1.5)*6;[L,R].forEach(x=>crRR(c,x-13+8+dx,y-30,26,40,13,'#4ff0d0'));c.lineWidth=9;c.beginPath();c.moveTo(R-24,y-56);c.quadraticCurveTo(R,y-70,R+26,y-60);c.stroke()}
+  else[L,R].forEach(x=>crRR(c,x-14,y-22,28,46,14,'#4ff0d0'));   // gli occhi (prima il riempimento mancava e restava solo la bocca)
   c.restore()}
 function crRobot(c,t,st,it,mouth){const expr=it?it.expr:'talk',bob=Math.sin(t*2.4)*5,blink=(t%3.7)<0.12;c.save();c.translate(0,bob);
   // corpo e schermo sul petto con il cuore (come nelle clip)
