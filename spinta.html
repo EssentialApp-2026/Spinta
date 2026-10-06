@@ -426,7 +426,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.7 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.7.1 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -2360,7 +2360,7 @@ function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>Stri
   DB.posts.push({id:uid(),title:(DB.nextHook||(x.hooks[0]||{}).s||'Prossimo video'),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
 
 /* ---------- creatore video con Gennarino (crea.js, caricato solo quando serve) ---------- */
-function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.7')}
+function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.7.1')}
 function crea(fromPlan){if(window.crOpen)return window.crOpen(fromPlan);toast('Apro il creatore…');
   creaApri().then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 function creaCon(o){if(!window.crOpenWith)toast('Apro il creatore…');creaApri().then(()=>window.crOpenWith(o)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
@@ -2374,19 +2374,24 @@ function weekId(d){d=d?new Date(d):new Date();const t=new Date(Date.UTC(d.getFul
   const y=t.getUTCFullYear(),f=new Date(Date.UTC(y,0,4));return y+'-W'+String(1+Math.round(((t-f)/864e5-3+((f.getUTCDay()+6)%7))/7)).padStart(2,'0')}
 // se Claude non ha scritto niente per oggi: il tipo di puntata giusto per il giorno della settimana
 const OGGI_TIPO={1:['idee','Tre idee al voto'],2:['risposta','Rispondi a un commento'],3:['idee','Ultime ore per votare'],4:['risultato','Risultato del voto'],5:['regalo','Il regalo è sul banco'],6:['risposta','Rispondi a un commento'],0:['presentazione','Presentazione della serie']};
+// se nessuno ha votato (segnato nel conta-voti) quella settimana non esce nessuna app: al posto di risultato e regalo, la puntata «niente app»
 async function renderOggi(){const el=$('#oggi');if(!el)return;if(vFile){el.style.display='none';return}
   const w=await settLoad(),now=new Date(),dow=now.getDay(),iso=todayISO(),cur=w&&(!w.dal||w.dal<=iso)&&(!w.al||w.al>=iso)?w:null;
-  const vt=DB.voti&&DB.voti.w===weekId()?DB.voti:null;let eps=cur?cur.puntate.map((p,i)=>({p,i})).filter(({p})=>(p.giorno||'').toLowerCase()===DAYS[dow]):[];
-  const perVinc=eps.filter(e=>e.p.vince);if(perVinc.length){const m=vt&&perVinc.find(e=>e.p.vince===vt.win);eps=eps.filter(e=>!e.p.vince).concat(m?[m]:[])}
-  const [tipo,tit]=OGGI_TIPO[dow],slot=personalSlot().when,P=(DB.pending||[]).slice(-3),tnow=Date.now();
+  const vt=DB.voti&&DB.voti.w===weekId()?DB.voti:null,zero=!!(vt&&vt.nessuno);
+  let eps=cur?cur.puntate.map((p,i)=>({p,i})).filter(({p})=>(p.giorno||'').toLowerCase()===DAYS[dow]&&(p.tipo!=='nessuno'||zero)):[];
+  const perVinc=eps.filter(e=>e.p.vince);
+  if(zero)eps=eps.filter(e=>!e.p.vince);else if(perVinc.length){const m=vt&&perVinc.find(e=>e.p.vince===vt.win);eps=eps.filter(e=>!e.p.vince).concat(m?[m]:[])}
+  let [tipo,tit]=OGGI_TIPO[dow];if(zero&&(tipo==='risultato'||tipo==='regalo')){tipo='nessuno';tit='Niente app: nessun voto'}
+  const slot=personalSlot().when,P=(DB.pending||[]).slice(-3),tnow=Date.now();
   const btns=eps.length?eps.map(e=>`<button class="btn sm cy" onclick="creaCon({week:${e.i}})">🎬 ${esc(e.p.titolo||'Crea la puntata di oggi')}</button>`).join('')
     :`<button class="btn sm cy" onclick="creaCon({tipo:'${tipo}'})">🎬 ${perVinc.length&&!vt?'Crea il risultato':tit}</button>`;
   const needVoti=(dow===3||dow===4||(dow===5&&!vt))&&!vt;
   el.style.display='';
   el.innerHTML=`<div style="display:flex;align-items:center;gap:8px"><h3 style="margin:0;flex:1">📅 Oggi · ${DAYS[dow]} ${now.getDate()}/${now.getMonth()+1}</h3>${cur?'<span class="tag">piano di Claude</span>':''}</div>
    <div style="font-size:13.5px;margin-top:6px">${eps.length?`Puntata del giorno: <b>${esc(eps[0].p.titolo||'')}</b>`:perVinc.length&&!vt?'Oggi esce il risultato: prima conta i voti, poi crea la puntata.':`Puntata consigliata: <b>${tit}</b>`}</div>
+   ${zero&&(dow===4||dow===5)?'<div style="font-size:13px;margin-top:4px;color:var(--mut)">Nessuno ha votato: questa settimana non esce nessuna app. Gennarino lo dice nella puntata (una volta sola).</div>':''}
    <div class="acts">${btns}${needVoti||perVinc.length&&!vt?'<button class="btn sm alt" onclick="contaVoti()">🗳️ Conta i voti</button>':''}</div>
-   ${vt?`<div style="font-size:13px;margin-top:4px">🗳️ Voti contati: A ${vt.A} · B ${vt.B} · C ${vt.C} → <b>ha vinto la ${vt.win}</b> <button class="btn sm alt" style="margin:0 0 0 6px;padding:4px 10px" onclick="contaVoti()">Ricontrolla</button></div>`:''}
+   ${vt?`<div style="font-size:13px;margin-top:4px">🗳️ ${zero?'Nessun voto questa settimana → <b>niente app</b>':`Voti contati: A ${vt.A} · B ${vt.B} · C ${vt.C} → <b>ha vinto la ${vt.win}</b>`} <button class="btn sm alt" style="margin:0 0 0 6px;padding:4px 10px" onclick="contaVoti()">Ricontrolla</button></div>`:''}
    ${slot?`<div style="font-size:13px;margin-top:8px">⏰ Orario consigliato: <b>${slotLabel(slot)}</b> <button class="btn sm alt" style="margin:0 0 0 6px;padding:4px 10px" onclick="oggiPromemoria()">🔔 Ricordamelo</button></div>`:''}
    ${P.map(p=>{const c=p.pubAt+primaOra()*60e3,due=p.pubAt+48*3600e3;
      return `<div style="font-size:13px;margin-top:6px">${tnow<c?`💬 <b>${esc(cutTxt(p.title,40))}</b>: rispondi ai commenti fino alle <b>${hhmm(new Date(c))}</b>`:tnow<due?`📊 <b>${esc(cutTxt(p.title,40))}</b>: dati da ${slotLabel(new Date(due))}`:`📊 <b>${esc(cutTxt(p.title,40))}</b>: <a href="#" onclick="goTab('grow');openStatForm(null,'${p.id}');return false">inserisci i dati adesso</a>`}</div>`}).join('')}`}

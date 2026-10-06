@@ -12,7 +12,7 @@ const CR_FONT='-apple-system,"Segoe UI",Roboto,sans-serif';
 // la settimana della serie: si vota nei commenti fino a mercoledì sera, il venerdì l'app più votata va sul banco, gratis
 function crNextDow(dow){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+((dow-d.getDay()+7)%7));return d}   // oggi compreso
 const CR_GIORNI=['DOMENICA','LUNEDÌ','MARTEDÌ','MERCOLEDÌ','GIOVEDÌ','VENERDÌ','SABATO'];
-const CR_TIPI={presentazione:'Presentazione della serie',idee:'Tre idee al voto',risultato:'Risultato del voto',regalo:'Il regalo del venerdì',risposta:'Risposta a un commento',libera:'Libera (dal piano)'};
+const CR_TIPI={presentazione:'Presentazione della serie',idee:'Tre idee al voto',risultato:'Risultato del voto',regalo:'Il regalo del venerdì',nessuno:'Nessun voto: niente app',risposta:'Risposta a un commento',libera:'Libera (dal piano)'};
 function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0},d);
   s.idee=Object.assign({A:'',B:'',C:''},d.idee||{});delete s.goal;delete s.likes;return s}
 function crSaveSet(){const v=id=>$('#'+id);const s=crSet();
@@ -61,12 +61,13 @@ function crOpen(fromPlan){crInject();const s=crSet();
   $('#cr-tipo').value=fromPlan?'libera':(CR_TIPI[s.tipo]?s.tipo:'idee');$('#cr-vince').value=s.vince||'A';['A','B','C'].forEach(k=>$('#cr-i'+k).value=s.idee[k]||'');crBoxes();
   if(fromPlan||!$('#cr-txt').value.trim())crFill(true);
   openModal('m-crea');crPrev();crLibLoad().then(crLibShow);crWeekLoad().then(crWeekShow)}
-function crBoxes(){const t=$('#cr-tipo').value;$('#cr-ibox').style.display=['libera','presentazione','risposta'].includes(t)?'none':'';$('#cr-cbox').style.display=t==='risposta'?'':'none';
+function crBoxes(){const t=$('#cr-tipo').value;$('#cr-ibox').style.display=['libera','presentazione','risposta','nessuno'].includes(t)?'none':'';$('#cr-cbox').style.display=t==='risposta'?'':'none';
   $('#cr-vbox').style.visibility=t==='risultato'||t==='regalo'?'visible':'hidden'}
 // apertura dalla schermata «Oggi»: una puntata scritta da Claude (week) o un tipo di puntata (tipo)
 window.crOpenWith=async function(o){o=o||{};crOpen(false);
   if(o.week!=null){await crWeekLoad();if(CR.week&&CR.week.puntate[o.week]){crWeekUse(o.week);return}}
-  if(o.tipo&&CR_TIPI[o.tipo]){$('#cr-tipo').value=o.tipo;const v=crVotes();if(v&&v.win)$('#cr-vince').value=v.win;crBoxes();crSaveSet();crFill(true)}}
+  if(o.tipo&&CR_TIPI[o.tipo]){const tp=crNessuno()&&(o.tipo==='risultato'||o.tipo==='regalo')?'nessuno':o.tipo;
+    $('#cr-tipo').value=tp;const v=crVotes();if(v&&v.win)$('#cr-vince').value=v.win;crBoxes();crSaveSet();crFill(true)}}
 function crTipo(){crBoxes();crChanged()}
 // se il copione è ancora quello scritto da Spinta lo aggiorno; se l'hai cambiato a mano non lo tocco
 function crChanged(soft){crSaveSet();const t=$('#cr-txt');if(!t.value.trim()||t.value===CR.auto)crFill(true);else if(!soft)toast('Hai cambiato il copione a mano: tocca ✨ per riscriverlo');crPrevSoon();if(CR.week)crWeekShow()}
@@ -92,6 +93,11 @@ const CR_T={
   regalo:[
     ["È pronta: {APP}, gratis per tutti!","Uè guagliù, l'avevate scelta voi.","La aprite dal telefono e funziona subito.","Niente registrazione e niente pubblicità.","La trovate sul banco: link nel profilo.","Provatela e ditemi nei commenti com'è!","Lunedì si vota la prossima."],
     ["Promessa mantenuta: il regalo è sul banco!","Uè guagliù, è venerdì.","Ecco {APP}.","È gratis, senza registrazione, e funziona dal telefono.","Link nel profilo, sul banco di Gennarino.","Se trovate un problema, scrivetemelo nei commenti.","E da lunedì, tre idee nuove al voto!"]]};
+// se nei commenti non vota nessuno quella settimana non esce nessuna app: Gennarino lo dice e invita a votare la settimana dopo
+CR_T.nessuno=[
+  ["Il banco questa settimana resta vuoto.","Uè guagliù, ho contato i voti nei commenti.","Nessuna lettera: né A, né B, né C.","Senza il vostro voto non scelgo io al posto vostro.","Mi dispiace: questa settimana niente app.","Lunedì porto tre idee nuove.","Basta una lettera nei commenti e decidete voi!"],
+  ["Ho contato i voti: zero.","Uè guagliù, questa volta nessuno ha scelto.","E l'app la decidete voi, non io.","Mi dispiace, il banco resta senza regalo.","Ci riproviamo lunedì con tre idee nuove.","Scrivete la vostra lettera nei commenti!"],
+  ["Questa settimana niente regalo. Vi spiego.","Uè guagliù, ho chiuso il voto.","Nei commenti non c'era nessuna lettera.","E senza voti non costruisco niente.","Mi dispiace, ma il banco è vostro: decidete voi.","Lunedì tre idee nuove sul banco.","Una lettera nei commenti, e l'app la scegliete voi!"]];
 // risposte ai commenti: il tipo di commento sceglie il copione (le parti con … le completi tu, o con «Copia la richiesta per Claude»)
 const CR_R={
   idea:[["Un follower mi ha dato un'idea!","{U} mi ha scritto: {COM}","Uè guagliù, bella idea!","La metto tra le idee della prossima settimana.","Se arriva al voto, decidete voi.","Altre idee? Scrivetele nei commenti!"],
@@ -120,6 +126,7 @@ function crWeekId(d){d=d?new Date(d):new Date();const t=new Date(Date.UTC(d.getF
   const y=t.getUTCFullYear(),f=new Date(Date.UTC(y,0,4));return y+'-W'+String(1+Math.round(((t-f)/864e5-3+((f.getUTCDay()+6)%7))/7)).padStart(2,'0')}
 function crVotes(){const v=DB.voti;if(!v||v.w!==crWeekId())return null;const tot=(v.A||0)+(v.B||0)+(v.C||0);if(!tot)return null;
   const max=Math.max(v.A||0,v.B||0,v.C||0),win=['A','B','C'].filter(k=>(v[k]||0)===max);return{A:v.A||0,B:v.B||0,C:v.C||0,tot,win:win.length===1?win[0]:(v.win||null)}}
+const crNessuno=()=>{const v=DB.voti;return!!(v&&v.w===crWeekId()&&v.nessuno)};
 const crNoBait=h=>!/(like|batteri|ricaric|spegn|spengo|stut|scaric)/i.test(h||'');
 const crIdea=(s,k)=>crClean((s.idee||{})[k]||'').replace(/[.!?…]+$/,'');
 function crScript(){const s=crSet(),tipo=$('#cr-tipo')?$('#cr-tipo').value:s.tipo,ser=curSeries(),ep=ser?ser.ep:null;
@@ -142,7 +149,7 @@ function crAskClaude(){const ser=curSeries(),ep=ser?ser.ep:null,s=crSet(),nx=win
 Parla solo Gennarino, un robottino AI con una bancarella a Napoli: italiano semplice con poche parole in napoletano (tipo "Uè guagliù").
 Il formato della serie: ogni settimana Gennarino propone tre idee di app (A, B, C); si vota scrivendo la lettera nei commenti fino a mercoledì sera; il venerdì l'app più votata va sul banco, gratis per tutti, senza registrazione e senza pubblicità.
 Niente batteria e niente richieste di like: l'invito finale è a votare o a scrivere nei commenti.
-${idee?`Le idee di questa settimana: ${idee}.\n`:''}${(tipo==='risultato'||tipo==='regalo')&&crIdea(s,X)?`Ha vinto la ${X}: ${crIdea(s,X)}.\n`:''}Regole: da 6 a 8 frasi brevi (massimo 14 parole ciascuna), una per riga, senza numeri di riga, nomi o emoji. La prima riga è l'hook.${tipo==='idee'?' Le tre idee vanno su tre righe che iniziano con "A:", "B:" e "C:".':''}
+${idee?`Le idee di questa settimana: ${idee}.\n`:''}${(tipo==='risultato'||tipo==='regalo')&&crIdea(s,X)?`Ha vinto la ${X}: ${crIdea(s,X)}.\n`:''}${tipo==='nessuno'?'Questa settimana nei commenti non ha votato nessuno, quindi niente app: Gennarino dice che gli dispiace e invita a votare con tre idee nuove da lunedì.\n':''}Regole: da 6 a 8 frasi brevi (massimo 14 parole ciascuna), una per riga, senza numeri di riga, nomi o emoji. La prima riga è l'hook.${tipo==='idee'?' Le tre idee vanno su tre righe che iniziano con "A:", "B:" e "C:".':''}
 Rendila diversa dalle puntate precedenti: aggiungi una parte nuova (un dettaglio del banco, un problema di tutti i giorni, un dietro le quinte).${tipo==='libera'&&nx&&nx.plan?`\n\nPiano preparato da Spinta:\n${nx.plan}`:''}`)}
 
 /* ---------- voce sintetica (Piper) ---------- */
@@ -253,7 +260,7 @@ function crWeekShow(){const el=$('#cr-week'),w=CR.week;if(!el)return;if(!w){el.i
   const today=new Date(),iso=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`,old=!!(w.al&&w.al<iso);
   // le idee della settimana: se i campi sono vuoti li riempio io
   if(!old&&w.idee&&!['A','B','C'].some(k=>$('#cr-i'+k).value.trim())){['A','B','C'].forEach(k=>{$('#cr-i'+k).value=w.idee[k]||''});const t=$('#cr-txt');crSaveSet();if(!t.value.trim()||t.value===CR.auto)crFill(true)}
-  const v=$('#cr-vince').value,list=w.puntate.map((p,i)=>({p,i})).filter(({p})=>!p.vince||p.vince===v);
+  const v=$('#cr-vince').value,zero=crNessuno(),list=w.puntate.map((p,i)=>({p,i})).filter(({p})=>p.tipo==='nessuno'?zero:zero?!p.vince:(!p.vince||p.vince===v));
   el.innerHTML=`<div class="card" style="margin-top:10px;background:var(--card2)"><b>📬 Puntate scritte da Claude${old?' · settimana scorsa':''}</b>
     <div style="color:var(--mut);font-size:12.5px;margin:4px 0 8px;line-height:1.45">${esc(w.nota||'')}${old?' Lunedì arrivano quelle nuove.':''}</div>
     ${list.map(({p,i})=>`<button class="btn sm alt" style="margin:3px 4px 3px 0" onclick="crWeekUse(${i})">${esc(p.titolo||CR_TIPI[p.tipo]||'Puntata')}${p.giorno?' · '+esc(p.giorno):''}</button>`).join('')}
@@ -335,18 +342,24 @@ function crVotiShow(){const el=$('#v-ris');if(!el)return;const V=CR.vv,{n,tot,wi
     <div style="margin-top:6px;font-size:14px">${tot?(win.length===1?`🏆 Ha vinto la <b>${win[0]}</b> · ${tot} voti`:`🤝 Pareggio tra ${win.join(' e ')}: scegli tu chi vince <select id="v-par">${win.map(k=>`<option>${k}</option>`).join('')}</select>`):'Ancora nessun voto: scegli gli screenshot o usa + e −.'}</div>
     ${V.list.length?`<details style="margin-top:10px"><summary>Voti letti (${V.list.filter(x=>x.on).length} su ${V.list.length}): togli quelli sbagliati</summary>${V.list.map((x,i)=>`<label class="opt"><input type="checkbox" ${x.on?'checked':''} onchange="CR.vv.list[${i}].on=this.checked;crVotiShow()"><span><b>${x.k}</b> · ${esc(x.u?'@'+x.u+': ':'')}${esc(x.txt)}${x.dup?'<small>stessa persona: contato una volta</small>':''}</span></label>`).join('')}</details>`:''}
     ${tot?`<div class="acts"><button class="btn sm" onclick="crVotiUsa()">✅ Usa questo risultato</button><button class="btn sm alt" onclick="crVotiCopia()">📋 Copia per Claude</button></div>
-    <small class="n">«Usa questo risultato» lo mette nella puntata del risultato (con i numeri). «Copia per Claude»: incollalo nella chat con Claude, che aggiorna la pagina della serie e prepara il regalo del venerdì.</small>`:''}</div>`}
+    <small class="n">«Usa questo risultato» lo mette nella puntata del risultato (con i numeri). «Copia per Claude»: incollalo nella chat con Claude, che aggiorna la pagina della serie e prepara il regalo del venerdì.</small>`
+    :`<div class="acts"><button class="btn sm alt" onclick="crVotiNessuno()">🙁 Nessuno ha votato</button><button class="btn sm alt" onclick="crVotiCopia()">📋 Copia per Claude</button></div>
+    <small class="n">A voto chiuso, se nei commenti non c'è nessuna lettera, questa settimana non esce nessuna app: tocca «Nessuno ha votato» e giovedì Gennarino lo dice in una puntata.</small>`}</div>`}
 function crVotiAdj(k,d){CR.vv.adj[k]+=d;crVotiShow()}
 function crVotiWin(){const {win}=crVotiTot();return win.length===1?win[0]:(($('#v-par')||{}).value||win[0])}
 function crVotiUsa(){const {n}=crVotiTot(),win=crVotiWin();DB.voti={w:CR.vv.w,A:n.A,B:n.B,C:n.C,win,at:Date.now()};DB.creator=Object.assign(crSet(),{vince:win});save();
   if($('#cr-vince')){$('#cr-vince').value=win;if($('#cr-tipo').value==='risultato'||$('#cr-tipo').value==='regalo')crChanged(true)}
   closeModal('m-voti');toast(`Ha vinto la ${win}: lo trovi nella puntata del risultato`);if(window.renderOggi)renderOggi()}
+// nessuna lettera nei commenti: questa settimana niente app (Gennarino lo dice nella puntata del giovedì)
+function crVotiNessuno(){DB.voti={w:CR.vv.w,A:0,B:0,C:0,win:null,nessuno:true,at:Date.now()};save();closeModal('m-voti');
+  toast('Segnato: questa settimana niente app');if(window.renderOggi)renderOggi()}
 function crVotiCopia(){const {n,tot}=crVotiTot(),win=crVotiWin(),s=crSet();
+  if(!tot){copy(`Voti di 'O Bancariello (settimana ${CR.vv.w}): nessun voto nei commenti. Questa settimana niente app.`);toast('Copiato: incollalo nella chat con Claude');return}
   copy(`Voti di 'O Bancariello (settimana ${CR.vv.w}): A ${n.A} · B ${n.B} · C ${n.C}, totale ${tot}. Ha vinto la ${win}${crIdea(s,win)?': '+crIdea(s,win):''}.`);toast('Copiato: incollalo nella chat con Claude')}
 
 /* ---------- regia: tempi, espressioni, scene ---------- */
 function crExpr(t,i,n){const s=t.toLowerCase();if(i===n-1)return'wave';
-  if(/(paura|disastro|guai|problema|non ce la|triste|peccato|crisi)/.test(s))return'sad';
+  if(/(paura|disastro|guai|problema|non ce la|triste|peccato|crisi|dispiac|vuot|niente regal|niente app)/.test(s))return'sad';
   if(/(^|\s)(uè|ue|ciao|salve|eccomi)\b|guagli/.test(s)&&i<2)return'wave';
   if(/(grazie|evviva|grande|bell|gratis|regal|festa|vint|vince|pront|promessa|forza|jamme)/.test(s))return'happy';
   if(/\?/.test(s))return'think';if(/!/.test(s))return'surprised';return'talk'}
@@ -372,14 +385,14 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   if(os.length>=2){const last=os[os.length-1],after=items[last.i+1];ballot={s:os[0].s,e:(after?after.e:last.e+1.2)+0.2,rows:os.map(x=>({k:x.opt,txt:x.optTxt,s:x.s,e:x.e}))}}
   const inBallot=it=>ballot&&it.s<ballot.e&&it.e>ballot.s;
   // calendario: mercoledì (fine del voto) e venerdì (regalo), una volta sola ciascuno e mai sopra la scheda di voto
-  const seen={};items.forEach(it=>{if(it.i<1||it.pop||it.opt||inBallot(it))return;const m=it.text.toLowerCase().match(/mercoled|venerd/);if(!m)return;
+  const seen={};items.forEach(it=>{if(tipo==='nessuno'||it.i<1||it.pop||it.opt||inBallot(it))return;const m=it.text.toLowerCase().match(/mercoled|venerd/);if(!m)return;
     const d=m[0]==='mercoled'?3:5;if(seen[d])return;seen[d]=1;it.pop='cal';it.calDay=d});
   // carta del regalo: nel risultato e nel regalo, sulla frase che nomina l'app (o «ecco», «è pronta»)
   if((tipo==='risultato'||tipo==='regalo')&&app){const key=app.toLowerCase().slice(0,16);
     const g=items.find(it=>it.i>0&&!it.pop&&!it.opt&&(it.text.toLowerCase().includes(key)||/(è pronta|eccola|\becco\b)/i.test(it.text)));if(g){g.pop='gift';g.stamp=null}}
   items.forEach(it=>{if(inBallot(it))it.stamp=null});
   // risultati del voto (dalla scheda «Conta i voti»): barre sulla frase che parla del voto
-  const V=tipo==='risultato'?crVotes():null;
+  const V=tipo==='risultato'?crVotes():tipo==='nessuno'?{A:0,B:0,C:0,tot:0,win:null}:null;
   if(V){const r=items.find(it=>it.i>0&&!it.pop&&!it.opt&&/(vot|chius|decis|sfida)/i.test(it.text))||items.find(it=>it.i>0&&!it.pop&&!it.opt);if(r){r.pop='results';r.stamp=null}}
   // inquadrature: stretta su Gennarino a frasi alterne, larga sul saluto e sulle altre
   items.forEach(it=>{it.cam=it.i>0&&it.i%2===0&&it.expr!=='wave'?1:0});
@@ -389,16 +402,18 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   // poi, a frasi alterne, le altre scene a rotazione nelle frasi centrali (al massimo 2 volte la stessa); mai la stessa scena in due frasi vicine
   // (mai mentre c'è la bolla del commento: coprirebbe la faccia di Gennarino nella clip)
   const bub=it=>!!com&&it.s<com.e;
-  if(lib&&lib.length&&n>3){const ok=it=>it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it),has=i=>!!(items[i]&&items[i].shot),
+  // le clip di festa («umore»: "festa" in libreria.json) mai nella puntata senza voti né sulle frasi tristi
+  const LIB=(lib||[]).filter(x=>!(tipo==='nessuno'&&x.umore==='festa')),okFor=(it,x)=>!(x.umore==='festa'&&it.expr==='sad');
+  if(LIB.length&&n>3){const ok=it=>it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it),has=i=>!!(items[i]&&items[i].shot),
       near=(i,x)=>(items[i-1]&&items[i-1].shot===x)||(items[i+1]&&items[i+1].shot===x),uses=new Map(),use=(it,x)=>{it.shot=x;uses.set(x,(uses.get(x)||0)+1)};
     items.forEach(it=>{if(it.i<1||bub(it))return;const words=new Set(crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/));let best=null,bs=0;
-      lib.forEach(x=>{const sc=x.tag.filter(t=>words.has(t)).length;if(sc>bs&&!near(it.i,x)){bs=sc;best=x}});if(best)use(it,best)});
+      LIB.forEach(x=>{if(!okFor(it,x))return;const sc=x.tag.filter(t=>words.has(t)).length;if(sc>bs&&!near(it.i,x)){bs=sc;best=x}});if(best)use(it,best)});
     let k=ep||0;items.forEach(it=>{if(!ok(it)||it.shot||has(it.i-1)||has(it.i+1))return;
-      for(let a=0;a<lib.length;a++){const x=lib[(k+a)%lib.length];if(!near(it.i,x)&&(uses.get(x)||0)<2){use(it,x);k+=a+1;break}}});
+      for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<2){use(it,x);k+=a+1;break}}});
     // se una clip torna una seconda volta riparte da dove si era fermata, così non si vede ripetere lo stesso pezzo
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
   const hook=crClean(lines[0]);
-  const END={idee:'Vota A, B o C nei commenti 👇',risultato:'Venerdì il regalo sul banco 🎁',regalo:'Link nel profilo · gratis 🎁',presentazione:'Scrivi la tua idea nei commenti 👇',risposta:'Scrivi la tua nei commenti 👇'};
+  const END={idee:'Vota A, B o C nei commenti 👇',risultato:'Venerdì il regalo sul banco 🎁',regalo:'Link nel profilo · gratis 🎁',presentazione:'Scrivi la tua idea nei commenti 👇',risposta:'Scrivi la tua nei commenti 👇',nessuno:'Lunedì si vota di nuovo 👇'};
   // momenti per gli effetti sonori (gli stessi in cui compaiono le cose a schermo)
   const endS=vt.total-2.8,ev=[{t:0.03,k:'intro'}];if(com)ev.push({t:0.15,k:'pop'});if(ballot)ballot.rows.forEach(r=>ev.push({t:r.s,k:'pop'}));
   items.forEach(it=>{const free=!inBallot(it)&&it.s<endS;if(it.pop&&free)ev.push({t:it.s+0.02,k:{cal:'tick',gift:'ding',results:'swell'}[it.pop]||'pop'});
@@ -529,16 +544,18 @@ function crBallot(c,st,t){const b=st.ballot;if(!b||t<b.s||t>b.e)return false;
   c.globalAlpha=a;const fy=top+84+vis*rh+4;crRR(c,x+24,fy,w-48,50,25,'#e7414b');c.fillStyle='#fff';c.font=`900 26px ${CR_FONT}`;c.textAlign='center';
   c.fillText(`SCRIVI LA LETTERA NEI COMMENTI · FINO A MERCOLEDÌ ${st.mer.getDate()}/${st.mer.getMonth()+1}`,540,fy+26);
   c.restore();return true}
+function crNoIcon(c,x,y,sz){crCirc(c,x+sz/2,y+sz/2,sz/2,'#8a8f9c');c.save();c.strokeStyle='#fff';c.lineWidth=sz*0.14;c.lineCap='round';c.beginPath();
+  c.moveTo(x+sz*0.3,y+sz*0.5);c.lineTo(x+sz*0.7,y+sz*0.5);c.stroke();c.restore()}
 function crTick(c,x,y,sz){crCirc(c,x+sz/2,y+sz/2,sz/2,'#17a95a');c.save();c.strokeStyle='#fff';c.lineWidth=sz*0.14;c.lineCap='round';c.lineJoin='round';c.beginPath();
   c.moveTo(x+sz*0.28,y+sz*0.52);c.lineTo(x+sz*0.44,y+sz*0.68);c.lineTo(x+sz*0.74,y+sz*0.34);c.stroke();c.restore()}
 // in alto: GENNARINO · Pn a sinistra, a destra a che punto è la settimana
 function crBadges(c,st){c.save();c.font=`900 42px ${CR_FONT}`;c.textAlign='left';c.textBaseline='middle';c.shadowColor='rgba(79,240,208,.6)';c.shadowBlur=14;c.fillStyle='#4ff0d0';
   c.fillText(st.ser?`GENNARINO · P${st.ep}`:'GENNARINO',64,142);c.restore();
   const dm=d=>`${d.getDate()}/${d.getMonth()+1}`;
-  const P={idee:['VOTO APERTO',`FINO A MER ${dm(st.mer)}`],risultato:[`HA VINTO LA ${st.X}`,`SUL BANCO VEN ${dm(st.ven)}`],regalo:['GRATIS SUL BANCO','SENZA REGISTRAZIONE'],presentazione:["UN'APP GRATIS",'OGNI VENERDÌ']}[st.tipo];
+  const P={idee:['VOTO APERTO',`FINO A MER ${dm(st.mer)}`],risultato:[`HA VINTO LA ${st.X}`,`SUL BANCO VEN ${dm(st.ven)}`],regalo:['GRATIS SUL BANCO','SENZA REGISTRAZIONE'],presentazione:["UN'APP GRATIS",'OGNI VENERDÌ'],nessuno:['NESSUN VOTO','IDEE NUOVE LUNEDÌ']}[st.tipo];
   if(!P)return;c.save();c.font=`900 38px ${CR_FONT}`;const tw=c.measureText(P[0]).width,w=tw+92,x=1030-w;
-  c.shadowColor='rgba(0,0,0,.3)';c.shadowBlur=12;crRR(c,x,106,w,70,35,'#fff');c.shadowBlur=0;(st.tipo==='idee'?crTick:crGiftIcon)(c,x+18,121,40);c.fillStyle='#1d1d26';c.textBaseline='middle';c.textAlign='left';c.fillText(P[0],x+68,143);
-  c.font=`900 30px ${CR_FONT}`;const dw=c.measureText(P[1]).width+48;crRR(c,1030-dw,190,dw,52,26,st.tipo==='idee'?'#e7414b':'#17a95a');c.fillStyle='#fff';c.fillText(P[1],1030-dw+24,217);c.restore()}
+  c.shadowColor='rgba(0,0,0,.3)';c.shadowBlur=12;crRR(c,x,106,w,70,35,'#fff');c.shadowBlur=0;(st.tipo==='idee'?crTick:st.tipo==='nessuno'?crNoIcon:crGiftIcon)(c,x+18,121,40);c.fillStyle='#1d1d26';c.textBaseline='middle';c.textAlign='left';c.fillText(P[0],x+68,143);
+  c.font=`900 30px ${CR_FONT}`;const dw=c.measureText(P[1]).width+48;crRR(c,1030-dw,190,dw,52,26,st.tipo==='idee'?'#e7414b':st.tipo==='nessuno'?'#8a8f9c':'#17a95a');c.fillStyle='#fff';c.fillText(P[1],1030-dw+24,217);c.restore()}
 // sottotitoli: bianco con contorno, parole chiave in giallo
 function crSubs(c,words,alpha,t,pg){c.save();c.globalAlpha=alpha;c.textBaseline='middle';c.lineJoin='round';let fs=70,lines=[words];
   // la parola che Gennarino sta dicendo (tempo della pagina diviso in proporzione alle lettere)
@@ -668,7 +685,8 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
   const CAP={idee:`${pre}Quale app regalo venerdì? Votate A, B o C nei commenti, fino a mercoledì 👇`,
     risultato:`${pre}Ha vinto la ${st.X}${app?': '+app:''}! Venerdì la trovate sul banco, gratis 🎁 Come la volete? Ditemelo nei commenti`,
     regalo:`${pre}${app?app+': ':''}è pronta, gratis e senza registrazione. Link nel profilo 🎁 Provatela e ditemi com'è!`,
-    presentazione:`${pre}Ogni venerdì regalo un'app utile, gratis. Che app vi servirebbe? Scrivetelo nei commenti 👇`};
+    presentazione:`${pre}Ogni venerdì regalo un'app utile, gratis. Che app vi servirebbe? Scrivetelo nei commenti 👇`,
+    nessuno:`${pre}Questa settimana niente app: nei commenti non ha votato nessuno 😔 Lunedì tre idee nuove, basta una lettera nei commenti per decidere voi 👇`};
   const cap=CAP[st.tipo]?`${CAP[st.tipo]}\n\n${tg}`:((window._nx&&window._nx.raw&&window._nx.cap&&ser&&window._nx.raw.ep===ep&&crNoBait(window._nx.cap))?window._nx.cap:`${pre}${st.hook} 👇\n\n${tg}`);window._spintaCap=cap;
   const hookW=st.hook.split(/\s+/).filter(Boolean).length,shots=st.items.length+st.items.filter(x=>x.shot).length;
   DB.lastPkg={id:uid(),at:Date.now(),title:cutTxt(st.hook,90),cap,hk:(((window._nx&&window._nx.hooks)||[]).find(h=>crClean(h.s)===st.hook)||{k:'Personalizzato'}).k,

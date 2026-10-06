@@ -13,7 +13,7 @@ if len(d) == 4:
 idee = j.get('idee', {})
 for k in 'ABC':
     if not str(idee.get(k, '')).strip(): err.append(f'manca l\'idea {k}')
-tipi = {'presentazione', 'idee', 'risultato', 'regalo', 'risposta', 'libera'}; vinc = {'risultato': set(), 'regalo': set()}
+tipi = {'presentazione', 'idee', 'risultato', 'regalo', 'nessuno', 'risposta', 'libera'}; vinc = {'risultato': set(), 'regalo': set()}
 for p in j.get('puntate', []):
     n = p.get('id', '?')
     if p.get('tipo') not in tipi: err.append(f'{n}: tipo non valido')
@@ -28,6 +28,7 @@ for p in j.get('puntate', []):
     if p.get('tipo') in vinc:
         if p.get('vince') not in ('A', 'B', 'C'): err.append(f'{n}: manca "vince" (A, B o C)')
         else: vinc[p['tipo']].add(p['vince'])
+if not any(p.get('tipo') == 'nessuno' for p in j.get('puntate', [])): err.append('manca la puntata "nessuno" (giovedì, se nessuno vota: niente app)')
 for t, s in vinc.items():
     if s and s != {'A', 'B', 'C'}: err.append(f'{t}: servono le versioni per A, B e C (ci sono {sorted(s)})')
 print('\n'.join(err) if err else f'ok: {j.get("settimana")} · {len(j.get("puntate", []))} puntate')

@@ -91,6 +91,21 @@
    ]
   },
   {
+   "id": "nessun-voto",
+   "tipo": "nessuno",
+   "giorno": "giovedì",
+   "titolo": "Niente voti, niente app",
+   "copione": [
+    "Il banco questa settimana resta vuoto.",
+    "Uè guagliù, ho contato i voti nei commenti.",
+    "Nessuna lettera: né A, né B, né C.",
+    "Senza il vostro voto non scelgo io al posto vostro.",
+    "Mi dispiace: venerdì niente app.",
+    "Lunedì porto tre idee nuove.",
+    "Basta una lettera nei commenti e decidete voi!"
+   ]
+  },
+  {
    "id": "regalo-A",
    "tipo": "regalo",
    "vince": "A",

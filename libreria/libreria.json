@@ -1,6 +1,6 @@
 {
  "versione": 1,
- "nota": "Clip e immagini di Gennarino usate dal creatore video di Spinta come scene in più. Per ogni elemento: file (nella cartella libreria), tipo (video o immagine), tag (parole che fanno scegliere la scena), poster (anteprima facoltativa).",
+ "nota": "Clip e immagini di Gennarino usate dal creatore video di Spinta come scene in più. Per ogni elemento: file (nella cartella libreria), tipo (video o immagine), tag (parole che fanno scegliere la scena), poster (anteprima facoltativa); umore \"festa\" per le clip di festa, che non entrano nelle puntate tristi o senza voti.",
  "elementi": [
   {
    "file": "gennarino-saluta.mp4",
@@ -74,7 +74,8 @@
     "sorpresa",
     "contento",
     "felice"
-   ]
+   ],
+   "umore": "festa"
   },
   {
    "file": "gennarino-spiega.mp4",
