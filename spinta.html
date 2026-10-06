@@ -426,7 +426,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.7.2 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.7.3 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -2360,16 +2360,18 @@ function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>Stri
   DB.posts.push({id:uid(),title:(DB.nextHook||(x.hooks[0]||{}).s||'Prossimo video'),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
 
 /* ---------- creatore video con Gennarino (crea.js, caricato solo quando serve) ---------- */
-function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.7.2')}
+function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.7.3')}
 function crea(fromPlan){if(window.crOpen)return window.crOpen(fromPlan);toast('Apro il creatore…');
   creaApri().then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 function creaCon(o){if(!window.crOpenWith)toast('Apro il creatore…');creaApri().then(()=>window.crOpenWith(o)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 function contaVoti(){creaApri().then(()=>window.crVotiOpen()).catch(()=>toast('Serve la connessione la prima volta'))}
 
 /* ---------- OGGI: la puntata del giorno (dal piano che Claude scrive ogni lunedì) e i prossimi passi ---------- */
-let _settP,_settT=0,_settV=null;
-// letto una volta ogni mezz'ora al massimo (il piano cambia il lunedì), e una sola lettura anche se lo chiedono in due insieme
-function settLoad(){if(_settP&&Date.now()-_settT<30*60e3)return _settP;_settT=Date.now();return _settP=(async()=>{try{const r=await fetch('claude/settimana.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate))return _settV=j}}catch(_){}return _settV})()}
+let _settP,_settT=0,_settV=null,_settW='';
+// il piano della settimana: prima claude/settimana-<settimana>.json (preparato in anticipo da Claude), se no claude/settimana.json.
+// Letto una volta ogni mezz'ora al massimo (e di nuovo appena cambia la settimana), una sola lettura anche se lo chiedono in due insieme
+function settLoad(){const wk=weekId();if(_settP&&_settW===wk&&Date.now()-_settT<30*60e3)return _settP;_settT=Date.now();_settW=wk;
+  return _settP=(async()=>{for(const f of ['claude/settimana-'+wk+'.json','claude/settimana.json']){try{const r=await fetch(f+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate))return _settV=j}}catch(_){}}return _settV})()}
 function weekId(d){d=d?new Date(d):new Date();const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dn=(t.getUTCDay()+6)%7;t.setUTCDate(t.getUTCDate()-dn+3);
   const y=t.getUTCFullYear(),f=new Date(Date.UTC(y,0,4));return y+'-W'+String(1+Math.round(((t-f)/864e5-3+((f.getUTCDay()+6)%7))/7)).padStart(2,'0')}
 // se Claude non ha scritto niente per oggi: il tipo di puntata giusto per il giorno della settimana

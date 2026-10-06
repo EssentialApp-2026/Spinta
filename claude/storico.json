@@ -22,6 +22,30 @@
     "dietro le quinte: come nasce un'app sul banco",
     "ultime ore per votare"
    ]
+  },
+  {
+   "settimana": "2026-W42",
+   "idee": {
+    "A": "Promemoria della differenziata",
+    "B": "Dove ho parcheggiato",
+    "C": "Conta-punti per la scopa"
+   },
+   "hook": [
+    "La munnezza, la macchina, la scopa: cosa vi serve?",
+    "Qual è la cosa che dimenticate sempre?",
+    "Ultima chiamata: stasera chiudo il voto!",
+    "Ha vinto la A: la munnezza non ci frega più!",
+    "Ha vinto la B: la macchina non si perde più!",
+    "Ha vinto la C: a scopa non si litiga più!",
+    "Zero voti: questa volta niente app.",
+    "È venerdì: la munnezza ve la ricordo io!",
+    "È venerdì: la macchina la ritrovate sempre!",
+    "È venerdì: a scopa i punti li conto io!"
+   ],
+   "parti": [
+    "domanda ai follower: cosa dimenticate sempre",
+    "ultime ore per votare"
+   ]
   }
  ]
 }

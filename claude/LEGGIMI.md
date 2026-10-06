@@ -21,10 +21,20 @@ Ogni lunedì Claude scrive qui le puntate della settimana di 'O Bancariello e il
   Nelle puntate `idee` le tre idee stanno su righe che iniziano con «A:», «B:», «C:» (così compare la scheda di voto).
 - `storico.json` tiene idee, hook e parti già usate, per non ripetersi.
 
+## Settimane preparate in anticipo
+- Ogni settimana ha anche il suo file `settimana-<settimana>.json` (per esempio `settimana-2026-W42.json`), che Claude può scrivere in anticipo: Spinta usa da solo quello della settimana in corso (se manca, `settimana.json`). Il lunedì `settimana.json` diventa una copia di quello della settimana.
+- Il lunedì, se il file della settimana c'è già: controllarlo con `python3 claude/controlla.py claude/settimana-<settimana>.json`, copiarlo anche in `settimana.json`, e avvisare Sam con le tre idee (niente da riscrivere). `storico.json` ha già la settimana.
+- La pagina del bancariello ha la stessa cosa in `DATI.prossimo` (vedi sotto).
+- Il promemoria del giovedì 15 ottobre (settimana 2026-W42) è già programmato: prima di programmarne un altro controllare con list_triggers.
+
 Prima di pubblicare: `python3 claude/controlla.py`.
 
 ## La pagina del bancariello e il regalo del venerdì
 La pagina della serie è https://essentialapp-2026.github.io/bancariello/ (repository EssentialApp-2026/bancariello, tutto in `index.html`, dati nel blocco `DATI`; il README spiega i campi).
+
+**In anticipo**: `DATI.prossimo` = `{ dal, voto, diario }` con la settimana dopo; da `dal` (lunedì a mezzanotte) la pagina usa quel voto e aggiunge quelle righe al diario. Il lunedì Claude sposta `prossimo.voto` in `voto`, le righe del diario in `diario`, e svuota `prossimo`.
+
+Le app regalo della settimana dopo si possono costruire prima, ma restano solo in locale (`claude/regali-pronti/`, esclusa da git) fino al giovedì; se la cartella non c'è più si ricostruisce solo quella vincente.
 
 **Lunedì**, dopo le puntate:
 - in `DATI.voto`: le tre idee nuove in `opzioni` (con voti a 0), `chiude` il mercoledì alle 23:59, `uscita` il venerdì alle 19:00, `conteggio` e `vince` vuoti; una riga nel `diario`;

@@ -253,13 +253,15 @@ function crLibShow(items){const el=$('#cr-libin');if(!el)return;const sm=$('#cr-
 
 /* ---------- puntate scritte da Claude nel repository (claude/settimana.json, aggiornato ogni lunedì) ---------- */
 // una sola lettura anche se la chiedono in due nello stesso momento (apertura del creatore e bottone di Oggi)
-function crWeekLoad(){if(CR.weekP&&Date.now()-CR.weekT<30*60e3)return CR.weekP;CR.weekT=Date.now();
-  return CR.weekP=(async()=>{let w=null;try{const r=await fetch('claude/settimana.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate)&&j.puntate.length)w=j}}catch(_){}
+function crWeekLoad(){const wk=crWeekId();if(CR.weekP&&CR.weekW===wk&&Date.now()-CR.weekT<30*60e3)return CR.weekP;CR.weekT=Date.now();CR.weekW=wk;
+  // prima il piano preparato per questa settimana (claude/settimana-<settimana>.json), se no claude/settimana.json
+  return CR.weekP=(async()=>{let w=null;for(const f of ['claude/settimana-'+wk+'.json','claude/settimana.json']){try{const r=await fetch(f+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate)&&j.puntate.length){w=j;break}}}catch(_){}}
     return CR.week=w||CR.week||null})()}
 function crWeekShow(){const el=$('#cr-week'),w=CR.week;if(!el)return;if(!w){el.innerHTML='';return}
   const today=new Date(),iso=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`,old=!!(w.al&&w.al<iso);
-  // le idee della settimana: se i campi sono vuoti li riempio io
-  if(!old&&w.idee&&!['A','B','C'].some(k=>$('#cr-i'+k).value.trim())){['A','B','C'].forEach(k=>{$('#cr-i'+k).value=w.idee[k]||''});const t=$('#cr-txt');crSaveSet();if(!t.value.trim()||t.value===CR.auto)crFill(true)}
+  // le idee della settimana: se i campi sono vuoti, o se sono quelle di un'altra settimana, li riempio io
+  if(!old&&w.idee&&(!['A','B','C'].some(k=>$('#cr-i'+k).value.trim())||crSet().ideeW!==w.settimana)){['A','B','C'].forEach(k=>{$('#cr-i'+k).value=w.idee[k]||''});const t=$('#cr-txt');crSaveSet();
+    DB.creator.ideeW=w.settimana;save();if(!t.value.trim()||t.value===CR.auto)crFill(true)}
   const v=$('#cr-vince').value,zero=crNessuno(),list=w.puntate.map((p,i)=>({p,i})).filter(({p})=>p.tipo==='nessuno'?zero:zero?!p.vince:(!p.vince||p.vince===v));
   el.innerHTML=`<div class="card" style="margin-top:10px;background:var(--card2)"><b>📬 Puntate scritte da Claude${old?' · settimana scorsa':''}</b>
     <div style="color:var(--mut);font-size:12.5px;margin:4px 0 8px;line-height:1.45">${esc(w.nota||'')}${old?' Lunedì arrivano quelle nuove.':''}</div>
@@ -269,7 +271,7 @@ function crWeekUse(i){const w=CR.week,p=w&&w.puntate[i];if(!p)return;
   if(w.idee)['A','B','C'].forEach(k=>{if(w.idee[k])$('#cr-i'+k).value=w.idee[k]});
   if(CR_TIPI[p.tipo])$('#cr-tipo').value=p.tipo;if(p.vince)$('#cr-vince').value=p.vince;
   if(p.tipo==='risposta'&&p.commento){$('#cr-com').value=String(p.commento).slice(0,300);$('#cr-cuser').value=String(p.utente||'').replace(/^@+/,'').slice(0,40)}
-  crBoxes();crSaveSet();
+  crBoxes();crSaveSet();if(w.settimana){DB.creator.ideeW=w.settimana;save()}
   const V=crVotes();let L=(p.copione||[]).map(x=>String(x).trim()).filter(Boolean);
   if(p.tipo==='risultato'&&V&&V[p.vince])L=L.map(x=>x.replace(new RegExp('^Ha vinto la '+p.vince+'(?=:)'),`Ha vinto la ${p.vince} con ${V[p.vince]} voti`));
   const t=$('#cr-txt');t.value=L.join('\n');CR.auto=t.value;crPrevSoon();crWeekShow();toast('Copione di Claude caricato')}
@@ -284,7 +286,9 @@ function crVotiInject(){if($('#m-voti'))return;
   <div id="v-ris"></div>
   <button class="btn alt" onclick="closeModal('m-voti')">Chiudi</button></div></div>`);
   const m=$('#m-voti');m.addEventListener('click',e=>{if(e.target===m)closeModal('m-voti')})}
-window.crVotiOpen=function(){crVotiInject();if(!CR.vv||CR.vv.w!==crWeekId())CR.vv={w:crWeekId(),list:[],adj:{A:0,B:0,C:0},files:0};crVotiShow();openModal('m-voti')};
+window.crVotiOpen=function(){crVotiInject();if(!CR.vv||CR.vv.w!==crWeekId())CR.vv={w:crWeekId(),list:[],adj:{A:0,B:0,C:0},files:0};crVotiShow();openModal('m-voti');
+  // le idee del conteggio sono quelle del piano di questa settimana, anche se il creatore non è stato aperto
+  crWeekLoad().then(w=>{const s=crSet();if(w&&w.idee&&w.settimana===crWeekId()&&s.ideeW!==w.settimana){DB.creator=Object.assign(s,{idee:{A:w.idee.A||'',B:w.idee.B||'',C:w.idee.C||''},ideeW:w.settimana});save();crVotiShow()}})};
 // parole che possono stare intorno alla lettera in un voto: «io voto la B», «per me la C», «A tutta la vita»
 const CR_VW=new Set('la lo io voto vota votate votiamo voterei scelgo per me sempre tutta tutto vita forza dai ovviamente decisamente assolutamente sicuramente sicuro opzione lettera anche pure e è top subito'.split(' '));
 // «A» a inizio frase spesso è la preposizione («A me piace…», «A quando…»): conta come voto solo se dopo viene una di queste

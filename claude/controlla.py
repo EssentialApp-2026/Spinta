@@ -1,6 +1,7 @@
-"""Controlla claude/settimana.json prima di pubblicarlo: python3 claude/controlla.py"""
+"""Controlla il piano della settimana prima di pubblicarlo: python3 claude/controlla.py [file]"""
 import json, re, sys, datetime, os
-P = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settimana.json')
+# si può dare il file da controllare: python3 claude/controlla.py claude/settimana-2026-W42.json
+P = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settimana.json')
 j = json.load(open(P, encoding='utf-8')); err = []
 VIETATE = re.compile(r'\b(like|batteri\w*|ricaric\w*|spegn\w*|spengo|stut\w*|scaric\w*|mettete mi piace)\b', re.I)
 for k in ('settimana', 'dal', 'al', 'voto_fino_a', 'regalo', 'idee', 'puntate', 'nota'):

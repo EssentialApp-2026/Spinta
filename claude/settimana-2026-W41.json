@@ -1,0 +1,157 @@
+{
+ "versione": 1,
+ "settimana": "2026-W41",
+ "dal": "2026-10-05",
+ "al": "2026-10-11",
+ "scritto": "2026-10-05",
+ "voto_fino_a": "2026-10-07",
+ "regalo": "2026-10-09",
+ "idee": {
+  "A": "Dividi il conto in pizzeria",
+  "B": "Timer per la moka",
+  "C": "Lista della spesa a voce"
+ },
+ "nota": "Settimana 5-11 ottobre: si vota fino a mercoledì 7 sera, il regalo esce venerdì 9. Risultato e regalo sono pronti per tutte e tre le idee.",
+ "puntate": [
+  {
+   "id": "dietro-le-quinte",
+   "tipo": "libera",
+   "giorno": "martedì",
+   "titolo": "Come nasce un'app sul banco",
+   "copione": [
+    "Come nasce un'app su una bancarella? Ve lo dico io.",
+    "Uè guagliù, prima di tutto ascolto voi.",
+    "Leggo i commenti, uno per uno.",
+    "Poi scelgo tre idee che servono tutti i giorni.",
+    "Questa settimana: la pizzeria, la moka e la spesa.",
+    "Avete già votato? Basta una lettera nei commenti!"
+   ]
+  },
+  {
+   "id": "ultime-ore",
+   "tipo": "idee",
+   "giorno": "mercoledì",
+   "titolo": "Ultime ore per votare",
+   "copione": [
+    "Stasera si chiude il voto: siete ancora in tempo!",
+    "Uè guagliù, è mercoledì e il banco aspetta voi.",
+    "A: Dividi il conto in pizzeria.",
+    "B: Timer per la moka.",
+    "C: Lista della spesa a voce.",
+    "Una lettera nei commenti e avete votato.",
+    "Venerdì la più votata è sul banco, gratis."
+   ]
+  },
+  {
+   "id": "risultato-A",
+   "tipo": "risultato",
+   "vince": "A",
+   "giorno": "giovedì",
+   "titolo": "Risultato del voto",
+   "copione": [
+    "Ha vinto la A: basta litigare per il conto in pizzeria!",
+    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Ha vinto la A: Dividi il conto in pizzeria.",
+    "Scrivi il totale, quanti siete, e i conti li fa lei.",
+    "Da oggi ci lavoro, anche di notte.",
+    "Venerdì è sul banco, gratis per tutti.",
+    "Voi chi fate pagare sempre? Ditemelo nei commenti!"
+   ]
+  },
+  {
+   "id": "risultato-B",
+   "tipo": "risultato",
+   "vince": "B",
+   "giorno": "giovedì",
+   "titolo": "Risultato del voto",
+   "copione": [
+    "Ha vinto la B: il caffè non brucerà più!",
+    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Ha vinto la B: Timer per la moka.",
+    "Metti la moka sul fuoco, tocchi un tasto, e ti avvisa lei.",
+    "Da oggi ci lavoro, con un caffè accanto.",
+    "Venerdì è sul banco, gratis per tutti.",
+    "Voi come lo prendete il caffè? Scrivetelo nei commenti!"
+   ]
+  },
+  {
+   "id": "risultato-C",
+   "tipo": "risultato",
+   "vince": "C",
+   "giorno": "giovedì",
+   "titolo": "Risultato del voto",
+   "copione": [
+    "Ha vinto la C: la spesa si scrive con la voce!",
+    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Ha vinto la C: Lista della spesa a voce.",
+    "Dici latte, pane e pomodori, e la lista si scrive da sola.",
+    "Da oggi ci lavoro.",
+    "Venerdì è sul banco, gratis per tutti.",
+    "Cosa non manca mai nella vostra spesa? Ditemelo nei commenti!"
+   ]
+  },
+  {
+   "id": "nessun-voto",
+   "tipo": "nessuno",
+   "giorno": "giovedì",
+   "titolo": "Niente voti, niente app",
+   "copione": [
+    "Il banco questa settimana resta vuoto.",
+    "Uè guagliù, ho contato i voti nei commenti.",
+    "Nessuna lettera: né A, né B, né C.",
+    "Senza il vostro voto non scelgo io al posto vostro.",
+    "Mi dispiace: venerdì niente app.",
+    "Lunedì porto tre idee nuove.",
+    "Basta una lettera nei commenti e decidete voi!"
+   ]
+  },
+  {
+   "id": "regalo-A",
+   "tipo": "regalo",
+   "vince": "A",
+   "giorno": "venerdì",
+   "titolo": "Il regalo è sul banco",
+   "copione": [
+    "È venerdì: il conto in pizzeria non è più un problema!",
+    "Uè guagliù, il regalo è sul banco.",
+    "Ecco Dividi il conto in pizzeria.",
+    "Scrivi il totale e quanti siete: fa tutto lei.",
+    "Gratis, senza registrazione, dal telefono.",
+    "Link nel profilo, sul banco di Gennarino.",
+    "Provatela alla prossima pizza e ditemi com'è!"
+   ]
+  },
+  {
+   "id": "regalo-B",
+   "tipo": "regalo",
+   "vince": "B",
+   "giorno": "venerdì",
+   "titolo": "Il regalo è sul banco",
+   "copione": [
+    "È venerdì: la moka adesso ha il suo timer!",
+    "Uè guagliù, il regalo è sul banco.",
+    "Ecco Timer per la moka.",
+    "Un tocco quando la metti sul fuoco, e ti chiama lei.",
+    "Gratis, senza registrazione, dal telefono.",
+    "Link nel profilo, sul banco di Gennarino.",
+    "Provatelo domani mattina e ditemi com'è!"
+   ]
+  },
+  {
+   "id": "regalo-C",
+   "tipo": "regalo",
+   "vince": "C",
+   "giorno": "venerdì",
+   "titolo": "Il regalo è sul banco",
+   "copione": [
+    "È venerdì: la lista della spesa ve la scrivete parlando!",
+    "Uè guagliù, il regalo è sul banco.",
+    "Ecco Lista della spesa a voce.",
+    "Parli, lei scrive, e al supermercato spunti le cose.",
+    "Gratis, senza registrazione, dal telefono.",
+    "Link nel profilo, sul banco di Gennarino.",
+    "Provatela alla prossima spesa e ditemi com'è!"
+   ]
+  }
+ ]
+}

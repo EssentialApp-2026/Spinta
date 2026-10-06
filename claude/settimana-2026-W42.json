@@ -1,0 +1,171 @@
+{
+ "versione": 1,
+ "settimana": "2026-W42",
+ "dal": "2026-10-12",
+ "al": "2026-10-18",
+ "scritto": "2026-10-06",
+ "voto_fino_a": "2026-10-14",
+ "regalo": "2026-10-16",
+ "idee": {
+  "A": "Promemoria della differenziata",
+  "B": "Dove ho parcheggiato",
+  "C": "Conta-punti per la scopa"
+ },
+ "nota": "Settimana 12-18 ottobre: si vota fino a mercoledì 14 sera, il regalo esce venerdì 16. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è la puntata «Niente voti, niente app».",
+ "puntate": [
+  {
+   "id": "tre-idee",
+   "tipo": "idee",
+   "giorno": "lunedì",
+   "titolo": "Tre idee al voto",
+   "copione": [
+    "La munnezza, la macchina, la scopa: cosa vi serve?",
+    "Uè guagliù, è lunedì: tre idee nuove sul banco!",
+    "A: Promemoria della differenziata.",
+    "B: Dove ho parcheggiato.",
+    "C: Conta-punti per la scopa.",
+    "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+    "Venerdì la più votata è sul banco, gratis."
+   ]
+  },
+  {
+   "id": "cosa-dimenticate",
+   "tipo": "libera",
+   "giorno": "martedì",
+   "titolo": "Cosa dimenticate sempre?",
+   "copione": [
+    "Qual è la cosa che dimenticate sempre?",
+    "Uè guagliù, io dimentico dove lascio il carretto!",
+    "Il giorno della munnezza, il posto della macchina, i punti a scopa.",
+    "Per questo ho pensato a queste tre idee.",
+    "Ditemi nei commenti cosa vi scordate voi.",
+    "E chi non ha votato: A, B o C, fino a domani sera!"
+   ]
+  },
+  {
+   "id": "ultime-ore",
+   "tipo": "idee",
+   "giorno": "mercoledì",
+   "titolo": "Ultime ore per votare",
+   "copione": [
+    "Ultima chiamata: stasera chiudo il voto!",
+    "Uè guagliù, mancano poche ore.",
+    "A: Promemoria della differenziata.",
+    "B: Dove ho parcheggiato.",
+    "C: Conta-punti per la scopa.",
+    "Basta una lettera nei commenti per decidere.",
+    "Domani vi dico chi ha vinto!"
+   ]
+  },
+  {
+   "id": "risultato-A",
+   "tipo": "risultato",
+   "giorno": "giovedì",
+   "vince": "A",
+   "titolo": "Risultato del voto",
+   "copione": [
+    "Ha vinto la A: la munnezza non ci frega più!",
+    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Ha vinto la A: Promemoria della differenziata.",
+    "Mettete i giorni del vostro comune e la sera vi avviso io.",
+    "Da oggi ci lavoro, giorno e notte.",
+    "Venerdì è sul banco, gratis per tutti.",
+    "Da voi che giorno passa l'umido? Ditemelo nei commenti!"
+   ]
+  },
+  {
+   "id": "risultato-B",
+   "tipo": "risultato",
+   "giorno": "giovedì",
+   "vince": "B",
+   "titolo": "Risultato del voto",
+   "copione": [
+    "Ha vinto la B: la macchina non si perde più!",
+    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Ha vinto la B: Dove ho parcheggiato.",
+    "Un tocco quando scendi, e lei si ricorda il posto.",
+    "Mi metto subito al lavoro.",
+    "Venerdì è sul banco, gratis per tutti.",
+    "Vi è mai capitato di non trovarla più? Scrivetemelo!"
+   ]
+  },
+  {
+   "id": "risultato-C",
+   "tipo": "risultato",
+   "giorno": "giovedì",
+   "vince": "C",
+   "titolo": "Risultato del voto",
+   "copione": [
+    "Ha vinto la C: a scopa non si litiga più!",
+    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Ha vinto la C: Conta-punti per la scopa.",
+    "Scope, settebello e primiera: i conti li fa lui.",
+    "Da oggi ci lavoro, tra una partita e l'altra.",
+    "Venerdì è sul banco, gratis per tutti.",
+    "Chi vince sempre a scopa da voi? Ditemelo nei commenti!"
+   ]
+  },
+  {
+   "id": "nessun-voto",
+   "tipo": "nessuno",
+   "giorno": "giovedì",
+   "titolo": "Niente voti, niente app",
+   "copione": [
+    "Zero voti: questa volta niente app.",
+    "Uè guagliù, ho letto tutti i commenti.",
+    "Ma nessuno ha scritto A, B o C.",
+    "Mi dispiace: venerdì niente regalo.",
+    "Lunedì torno con tre idee nuove.",
+    "Basta una lettera nei commenti e decidete voi!"
+   ]
+  },
+  {
+   "id": "regalo-A",
+   "tipo": "regalo",
+   "giorno": "venerdì",
+   "vince": "A",
+   "titolo": "Il regalo è sul banco",
+   "copione": [
+    "È venerdì: la munnezza ve la ricordo io!",
+    "Uè guagliù, il regalo è sul banco.",
+    "Ecco Promemoria della differenziata.",
+    "Mettete i giorni del vostro comune una volta sola.",
+    "E la sera vi dice quale bidone mettere fuori.",
+    "Gratis, senza registrazione: link nel profilo.",
+    "Provatelo stasera e ditemi com'è!"
+   ]
+  },
+  {
+   "id": "regalo-B",
+   "tipo": "regalo",
+   "giorno": "venerdì",
+   "vince": "B",
+   "titolo": "Il regalo è sul banco",
+   "copione": [
+    "È venerdì: la macchina la ritrovate sempre!",
+    "Uè guagliù, il regalo è sul banco.",
+    "Ecco Dove ho parcheggiato.",
+    "Scendi dalla macchina, tocchi un tasto, e si segna il posto.",
+    "Poi ti porta lì, con il timer per la sosta.",
+    "Gratis, senza registrazione: link nel profilo.",
+    "Provatela al prossimo parcheggio e ditemi com'è!"
+   ]
+  },
+  {
+   "id": "regalo-C",
+   "tipo": "regalo",
+   "giorno": "venerdì",
+   "vince": "C",
+   "titolo": "Il regalo è sul banco",
+   "copione": [
+    "È venerdì: a scopa i punti li conto io!",
+    "Uè guagliù, il regalo è sul banco.",
+    "Ecco Conta-punti per la scopa.",
+    "Tocchi chi ha preso carte, denari, settebello e primiera.",
+    "Arrivate a undici e vi dice chi ha vinto.",
+    "Gratis, senza registrazione: link nel profilo.",
+    "Sfidate gli amici e ditemi chi vince!"
+   ]
+  }
+ ]
+}
