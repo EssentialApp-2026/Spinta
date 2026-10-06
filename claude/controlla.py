@@ -13,7 +13,7 @@ if len(d) == 4:
 idee = j.get('idee', {})
 for k in 'ABC':
     if not str(idee.get(k, '')).strip(): err.append(f'manca l\'idea {k}')
-tipi = {'presentazione', 'idee', 'risultato', 'regalo', 'libera'}; vinc = {'risultato': set(), 'regalo': set()}
+tipi = {'presentazione', 'idee', 'risultato', 'regalo', 'risposta', 'libera'}; vinc = {'risultato': set(), 'regalo': set()}
 for p in j.get('puntate', []):
     n = p.get('id', '?')
     if p.get('tipo') not in tipi: err.append(f'{n}: tipo non valido')
@@ -23,6 +23,7 @@ for p in j.get('puntate', []):
         if len(r) > 110: err.append(f'{n}: frase troppo lunga: {r[:40]}…')
         if VIETATE.search(r): err.append(f'{n}: niente batteria né richieste di like: {r}')
         if re.search(r'[\U0001F300-\U0001FAFF]', r): err.append(f'{n}: niente emoji nel copione: {r}')
+    if p.get('tipo') == 'risposta' and not str(p.get('commento', '')).strip(): err.append(f'{n}: la risposta serve un commento vero in "commento"')
     if p.get('tipo') == 'idee' and sum(bool(re.match(r'^[ABC]\s*[:·]', r)) for r in c) != 3: err.append(f'{n}: le tre idee vanno su righe che iniziano con "A:", "B:", "C:"')
     if p.get('tipo') in vinc:
         if p.get('vince') not in ('A', 'B', 'C'): err.append(f'{n}: manca "vince" (A, B o C)')

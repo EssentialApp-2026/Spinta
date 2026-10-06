@@ -12,11 +12,12 @@ const CR_FONT='-apple-system,"Segoe UI",Roboto,sans-serif';
 // la settimana della serie: si vota nei commenti fino a mercoledì sera, il venerdì l'app più votata va sul banco, gratis
 function crNextDow(dow){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+((dow-d.getDay()+7)%7));return d}   // oggi compreso
 const CR_GIORNI=['DOMENICA','LUNEDÌ','MARTEDÌ','MERCOLEDÌ','GIOVEDÌ','VENERDÌ','SABATO'];
-const CR_TIPI={presentazione:'Presentazione della serie',idee:'Tre idee al voto',risultato:'Risultato del voto',regalo:'Il regalo del venerdì',libera:'Libera (dal piano)'};
-function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,tipo:'idee',vince:'A',var:0},d);
+const CR_TIPI={presentazione:'Presentazione della serie',idee:'Tre idee al voto',risultato:'Risultato del voto',regalo:'Il regalo del venerdì',risposta:'Risposta a un commento',libera:'Libera (dal piano)'};
+function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0},d);
   s.idee=Object.assign({A:'',B:'',C:''},d.idee||{});delete s.goal;delete s.likes;return s}
 function crSaveSet(){const v=id=>$('#'+id);const s=crSet();
   DB.creator=Object.assign(s,{voice:v('cr-voice').value,fx:v('cr-fx').value,speed:v('cr-speed').value,subs:v('cr-subs').checked,bar:v('cr-bar').checked,light:v('cr-light').checked,
+    sfx:v('cr-sfx').checked,music:v('cr-music').checked,bolla:v('cr-bolla').checked,com:v('cr-com').value.trim().slice(0,300),comUser:v('cr-cuser').value.trim().replace(/^@+/,'').slice(0,40),
     tipo:v('cr-tipo').value,vince:v('cr-vince').value,idee:{A:v('cr-iA').value.trim(),B:v('cr-iB').value.trim(),C:v('cr-iC').value.trim()}});save()}
 
 /* ---------- finestra del creatore ---------- */
@@ -30,6 +31,11 @@ function crInject(){if($('#m-crea'))return;
    <div id="cr-vbox"><label>Ha vinto</label><select id="cr-vince" onchange="crChanged()"><option>A</option><option>B</option><option>C</option></select></div></div>
   <div id="cr-ibox"><label>Le tre idee della settimana</label>
    ${['A','B','C'].map(k=>`<div style="display:flex;gap:8px;align-items:center;margin-top:6px"><b style="width:18px">${k}</b><input id="cr-i${k}" placeholder="${{A:'es. Dividi il conto in pizzeria',B:'es. Timer per la moka',C:'es. Lista della spesa a voce'}[k]}" oninput="crChanged(true)"></div>`).join('')}</div>
+  <div id="cr-cbox"><label>Il commento a cui rispondi · incollalo così com'è</label>
+   <textarea id="cr-com" style="min-height:70px" placeholder="es. Potresti fare un'app per ricordarmi di innaffiare le piante?" oninput="crChanged(true)"></textarea>
+   <div style="display:flex;gap:8px;align-items:center;margin-top:6px"><b>@</b><input id="cr-cuser" placeholder="nome di chi l'ha scritto (facoltativo)" oninput="crChanged(true)"></div>
+   <label class="opt" style="margin-top:8px"><input type="checkbox" id="cr-bolla" checked onchange="crSaveSet();crPrev()"><span>Mostra la bolla del commento<small>Toglila se pubblichi con «Rispondi con un video» di TikTok: la bolla la mette TikTok.</small></span></label>
+   <small class="n">Usa solo commenti veri: Gennarino risponde a quello che la gente ha scritto davvero.</small></div>
   <div id="cr-week"></div>
   <label>Copione · una frase per riga, la prima è l'hook</label>
   <textarea id="cr-txt" style="min-height:190px" oninput="crPrevSoon()"></textarea>
@@ -40,7 +46,7 @@ function crInject(){if($('#m-crea'))return;
    <div><label>Effetto robot</label><select id="cr-fx" onchange="crSaveSet()"><option value="no">Nessuno</option><option value="leggero">Leggero</option><option value="forte">Forte</option></select></div></div>
   <div class="row"><div><label>Ritmo</label><select id="cr-speed" onchange="crSaveSet()"><option value="normale">Normale</option><option value="tiktok">Svelto</option><option value="veloce">Veloce</option></select></div>
    <div><label>&nbsp;</label><button class="btn alt" id="cr-listen" style="margin:0" onclick="crListen()">▶︎ Ascolta la prima frase</button></div></div>
-  <div class="grp" style="margin-top:12px">${opt('cr-subs','Sottotitoli con le parole chiave in giallo',true)}${opt('cr-bar','Barra di avanzamento',true)}${opt('cr-light','Modalità leggera (720p) per telefoni lenti',false)}</div>
+  <div class="grp" style="margin-top:12px">${opt('cr-subs','Sottotitoli parola per parola, con le parole chiave in giallo',true)}${opt('cr-sfx','Effetti sonori',true)}${opt('cr-music','Musica di sottofondo leggera, creata dal telefono (niente diritti)',true)}${opt('cr-bar','Barra di avanzamento',true)}${opt('cr-light','Modalità leggera (720p) per telefoni lenti',false)}</div>
   <details id="cr-lib"><summary>Libreria del repository</summary><div id="cr-libin" style="margin-top:8px">Carico…</div></details>
   <button class="btn" id="cr-go" onclick="crMake()">🎬 Crea il video</button>
   <div id="cr-out"></div>
@@ -51,10 +57,16 @@ function crInject(){if($('#m-crea'))return;
 function crClose(){if(CR.busy&&!confirm('Il video è ancora in preparazione: chiudere e annullare?'))return;if(CR.busy)CR.cancel=true;closeModal('m-crea')}
 function crOpen(fromPlan){crInject();const s=crSet();
   $('#cr-voice').value=s.voice;$('#cr-fx').value=s.fx;$('#cr-speed').value=s.speed;$('#cr-subs').checked=s.subs;$('#cr-bar').checked=s.bar;$('#cr-light').checked=s.light;
+  $('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
   $('#cr-tipo').value=fromPlan?'libera':(CR_TIPI[s.tipo]?s.tipo:'idee');$('#cr-vince').value=s.vince||'A';['A','B','C'].forEach(k=>$('#cr-i'+k).value=s.idee[k]||'');crBoxes();
   if(fromPlan||!$('#cr-txt').value.trim())crFill(true);
   openModal('m-crea');crPrev();crLibLoad().then(crLibShow);crWeekLoad().then(crWeekShow)}
-function crBoxes(){const t=$('#cr-tipo').value;$('#cr-ibox').style.display=t==='libera'||t==='presentazione'?'none':'';$('#cr-vbox').style.visibility=t==='risultato'||t==='regalo'?'visible':'hidden'}
+function crBoxes(){const t=$('#cr-tipo').value;$('#cr-ibox').style.display=['libera','presentazione','risposta'].includes(t)?'none':'';$('#cr-cbox').style.display=t==='risposta'?'':'none';
+  $('#cr-vbox').style.visibility=t==='risultato'||t==='regalo'?'visible':'hidden'}
+// apertura dalla schermata «Oggi»: una puntata scritta da Claude (week) o un tipo di puntata (tipo)
+window.crOpenWith=async function(o){o=o||{};crOpen(false);
+  if(o.week!=null){await crWeekLoad();if(CR.week&&CR.week.puntate[o.week]){crWeekUse(o.week);return}}
+  if(o.tipo&&CR_TIPI[o.tipo]){$('#cr-tipo').value=o.tipo;const v=crVotes();if(v&&v.win)$('#cr-vince').value=v.win;crBoxes();crSaveSet();crFill(true)}}
 function crTipo(){crBoxes();crChanged()}
 // se il copione è ancora quello scritto da Spinta lo aggiorno; se l'hai cambiato a mano non lo tocco
 function crChanged(soft){crSaveSet();const t=$('#cr-txt');if(!t.value.trim()||t.value===CR.auto)crFill(true);else if(!soft)toast('Hai cambiato il copione a mano: tocca ✨ per riscriverlo');crPrevSoon();if(CR.week)crWeekShow()}
@@ -75,17 +87,46 @@ const CR_T={
     ["A, B o C? Decidete voi cosa regalo venerdì.","Uè guagliù, ecco le idee della settimana.","A: {A}.","B: {B}.","C: {C}.","Basta una lettera nei commenti: si vota fino a mercoledì.","E se avete un'idea migliore, scrivetela!"],
     ["Ultime ore per votare: A, B o C?","Uè guagliù, mercoledì sera si chiude il voto.","A: {A}.","B: {B}.","C: {C}.","Chi non ha ancora votato, scriva la lettera nei commenti.","Venerdì la vincitrice è sul banco, gratis."]],
   risultato:[
-    ["Avete votato: ha vinto la {X}!","Uè guagliù, il voto è chiuso.","Ha vinto la {X}: {APP}.","Da oggi ci lavoro, giorno e notte.","Venerdì la trovate sul banco, gratis per tutti.","Voi intanto ditemi: cosa ci mettereste dentro?"],
-    ["Il voto è chiuso: avete deciso voi.","Uè guagliù, che sfida tra A, B e C!","Vince la {X}: {APP}.","Mi metto subito al lavoro.","Venerdì è pronta, gratis e senza registrazione.","Scrivetemi nei commenti come la volete!"]],
+    ["Avete votato: ha vinto la {X}!","Uè guagliù, il voto è chiuso.","{VINTO}: {APP}.","Da oggi ci lavoro, giorno e notte.","Venerdì la trovate sul banco, gratis per tutti.","Voi intanto ditemi: cosa ci mettereste dentro?"],
+    ["Il voto è chiuso: avete deciso voi.","Uè guagliù, che sfida tra A, B e C!","{VINTO}: {APP}.","Mi metto subito al lavoro.","Venerdì è pronta, gratis e senza registrazione.","Scrivetemi nei commenti come la volete!"]],
   regalo:[
     ["È pronta: {APP}, gratis per tutti!","Uè guagliù, l'avevate scelta voi.","La aprite dal telefono e funziona subito.","Niente registrazione e niente pubblicità.","La trovate sul banco: link nel profilo.","Provatela e ditemi nei commenti com'è!","Lunedì si vota la prossima."],
     ["Promessa mantenuta: il regalo è sul banco!","Uè guagliù, è venerdì.","Ecco {APP}.","È gratis, senza registrazione, e funziona dal telefono.","Link nel profilo, sul banco di Gennarino.","Se trovate un problema, scrivetemelo nei commenti.","E da lunedì, tre idee nuove al voto!"]]};
+// risposte ai commenti: il tipo di commento sceglie il copione (le parti con … le completi tu, o con «Copia la richiesta per Claude»)
+const CR_R={
+  idea:[["Un follower mi ha dato un'idea!","{U} mi ha scritto: {COM}","Uè guagliù, bella idea!","La metto tra le idee della prossima settimana.","Se arriva al voto, decidete voi.","Altre idee? Scrivetele nei commenti!"],
+        ["Questa idea merita una risposta.","{U} mi ha scritto: {COM}","Uè guagliù, me la segno subito.","Lunedì potrebbe essere tra le tre idee al voto.","Voi la votereste? Ditemelo nei commenti!"]],
+  grazie:[["Un commento che mi ha fatto felice.","{U} mi ha scritto: {COM}","Uè guagliù, grazie di cuore!","Commenti così mi fanno lavorare ancora più veloce.","Venerdì c'è un nuovo regalo sul banco.","E voi cosa vorreste? Scrivetelo nei commenti!"]],
+  problema:[["Mi avete segnalato un problema.","{U} mi ha scritto: {COM}","Uè guagliù, grazie della segnalazione!","Ci guardo subito e la sistemo.","Se succede anche a voi, scrivetemelo nei commenti."]],
+  domanda:[["Mi avete fatto una domanda.","{U} mi chiede: {COM}","Uè guagliù, bella domanda!","{RISP}","Altre domande? Scrivetele nei commenti!"],
+           ["Rispondo a una domanda.","{U} vuole sapere: {COM}","Uè guagliù, eccomi.","{RISP}","Se avete altre domande, scrivetele qui sotto!"]],
+  altro:[["Rispondo a un commento.","{U} mi ha scritto: {COM}","Uè guagliù, vi rispondo subito.","…","Scrivetemi nei commenti cosa ne pensate!"]]};
+function crReplyKind(c){const s=c.toLowerCase();
+  if(/(non funziona|non va\b|non si apre|errore|bug|problema|si blocca)/.test(s))return'problema';
+  if(/(app per|un'app|potresti fare|potreste fare|fai un|fate un|servirebbe|mi serve|vorrei un|idea:)/.test(s))return'idea';
+  if(/\?\s*$|\?/.test(s))return'domanda';
+  if(/(grazie|bravo|bravi|bello|bella|forte|top|fantastic|genial|❤|😍|👏)/.test(s))return'grazie';return'altro'}
+function crReplyAnswer(c){const s=c.toLowerCase();
+  if(/(come (si )?vota|come funziona|come si fa)/.test(s))return'Ogni lunedì tre idee: scrivete la lettera nei commenti, venerdì regalo la più votata.';
+  if(/(quando|che giorno|quale giorno)/.test(s))return'Ogni venerdì, sul banco: link nel profilo.';
+  if(/(gratis|costa|prezzo|pagare|abbonament)/.test(s))return'È tutto gratis: niente registrazione e niente pubblicità.';
+  if(/(dove|link|trovo|scaric)/.test(s))return'Le trovate sul banco: link nel profilo.';
+  if(/(chi sei|sei vero|sei un robot|sei un'ia|intelligenza artificiale)/.test(s))return'Sono un robottino animato da un\'intelligenza artificiale, con una bancarella a Napoli.';
+  return'…'}
+function crReply(s){const com=crClean(s.com||'').replace(/[.!…]+$/,'')||'…',U=s.comUser?'@'+s.comUser:'Un follower',k=crReplyKind(com),vs=CR_R[k],v=vs[(s.var||0)%vs.length];
+  return v.map(l=>l.replace('{U}',U).replace('{COM}',com).replace('{RISP}',crReplyAnswer(com)))}
+// voti contati dagli screenshot (scheda «Conta i voti»): valgono solo per la settimana in corso
+function crWeekId(d){d=d?new Date(d):new Date();const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dn=(t.getUTCDay()+6)%7;t.setUTCDate(t.getUTCDate()-dn+3);
+  const y=t.getUTCFullYear(),f=new Date(Date.UTC(y,0,4));return y+'-W'+String(1+Math.round(((t-f)/864e5-3+((f.getUTCDay()+6)%7))/7)).padStart(2,'0')}
+function crVotes(){const v=DB.voti;if(!v||v.w!==crWeekId())return null;const tot=(v.A||0)+(v.B||0)+(v.C||0);if(!tot)return null;
+  const max=Math.max(v.A||0,v.B||0,v.C||0),win=['A','B','C'].filter(k=>(v[k]||0)===max);return{A:v.A||0,B:v.B||0,C:v.C||0,tot,win:win.length===1?win[0]:(v.win||null)}}
 const crNoBait=h=>!/(like|batteri|ricaric|spegn|spengo|stut|scaric)/i.test(h||'');
 const crIdea=(s,k)=>crClean((s.idee||{})[k]||'').replace(/[.!?…]+$/,'');
 function crScript(){const s=crSet(),tipo=$('#cr-tipo')?$('#cr-tipo').value:s.tipo,ser=curSeries(),ep=ser?ser.ep:null;
-  if(CR_T[tipo]){const vs=CR_T[tipo],v=vs[((s.var||0)+(ep||0))%vs.length],X=($('#cr-vince')&&$('#cr-vince').value)||s.vince||'A';
-    const map={A:crIdea(s,'A')||'…',B:crIdea(s,'B')||'…',C:crIdea(s,'C')||'…',X,APP:crIdea(s,X)||'…'};
-    return v.map(l=>l.replace(/\{(A|B|C|X|APP)\}/g,(m,k)=>map[k]))}
+  if(tipo==='risposta')return crReply(s);
+  if(CR_T[tipo]){const vs=CR_T[tipo],v=vs[((s.var||0)+(ep||0))%vs.length],X=($('#cr-vince')&&$('#cr-vince').value)||s.vince||'A',V=crVotes();
+    const map={A:crIdea(s,'A')||'…',B:crIdea(s,'B')||'…',C:crIdea(s,'C')||'…',X,APP:crIdea(s,X)||'…',VINTO:V&&V[X]?`Ha vinto la ${X} con ${V[X]} voti`:`Ha vinto la ${X}`};
+    return v.map(l=>l.replace(/\{(A|B|C|X|APP|VINTO)\}/g,(m,k)=>map[k]))}
   // libera: dal piano del prossimo video, senza riprendere vecchie puntate con la batteria
   const nx=window._nx&&window._nx.raw;let hook=crClean(DB.nextHook||(nx&&nx.hook)||'');if(!crNoBait(hook))hook='';
   hook=hook||(ser&&ep>1?`Parte ${ep}: cosa c'è di nuovo sul banco?`:'Uè guagliù, oggi vi faccio vedere una cosa!');
@@ -121,7 +162,7 @@ async function crLoadTTS(key,say){
 async function crPhon(lines,lang){const out=[];
   const m=await createPiperPhonemize({print:l=>{try{out.push(JSON.parse(l))}catch(_){}},printErr:()=>{},locateFile:f=>CR_BASE.pp+f});
   m.callMain(['-l',lang,'--input',JSON.stringify(lines.map(text=>({text}))),'--espeak_data','/espeak-ng-data']);return out}
-const crSpeak=s=>crClean(s).replace(/#\S+/g,'').replace(/&/g,' e ').replace(/'O\b/g,'o').trim()||'…';
+const crSpeak=s=>crClean(s).replace(/#\S+/g,'').replace(/@([\w.]+)/g,'$1').replace(/&/g,' e ').replace(/'O\b/g,'o').replace(/…/g,'').trim()||'…';
 function crTrim(a,sr){let s=0,e=a.length;const th=0.012,m=Math.round(sr*0.03);while(s<e&&Math.abs(a[s])<th)s++;while(e>s&&Math.abs(a[e-1])<th)e--;
   return a.slice(Math.max(0,s-m),Math.min(a.length,e+m))}
 async function crSynth(lines,s,say){const V=await crLoadTTS(s.voice,say),cfg=V.cfg;say('Preparo la pronuncia…');
@@ -149,6 +190,41 @@ async function crVoice(tts,s){const sr=44100,gap=0.22,pre=0.15,rate={no:1,legger
   for(let k=0;k<env.length;k++){let q=0;const a=k*win,b=Math.min(d.length,a+win);for(let i=a;i<b;i++)q+=d[i]*d[i];env[k]=Math.sqrt(q/Math.max(1,b-a));if(env[k]>mx)mx=env[k]}
   for(let k=0;k<env.length;k++)env[k]=Math.min(1,env[k]/((mx*0.55)||1));
   return{buf,seg,total,env,fps}}
+/* ---------- musica di sottofondo ed effetti sonori: tutto generato qui, niente file e niente diritti ---------- */
+let _crNoise=null;
+function crNoiseBuf(oc){if(_crNoise&&_crNoise.sampleRate===oc.sampleRate)return _crNoise;const b=oc.createBuffer(1,oc.sampleRate,oc.sampleRate),d=b.getChannelData(0);
+  let x=12345;for(let i=0;i<d.length;i++){x^=x<<13;x>>>=0;x^=x>>17;x^=x<<5;x>>>=0;d[i]=x/2147483648-1}_crNoise=b;return b}
+function crTone(oc,dest,type,f0,f1,t,dur,vol,att){const o=oc.createOscillator(),g=oc.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);
+  if(f1&&f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t+dur);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+(att||0.008));
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(dest);o.start(t);o.stop(t+dur+0.02)}
+function crHiss(oc,dest,t,dur,vol,ftype,f0,f1,q){const n=oc.createBufferSource();n.buffer=crNoiseBuf(oc);const f=oc.createBiquadFilter();f.type=ftype;f.Q.value=q||0.8;
+  f.frequency.setValueAtTime(f0,t);if(f1)f.frequency.exponentialRampToValueAtTime(f1,t+dur);const g=oc.createGain();g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(vol,t+dur*0.3);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);n.connect(f);f.connect(g);g.connect(dest);n.start(t,Math.random()*0.5);n.stop(t+dur+0.02)}
+function crSfx(oc,dest,k,t){t=Math.max(0.005,t);
+  if(k==='intro'){crHiss(oc,dest,t,0.38,0.22,'bandpass',500,4200,1.2);crTone(oc,dest,'sine',140,42,t+0.02,0.28,0.55)}
+  else if(k==='pop')crTone(oc,dest,'sine',620,1250,t,0.09,0.22,0.004);
+  else if(k==='tick'){crTone(oc,dest,'square',1900,1900,t,0.035,0.07,0.002);crTone(oc,dest,'sine',1200,1200,t+0.05,0.05,0.08,0.002)}
+  else if(k==='stamp'){crTone(oc,dest,'sine',95,42,t,0.24,0.75,0.003);crHiss(oc,dest,t,0.09,0.25,'lowpass',2600,900)}
+  else if(k==='ding'){[1318.5,1975.5].forEach((f,i)=>crTone(oc,dest,'sine',f,f,t+i*0.09,0.9,0.16,0.004))}
+  else if(k==='swell'){[523.3,659.3,784,1046.5].forEach((f,i)=>crTone(oc,dest,'triangle',f,f,t+i*0.07,0.45,0.13,0.01))}
+  else if(k==='whoosh')crHiss(oc,dest,t,0.32,0.1,'bandpass',2600,650,1)
+  else if(k==='chime'){crTone(oc,dest,'sine',784,784,t,0.6,0.15,0.005);crTone(oc,dest,'sine',1046.5,1046.5,t+0.14,0.8,0.15,0.005)}}
+// base leggera a 100 battiti al minuto: accordi morbidi, basso, un arpeggio piano e un ritmo appena accennato; si abbassa quando Gennarino parla
+function crMusic(oc,dest,T,seg,seed){const bus=oc.createGain(),lp=oc.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2600;bus.connect(lp);lp.connect(dest);
+  const hi=2.4,lo=1.3;bus.gain.setValueAtTime(hi,0);seg.forEach(g=>{bus.gain.setTargetAtTime(lo,Math.max(0,g.s-0.06),0.04);bus.gain.setTargetAtTime(hi,g.e+0.08,0.12)});
+  const PR=[[[48,52,55],[45,48,52],[41,45,48],[43,47,50]],[[45,48,52],[41,45,48],[48,52,55],[43,47,50]],[[41,45,48],[43,47,50],[45,48,52],[48,52,55]]][(seed||0)%3];
+  const hz=m=>440*Math.pow(2,(m-69)/12),beat=0.6,bar=beat*4;
+  for(let b=0,t0=0.05;t0<T;b++,t0+=bar){const ch=PR[b%4];
+    ch.forEach(m=>crTone(oc,bus,'triangle',hz(m+12),hz(m+12),t0,bar*0.98,0.035,0.25));
+    [0,2].forEach(q=>{const t=t0+q*beat;if(t<T){crTone(oc,bus,'sine',hz(ch[0]-12),hz(ch[0]-12),t,beat*0.9,0.08,0.01);crTone(oc,bus,'sine',150,48,t,0.18,0.1,0.003)}});
+    for(let e=0;e<8;e++){const t=t0+e*beat/2;if(t>=T)break;crTone(oc,bus,'sine',hz(ch[e%3]+24),hz(ch[e%3]+24),t,0.22,0.03,0.004);if(e%2)crHiss(oc,bus,t,0.05,0.02,'highpass',7000)}}}
+async function crMix(vt,st,s){const sr=vt.buf.sampleRate,len=vt.buf.length,oc=new OfflineAudioContext(1,len,sr);
+  const lim=oc.createDynamicsCompressor();lim.threshold.value=-8;lim.knee.value=4;lim.ratio.value=8;lim.attack.value=0.002;lim.release.value=0.12;lim.connect(oc.destination);
+  const v=oc.createBufferSource();v.buffer=vt.buf;v.connect(lim);v.start(0);
+  if(s.music)crMusic(oc,lim,len/sr,vt.seg,st.seed);
+  if(s.sfx){const fx=oc.createGain();fx.gain.value=0.9;fx.connect(lim);(st.events||[]).forEach(e=>crSfx(oc,fx,e.k,e.t))}
+  const buf=await oc.startRendering(),d=buf.getChannelData(0);let pk=0;for(let i=0;i<d.length;i++){const a=Math.abs(d[i]);if(a>pk)pk=a}
+  if(pk>0.95){const g=0.95/pk;for(let i=0;i<d.length;i++)d[i]*=g}return buf}
 async function crListen(){if(CR.busy)return;const l=crLines()[0];if(!l){toast('Scrivi almeno una frase');return}
   const b=$('#cr-listen'),ac=new (window.AudioContext||window.webkitAudioContext)();b.disabled=true;crSaveSet();
   try{const tts=await crSynth([l],crSet(),m=>b.textContent='⏳ '+m),vt=await crVoice(tts,crSet());const src=ac.createBufferSource();src.buffer=vt.buf;src.connect(ac.destination);src.start();
@@ -169,9 +245,10 @@ function crLibShow(items){const el=$('#cr-libin');if(!el)return;const sm=$('#cr-
    :'<div style="font-size:13.5px">La libreria è vuota: Gennarino viene disegnato da Spinta. Se metti clip o immagini di Gennarino nella cartella <b>libreria</b> del repository (o le mandi a Claude), entrano come scene in più.</div>'}
 
 /* ---------- puntate scritte da Claude nel repository (claude/settimana.json, aggiornato ogni lunedì) ---------- */
-async function crWeekLoad(){if(CR.week!==undefined)return CR.week;CR.week=null;
-  try{const r=await fetch('claude/settimana.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate)&&j.puntate.length)CR.week=j}}catch(_){}
-  return CR.week}
+// una sola lettura anche se la chiedono in due nello stesso momento (apertura del creatore e bottone di Oggi)
+function crWeekLoad(){if(CR.weekP&&Date.now()-CR.weekT<30*60e3)return CR.weekP;CR.weekT=Date.now();
+  return CR.weekP=(async()=>{let w=null;try{const r=await fetch('claude/settimana.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate)&&j.puntate.length)w=j}}catch(_){}
+    return CR.week=w||CR.week||null})()}
 function crWeekShow(){const el=$('#cr-week'),w=CR.week;if(!el)return;if(!w){el.innerHTML='';return}
   const today=new Date(),iso=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`,old=!!(w.al&&w.al<iso);
   // le idee della settimana: se i campi sono vuoti li riempio io
@@ -183,8 +260,89 @@ function crWeekShow(){const el=$('#cr-week'),w=CR.week;if(!el)return;if(!w){el.i
     ${w.puntate.some(p=>p.vince)?`<small class="n">Risultato e regalo sono pronti per tutte e tre le idee: scegli chi ha vinto in «Ha vinto».</small>`:''}</div>`}
 function crWeekUse(i){const w=CR.week,p=w&&w.puntate[i];if(!p)return;
   if(w.idee)['A','B','C'].forEach(k=>{if(w.idee[k])$('#cr-i'+k).value=w.idee[k]});
-  if(CR_TIPI[p.tipo])$('#cr-tipo').value=p.tipo;if(p.vince)$('#cr-vince').value=p.vince;crBoxes();crSaveSet();
-  const t=$('#cr-txt');t.value=(p.copione||[]).map(x=>String(x).trim()).filter(Boolean).join('\n');CR.auto=t.value;crPrevSoon();crWeekShow();toast('Copione di Claude caricato')}
+  if(CR_TIPI[p.tipo])$('#cr-tipo').value=p.tipo;if(p.vince)$('#cr-vince').value=p.vince;
+  if(p.tipo==='risposta'&&p.commento){$('#cr-com').value=String(p.commento).slice(0,300);$('#cr-cuser').value=String(p.utente||'').replace(/^@+/,'').slice(0,40)}
+  crBoxes();crSaveSet();
+  const V=crVotes();let L=(p.copione||[]).map(x=>String(x).trim()).filter(Boolean);
+  if(p.tipo==='risultato'&&V&&V[p.vince])L=L.map(x=>x.replace(new RegExp('^Ha vinto la '+p.vince+'(?=:)'),`Ha vinto la ${p.vince} con ${V[p.vince]} voti`));
+  const t=$('#cr-txt');t.value=L.join('\n');CR.auto=t.value;crPrevSoon();crWeekShow();toast('Copione di Claude caricato')}
+
+/* ---------- conta i voti dagli screenshot dei commenti (un voto per persona) ---------- */
+function crVotiInject(){if($('#m-voti'))return;
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal" id="m-voti"><div class="sheet" style="max-height:94vh">
+  <h2>🗳️ Conta i voti</h2>
+  <p class="sub" style="margin-bottom:10px">Apri i commenti dell'ultima puntata, fai gli screenshot scorrendo (anche tanti) e sceglili qui: leggo le lettere A, B e C nel telefono e tengo un solo voto per persona.</p>
+  <label class="btn" style="display:block;text-align:center;cursor:pointer">📷 Scegli gli screenshot<input type="file" id="v-shots" accept="image/*" multiple style="display:none" onchange="crVotiFiles(event)"></label>
+  <div id="v-stato" style="margin-top:10px;font-size:13.5px"></div>
+  <div id="v-ris"></div>
+  <button class="btn alt" onclick="closeModal('m-voti')">Chiudi</button></div></div>`);
+  const m=$('#m-voti');m.addEventListener('click',e=>{if(e.target===m)closeModal('m-voti')})}
+window.crVotiOpen=function(){crVotiInject();if(!CR.vv||CR.vv.w!==crWeekId())CR.vv={w:crWeekId(),list:[],adj:{A:0,B:0,C:0},files:0};crVotiShow();openModal('m-voti')};
+// parole che possono stare intorno alla lettera in un voto: «io voto la B», «per me la C», «A tutta la vita»
+const CR_VW=new Set('la lo io voto vota votate votiamo voterei scelgo per me sempre tutta tutto vita forza dai ovviamente decisamente assolutamente sicuramente sicuro opzione lettera anche pure e è top subito'.split(' '));
+// «A» a inizio frase spesso è la preposizione («A me piace…», «A quando…»): conta come voto solo se dopo viene una di queste
+const CR_AF=new Set('per sempre tutta tutto tutte sicuro sicuramente ovviamente assolutamente decisamente forza dai vince e è la top subito senza'.split(' '));
+// una lettera da voto: A, b, CC, B!!, BI! (il lettore legge spesso «!» come I o l)
+function crVTok(t){const c=t[0];if(!c||!'ABCabc'.includes(c))return null;const L=c.toUpperCase();let i=1;while(i<t.length&&t[i].toUpperCase()===L)i++;
+  const r=t.slice(i);return r===''||/^[!|1]+$/.test(r)||(c===L&&/^[!|1Il]*!$/.test(r))?{k:L,up:c===L}:null}
+// una frase è un voto se dice chiaramente una sola lettera: «B», «la c», «Voto A!», «la B tutta la vita»; le domande no
+function crVotoDi(txt){const raw=String(txt).replace(/\p{Extended_Pictographic}|️|‍/gu,' ').trim();if(!raw||/\?\s*$/.test(raw))return null;
+  const T=raw.split(/\s+/).map(t=>t.replace(/^[^\p{L}\d!|]+/u,'').replace(/[^\p{L}\d!|]+$/u,'')).filter(Boolean);if(!T.length||T.length>8)return null;
+  const V=T.map(crVTok),lw=T.map(t=>t.toLowerCase());
+  if(T.length<=4){const ks=new Set(V.filter(Boolean).map(v=>v.k));if(ks.size===1&&T.every((t,i)=>V[i]||CR_VW.has(lw[i])))return [...ks][0]}
+  const ups=new Set(V.filter(v=>v&&v.up).map(v=>v.k)),bc=V.filter(v=>v&&!v.up&&v.k!=='A').map(v=>v.k);
+  if(ups.size===1){const k=[...ups][0],i=V.findIndex(v=>v&&v.up);if(bc.some(x=>x!==k))return null;
+    if(k==='A'&&i===0&&T[0]==='A'&&T.length>1&&!CR_AF.has(lw[1]))return null;return k}
+  if(!ups.size){const lo=new Set(V.map((v,i)=>v&&i>0&&/^(la|lettera|opzione|voto)$/.test(lw[i-1])?v.k:null).filter(Boolean));if(lo.size===1)return [...lo][0]}
+  return null}
+// fine riga sporca: il numero dei mi piace e i segni del cuoricino letti come lettere («B 3», «la b J», «Voto C! ©»)
+function crJunk(l){let s=String(l).trim();for(let n=0;n<2;n++){const t=s.replace(/\s+(?:\d[\d.,]*\s*[KkMm]?|[^\s\p{L}\d]+|[^\sABCabc\d])$/u,'').trim();if(t===s)break;s=t}return s}
+// il nome come chiave: senza il cuoricino in fondo (letto come Q, QQ, <Q, ©), minuscolo, senza spazi («marco _ 77 Q» → marco_77)
+function crUser(l){return String(l).trim().replace(/\s+[^\s\p{Ll}\d]{1,3}$/u,'').toLowerCase().replace(/\s*([_.])\s*/g,'$1').replace(/[^\p{L}\d_.]/gu,'').slice(0,30)}
+// stessa persona anche se il lettore ha attaccato un segno in fondo al nome in uno dei due screenshot
+function crSameU(a,b){return a===b||(Math.min(a.length,b.length)>=5&&(a.startsWith(b)||b.startsWith(a))&&Math.abs(a.length-b.length)<=2)}
+// screenshot dei commenti di TikTok: nome, testo (anche su più righe), poi la riga con l'ora e «Rispondi»
+function crVotiParse(text){const L=String(text).split(/\n/).map(x=>x.trim()).filter(Boolean),out=[];let blk=[];
+  const meta=/rispondi|\breply\b|risposte|replies|visualizza|nascondi|\bhide\b|piace all|liked by|fissat|\bpinned\b|aggiungi (un )?commento|add comment|^\d+\s*(s|sec|min|h|ore|g|gg|sett|m|a)\.?(\s*fa)?$|^\d{1,2}[-/]\d{1,2}([-/]\d{2,4})?$/i;
+  const head=/^\d[\d.,]*\s*[kKmM]?\s*(commenti|comments)\b/i;
+  const flush=()=>{const b=blk;blk=[];if(b.length<2)return; // senza il nome è un pezzo di commento tagliato in cima: è intero nello screenshot prima
+    if(/\b(autore|creator|creatore)\b/i.test(b[0]))return; // chi ha fatto il video non vota
+    const u=crUser(b[0]),tx=b.slice(1).map(crJunk).filter(Boolean).join(' ').trim();if(!u||!tx)return;const k=crVotoDi(tx);if(k)out.push({u,txt:tx.slice(0,80),k,on:true})};
+  L.forEach(l=>{if(head.test(l)){blk=[];return}if(meta.test(l))flush();else blk.push(l)});flush();return out}
+// prepara lo screenshot per il lettore: via emoji e colori (🔥, cuori), testo scuro su fondo chiaro anche col tema scuro
+async function crVotiPrep(file){const bmp=await createImageBitmap(file),sc=bmp.width<700?2:1,c=document.createElement('canvas');c.width=bmp.width*sc;c.height=bmp.height*sc;
+  const x=c.getContext('2d');x.drawImage(bmp,0,0,c.width,c.height);const d=x.getImageData(0,0,c.width,c.height),a=d.data;
+  let s=0,k=0;for(let i=0;i<a.length;i+=64){s+=(a[i]+a[i+1]+a[i+2])/3;k++}const dark=s/k<128;
+  for(let i=0;i<a.length;i+=4){const r=a[i],g=a[i+1],b=a[i+2];let v;
+    if(Math.max(r,g,b)-Math.min(r,g,b)>60)v=255;else{v=0.299*r+0.587*g+0.114*b;if(dark)v=255-v;v=Math.max(0,Math.min(255,(v-140)*1.6+140))}a[i]=a[i+1]=a[i+2]=v}
+  x.putImageData(d,0,0);try{bmp.close()}catch(_){}return c}
+async function crVotiFiles(e){const files=[...(e.target.files||[])];e.target.value='';if(!files.length)return;const st=$('#v-stato'),wk=wakeOn('voti');
+  try{st.textContent='⏳ Preparo il lettore di testo… (la prima volta scarica circa 10 MB)';
+    const w=await getOCR(m=>{if(m&&m.status&&m.progress!=null&&/load|init/i.test(m.status))st.textContent=`⏳ Preparo il lettore di testo… ${Math.round(m.progress*100)}%`});
+    const V=CR.vv;let nuovi=0;
+    for(let i=0;i<files.length;i++){st.textContent=`🔎 Leggo lo screenshot ${i+1} di ${files.length}…`;const c=await crVotiPrep(files[i]);const r=await w.recognize(c);
+      crVotiParse(r.data.text).forEach(x=>{const same=V.list.filter(y=>crSameU(y.u,x.u));if(same.some(y=>y.txt===x.txt))return; // lo stesso commento in due screenshot
+        if(same.length){x.on=false;x.dup=true}else nuovi++;V.list.push(x)})}
+    V.files+=files.length;st.textContent=`✅ Letti ${files.length} screenshot: ${nuovi===1?'1 voto nuovo':nuovi+' voti nuovi'}.`}
+  catch(err){st.textContent='❌ '+(err.message||'Lettura non riuscita')}finally{wakeOff(wk)}crVotiShow()}
+function crVotiTot(){const V=CR.vv,n={A:0,B:0,C:0};V.list.forEach(x=>{if(x.on)n[x.k]++});['A','B','C'].forEach(k=>n[k]=Math.max(0,n[k]+V.adj[k]));
+  const max=Math.max(n.A,n.B,n.C),win=['A','B','C'].filter(k=>n[k]===max&&max>0);return{n,tot:n.A+n.B+n.C,win}}
+function crVotiShow(){const el=$('#v-ris');if(!el)return;const V=CR.vv,{n,tot,win}=crVotiTot(),s=crSet(),mx=Math.max(1,n.A,n.B,n.C);
+  el.innerHTML=`<div class="card" style="margin-top:12px">${['A','B','C'].map(k=>`<div style="display:flex;align-items:center;gap:8px;margin:8px 0">
+      <b style="width:22px">${k}</b><div style="flex:1"><div style="font-size:12.5px;color:var(--mut);margin-bottom:3px">${esc(crIdea(s,k)||'')}</div>
+      <div style="height:12px;border-radius:6px;background:var(--line)"><div style="height:12px;border-radius:6px;width:${Math.round(n[k]/mx*100)}%;background:${win.includes(k)?'#17a95a':'var(--mut)'}"></div></div></div>
+      <b style="width:34px;text-align:right">${n[k]}</b><button class="btn sm alt" style="margin:0;padding:6px 10px" onclick="crVotiAdj('${k}',-1)">−</button><button class="btn sm alt" style="margin:0;padding:6px 10px" onclick="crVotiAdj('${k}',1)">+</button></div>`).join('')}
+    <div style="margin-top:6px;font-size:14px">${tot?(win.length===1?`🏆 Ha vinto la <b>${win[0]}</b> · ${tot} voti`:`🤝 Pareggio tra ${win.join(' e ')}: scegli tu chi vince <select id="v-par">${win.map(k=>`<option>${k}</option>`).join('')}</select>`):'Ancora nessun voto: scegli gli screenshot o usa + e −.'}</div>
+    ${V.list.length?`<details style="margin-top:10px"><summary>Voti letti (${V.list.filter(x=>x.on).length} su ${V.list.length}): togli quelli sbagliati</summary>${V.list.map((x,i)=>`<label class="opt"><input type="checkbox" ${x.on?'checked':''} onchange="CR.vv.list[${i}].on=this.checked;crVotiShow()"><span><b>${x.k}</b> · ${esc(x.u?'@'+x.u+': ':'')}${esc(x.txt)}${x.dup?'<small>stessa persona: contato una volta</small>':''}</span></label>`).join('')}</details>`:''}
+    ${tot?`<div class="acts"><button class="btn sm" onclick="crVotiUsa()">✅ Usa questo risultato</button><button class="btn sm alt" onclick="crVotiCopia()">📋 Copia per Claude</button></div>
+    <small class="n">«Usa questo risultato» lo mette nella puntata del risultato (con i numeri). «Copia per Claude»: incollalo nella chat con Claude, che aggiorna la pagina della serie e prepara il regalo del venerdì.</small>`:''}</div>`}
+function crVotiAdj(k,d){CR.vv.adj[k]+=d;crVotiShow()}
+function crVotiWin(){const {win}=crVotiTot();return win.length===1?win[0]:(($('#v-par')||{}).value||win[0])}
+function crVotiUsa(){const {n}=crVotiTot(),win=crVotiWin();DB.voti={w:CR.vv.w,A:n.A,B:n.B,C:n.C,win,at:Date.now()};DB.creator=Object.assign(crSet(),{vince:win});save();
+  if($('#cr-vince')){$('#cr-vince').value=win;if($('#cr-tipo').value==='risultato'||$('#cr-tipo').value==='regalo')crChanged(true)}
+  closeModal('m-voti');toast(`Ha vinto la ${win}: lo trovi nella puntata del risultato`);if(window.renderOggi)renderOggi()}
+function crVotiCopia(){const {n,tot}=crVotiTot(),win=crVotiWin(),s=crSet();
+  copy(`Voti di 'O Bancariello (settimana ${CR.vv.w}): A ${n.A} · B ${n.B} · C ${n.C}, totale ${tot}. Ha vinto la ${win}${crIdea(s,win)?': '+crIdea(s,win):''}.`);toast('Copiato: incollalo nella chat con Claude')}
 
 /* ---------- regia: tempi, espressioni, scene ---------- */
 function crExpr(t,i,n){const s=t.toLowerCase();if(i===n-1)return'wave';
@@ -220,19 +378,34 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   if((tipo==='risultato'||tipo==='regalo')&&app){const key=app.toLowerCase().slice(0,16);
     const g=items.find(it=>it.i>0&&!it.pop&&!it.opt&&(it.text.toLowerCase().includes(key)||/(è pronta|eccola|\becco\b)/i.test(it.text)));if(g){g.pop='gift';g.stamp=null}}
   items.forEach(it=>{if(inBallot(it))it.stamp=null});
+  // risultati del voto (dalla scheda «Conta i voti»): barre sulla frase che parla del voto
+  const V=tipo==='risultato'?crVotes():null;
+  if(V){const r=items.find(it=>it.i>0&&!it.pop&&!it.opt&&/(vot|chius|decis|sfida)/i.test(it.text))||items.find(it=>it.i>0&&!it.pop&&!it.opt);if(r){r.pop='results';r.stamp=null}}
+  // inquadrature: stretta su Gennarino a frasi alterne, larga sul saluto e sulle altre
+  items.forEach(it=>{it.cam=it.i>0&&it.i%2===0&&it.expr!=='wave'?1:0});
+  // bolla del commento a cui si risponde: fa da hook e resta fino a quando Gennarino l'ha letto
+  const com=tipo==='risposta'&&s.bolla!==false&&crClean(s.com)?{u:s.comUser||'',txt:crClean(s.com),e:(items[1]?items[1].e:items[0].e)+0.25}:null;
   // libreria: scene in più. Prima le frasi che hanno parole in comune con le etichette della clip (tutte tranne l'hook),
   // poi, a frasi alterne, le altre scene a rotazione nelle frasi centrali (al massimo 2 volte la stessa); mai la stessa scena in due frasi vicine
-  if(lib&&lib.length&&n>3){const ok=it=>it.i>0&&it.i<n-1&&it.expr!=='wave',has=i=>!!(items[i]&&items[i].shot),
+  // (mai mentre c'è la bolla del commento: coprirebbe la faccia di Gennarino nella clip)
+  const bub=it=>!!com&&it.s<com.e;
+  if(lib&&lib.length&&n>3){const ok=it=>it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it),has=i=>!!(items[i]&&items[i].shot),
       near=(i,x)=>(items[i-1]&&items[i-1].shot===x)||(items[i+1]&&items[i+1].shot===x),uses=new Map(),use=(it,x)=>{it.shot=x;uses.set(x,(uses.get(x)||0)+1)};
-    items.forEach(it=>{if(it.i<1)return;const words=new Set(crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/));let best=null,bs=0;
+    items.forEach(it=>{if(it.i<1||bub(it))return;const words=new Set(crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/));let best=null,bs=0;
       lib.forEach(x=>{const sc=x.tag.filter(t=>words.has(t)).length;if(sc>bs&&!near(it.i,x)){bs=sc;best=x}});if(best)use(it,best)});
     let k=ep||0;items.forEach(it=>{if(!ok(it)||it.shot||has(it.i-1)||has(it.i+1))return;
       for(let a=0;a<lib.length;a++){const x=lib[(k+a)%lib.length];if(!near(it.i,x)&&(uses.get(x)||0)<2){use(it,x);k+=a+1;break}}});
     // se una clip torna una seconda volta riparte da dove si era fermata, così non si vede ripetere lo stesso pezzo
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
   const hook=crClean(lines[0]);
-  const END={idee:'Vota A, B o C nei commenti 👇',risultato:'Venerdì il regalo sul banco 🎁',regalo:'Link nel profilo · gratis 🎁',presentazione:'Scrivi la tua idea nei commenti 👇'};
-  return{items,vt,total:vt.total,hook,hookShow:Math.max(2.6,items[0]?items[0].e+0.15:2.6),ser,ep,tipo,X,app,ballot,mer:crNextDow(3),ven:crNextDow(5),
+  const END={idee:'Vota A, B o C nei commenti 👇',risultato:'Venerdì il regalo sul banco 🎁',regalo:'Link nel profilo · gratis 🎁',presentazione:'Scrivi la tua idea nei commenti 👇',risposta:'Scrivi la tua nei commenti 👇'};
+  // momenti per gli effetti sonori (gli stessi in cui compaiono le cose a schermo)
+  const endS=vt.total-2.8,ev=[{t:0.03,k:'intro'}];if(com)ev.push({t:0.15,k:'pop'});if(ballot)ballot.rows.forEach(r=>ev.push({t:r.s,k:'pop'}));
+  items.forEach(it=>{const free=!inBallot(it)&&it.s<endS;if(it.pop&&free)ev.push({t:it.s+0.02,k:{cal:'tick',gift:'ding',results:'swell'}[it.pop]||'pop'});
+    if(it.stamp&&free&&it.stampAt<endS)ev.push({t:it.stampAt,k:'stamp'});if(it.shot)ev.push({t:it.s,k:'whoosh'})});
+  if(!(ballot&&ballot.e>endS)&&endS>1)ev.push({t:endS,k:'chime'});
+  return{items,vt,total:vt.total,hook,hookShow:Math.max(2.6,items[0]?items[0].e+0.15:2.6),ser,ep,tipo,X,app,ballot,com,voti:V,events:ev,mer:crNextDow(3),ven:crNextDow(5),
+    idee:{A:crIdea(s,'A'),B:crIdea(s,'B'),C:crIdea(s,'C')},
     endTxt:END[tipo]||(ser?`Parte ${ep+1} in arrivo 🔔`:'Ci vediamo al banco 🔔'),subs:s.subs,bar:s.bar,seed:(ep||1)*7}}
 
 /* ---------- disegno: Gennarino alla bancarella (stile delle puntate) ---------- */
@@ -323,6 +496,13 @@ function crPop(c,it,st,t){const cal=it.pop==='cal',solo=cal&&it.stamp&&it.stampA
     c.fillStyle='#1d1d26';c.font=`900 150px ${CR_FONT}`;c.fillText(String(d.getDate()),0,-6);
     c.fillStyle=it.calDay===3?'#e7414b':'#17a95a';c.font=`900 32px ${CR_FONT}`;c.fillText(CR_MESI[d.getMonth()],0,82);
     c.font=`800 26px ${CR_FONT}`;const tx=it.calDay===3?'FINE DEL VOTO':'REGALO SUL BANCO',w=c.measureText(tx).width+48;crRR(c,-w/2,108,w,42,21,'#23212e');c.fillStyle='#fff';c.fillText(tx,0,130)}
+  else if(it.pop==='results'){const V=st.voti,mx=Math.max(1,V.A,V.B,V.C),g=1-Math.pow(1-Math.min(1,(t-it.s)/0.8),3),sc=0.85+0.15*k;c.translate(540,420);c.scale(sc,sc);
+    const h=118+3*96;card(-440,-h/2,880,h);c.textAlign='left';c.fillStyle='#8a8f9c';c.font=`900 28px ${CR_FONT}`;c.fillText(`IL VOTO È CHIUSO · ${V.tot} VOTI`,-400,-h/2+54);
+    ['A','B','C'].forEach((L,j)=>{const y=-h/2+96+j*96,win=L===V.win,bw=600*(V[L]/mx)*g;
+      crCirc(c,-372,y+36,28,'#1b2133');c.fillStyle='#4ff0d0';c.font=`900 32px ${CR_FONT}`;c.textAlign='center';c.fillText(L,-372,y+37);
+      crRR(c,-326,y+8,640,56,16,'#f1ece0');if(bw>4)crRR(c,-326,y+8,Math.max(28,bw),56,16,win?'#17a95a':'#c9c2b2');
+      c.textAlign='left';c.fillStyle=win&&bw>200?'#fff':'#1d1d26';c.font=`800 28px ${CR_FONT}`;let nm=(st.idee&&st.idee[L])||'';while(nm&&c.measureText(nm).width>500)nm=nm.slice(0,-2);c.fillText(nm,-308,y+37);
+      c.textAlign='right';c.fillStyle='#1d1d26';c.font=`900 32px ${CR_FONT}`;c.fillText(String(Math.round(V[L]*g)),404,y+37)});c.textAlign='center'}
   else if(it.pop==='gift'){const sc=0.8+0.2*k;c.translate(540,410);c.scale(sc,sc);c.font=`900 46px ${CR_FONT}`;
     const L=crWrap(c,st.app,560,2),h=150+L.length*56;card(-440,-h/2,880,h);crGiftIcon(c,-404,-h/2+36,128);
     c.textAlign='left';c.fillStyle='#8a8f9c';c.font=`900 26px ${CR_FONT}`;c.fillText(st.tipo==='risultato'?`HA VINTO LA ${st.X}`:'IL REGALO DI QUESTA SETTIMANA',-246,-h/2+58);
@@ -360,33 +540,52 @@ function crBadges(c,st){c.save();c.font=`900 42px ${CR_FONT}`;c.textAlign='left'
   c.shadowColor='rgba(0,0,0,.3)';c.shadowBlur=12;crRR(c,x,106,w,70,35,'#fff');c.shadowBlur=0;(st.tipo==='idee'?crTick:crGiftIcon)(c,x+18,121,40);c.fillStyle='#1d1d26';c.textBaseline='middle';c.textAlign='left';c.fillText(P[0],x+68,143);
   c.font=`900 30px ${CR_FONT}`;const dw=c.measureText(P[1]).width+48;crRR(c,1030-dw,190,dw,52,26,st.tipo==='idee'?'#e7414b':'#17a95a');c.fillStyle='#fff';c.fillText(P[1],1030-dw+24,217);c.restore()}
 // sottotitoli: bianco con contorno, parole chiave in giallo
-function crSubs(c,words,alpha){c.save();c.globalAlpha=alpha;c.textBaseline='middle';c.lineJoin='round';let fs=70,lines=[words];
+function crSubs(c,words,alpha,t,pg){c.save();c.globalAlpha=alpha;c.textBaseline='middle';c.lineJoin='round';let fs=70,lines=[words];
+  // la parola che Gennarino sta dicendo (tempo della pagina diviso in proporzione alle lettere)
+  let act=-1;if(pg&&t!=null&&t>=pg.s){const wt=words.map(w=>w.length+2),tw=wt.reduce((a,b)=>a+b,0);let acc=pg.s;
+    for(let i=0;i<words.length;i++){const d=(pg.e-pg.s)*wt[i]/tw;if(t<acc+d){act=i;break}acc+=d}if(act<0&&t<pg.e+0.25)act=words.length-1}
   for(;fs>=48;fs-=6){c.font=`900 ${fs}px ${CR_FONT}`;const wd=a=>c.measureText(a.join(' ')).width;
     if(wd(words)<=900){lines=[words];break}
     let best=null;for(let k=1;k<words.length;k++){const m=Math.max(wd(words.slice(0,k)),wd(words.slice(k)));if(!best||m<best.m)best={k,m}}
     if(best&&best.m<=900){lines=[words.slice(0,best.k),words.slice(best.k)];break}}fs=Math.max(fs,48);
-  const lh=fs*1.22,y0=1500-(lines.length-1)*lh/2;lines.forEach((ln,i)=>{const full=ln.join(' ');let x=540-c.measureText(full).width/2;const y=y0+i*lh;
-    ln.forEach((w,j)=>{const ww=c.measureText(w).width,bare=w.replace(/[^\p{L}\p{N}]/gu,''),hl=CR_HL.test(bare)||/^[ABC]$/.test(bare);c.lineWidth=14;c.strokeStyle='#000';c.strokeText(w,x,y);c.fillStyle=hl?'#ffd23f':'#fff';c.fillText(w,x,y);
-      x+=ww+(j<ln.length-1?c.measureText(' ').width:0)})});c.restore()}
+  const lh=fs*1.22,y0=1500-(lines.length-1)*lh/2;let gi=0;lines.forEach((ln,i)=>{const full=ln.join(' ');let x=540-c.measureText(full).width/2;const y=y0+i*lh;
+    ln.forEach((w,j)=>{const ww=c.measureText(w).width,bare=w.replace(/[^\p{L}\p{N}]/gu,''),hl=CR_HL.test(bare)||/^[ABC]$/.test(bare);
+      if(gi===act){const pd=12;c.save();c.shadowColor='rgba(0,0,0,.45)';c.shadowBlur=10;crRR(c,x-pd,y-fs*0.64,ww+pd*2,fs*1.28,fs*0.3,'#ffd23f');c.restore();c.fillStyle='#16161e';c.fillText(w,x,y)}
+      else{c.lineWidth=14;c.strokeStyle='#000';c.strokeText(w,x,y);c.fillStyle=hl?'#ffd23f':'#fff';c.fillText(w,x,y)}
+      x+=ww+(j<ln.length-1?c.measureText(' ').width:0);gi++})});c.restore()}
+// la bolla del commento a cui Gennarino risponde
+function crBubble(c,st,t){const b=st.com;if(!b||t>b.e)return;const a=Math.max(0,Math.min(1,t/0.2,(b.e-t)/0.25)),k=1-Math.pow(1-Math.min(1,t/0.25),3);
+  c.save();c.globalAlpha=a;c.translate(540,430);const sc=0.85+0.15*k;c.scale(sc,sc);c.font=`800 44px ${CR_FONT}`;const L=crWrap(c,b.txt,700,4),h=124+L.length*56;
+  c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=30;c.shadowOffsetY=12;crRR(c,-450,-h/2,900,h,34,'#fff');c.beginPath();c.moveTo(-360,h/2-4);c.lineTo(-330,h/2+34);c.lineTo(-300,h/2-4);c.fill();c.shadowColor='transparent';
+  const u=b.u||'',hue=[...u].reduce((a,ch)=>a+ch.charCodeAt(0),0)%360;crCirc(c,-386,-h/2+62,34,u?`hsl(${hue},62%,52%)`:'#8a8f9c');
+  c.fillStyle='#fff';c.font=`900 34px ${CR_FONT}`;c.textAlign='center';c.textBaseline='middle';c.fillText((u[0]||'?').toUpperCase(),-386,-h/2+63);
+  c.textAlign='left';c.fillStyle='#8a8f9c';c.font=`800 28px ${CR_FONT}`;c.fillText((u?'@'+u:'Un follower')+' ha commentato',-334,-h/2+62);
+  c.fillStyle='#16161e';c.font=`800 44px ${CR_FONT}`;L.forEach((ln,j)=>c.fillText(ln,-400,-h/2+130+j*56));c.restore()}
+// inquadratura: stretta o larga a frasi alterne, lenta spinta in avanti, piccolo colpo a ogni frase e uno più forte all'inizio
+function crCam(t,it){let z=1;const cx=540,cy=800;if(it&&it.cam)z=1.13;
+  if(it){const p=Math.max(0,Math.min(1,(t-it.s)/Math.max(0.6,it.e-it.s)));z*=1+0.035*p;const q=t-it.s;if(it.i>0&&q>=0&&q<0.22)z*=1+0.05*(1-q/0.22)}
+  if(t<0.4){const q=1-t/0.4;z*=1+0.16*q*q}return{z,cx,cy}}
 // una clip o un'immagine della libreria a tutto schermo (ritaglio 9:16)
-function crMedia(c,el,t,t0){const vid=el.tagName==='VIDEO';if(vid?el.readyState<2:!(el.complete&&el.naturalWidth))return false;
+function crMedia(c,el,t,t0,zz){const vid=el.tagName==='VIDEO';if(vid?el.readyState<2:!(el.complete&&el.naturalWidth))return false;
   const w=vid?el.videoWidth:el.naturalWidth,h=vid?el.videoHeight:el.naturalHeight;if(!w||!h)return false;
-  const z=vid?1:1+Math.min(1,(t-t0)/4)*0.1,r=Math.max(1080/w,1920/h)*z,dw=w*r,dh=h*r;c.drawImage(el,(1080-dw)/2,(1920-dh)/2,dw,dh);return true}
+  const z=(vid?1:1+Math.min(1,(t-t0)/4)*0.1)*(zz||1),r=Math.max(1080/w,1920/h)*z,dw=w*r,dh=h*r;c.drawImage(el,(1080-dw)/2,(1920-dh)/2,dw,dh);return true}
 function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/1920,0,0);
   const it=st.items.find(x=>t>=x.s&&t<x.e+0.22)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
-  let drawn=false;if(it&&it.shot&&media&&media.el&&media.cur===it){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,it.s)}
+  const cam=crCam(t,it);let drawn=false;if(it&&it.shot&&media&&media.el&&media.cur===it){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,it.s,1+(cam.z-1)*0.5)}
   // sulle clip della libreria un'ombra morbida dietro ai sottotitoli, così si leggono anche sopra l'insegna
   if(drawn&&st.subs&&it.i>0){const gr=c.createLinearGradient(0,1320,0,1700);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,'rgba(0,0,0,.42)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fillRect(0,1320,1080,380)}
-  if(!drawn){c.drawImage(L.back,0,0,1080,1920);crRobot(c,t,st,it,mouth);c.drawImage(L.front,0,0,1080,1920);crJar(c)}
+  if(!drawn){c.save();c.translate(cam.cx,cam.cy);c.scale(cam.z,cam.z);c.translate(-cam.cx,-cam.cy);
+    c.drawImage(L.back,0,0,1080,1920);crRobot(c,t,st,it,mouth);c.drawImage(L.front,0,0,1080,1920);crJar(c);c.restore()}
   // la scheda di voto ha la precedenza; negli ultimi secondi c'è il testo finale e i riquadri si fermano
   const bal=crBallot(c,st,t),endOn=t>st.total-2.8&&!bal;
   if(it&&it.pop&&!bal&&!endOn)crPop(c,it,st,t);
   if(it&&it.stamp&&!bal&&!endOn&&t>=it.stampAt)crStamp(c,it.stampAt,t,it.stamp);
-  if(t<st.hookShow){const a=t>st.hookShow-0.3?(st.hookShow-t)/0.3:1;c.setTransform(1,0,0,1,0,0);drawCaption(ctx,st.hook,W,H,0.165,a,0.068);if(st.ser)drawPill(ctx,'PARTE '+st.ep,W,H,0.165,st.hook,a);c.setTransform(W/1080,0,0,H/1920,0,0)}
+  if(st.com&&t<=st.com.e){crBubble(c,st,t)}   // nella risposta la bolla del commento fa da hook
+  else if(t<st.hookShow){const a=t>st.hookShow-0.3?(st.hookShow-t)/0.3:1;c.setTransform(1,0,0,1,0,0);drawCaption(ctx,st.hook,W,H,0.165,a,0.068);if(st.ser)drawPill(ctx,'PARTE '+st.ep,W,H,0.165,st.hook,a);c.setTransform(W/1080,0,0,H/1920,0,0)}
   else if(endOn){c.setTransform(1,0,0,1,0,0);drawCaption(ctx,st.endTxt,W,H,0.165,Math.min(1,(t-(st.total-2.8))/0.3),0.062);c.setTransform(W/1080,0,0,H/1920,0,0)}
   else crBadges(c,st);
   // la prima frase è già scritta in alto come hook: i sottotitoli partono dalla seconda
-  if(st.subs&&it&&it.i>0){const pg=it.pages.find(p=>t>=p.s&&t<p.e+0.25)||it.pages[it.pages.length-1];if(pg&&t>=it.s)crSubs(c,pg.w,1)}
+  if(st.subs&&it&&it.i>0){const pg=it.pages.find(p=>t>=p.s&&t<p.e+0.25)||it.pages[it.pages.length-1];if(pg&&t>=it.s)crSubs(c,pg.w,1,t,pg)}
   if(st.bar){const h=12;c.fillStyle='rgba(255,255,255,.25)';c.fillRect(0,1920-h,1080,h);const gr=c.createLinearGradient(0,0,1080,0);gr.addColorStop(0,'#ff2d6f');gr.addColorStop(1,'#25f4ee');c.fillStyle=gr;c.fillRect(0,1920-h,1080*Math.min(1,t/st.total),h)}
   c.setTransform(1,0,0,1,0,0)}
 function crLayers(W,H,st){return{back:crLayer(W,H,c=>crBack(c,st.seed)),front:crLayer(W,H,crFrontL)}}
@@ -411,6 +610,7 @@ async function crMake(){if(CR.busy)return;const lines=crLines();if(lines.length<
   const wk=wakeOn('crea');
   try{const tts=await crSynth(lines,s,m=>crSteps(m,null));if(CR.cancel)throw new Error('annullato');
     crSteps('Monto la voce e le scene…',null);const vt=await crVoice(tts,s);const lib=await crLibLoad();const st=crState(lines,vt,s,lib);
+    if(s.sfx||s.music){crSteps('Aggiungo musica ed effetti…',null);try{vt.buf=await crMix(vt,st,s)}catch(e){console.warn('musica/effetti non aggiunti',e)}}
     const out=await crRender(st,s,ac,p=>crSteps(`Registro il video… ${Math.round(p*100)}%`,p));
     if(CR.cancel||!out)throw new Error('annullato');crResult(out,st,lines,s)}
   catch(e){if(String(e&&e.message)==='annullato')crSay('<small class="n">Annullato.</small>');

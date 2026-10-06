@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171a33">
+<title>Lista d' 'a spesa cu 'a voce</title>
+<meta name="description" content="Detta la spesa e la lista si scrive da sola, divisa per reparti del supermercato. Un regalo di Gennarino, gratis.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Figtree:wght@400;600;800&display=swap">
+<style>
+/* Un grande microfono rosso: lo tocchi, dici la spesa, e la lista si mette in ordine da sola per reparti, come il giro del supermercato. */
+:root{
+  --notte:#171a33; --notte-2:#22264a; --linea:#363b6b;
+  --crema:#fbf3e2; --pomodoro:#e63946; --led:#4ff0d0; --basilico:#57d39a;
+  --testo:#eef0ff; --tenue:#a9aed6;
+  --display:"Bungee","Arial Black",Impact,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--notte);color:var(--testo);font-family:var(--body);font-size:17px;line-height:1.45}
+.tenda{height:30px;background:repeating-linear-gradient(90deg,var(--pomodoro) 0 40px,var(--crema) 40px 80px);position:relative}
+.tenda::after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:12px;
+  background:radial-gradient(circle at 20px 0,var(--pomodoro) 19px,transparent 20px) 0 0/80px 12px repeat-x,
+             radial-gradient(circle at 60px 0,var(--crema) 19px,transparent 20px) 0 0/80px 12px repeat-x}
+main{max-width:480px;margin:0 auto;padding:30px 16px 24px;display:grid;gap:20px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(1.55rem,7.4vw,2.05rem);line-height:1.05;margin:0;color:var(--crema)}
+.da{margin:4px 0 0;color:var(--tenue);font-size:.95rem}
+.da a{color:var(--tenue)}
+
+.voce{display:grid;justify-items:center;gap:12px;padding:6px 0 2px}
+.mic{position:relative;width:132px;height:132px;border-radius:50%;border:0;background:var(--pomodoro);color:var(--crema);cursor:pointer;
+  display:grid;place-items:center;box-shadow:0 0 0 8px rgba(230,57,70,.18)}
+.mic svg{width:54px;height:54px}
+.mic::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:3px solid var(--pomodoro);opacity:0}
+.mic.ascolta{background:var(--crema);color:var(--pomodoro)}
+.mic.ascolta::after{animation:onda 1.2s ease-out infinite}
+@keyframes onda{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.35)}}
+.mic:focus-visible{outline:3px solid var(--led);outline-offset:6px}
+.sentito{min-height:3.2em;max-width:34ch;text-align:center;margin:0;color:var(--tenue)}
+.sentito b{color:var(--testo);font-weight:600}
+.scrivi{display:grid;grid-template-columns:1fr auto;gap:8px}
+.scrivi input{min-height:52px;background:var(--notte-2);border:2px solid var(--linea);border-radius:14px;color:var(--testo);font:600 1rem var(--body);padding:0 14px;min-width:0}
+.scrivi input:focus{border-color:var(--led);outline:none}
+.btn{min-height:52px;border-radius:14px;border:0;font:800 1.02rem var(--body);cursor:pointer;padding:0 18px;background:var(--crema);color:#231a14}
+.btn.rosso{background:var(--pomodoro);color:var(--crema)}
+.btn.vuoto{background:transparent;color:var(--testo);border:2px solid var(--linea);font-weight:600;min-height:46px}
+.btn:focus-visible,a:focus-visible,.cosa:focus-visible,.via:focus-visible{outline:3px solid var(--led);outline-offset:3px}
+
+.reparto{display:grid;gap:2px}
+.reparto h2{margin:0 0 4px;font-size:1.02rem;font-weight:800;display:flex;justify-content:space-between;gap:10px;color:var(--crema)}
+.reparto h2 span{color:var(--tenue);font-weight:600}
+.cosa-riga{display:grid;grid-template-columns:1fr 44px;align-items:center;border-bottom:1px solid var(--linea)}
+.cosa{display:grid;grid-template-columns:30px 1fr;align-items:center;gap:10px;min-height:52px;background:transparent;border:0;color:var(--testo);font:600 1.05rem var(--body);text-align:left;cursor:pointer;padding:4px 0}
+.cosa .q{color:var(--tenue);font-weight:400;font-size:.95rem}
+.cerchio{width:26px;height:26px;border-radius:50%;border:2px solid var(--tenue);display:grid;place-items:center}
+.preso .cerchio{background:var(--basilico);border-color:var(--basilico)}
+.preso .cerchio::after{content:"";width:10px;height:6px;border:solid #13202a;border-width:0 0 3px 3px;transform:translateY(-1px) rotate(-45deg)}
+.preso .nome{text-decoration:line-through;color:var(--tenue)}
+.via{width:44px;height:44px;border:0;background:transparent;color:var(--tenue);font-size:1.25rem;cursor:pointer;border-radius:50%}
+.vuota{text-align:center;color:var(--tenue);padding:10px 0 4px;margin:0}
+.carrello h2{color:var(--basilico)}
+.azioni{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lungo{grid-column:1/-1}
+.avviso{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--crema);color:#231a14;padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100% - 32px);text-align:center}
+.avviso.on{opacity:1}
+footer{max-width:480px;margin:0 auto;padding:6px 16px 26px;color:var(--tenue);font-size:.85rem;text-align:center}
+footer a{color:var(--tenue)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="tenda" aria-hidden="true"></div>
+<main>
+  <header>
+    <h1>Lista d' 'a spesa cu 'a voce</h1>
+    <p class="da">Un regalo di Gennarino da <a href="https://essentialapp-2026.github.io/bancariello/">'O Bancariello</a></p>
+  </header>
+
+  <section class="voce" aria-label="Detta la spesa">
+    <button class="mic" type="button" id="mic" aria-label="Tocca e di' cosa devi comprare">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="21.5"/><line x1="8.5" y1="21.5" x2="15.5" y2="21.5"/>
+      </svg>
+    </button>
+    <p class="sentito" id="sentito">Tocca il microfono e di' la spesa, per esempio: <b>«latte, due chili di pasta e il detersivo»</b>.</p>
+  </section>
+
+  <form class="scrivi" id="scrivi" autocomplete="off">
+    <input id="testo" placeholder="Oppure scrivila qui" aria-label="Cosa devi comprare" enterkeyhint="done">
+    <button class="btn" type="submit">Aggiungi</button>
+  </form>
+
+  <section id="lista" aria-label="La lista" aria-live="polite"></section>
+
+  <div class="azioni">
+    <button class="btn rosso" type="button" id="manda">Manda la lista</button>
+    <button class="btn" type="button" id="copia">Copia</button>
+    <button class="btn vuoto" type="button" id="via-presi">Togli quelli presi</button>
+    <button class="btn vuoto" type="button" id="svuota">Svuota la lista</button>
+  </div>
+</main>
+<div class="avviso" id="avviso" role="status"></div>
+<footer>Gratis, senza registrazione e senza pubblicità: la lista resta sul tuo telefono.<br>
+  <a href="https://essentialapp-2026.github.io/bancariello/">'O Bancariello</a> · <a href="https://www.tiktok.com/@bancariello.gennarino" target="_blank" rel="noopener">Gennarino su TikTok</a></footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const leggi = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (_) { return d; } };
+const scrivi = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const uid = () => Math.random().toString(36).slice(2, 9);
+
+/* ---------- reparti, nell'ordine del giro al supermercato ---------- */
+const REPARTI = [
+  ["frutta", "🥬", "Frutta e verdura", "frutt verdur mel mela mele pera pere banan arance arancia limon mandarin clementin uva fragol kiwi pesch albicocc cilieg melon anguri ananas insalat lattug rucol pomodor patat cipoll aglio carot zucchin melanzan peperon spinac broccol friariell scarol cavol finocch sedan prezzemol basilic fung fagiolin cetriol zucc avocad porr radicchi asparag carciof lime"],
+  ["pane", "🍞", "Pane e forno", "pane panin pancarr grissin taral fette friselle crackers cracker focacc piadin cornett brioch tramezzin"],
+  ["latte", "🧀", "Latticini e uova", "latte yogurt yoghurt burro panna formagg mozzarell fiordilatte provol ricott parmigian grana pecorin mascarpon stracchin uova uovo scamorz philadelphia emmental fontina gorgonzol"],
+  ["carne", "🥩", "Carne e pesce", "carne poll petto tacchin manzo maial salsicc macinat bistecc hamburger prosciutt salam mortadell wurstel pancett speck bresaol pesce salmon merluzz baccal alici acciug gamber cozze vongol calamar polp spigol orat cotolett fettin"],
+  ["dispensa", "🍝", "Pasta e dispensa", "pasta spaghett penne rigaton fusill pacch linguin tagliatell lasagn gnocch riso farin sale pepe olio aceto passat pelat sugo legum fagiol ceci lenticch tonno mais lievit brodo dado pangrattat spezi origan capper olive maionese ketchup senape"],
+  ["colazione", "🍪", "Colazione e dolci", "biscott cereal marmellat confettur nutella miele zucchero caff the tè camomill cioccolat merendin cacao muesli fiocchi tisan dolci torta"],
+  ["surgelati", "❄️", "Surgelati", "surgelat gelat bastoncin ghiaccio frozen"],
+  ["bevande", "🥤", "Bevande", "acqua birr vino coca aranciat succo succhi bibit spumant prosecc limonat gassos energy chinott"],
+  ["casa", "🧽", "Casa e pulizia", "detersiv carta scottex tovagliol sacchett buste spazzatur ammorbident candeggin varechin spugn pellicol alluminio anticalcar sgrassator lavastovigl pastigl mocio stracc scop lampadin candel fiammifer accendin pile"],
+  ["igiene", "🧴", "Igiene e cura", "shampoo bagnoschium sapon dentifric spazzolin deodorant assorbent pannolin salviett cotton rasoi crema balsam cerott collutori"],
+  ["animali", "🐾", "Animali", "lettier gatto gatti cane cani croccantin"],
+  ["altro", "🧺", "Altro", ""],
+].map(([k, em, nome, parole]) => ({ k, em, nome, parole: parole.split(" ").filter(Boolean) }));
+const togliAccenti = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+function repartoDi(nome) {
+  const w = togliAccenti(nome.toLowerCase()).split(/[^a-z0-9]+/).filter(Boolean);
+  if (w.some(x => x.startsWith("surgelat"))) return "surgelati";
+  if (w.includes("detersivo") || w.includes("detersivi")) return "casa";
+  // le parole corte devono essere uguali («te», «uva»), le altre bastano all'inizio («pomodor» → pomodori, pomodorini)
+  for (const x of w) for (const r of REPARTI) if (r.parole.some(p => { const q = togliAccenti(p); return q.length <= 3 ? x === q : x.startsWith(q); })) return r.k;
+  return "altro";
+}
+
+/* ---------- dalla frase alle cose da comprare ---------- */
+const NUMERI = { un: 1, uno: 1, una: 1, due: 2, tre: 3, quattro: 4, cinque: 5, sei: 6, sette: 7, otto: 8, nove: 9, dieci: 10, undici: 11, dodici: 12, quindici: 15, venti: 20, trenta: 30, mezzo: 0.5, mezza: 0.5 };
+const UNITA = [[/^(chili|chilo|kg|kili|kilo)$/, "kg"], [/^(etti|etto|hg)$/, "etti"], [/^(grammi|grammo|gr|g)$/, "g"], [/^(litri|litro|lt|l)$/, "l"],
+  [/^(pacchi|pacco|pacchetti|pacchetto|confezioni|confezione)$/, "conf."], [/^(bottiglie|bottiglia)$/, "bott."], [/^(scatole|scatola|scatolette|scatoletta|lattine|lattina)$/, "scat."],
+  [/^(barattoli|barattolo|vasetti|vasetto)$/, "vasetti"], [/^(rotoli|rotolo)$/, "rotoli"], [/^(dozzina|dozzine)$/, "dozzina"], [/^(mazzi|mazzo|mazzetti|mazzetto)$/, "mazzi"], [/^(fette|fetta)$/, "fette"]];
+const ARTICOLI = /^(il|lo|la|i|gli|le|l'|un|uno|una|un'|del|dello|della|dei|degli|delle|dell'|po'|po|di|d'|qualche|ancora|altro|altra|altri|altre)$/;
+const RIEMPITIVI = /^(allora|ok|okay|dunque|ehm|devo|dobbiamo|comprare|compra|prendere|prendi|prendo|mi|ci|serve|servono|aggiungi|aggiungere|metti|mettere|scrivi|segna|anche|pure|poi|e|per|favore|grazie|ancora|altri|altre|altro|altra)$/;
+function cose(frase) {
+  return frase.toLowerCase().replace(/[“”«»"!?]/g, " ")
+    // «un chilo e mezzo» prima di dividere sulle «e»
+    .replace(/\b(un|uno|una|due|tre|quattro|cinque|\d+)\s+(chil[oi]|kg|litr[oi]|ett[oi])\s+e\s+mezz[oa]\b/g, (m, n, u) => ((NUMERI[n] ?? +n) + 0.5) + " " + u)
+    .split(/\s*(?:[,;\n]|\.(?!\d)|\be poi\b|\bpoi\b|\be anche\b|\banche\b|(?:^|\s)più(?=\s|$)|\be\b|\bed\b)\s*/)
+    .map(pezzo => {
+      let w = pezzo.replace(/(\b(?:dell|dall|nell|sull|all|l|un|d))['’]\s*/g, "$1' ").split(/\s+/).filter(Boolean);
+      while (w.length && RIEMPITIVI.test(w[0])) w.shift();
+      let q = null, u = "";
+      if (w.length && (/^\d+([.,]\d+)?$/.test(w[0]) || w[0] in NUMERI) && w.length > 1) {
+        q = /^\d/.test(w[0]) ? parseFloat(w[0].replace(",", ".")) : NUMERI[w[0]]; w.shift();
+        const un = w.length > 1 && UNITA.find(([re]) => re.test(w[0])); if (un) { u = un[1]; w.shift(); }
+      }
+      while (w.length > 1 && ARTICOLI.test(w[0])) w.shift();
+      const nome = w.join(" ").replace(/\s+/g, " ").trim();
+      if (!nome || nome.length < 2 || RIEMPITIVI.test(nome) || ARTICOLI.test(nome)) return null;
+      if (q === 1 && !u) q = null;   // «un latte» è solo latte
+      return { nome: nome[0].toUpperCase() + nome.slice(1), q, u };
+    }).filter(Boolean);
+}
+const quanto = c => c.q == null ? "" : (Number.isInteger(c.q) ? c.q : String(c.q).replace(".", ",")) + (c.u ? " " + c.u : "");
+
+/* ---------- la lista ---------- */
+let L = leggi("spesa", []);
+const salva = () => scrivi("spesa", L);
+function aggiungi(frase) {
+  const nuove = cose(frase); let messe = 0, gia = 0;
+  nuove.forEach(c => {
+    const stessa = L.find(x => !x.preso && x.nome.toLowerCase() === c.nome.toLowerCase());
+    if (stessa) { if (c.q != null && stessa.q != null && stessa.u === c.u) { stessa.q += c.q; messe++; } else gia++; return; }
+    L.push({ id: uid(), nome: c.nome, q: c.q, u: c.u, r: repartoDi(c.nome), preso: false }); messe++;
+  });
+  salva(); disegna();
+  if (messe) avviso(messe === 1 ? "1 cosa in lista" : messe + " cose in lista");
+  else if (gia) avviso("Già in lista");
+  else avviso("Non ho capito cosa comprare: riprova");
+  return messe;
+}
+function riga(x) {
+  return `<div class="cosa-riga"><button type="button" class="cosa${x.preso ? " preso" : ""}" data-t="${x.id}" aria-pressed="${x.preso}">
+      <span class="cerchio" aria-hidden="true"></span><span><span class="nome">${esc(x.nome)}</span>${x.q != null ? ` <span class="q">· ${esc(quanto(x))}</span>` : ""}</span></button>
+    <button type="button" class="via" data-x="${x.id}" aria-label="Togli ${esc(x.nome)}">×</button></div>`;
+}
+function disegna() {
+  const da = L.filter(x => !x.preso), presi = L.filter(x => x.preso);
+  if (!L.length) { $("lista").innerHTML = '<p class="vuota">La lista è vuota. Di\' o scrivi cosa ti serve.</p>'; return; }
+  $("lista").innerHTML = REPARTI.map(r => {
+    const qui = da.filter(x => x.r === r.k); if (!qui.length) return "";
+    return `<div class="reparto"><h2>${r.em} ${r.nome}<span>${qui.length}</span></h2>${qui.map(riga).join("")}</div>`;
+  }).join("") + (presi.length ? `<div class="reparto carrello"><h2>🛒 Nel carrello<span>${presi.length}</span></h2>${presi.map(riga).join("")}</div>` : "")
+    + (!da.length ? '<p class="vuota">Hai preso tutto. Buona spesa!</p>' : "");
+}
+$("lista").onclick = e => {
+  const t = e.target.closest("[data-t]"), x = e.target.closest("[data-x]");
+  if (t) { const c = L.find(y => y.id === t.dataset.t); if (c) { c.preso = !c.preso; salva(); disegna(); } }
+  else if (x) { L = L.filter(y => y.id !== x.dataset.x); salva(); disegna(); }
+};
+$("scrivi").onsubmit = e => { e.preventDefault(); const t = $("testo").value.trim(); if (!t) return; if (aggiungi(t)) $("testo").value = ""; };
+$("via-presi").onclick = () => { const n = L.filter(x => x.preso).length; if (!n) { avviso("Non hai ancora preso niente"); return; } L = L.filter(x => !x.preso); salva(); disegna(); avviso(n === 1 ? "Tolta 1 cosa" : `Tolte ${n} cose`); };
+let svuotaT = 0;
+$("svuota").onclick = () => {
+  if (!L.length) return;
+  if (Date.now() - svuotaT > 3000) { svuotaT = Date.now(); $("svuota").textContent = "Tocca ancora per svuotare"; setTimeout(() => $("svuota").textContent = "Svuota la lista", 3000); return; }
+  L = []; salva(); disegna(); $("svuota").textContent = "Svuota la lista"; avviso("Lista svuotata");
+};
+
+/* ---------- mandare la lista ---------- */
+function testo() {
+  const da = L.filter(x => !x.preso); if (!da.length) return "";
+  const parti = ["🛒 Lista della spesa"];
+  REPARTI.forEach(r => { const qui = da.filter(x => x.r === r.k); if (qui.length) parti.push("", r.em + " " + r.nome, ...qui.map(x => "- " + x.nome + (x.q != null ? " · " + quanto(x) : ""))); });
+  parti.push("", "Fatta a voce con il regalo di Gennarino: " + location.origin + location.pathname);
+  return parti.join("\n");
+}
+let tA = 0;
+function avviso(t) { const a = $("avviso"); a.textContent = t; a.classList.add("on"); clearTimeout(tA); tA = setTimeout(() => a.classList.remove("on"), 1800); }
+$("manda").onclick = async () => {
+  const t = testo(); if (!t) { avviso("La lista è vuota"); return; }
+  if (navigator.share) { try { await navigator.share({ text: t }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+  location.href = "https://wa.me/?text=" + encodeURIComponent(t);
+};
+$("copia").onclick = async () => {
+  const t = testo(); if (!t) { avviso("La lista è vuota"); return; }
+  try { await navigator.clipboard.writeText(t); avviso("Copiata"); } catch (_) { avviso("Non riesco a copiare: usa «Manda la lista»"); }
+};
+
+/* ---------- la voce ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, ascolta = false, finale = "";
+const SPIEGA = 'Tocca il microfono e di\' la spesa, per esempio: <b>«latte, due chili di pasta e il detersivo»</b>.';
+function fermo(msg) { ascolta = false; $("mic").classList.remove("ascolta"); $("mic").setAttribute("aria-label", "Tocca e di' cosa devi comprare"); if (msg != null) $("sentito").innerHTML = msg; }
+if (!SR) {
+  $("mic").hidden = true;
+  $("sentito").innerHTML = "Su questo browser la voce non c'è: scrivi qui sotto, oppure usa il microfono della tastiera.";
+} else {
+  $("mic").onclick = () => {
+    if (ascolta) { try { rec.stop(); } catch (_) {} return; }
+    rec = new SR(); rec.lang = "it-IT"; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
+    finale = "";
+    rec.onresult = e => {
+      let prov = ""; finale = "";
+      for (let i = 0; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) finale += t + " "; else prov += t; }
+      $("sentito").innerHTML = `Ho sentito: <b>«${esc((finale + prov).trim())}»</b>`;
+    };
+    rec.onerror = e => {
+      const m = { "not-allowed": "Il microfono è bloccato: permettilo nelle impostazioni del browser per questo sito.", "service-not-allowed": "Il microfono è bloccato: permettilo nelle impostazioni del browser per questo sito.",
+        "no-speech": "Non ho sentito niente: tocca e riprova, parlando vicino al telefono.", "network": "Per capire la voce serve internet: scrivi qui sotto, oppure riprova con la connessione.",
+        "audio-capture": "Non trovo il microfono del telefono." }[e.error];
+      if (e.error !== "aborted") fermo(m || "Non ho capito bene: riprova.");
+    };
+    rec.onend = () => {
+      const t = finale.trim(); const ok = t && aggiungi(t);
+      if (ascolta) fermo(t ? (ok ? `Ho sentito: <b>«${esc(t)}»</b>` : `Ho sentito <b>«${esc(t)}»</b> ma non ho capito cosa comprare.`) : SPIEGA);
+    };
+    try { rec.start(); ascolta = true; $("mic").classList.add("ascolta"); $("mic").setAttribute("aria-label", "Sto ascoltando: tocca per fermare"); $("sentito").innerHTML = "Ti ascolto…"; }
+    catch (_) { fermo("Il microfono non parte: riprova tra un attimo."); }
+  };
+}
+
+disegna();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
