@@ -17,4 +17,11 @@ Se la libreria è vuota, Gennarino viene disegnato direttamente da Spinta.
 - `gennarino-pensa.mp4` — mano sul mento, nuvoletta col punto di domanda, poi la lampadina. Entra sulle domande: pensate, secondo voi, come la volete.
 - `gennarino-triste.mp4` — nuvoletta di pioggia sulla testa. Entra solo sulle frasi tristi, per esempio nella puntata senza voti.
 
-Le ultime quattro le ha disegnate Claude con lo stesso stile delle puntate (il generatore è in `claude/clip/`).
+- `gennarino-indica.mp4` — con gli occhioni indica giù, nei commenti, e scendono le lettere A, B e C. Entra sugli inviti a scrivere e votare nei commenti.
+- `gennarino-meraviglia.mp4` — occhioni, mani sulle guance e brillantini. Entra su «ecco», «guardate», novità e sorprese.
+- `gennarino-ascolta.mp4` — occhioni e mano all'orecchio mentre arrivano i commenti. Entra su «ditemi», «scrivetemi», «fatemi sapere».
+- `gennarino-regalo.mp4` — il pacco sul banco si apre e ne esce il telefono con l'app. Entra su regalo, «sul banco», «link nel profilo», «la trovate».
+- `gennarino-ciao.mp4` — saluto da vicino con gli occhioni e i cuoricini. Entra sui saluti di fine puntata: «ci vediamo», «alla prossima».
+
+Tutte tranne le prime due le ha disegnate Claude con lo stesso stile delle puntate (il generatore è in `claude/clip/`).
+L'ordine in `libreria.json` conta: a parità di parole in comune vince la clip che viene prima.

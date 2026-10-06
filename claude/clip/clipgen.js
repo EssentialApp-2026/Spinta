@@ -39,6 +39,7 @@ function gMouth(c, mode, m) {
   else if (mode === 'smile') { c.lineWidth = 10; c.beginPath(); c.arc(540, 806, 32, Math.PI * 0.22, Math.PI * 0.78); c.stroke() }
   else if (mode === 'o') { c.lineWidth = 8; c.beginPath(); c.arc(540, 832, 14, 0, Math.PI * 2); c.stroke() }
   else if (mode === 'line') crRR(c, 516, 827, 48, 9, 4, '#4ff0d0');
+  else if (mode === 'grin') { c.beginPath(); c.moveTo(506, 814); c.quadraticCurveTo(540, 822, 574, 814); c.quadraticCurveTo(572, 852, 540, 856); c.quadraticCurveTo(508, 852, 506, 814); c.closePath(); c.fill() }
   else { const h = 9 + m * 36, w = 62 - m * 12; crRR(c, 540 - w / 2, 830 - h / 2, w, h, Math.min(h / 2, 16), '#4ff0d0') }
   c.restore();
 }
@@ -62,13 +63,32 @@ function gRobot(c, t, o) {
   c.save(); c.shadowColor = 'rgba(0,0,0,.3)'; c.shadowBlur = 26; c.shadowOffsetY = 10; const hg = c.createLinearGradient(0, 640, 0, 900); hg.addColorStop(0, '#f8fafd'); hg.addColorStop(1, '#d3d9e4'); crRR(c, 345, 640, 390, 262, 72, hg); c.restore();
   const fg = c.createLinearGradient(0, 672, 0, 872); fg.addColorStop(0, '#1e2539'); fg.addColorStop(1, '#0e1322'); crRR(c, 377, 670, 326, 200, 56, fg);
   crRR(c, 397, 682, 286, 40, 20, 'rgba(255,255,255,.05)');
-  gEyes(c, o.eyes || 'normal', t, blink);
+  if (o.occhioni) gOcchioni(c, t, o.occhioni, blink); else gEyes(c, o.eyes || 'normal', t, blink);
   if (o.blush) { c.globalAlpha = 0.55; c.beginPath(); c.ellipse(428, 808, 26, 13, 0, 0, Math.PI * 2); c.ellipse(652, 808, 26, 13, 0, 0, Math.PI * 2); c.fillStyle = '#ff7c9d'; c.fill(); c.globalAlpha = 1 }
   gMouth(c, o.mouth || 'talk', o.m || 0);
   c.restore();
-  if (o.armFront) gArm(c, o.armFront);
+  if (o.armFront) gArm(c, o.armFront); (o.fronts || []).forEach(a => gArm(c, a)); if (o.dito) gDito(c, o.dito[0], o.dito[1]);
   c.restore();
 }
+// gli occhioni: grandi, lucidi, con le pupille e i riflessi (o: look [dx,dy], size, squash, stelle)
+function gOcchioni(c, t, o, blink) {
+  const y = 760, r = 41 * (o.size == null ? 1 : o.size), sq = blink ? 0.12 : (o.squash || 1), lk = o.look || [0, 0];
+  [468, 612].forEach((x, i) => {
+    const cx = x + lk[0] * 0.5, cy = y + lk[1] * 0.4;
+    c.save(); c.translate(cx, cy); c.scale(1, sq);
+    c.shadowColor = '#4ff0d0'; c.shadowBlur = 24;
+    const g = c.createRadialGradient(-r * 0.25, -r * 0.3, r * 0.08, 0, 0, r); g.addColorStop(0, '#d4fff7'); g.addColorStop(0.5, '#4ff0d0'); g.addColorStop(1, '#16a594');
+    c.beginPath(); c.arc(0, 0, r, 0, Math.PI * 2); c.fillStyle = g; c.fill(); c.shadowBlur = 0;
+    if (!blink) {
+      crCirc(c, lk[0] * 0.35, lk[1] * 0.35, r * 0.5, '#0b1a2a');
+      if (o.stelle) { star(c, lk[0] * 0.35, lk[1] * 0.35, r * 0.42, 1) }
+      else { crCirc(c, -r * 0.3 + lk[0] * 0.2, -r * 0.33 + lk[1] * 0.2, r * 0.25, '#ffffff'); crCirc(c, r * 0.28 + lk[0] * 0.2, r * 0.26 + lk[1] * 0.2, r * 0.11, 'rgba(255,255,255,.85)') }
+    }
+    c.restore();
+  });
+}
+// un dito che indica (da un punto della mano, verso una direzione)
+function gDito(c, p, d) { c.save(); c.strokeStyle = '#f4f6fa'; c.lineWidth = 15; c.lineCap = 'round'; c.beginPath(); c.moveTo(p[0], p[1]); c.lineTo(p[0] + d[0], p[1] + d[1]); c.stroke(); c.restore() }
 // la scena di base con l'inquadratura: z = zoom, (cx, cy) = punto inquadrato al centro
 // l'insegna (y 1274) resta all'altezza delle puntate, sopra i sottotitoli: il centro dell'inquadratura dipende dallo zoom
 const cyInsegna = z => 1274 - 314 / z;
@@ -172,6 +192,93 @@ G.triste = function (c, t) {
   c.restore();
   c.save(); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 30; c.shadowOffsetY = 10; const cg = c.createLinearGradient(0, cy - 120, 0, cy + 70); cg.addColorStop(0, '#9aa3b8'); cg.addColorStop(1, '#5f677e'); c.fillStyle = cg; c.beginPath();
   [[-140, 20, 74], [-60, -30, 90], [40, -44, 98], [130, 4, 80], [70, 44, 70], [-40, 46, 72]].forEach(([x, y, r0]) => { c.moveTo(cx + x + r0, cy + y); c.arc(cx + x, cy + y, r0, 0, Math.PI * 2) }); c.fill(); c.restore();
+};
+
+/* ---------- 5. meraviglia: occhioni che si accendono, mani sulle guance, brillantini ---------- */
+G.meraviglia = function (c, t) {
+  const pop = t < 0.45 ? 0 : Math.min(1, (t - 0.45) / 0.22), over = pop < 1 ? pop : 1 + 0.12 * Math.max(0, Math.sin(Math.min(1, (t - 0.67) / 0.35) * Math.PI));
+  const z = 1.18 + (t > 0.45 ? 0.1 * ease((t - 0.45) / 0.3) : 0) + 0.06 * ease(t / 6), k = ease((t - 0.45) / 0.3), giu = ease((t - 4.6) / 0.5);
+  const guance = [[[392, 986], [318, 940], [350, 862]], [[688, 986], [762, 940], [730, 862]]];
+  const L = mixPts(mixPts(RIPOSO_L, guance[0], k), RIPOSO_L, giu), R = mixPts(mixPts(RIPOSO_R, guance[1], k), RIPOSO_R, giu);
+  const lk = t > 1.6 && t < 4.4 ? [Math.sin((t - 1.6) * 2.2) * 26, -4] : [0, 0];
+  gScene(c, { z, cx: 540, cy: cyInsegna(z) }, G.backBlur, G.front, () => gRobot(c, t, {
+    armL: null, armR: null, fronts: [L, R], occhioni: { size: 0.55 + 0.45 * over, look: lk }, mouth: t < 0.45 ? 'line' : t < 1.4 ? 'o' : 'grin', blush: t > 0.45, bulb: t > 0.45 ? 'party' : 'on'
+  }));
+  [[250, 600], [830, 560], [190, 900], [890, 880], [540, 300], [330, 380], [760, 360]].forEach(([x, y], i) => { const q = (t - 0.5 - i * 0.12) % 1.4; if (t > 0.5 && q >= 0 && q < 0.7) star(c, x, y, 20 + (i % 3) * 8, Math.sin(q / 0.7 * Math.PI)) });
+};
+
+/* ---------- 6. ascolta: mano dietro l'orecchio, occhioni verso di te, arrivano i commenti ---------- */
+G.ascolta = function (c, t) {
+  const z = 1.3, k = ease((t - 0.2) / 0.45), nod = Math.sin(t * 3.2) * 0.03;
+  const orecchio = [[688, 986], [796, 918], [772, 790]];
+  gScene(c, { z, cx: 560, cy: cyInsegna(z) }, G.backBlur, G.front, () => gRobot(c, t, {
+    armL: RIPOSO_L, armR: null, fronts: [mixPts(RIPOSO_R, orecchio, k)], occhioni: { size: 1, look: [-10 + Math.sin(t * 0.9) * 8, 2] }, mouth: Math.floor(t * 0.8) % 2 ? 'smile' : 'o', blush: true, tilt: 0.06 + nod, bulb: 'on'
+  }));
+  // nuvolette di commento che salgono a sinistra
+  for (let i = 0; i < 6; i++) { const t0 = 0.6 + i * 0.75, d = t - t0; if (d < 0 || d > 2.6) continue;
+    const x = 150 + (i % 2) * 120, y = 1060 - d * 230, a = Math.min(1, d / 0.2) * Math.max(0, 1 - d / 2.6), sc = 0.8 + 0.2 * Math.min(1, d / 0.25);
+    c.save(); c.globalAlpha = a; c.translate(x, y); c.scale(sc, sc); c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 16; crRR(c, -70, -38, 140, 76, 26, '#fbf8f1'); c.shadowBlur = 0;
+    c.beginPath(); c.moveTo(-30, 36); c.lineTo(-46, 62); c.lineTo(-6, 36); c.closePath(); c.fillStyle = '#fbf8f1'; c.fill();
+    if (i % 3 === 1) crHeart(c, 0, 2, 20, '#ff4d5a'); else [-30, 0, 30].forEach((dx, j) => crCirc(c, dx, 0, 9, j === Math.floor(t * 4) % 3 ? '#1b2133' : '#8a8f9c'));
+    c.restore() }
+};
+
+/* ---------- 7. indica: «nei commenti!», il dito verso il basso, le lettere A B C che scendono ---------- */
+G.indica = function (c, t) {
+  const z = 1.24, k = ease((t - 0.15) / 0.4), b = Math.sin(t * 7) * 10;
+  const giu = [[688, 986], [786, 1004], [842, 1078 + b * 0.4]];
+  gScene(c, { z, cx: 580, cy: cyInsegna(z) }, G.backBlur, G.front, () => gRobot(c, t, {
+    armL: RIPOSO_L, armR: null, fronts: [mixPts(RIPOSO_R, giu, k)], dito: k > 0.8 ? [[842, 1078 + b * 0.4], [10, 34]] : null,
+    occhioni: { size: 1, look: [14, 18] }, mouth: 'grin', blush: true, bulb: 'on'
+  }));
+  // freccia che rimbalza verso il basso, a destra
+  c.save(); c.translate(948, 1040 + Math.abs(Math.sin(t * 5)) * 46); c.strokeStyle = '#4ff0d0'; c.lineWidth = 20; c.lineCap = 'round'; c.lineJoin = 'round'; c.shadowColor = '#4ff0d0'; c.shadowBlur = 24;
+  c.beginPath(); c.moveTo(0, -70); c.lineTo(0, 40); c.moveTo(-40, 4); c.lineTo(0, 44); c.lineTo(40, 4); c.stroke(); c.restore();
+  // le lettere del voto che scendono a turno lungo il lato destro
+  ['A', 'B', 'C'].forEach((L, i) => { const d = ((t - 0.5 - i * 0.55) % 1.65 + 1.65) % 1.65; if (t < 0.5 + i * 0.55) return;
+    const y = 420 + d * 330, a = Math.min(1, d / 0.2) * Math.max(0, 1 - (d - 1.3) / 0.35); if (a <= 0) return;
+    c.save(); c.globalAlpha = Math.min(1, a); c.translate(948, y); c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 18; crCirc(c, 0, 0, 52, '#1b2133'); c.shadowBlur = 0;
+    c.strokeStyle = '#4ff0d0'; c.lineWidth = 6; c.beginPath(); c.arc(0, 0, 52, 0, Math.PI * 2); c.stroke();
+    c.fillStyle = '#4ff0d0'; c.font = `900 60px ${CR_FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(L, 0, 3); c.restore() });
+};
+
+/* ---------- 8. regalo: il pacco sul banco si apre e ne esce il telefono con l'app ---------- */
+G.regalo = function (c, t) {
+  const z = 1.22, aperto = t > 1.35, ka = ease((t - 1.35) / 0.35), sale = ease((t - 1.6) / 1.0);
+  const mani = [[688, 986], [740, 1040], [742, 1000]];
+  const R = t < 1.35 ? mixPts(RIPOSO_R, mani, ease((t - 0.2) / 0.5)) : mixPts(mani, [[688, 986], [764, 884], [814, 748]], ease((t - 2.4) / 0.4));
+  const L = t < 2.4 ? RIPOSO_L : mixPts(RIPOSO_L, [[392, 986], [316, 884], [266, 748]], ease((t - 2.4) / 0.4));
+  gScene(c, { z, cx: 600, cy: cyInsegna(z), extra: () => {
+    const bx = 760, by = 1118;   // il pacco sul banco, a destra
+    if (aperto) { c.save(); c.globalCompositeOperation = 'lighter'; const gl = c.createRadialGradient(bx, by - 120, 10, bx, by - 120, 260); gl.addColorStop(0, `rgba(255,236,170,${0.55 * ka})`); gl.addColorStop(1, 'rgba(255,220,140,0)'); c.fillStyle = gl; c.fillRect(bx - 280, by - 400, 560, 420); c.restore() }
+    // il telefono che sale dal pacco
+    if (t > 1.6) { const py = by - 60 - sale * 330; c.save(); c.translate(bx, py); c.rotate(0.06 * Math.sin(t * 2)); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 24;
+      crRR(c, -62, -110, 124, 220, 24, '#1b2133'); c.shadowBlur = 0; crRR(c, -52, -96, 104, 192, 16, '#25304a');
+      const g = c.createLinearGradient(-34, -40, 34, 30); g.addColorStop(0, '#25f4ee'); g.addColorStop(1, '#ff2d6f'); crRR(c, -36, -40, 72, 72, 18, g); crHeart(c, 0, -2, 18, '#fff');
+      c.restore() }
+    const g2 = c.createLinearGradient(0, by - 120, 0, by); g2.addColorStop(0, '#ff4d6d'); g2.addColorStop(1, '#c9304d');
+    c.save(); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 20; c.shadowOffsetY = 8; crRR(c, bx - 90, by - 118, 180, 118, 10, g2); c.restore();
+    c.fillStyle = '#25f4ee'; c.fillRect(bx - 14, by - 118, 28, 118);
+    // il coperchio: prima chiuso, poi vola via
+    c.save(); if (aperto) { c.translate(bx + ka * 170, by - 132 - ka * 260); c.rotate(ka * 0.9); c.globalAlpha = 1 - ka * 0.9 } else { c.translate(bx, by - 132 + Math.sin(t * 18) * (t > 0.7 ? 3 : 0)) }
+    crRR(c, -100, -16, 200, 32, 8, '#ff5c79'); c.fillStyle = '#25f4ee'; c.fillRect(-14, -16, 28, 32);
+    c.strokeStyle = '#25f4ee'; c.lineWidth = 10; c.beginPath(); c.ellipse(-22, -30, 22, 13, -0.5, 0, Math.PI * 2); c.ellipse(22, -30, 22, 13, 0.5, 0, Math.PI * 2); c.stroke(); c.restore();
+  } }, G.backBlur, G.front, () => gRobot(c, t, {
+    armL: L, armR: null, fronts: [R], occhioni: { size: aperto ? 1.08 : 1, look: t < 2.4 ? [26, 14 - sale * 30] : [0, 0], stelle: t > 2.4 }, mouth: aperto ? 'grin' : 'o', blush: true, bulb: aperto ? 'party' : 'on'
+  }));
+  if (aperto) [[640, 520], [900, 480], [600, 760], [960, 720], [780, 380]].forEach(([x, y], i) => { const q = (t - 1.45 - i * 0.1) % 1.2; if (q >= 0 && q < 0.6) star(c, x, y, 22 + (i % 2) * 10, Math.sin(q / 0.6 * Math.PI)) });
+};
+
+/* ---------- 9. ciao: saluto grande da vicino, cuoricini che salgono ---------- */
+G.ciao = function (c, t) {
+  const z = 1.42 - 0.16 * ease(t / 5), a = Math.sin(t * 8) * 0.38, k = ease((t - 0.1) / 0.35);
+  const ex = 786, ey = 880, hx = ex + Math.sin(0.25 + a) * 96, hy = ey - Math.cos(0.25 + a) * 96;
+  gScene(c, { z, cx: 560, cy: cyInsegna(z) }, G.backBlur, G.front, () => gRobot(c, t, {
+    armL: RIPOSO_L, armR: null, fronts: [mixPts(RIPOSO_R, [[688, 986], [ex, ey], [hx, hy]], k)], occhioni: { size: 1, look: [0, 0], squash: (t % 2.2) < 1.1 ? 1 : 0.62 }, mouth: 'grin', blush: true, bulb: 'on'
+  }));
+  for (let i = 0; i < 7; i++) { const t0 = 0.4 + i * 0.62, d = t - t0; if (d < 0 || d > 2) continue;
+    const x = 860 + Math.sin(d * 3 + i) * 34 + (i % 2 ? 60 : -20), y = 640 - d * 260, al = Math.min(1, d / 0.2) * Math.max(0, 1 - d / 2);
+    c.save(); c.globalAlpha = al; c.shadowColor = '#ff4d6d'; c.shadowBlur = 18; crHeart(c, x, y, 22 + (i % 3) * 6, '#ff4d6d'); c.restore() }
 };
 
 G.guide = false;

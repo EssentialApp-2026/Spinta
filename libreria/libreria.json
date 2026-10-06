@@ -24,6 +24,40 @@
    ]
   },
   {
+   "file": "gennarino-indica.mp4",
+   "tipo": "video",
+   "poster": "gennarino-indica.jpg",
+   "descrizione": "Gennarino con gli occhioni indica giù, nei commenti; scendono le lettere A, B e C (5 s)",
+   "tag": [
+    "commenti",
+    "commentate",
+    "scrivete",
+    "scrivetelo",
+    "scrivetele",
+    "sotto",
+    "giù",
+    "lettera",
+    "basta"
+   ]
+  },
+  {
+   "file": "gennarino-ciao.mp4",
+   "tipo": "video",
+   "poster": "gennarino-ciao.jpg",
+   "descrizione": "Gennarino saluta da vicino con gli occhioni, salgono i cuoricini (5 s)",
+   "tag": [
+    "vediamo",
+    "prossima",
+    "prossimo",
+    "presto",
+    "domani",
+    "arrivederci",
+    "salutiamo",
+    "saluto",
+    "buonanotte"
+   ]
+  },
+  {
    "file": "gennarino-idea.mp4",
    "tipo": "video",
    "poster": "gennarino-idea.jpg",
@@ -40,15 +74,29 @@
     "scegliete",
     "scegli",
     "quale",
-    "commenti",
-    "commentate",
-    "scrivete",
-    "scrivetelo",
-    "dite",
     "preferite",
     "consigliate",
     "proposta"
    ]
+  },
+  {
+   "file": "gennarino-regalo.mp4",
+   "tipo": "video",
+   "poster": "gennarino-regalo.jpg",
+   "descrizione": "Il pacco sul banco si apre e ne esce il telefono con l'app; Gennarino con gli occhi a stella (6 s)",
+   "tag": [
+    "regalo",
+    "regali",
+    "link",
+    "profilo",
+    "banco",
+    "trovate",
+    "aprite",
+    "apritela",
+    "provatela",
+    "pacco"
+   ],
+   "umore": "festa"
   },
   {
    "file": "gennarino-evviva.mp4",
@@ -76,6 +124,28 @@
     "felice",
     "mantenuta"
    ]
+  },
+  {
+   "file": "gennarino-meraviglia.mp4",
+   "tipo": "video",
+   "poster": "gennarino-meraviglia.jpg",
+   "descrizione": "Gennarino fa gli occhioni, mani sulle guance e brillantini: che sorpresa! (5 s)",
+   "tag": [
+    "guardate",
+    "guarda",
+    "incredibile",
+    "novità",
+    "nuove",
+    "nuovo",
+    "sorpresa",
+    "ecco",
+    "eccola",
+    "eccolo",
+    "arriva",
+    "arrivano",
+    "pazzesco"
+   ],
+   "umore": "festa"
   },
   {
    "file": "gennarino-lavora.mp4",
@@ -123,6 +193,29 @@
     "volete",
     "mettereste",
     "votereste"
+   ]
+  },
+  {
+   "file": "gennarino-ascolta.mp4",
+   "tipo": "video",
+   "poster": "gennarino-ascolta.jpg",
+   "descrizione": "Gennarino con gli occhioni e la mano all'orecchio, arrivano i commenti (6 s)",
+   "tag": [
+    "ditemi",
+    "dite",
+    "ascolto",
+    "sentiamo",
+    "raccontate",
+    "raccontatemi",
+    "scrivetemi",
+    "rispondete",
+    "fatemi",
+    "sapere",
+    "opinione",
+    "parere",
+    "follower",
+    "chiesto",
+    "chiede"
    ]
   },
   {
