@@ -253,9 +253,10 @@ function crLibShow(items){const el=$('#cr-libin');if(!el)return;const sm=$('#cr-
 
 /* ---------- puntate scritte da Claude nel repository (claude/settimana.json, aggiornato ogni lunedì) ---------- */
 // una sola lettura anche se la chiedono in due nello stesso momento (apertura del creatore e bottone di Oggi)
-function crWeekLoad(){const wk=crWeekId();if(CR.weekP&&CR.weekW===wk&&Date.now()-CR.weekT<30*60e3)return CR.weekP;CR.weekT=Date.now();CR.weekW=wk;
-  // prima il piano preparato per questa settimana (claude/settimana-<settimana>.json), se no claude/settimana.json
-  return CR.weekP=(async()=>{let w=null;for(const f of ['claude/settimana-'+wk+'.json','claude/settimana.json']){try{const r=await fetch(f+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate)&&j.puntate.length){w=j;break}}}catch(_){}}
+function crWeekLoad(){const oggi=new Date(),dom=oggi.getDay()===0,wk=crWeekId(),wkDopo=crWeekId(new Date(oggi.getTime()+864e5));if(CR.weekP&&CR.weekW===wk&&Date.now()-CR.weekT<30*60e3)return CR.weekP;CR.weekT=Date.now();CR.weekW=wk;
+  // prima il piano preparato per questa settimana (claude/settimana-<settimana>.json), se no claude/settimana.json;
+  // la domenica la serie riparte (lancio delle idee nuove): prima il piano della settimana che comincia domani
+  return CR.weekP=(async()=>{let w=null;for(const f of [...(dom?['claude/settimana-'+wkDopo+'.json']:[]),'claude/settimana-'+wk+'.json','claude/settimana.json']){try{const r=await fetch(f+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate)&&j.puntate.length){w=j;break}}}catch(_){}}
     return CR.week=w||CR.week||null})()}
 function crWeekShow(){const el=$('#cr-week'),w=CR.week;if(!el)return;if(!w){el.innerHTML='';return}
   const today=new Date(),iso=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`,old=!!(w.al&&w.al<iso);

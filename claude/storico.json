@@ -28,23 +28,27 @@
    "idee": {
     "A": "Promemoria della differenziata",
     "B": "Dove ho parcheggiato",
-    "C": "Conta-punti per la scopa"
+    "C": "Dove sono le fontanelle"
    },
    "hook": [
-    "La munnezza, la macchina, la scopa: cosa vi serve?",
-    "Qual è la cosa che dimenticate sempre?",
-    "Ultima chiamata: stasera chiudo il voto!",
+    "Piazza nuova, idee nuove: quale costruisco?",
+    "Munnezza, macchina o acqua fresca: cosa vi serve di più?",
+    "Mamma mia, dove ho lasciato la macchina?",
+    "Ultime ore: stasera chiudo il voto!",
     "Ha vinto la A: la munnezza non ci frega più!",
     "Ha vinto la B: la macchina non si perde più!",
-    "Ha vinto la C: a scopa non si litiga più!",
+    "Ha vinto la C: l'acqua fresca la trovate sempre!",
     "Zero voti: questa volta niente app.",
     "È venerdì: la munnezza ve la ricordo io!",
     "È venerdì: la macchina la ritrovate sempre!",
-    "È venerdì: a scopa i punti li conto io!"
+    "È venerdì: l'acqua fresca ve la trovo io!",
+    "Sabato in officina: domani si cambia piazza!"
    ],
    "parti": [
+    "domenica: piazza nuova e tre idee",
     "domanda ai follower: cosa dimenticate sempre",
-    "ultime ore per votare"
+    "ultime ore per votare",
+    "sabato in officina"
    ]
   }
  ]

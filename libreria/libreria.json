@@ -236,6 +236,176 @@
     "problema",
     "guai"
    ]
+  },
+  {
+   "file": "gennarino-telefono.mp4",
+   "tipo": "video",
+   "poster": "gennarino-telefono.jpg",
+   "descrizione": "Gennarino alza il telefono e fa vedere l'app, con le spunte che si accendono (dal video di prova di Sam) (6 s)",
+   "tag": [
+    "telefono",
+    "cellulare",
+    "schermo",
+    "mappa",
+    "tocco",
+    "tocchi",
+    "tasto",
+    "mostro",
+    "vedete"
+   ]
+  },
+  {
+   "file": "gennarino-condividi.mp4",
+   "tipo": "video",
+   "poster": "gennarino-condividi.jpg",
+   "descrizione": "Dal telefono volano su le icone: carrello, messaggi, cuori, condividi (5 s)",
+   "tag": [
+    "mandatela",
+    "mandatelo",
+    "condividete",
+    "condividetela",
+    "amici",
+    "amico",
+    "gruppo",
+    "famiglia",
+    "whatsapp"
+   ],
+   "umore": "festa"
+  },
+  {
+   "file": "gennarino-piazza.mp4",
+   "tipo": "video",
+   "poster": "gennarino-piazza.jpg",
+   "descrizione": "La bancarella arriva su ruote in una piazza nuova, Gennarino saluta e cade la puntina sulla mappa (6 s)",
+   "tag": [
+    "piazza",
+    "piazze",
+    "spostato",
+    "sposto",
+    "cambia",
+    "domenica",
+    "quartiere",
+    "carretto"
+   ],
+   "umore": "festa"
+  },
+  {
+   "file": "gennarino-mammamia.mp4",
+   "tipo": "video",
+   "poster": "gennarino-mammamia.jpg",
+   "descrizione": "Mani in testa (come nel video di prova di Sam), poi ride (5 s)",
+   "tag": [
+    "mamma",
+    "dimenticate",
+    "dimentico",
+    "scordo",
+    "scordate",
+    "scorda",
+    "succede",
+    "oddio",
+    "aiuto",
+    "lasciato"
+   ]
+  },
+  {
+   "file": "gennarino-differenziata.mp4",
+   "tipo": "video",
+   "poster": "gennarino-differenziata.jpg",
+   "descrizione": "Tre bidoni sul banco (carta, plastica, umido) e il calendario: stasera fuori il bidone (6 s)",
+   "tag": [
+    "munnezza",
+    "differenziata",
+    "bidone",
+    "bidoni",
+    "umido",
+    "plastica",
+    "carta",
+    "vetro",
+    "rifiuti",
+    "comune"
+   ]
+  },
+  {
+   "file": "gennarino-parcheggio.mp4",
+   "tipo": "video",
+   "poster": "gennarino-parcheggio.jpg",
+   "descrizione": "La macchinina corre sul banco, si ferma e cade la puntina del parcheggio (6 s)",
+   "tag": [
+    "macchina",
+    "parcheggiato",
+    "parcheggio",
+    "parcheggiare",
+    "auto",
+    "sosta",
+    "posto",
+    "ritrovate"
+   ]
+  },
+  {
+   "file": "gennarino-fontanella.mp4",
+   "tipo": "video",
+   "poster": "gennarino-fontanella.jpg",
+   "descrizione": "La fontanella sul banco con l'acqua che scorre e la mappa con le gocce (6 s)",
+   "tag": [
+    "fontanella",
+    "fontanelle",
+    "acqua",
+    "fresca",
+    "sete",
+    "borraccia",
+    "caldo",
+    "bere"
+   ]
+  },
+  {
+   "file": "gennarino-orologio.mp4",
+   "tipo": "video",
+   "poster": "gennarino-orologio.jpg",
+   "descrizione": "La sveglia che trema e la lancetta che corre: le ultime ore (5 s)",
+   "tag": [
+    "ore",
+    "ultime",
+    "ultima",
+    "stasera",
+    "mancano",
+    "tempo",
+    "chiudo",
+    "chiusura",
+    "scade"
+   ]
+  },
+  {
+   "file": "gennarino-conta.mp4",
+   "tipo": "video",
+   "poster": "gennarino-conta.jpg",
+   "descrizione": "I foglietti con A, B e C volano nell'urna e il contatore gira (6 s)",
+   "tag": [
+    "contato",
+    "contati",
+    "contare",
+    "risultato",
+    "chiuso",
+    "urna",
+    "votato",
+    "voti"
+   ]
+  },
+  {
+   "file": "gennarino-officina.mp4",
+   "tipo": "video",
+   "poster": "gennarino-officina.jpg",
+   "descrizione": "Sabato in officina: chiave inglese, scintille sul palo, ingranaggi (6 s)",
+   "tag": [
+    "officina",
+    "sabato",
+    "bulloni",
+    "lampadine",
+    "tenda",
+    "attrezzi",
+    "quinte",
+    "bello"
+   ],
+   "umore": "lavoro"
   }
  ]
 }

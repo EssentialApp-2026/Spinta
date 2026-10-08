@@ -4,6 +4,8 @@ Ogni lunedì Claude scrive qui le puntate della settimana di 'O Bancariello e il
 (pulsanti «📬 Puntate scritte da Claude» nella finestra Crea con Gennarino).
 
 ## Il formato della serie
+- Il programma di Sam (dal 11 ottobre 2026): **domenica** la bancarella si sposta in una piazza nuova e Gennarino lancia le tre idee; **lunedì e martedì** promemoria; **mercoledì** si chiude il voto; **giovedì** il risultato; **venerdì** il regalo; **sabato** dietro le quinte in officina.
+- La domenica Spinta usa già il file della settimana che comincia il lunedì dopo (`settimana-<settimana dopo>.json`): la puntata della domenica sta lì, con `giorno: "domenica"` e `data` (il giorno preciso, così non torna fuori la domenica dopo). `dal` del file è quella domenica.
 - Ogni settimana Gennarino propone tre idee di app: A, B e C.
 - Si vota scrivendo la lettera nei commenti, fino a mercoledì sera: si contano le lettere e decide quella con più voti.
 - Il venerdì l'app più votata va sul banco, gratis per tutti, senza registrazione e senza pubblicità.
@@ -14,7 +16,7 @@ Ogni lunedì Claude scrive qui le puntate della settimana di 'O Bancariello e il
 ## `settimana.json`
 - `settimana`, `dal`, `al`: la settimana (lunedì-domenica); `voto_fino_a` è il mercoledì, `regalo` il venerdì.
 - `idee`: le tre idee `A`, `B`, `C`.
-- `puntate`: ogni puntata ha `id`, `tipo` (presentazione, idee, risultato, regalo, risposta, libera), `giorno`, `titolo`, `copione` (5-9 frasi, la prima è l'hook).
+- `puntate`: ogni puntata ha `id`, `tipo` (presentazione, idee, risultato, regalo, risposta, libera), `giorno`, `titolo`, `copione` (5-9 frasi, la prima è l'hook); facoltativo `data` (AAAA-MM-GG) se vale solo quel giorno.
   Le puntate `risposta` solo con un commento vero che Sam ha mandato: campi `commento` (il testo) e `utente` (il nome, senza @); nel video compare la bolla del commento.
   Le puntate `risultato` e `regalo` ci sono per A, B e C, con `vince`: nell'app si sceglie chi ha vinto.
   C'è sempre anche una puntata `nessuno` (giovedì): si usa solo se nessuno ha votato, e Gennarino dice che gli dispiace ma questa settimana niente app.

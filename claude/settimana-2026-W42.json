@@ -1,31 +1,47 @@
 {
  "versione": 1,
  "settimana": "2026-W42",
- "dal": "2026-10-12",
+ "dal": "2026-10-11",
  "al": "2026-10-18",
- "scritto": "2026-10-06",
+ "scritto": "2026-10-08",
  "voto_fino_a": "2026-10-14",
  "regalo": "2026-10-16",
  "idee": {
   "A": "Promemoria della differenziata",
   "B": "Dove ho parcheggiato",
-  "C": "Conta-punti per la scopa"
+  "C": "Dove sono le fontanelle"
  },
- "nota": "Settimana 12-18 ottobre: si vota fino a mercoledì 14 sera, il regalo esce venerdì 16. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è la puntata «Niente voti, niente app».",
+ "nota": "Settimana 11-17 ottobre col programma di Sam: domenica piazza nuova e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato l'officina. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è la puntata «Niente voti, niente app».",
  "puntate": [
   {
-   "id": "tre-idee",
+   "id": "piazza-nuova",
    "tipo": "idee",
-   "giorno": "lunedì",
-   "titolo": "Tre idee al voto",
+   "giorno": "domenica",
+   "data": "2026-10-11",
+   "titolo": "Piazza nuova, tre idee nuove",
    "copione": [
-    "La munnezza, la macchina, la scopa: cosa vi serve?",
-    "Uè guagliù, è lunedì: tre idee nuove sul banco!",
+    "Piazza nuova, idee nuove: quale costruisco?",
+    "Uè guagliù, il bancariello si è spostato in una piazza nuova!",
     "A: Promemoria della differenziata.",
     "B: Dove ho parcheggiato.",
-    "C: Conta-punti per la scopa.",
+    "C: Dove sono le fontanelle.",
     "Scrivete la lettera nei commenti, fino a mercoledì sera.",
     "Venerdì la più votata è sul banco, gratis."
+   ]
+  },
+  {
+   "id": "promemoria-lunedi",
+   "tipo": "idee",
+   "giorno": "lunedì",
+   "titolo": "Avete già votato?",
+   "copione": [
+    "Munnezza, macchina o acqua fresca: cosa vi serve di più?",
+    "Uè guagliù, il voto è aperto da ieri.",
+    "A: Promemoria della differenziata.",
+    "B: Dove ho parcheggiato.",
+    "C: Dove sono le fontanelle.",
+    "Basta una lettera nei commenti per decidere.",
+    "Chi non ha ancora votato, ha tempo fino a mercoledì sera!"
    ]
   },
   {
@@ -34,9 +50,10 @@
    "giorno": "martedì",
    "titolo": "Cosa dimenticate sempre?",
    "copione": [
-    "Qual è la cosa che dimenticate sempre?",
-    "Uè guagliù, io dimentico dove lascio il carretto!",
-    "Il giorno della munnezza, il posto della macchina, i punti a scopa.",
+    "Mamma mia, dove ho lasciato la macchina?",
+    "Uè guagliù, a me succede ogni giorno!",
+    "E voi cosa dimenticate sempre: il bidone o il parcheggio?",
+    "E quando fa caldo, dove trovate una fontanella in città?",
     "Per questo ho pensato a queste tre idee.",
     "Ditemi nei commenti cosa vi scordate voi.",
     "E chi non ha votato: A, B o C, fino a domani sera!"
@@ -48,11 +65,11 @@
    "giorno": "mercoledì",
    "titolo": "Ultime ore per votare",
    "copione": [
-    "Ultima chiamata: stasera chiudo il voto!",
+    "Ultime ore: stasera chiudo il voto!",
     "Uè guagliù, mancano poche ore.",
     "A: Promemoria della differenziata.",
     "B: Dove ho parcheggiato.",
-    "C: Conta-punti per la scopa.",
+    "C: Dove sono le fontanelle.",
     "Basta una lettera nei commenti per decidere.",
     "Domani vi dico chi ha vinto!"
    ]
@@ -65,7 +82,7 @@
    "titolo": "Risultato del voto",
    "copione": [
     "Ha vinto la A: la munnezza non ci frega più!",
-    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Uè guagliù, ho contato i voti e avete scelto voi.",
     "Ha vinto la A: Promemoria della differenziata.",
     "Mettete i giorni del vostro comune e la sera vi avviso io.",
     "Da oggi ci lavoro, giorno e notte.",
@@ -81,7 +98,7 @@
    "titolo": "Risultato del voto",
    "copione": [
     "Ha vinto la B: la macchina non si perde più!",
-    "Uè guagliù, il voto è chiuso e avete scelto voi.",
+    "Uè guagliù, ho contato i voti e avete scelto voi.",
     "Ha vinto la B: Dove ho parcheggiato.",
     "Un tocco quando scendi, e lei si ricorda il posto.",
     "Mi metto subito al lavoro.",
@@ -96,13 +113,13 @@
    "vince": "C",
    "titolo": "Risultato del voto",
    "copione": [
-    "Ha vinto la C: a scopa non si litiga più!",
-    "Uè guagliù, il voto è chiuso e avete scelto voi.",
-    "Ha vinto la C: Conta-punti per la scopa.",
-    "Scope, settebello e primiera: i conti li fa lui.",
-    "Da oggi ci lavoro, tra una partita e l'altra.",
+    "Ha vinto la C: l'acqua fresca la trovate sempre!",
+    "Uè guagliù, ho contato i voti e avete scelto voi.",
+    "Ha vinto la C: Dove sono le fontanelle.",
+    "Aprite la mappa e vedete la fontanella più vicina.",
+    "Da oggi ci lavoro, giorno e notte.",
     "Venerdì è sul banco, gratis per tutti.",
-    "Chi vince sempre a scopa da voi? Ditemelo nei commenti!"
+    "Qual è la fontanella più bella della vostra città? Ditemelo!"
    ]
   },
   {
@@ -115,7 +132,7 @@
     "Uè guagliù, ho letto tutti i commenti.",
     "Ma nessuno ha scritto A, B o C.",
     "Mi dispiace: venerdì niente regalo.",
-    "Lunedì torno con tre idee nuove.",
+    "Domenica torno con tre idee nuove.",
     "Basta una lettera nei commenti e decidete voi!"
    ]
   },
@@ -132,7 +149,7 @@
     "Mettete i giorni del vostro comune una volta sola.",
     "E la sera vi dice quale bidone mettere fuori.",
     "Gratis, senza registrazione: link nel profilo.",
-    "Provatelo stasera e ditemi com'è!"
+    "Mandatela a chi si scorda sempre il bidone!"
    ]
   },
   {
@@ -148,7 +165,7 @@
     "Scendi dalla macchina, tocchi un tasto, e si segna il posto.",
     "Poi ti porta lì, con il timer per la sosta.",
     "Gratis, senza registrazione: link nel profilo.",
-    "Provatela al prossimo parcheggio e ditemi com'è!"
+    "Mandatela a chi gira mezz'ora per trovare la macchina!"
    ]
   },
   {
@@ -158,13 +175,27 @@
    "vince": "C",
    "titolo": "Il regalo è sul banco",
    "copione": [
-    "È venerdì: a scopa i punti li conto io!",
+    "È venerdì: l'acqua fresca ve la trovo io!",
     "Uè guagliù, il regalo è sul banco.",
-    "Ecco Conta-punti per la scopa.",
-    "Tocchi chi ha preso carte, denari, settebello e primiera.",
-    "Arrivate a undici e vi dice chi ha vinto.",
+    "Ecco Dove sono le fontanelle.",
+    "Aprite la mappa e vedete le fontanelle vicino a voi.",
+    "Un tocco, e vi porta alla più vicina.",
     "Gratis, senza registrazione: link nel profilo.",
-    "Sfidate gli amici e ditemi chi vince!"
+    "Mandatela agli amici che girano con la borraccia!"
+   ]
+  },
+  {
+   "id": "officina",
+   "tipo": "libera",
+   "giorno": "sabato",
+   "titolo": "Sabato in officina",
+   "copione": [
+    "Sabato in officina: domani si cambia piazza!",
+    "Uè guagliù, oggi il bancariello si fa bello.",
+    "Stringo i bulloni, cambio le lampadine, sistemo la tenda.",
+    "Domani mi sposto in una piazza nuova.",
+    "E vi porto tre idee nuove da votare.",
+    "Voi da quale piazza mi seguite? Scrivetelo nei commenti!"
    ]
   }
  ]

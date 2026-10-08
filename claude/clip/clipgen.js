@@ -281,6 +281,258 @@ G.ciao = function (c, t) {
     c.save(); c.globalAlpha = al; c.shadowColor = '#ff4d6d'; c.shadowBlur = 18; crHeart(c, x, y, 22 + (i % 3) * 6, '#ff4d6d'); c.restore() }
 };
 
+/* ============================================================
+   Seconda serie (ottobre 2026), presa dal video di prova di Sam: tramonto al mercato,
+   cassette di frutta sul banco, il telefono con l'app in mano, le icone che volano,
+   le mani in testa. Più le scene per le idee della settimana 12-18 ottobre.
+   ============================================================ */
+
+// le cassette di frutta sul banco (come nel video di prova): mele, pomodori, arance
+function gFrutta(c) {
+  const cassa = (x, w, col, n) => {
+    const y = 1118; c.save(); c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 14; c.shadowOffsetY = 6;
+    const g = c.createLinearGradient(0, y - 46, 0, y); g.addColorStop(0, '#c58b55'); g.addColorStop(1, '#8a5a33'); crRR(c, x, y - 46, w, 46, 8, g); c.restore();
+    c.strokeStyle = 'rgba(0,0,0,.22)'; c.lineWidth = 3; c.beginPath(); c.moveTo(x + 6, y - 24); c.lineTo(x + w - 6, y - 24); c.stroke();
+    const r = rnd(n * 13 + w);
+    for (let row = 0; row < 2; row++) for (let i = 0; i < n - row; i++) {
+      const fx = x + 22 + i * ((w - 44) / Math.max(1, n - 1)) + row * ((w - 44) / Math.max(1, n - 1)) / 2, fy = y - 52 - row * 24 + r() * 4;
+      const fg = c.createRadialGradient(fx - 7, fy - 8, 2, fx, fy, 21); fg.addColorStop(0, '#fff3e0'); fg.addColorStop(0.25, col[0]); fg.addColorStop(1, col[1]);
+      crCirc(c, fx, fy, 20, fg);
+    }
+  };
+  cassa(96, 150, ['#ff6b5a', '#b8231c'], 4);            // pomodori
+  cassa(838, 146, ['#ffb347', '#e0731c'], 4);           // arance
+}
+// un telefono con lo schermo dell'app (lista con le spunte), in coordinate locali
+function gTelefono(c, x, y, s, rot, t, schermo) {
+  c.save(); c.translate(x, y); c.rotate(rot || 0); c.scale(s, s);
+  c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 30; c.shadowOffsetY = 10; crRR(c, -78, -150, 156, 300, 30, '#1b2133'); c.shadowBlur = 0; c.shadowOffsetY = 0;
+  crRR(c, -68, -138, 136, 276, 22, '#fbf8f1'); crRR(c, -22, -132, 44, 10, 5, '#1b2133');
+  if (schermo) schermo(c); else {
+    crRR(c, -56, -112, 112, 30, 8, '#4ff0d0'); c.fillStyle = '#1b2133'; c.font = `900 18px ${CR_FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('LA MIA APP', 0, -96);
+    for (let i = 0; i < 5; i++) { const yy = -62 + i * 38, on = t > 0.6 + i * 0.35;
+      crCirc(c, -42, yy, 11, on ? '#17a95a' : '#d6d0c2'); if (on) { c.strokeStyle = '#fff'; c.lineWidth = 4; c.lineCap = 'round'; c.beginPath(); c.moveTo(-47, yy); c.lineTo(-43, yy + 4); c.lineTo(-36, yy - 4); c.stroke() }
+      crRR(c, -24, yy - 6, 70 - (i % 2) * 18, 12, 6, on ? '#c9c2b3' : '#8a8f9c') }
+  }
+  c.restore();
+}
+// un'icona rotonda (generica, nessun marchio): carrello, nuvoletta, cuore, freccia di condivisione
+function gIcona(c, x, y, r, tipo, col, a) {
+  c.save(); c.globalAlpha = a; c.translate(x, y); c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 16; crCirc(c, 0, 0, r, col); c.shadowBlur = 0;
+  c.strokeStyle = '#fff'; c.fillStyle = '#fff'; c.lineWidth = r * 0.12; c.lineCap = 'round'; c.lineJoin = 'round'; const k = r / 40;
+  if (tipo === 'carrello') { c.beginPath(); c.moveTo(-20 * k, -14 * k); c.lineTo(-12 * k, -14 * k); c.lineTo(-6 * k, 8 * k); c.lineTo(16 * k, 8 * k); c.lineTo(20 * k, -6 * k); c.lineTo(-9 * k, -6 * k); c.stroke(); crCirc(c, -3 * k, 16 * k, 4 * k, '#fff'); crCirc(c, 13 * k, 16 * k, 4 * k, '#fff') }
+  else if (tipo === 'chat') { crRR(c, -20 * k, -16 * k, 40 * k, 28 * k, 10 * k, '#fff'); c.beginPath(); c.moveTo(-8 * k, 10 * k); c.lineTo(-14 * k, 22 * k); c.lineTo(2 * k, 10 * k); c.fill(); [-9, 0, 9].forEach(dx => crCirc(c, dx * k, -2 * k, 3.4 * k, col)) }
+  else if (tipo === 'cuore') crHeart(c, 0, 2 * k, 18 * k, '#fff');
+  else if (tipo === 'condividi') { [[-12, 0], [12, -13], [12, 13]].forEach(([px, py]) => crCirc(c, px * k, py * k, 6 * k, '#fff')); c.beginPath(); c.moveTo(12 * k, -13 * k); c.lineTo(-12 * k, 0); c.lineTo(12 * k, 13 * k); c.stroke() }
+  c.restore();
+}
+// la puntina della mappa
+function gPin(c, x, y, s, col) { c.save(); c.translate(x, y); c.scale(s, s); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 16; c.shadowOffsetY = 6;
+  c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(-30, -38, -36, -58, -36, -72); c.arc(0, -72, 36, Math.PI, 0); c.bezierCurveTo(36, -58, 30, -38, 0, 0); c.fillStyle = col; c.fill(); c.shadowBlur = 0; crCirc(c, 0, -72, 14, '#fff'); c.restore() }
+// una nuvoletta rotonda (fumetto) nello spazio dello schermo
+function gBolla(c, x, y, w, h, s, coda) { c.save(); c.translate(x, y); c.scale(s, s); c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 24; c.shadowOffsetY = 8;
+  crRR(c, -w / 2, -h / 2, w, h, 40, '#fbf8f1'); if (coda) { c.beginPath(); c.moveTo(coda[0], h / 2 - 4); c.lineTo(coda[0] + coda[1], h / 2 + 46); c.lineTo(coda[0] + 46, h / 2 - 4); c.fillStyle = '#fbf8f1'; c.fill() } c.restore() }
+const popK = (t, t0, d) => { const q = (t - t0) / d; return q <= 0 ? 0 : q >= 1 ? 1 : 1 + Math.sin(q * Math.PI) * 0.22 - (1 - q) * 0.22 };
+
+/* ---------- 10. telefono: alza il telefono con l'app e lo fa vedere (come nel video di prova) ---------- */
+G.telefono = function (c, t) {
+  const z = 1.2 + 0.1 * ease(t / 6), k = ease((t - 0.2) / 0.5);
+  const mano = [[688, 986], [800, 960], [812, 880]];
+  const ph = [lerp(760, 846, k), lerp(1100, 860, k)];
+  gScene(c, { z, cx: 600, cy: cyInsegna(z), extra: () => {
+    gFrutta(c);
+    gTelefono(c, ph[0], ph[1], 0.95, -0.08 + 0.03 * Math.sin(t * 1.6), t - 0.7);
+    if (t > 2.6) { const d = t - 2.6; const tap = (d % 1.1) < 0.18; c.save(); c.globalAlpha = 0.5 * (1 - (d % 1.1) / 1.1); c.strokeStyle = '#4ff0d0'; c.lineWidth = 6; c.beginPath(); c.arc(ph[0] - 10, ph[1] + 10, 20 + (d % 1.1) * 50, 0, Math.PI * 2); c.stroke(); c.restore(); if (tap) crCirc(c, ph[0] - 10, ph[1] + 10, 14, 'rgba(79,240,208,.6)') }
+  } }, G.back, G.front, () => gRobot(c, t, {
+    armL: t > 2.4 ? mixPts(RIPOSO_L, [[392, 986], [520, 1010], [ph[0] - 70, ph[1] + 40]], ease((t - 2.4) / 0.4)) : RIPOSO_L, armR: null, fronts: [mixPts(RIPOSO_R, mano, k)],
+    occhioni: { size: 1, look: t < 1.8 || (t > 3.4 && t < 4.6) ? [34, 6] : [0, 0] }, mouth: t < 1.8 ? 'o' : 'grin', blush: true, bulb: 'on'
+  }));
+  [[880, 620], [990, 760], [720, 560]].forEach(([x, y], i) => { const q = (t - 1 - i * 0.3) % 1.5; if (t > 1 && q >= 0 && q < 0.7) star(c, x, y, 22, Math.sin(q / 0.7 * Math.PI)) });
+};
+
+/* ---------- 11. condividi: dal telefono volano su le icone (carrello, messaggi, cuori, condividi) ---------- */
+G.condividi = function (c, t) {
+  const z = 1.16, k = ease((t - 0.15) / 0.45);
+  const ph = [lerp(760, 820, k), lerp(1100, 900, k)];
+  gScene(c, { z, cx: 580, cy: cyInsegna(z), extra: () => { gFrutta(c); gTelefono(c, ph[0], ph[1], 0.85, -0.12, 9) } }, G.back, G.front, () => gRobot(c, t, {
+    armL: RIPOSO_L, armR: null, fronts: [mixPts(RIPOSO_R, [[688, 986], [780, 990], [796, 920]], k)], occhioni: { size: 1, look: [-6, -12] }, mouth: 'grin', blush: true, bulb: 'party'
+  }));
+  const tipi = [['carrello', '#ff8a5c'], ['chat', '#17a95a'], ['cuore', '#ff2d6f'], ['condividi', '#2f8cff']];
+  for (let i = 0; i < 9; i++) { const t0 = 0.8 + i * 0.45, d = t - t0; if (d < 0 || d > 2.4) continue;
+    const [tp, col] = tipi[i % 4], dir = (i % 3) - 1, x = 640 + dir * 230 * ease(d / 1.2) + Math.sin(d * 3 + i) * 20, y = 560 - d * 170 - 40 * ease(d / 0.6);
+    const a = Math.min(1, d / 0.2) * Math.max(0, 1 - (d - 1.7) / 0.7), s = 0.6 + 0.4 * Math.min(1, d / 0.3);
+    gIcona(c, x, y, 50 * s, tp, col, a) }
+};
+
+/* ---------- 12. piazza: la domenica la bancarella arriva in una piazza nuova ---------- */
+G.piazza = function (c, t) {
+  const arr = ease(t / 1.6), sx = (1 - arr) * 1100, sobbalzo = t < 1.6 ? Math.abs(Math.sin(t * 14)) * 10 * (1 - arr) : 0;
+  const z = 0.98 + 0.16 * ease((t - 1.6) / 4);
+  // il cielo resta fermo, la bancarella entra da destra
+  c.drawImage(G.backBlur, 0, 0, 1080, 1150, 0, 0, 1080, 1150);
+  c.fillStyle = '#23212e'; c.fillRect(0, 1150, 1080, 770);
+  c.save(); c.translate(sx, -sobbalzo);
+  gScene(c, { z, cx: 540, cy: cyInsegna(z), extra: () => { gFrutta(c);
+    // le ruote del carretto sotto il banco
+    [250, 830].forEach(x => { c.save(); c.translate(x, 1440); c.rotate(-sx / 60); crCirc(c, 0, 0, 62, '#2a2230'); crCirc(c, 0, 0, 44, '#8a6240'); c.strokeStyle = '#2a2230'; c.lineWidth = 8; for (let i = 0; i < 4; i++) { c.rotate(Math.PI / 4); c.beginPath(); c.moveTo(-44, 0); c.lineTo(44, 0); c.stroke() } crCirc(c, 0, 0, 12, '#2a2230'); c.restore() });
+  } }, G.back, G.front, () => {
+    const ciao = t > 1.7, a = Math.sin(t * 9) * 0.35, ex = 786, ey = 880;
+    gRobot(c, t, { armL: RIPOSO_L, armR: null, fronts: [ciao ? mixPts(RIPOSO_R, [[688, 986], [ex, ey], [ex + Math.sin(0.25 + a) * 96, ey - Math.cos(0.25 + a) * 96]], ease((t - 1.7) / 0.3)) : RIPOSO_R],
+      eyes: ciao ? 'happy' : 'normal', mouth: 'talk', m: ciao ? 0.4 + 0.3 * Math.abs(Math.sin(t * 6)) : 0.1, blush: ciao, bulb: ciao ? 'party' : 'on' });
+  });
+  c.restore();
+  // la puntina della piazza nuova che cade dall'alto
+  if (t > 2.2) { const d = t - 2.2, y = Math.min(430, -100 + d * 1500), rimb = d > 0.35 ? Math.max(0, Math.sin((d - 0.35) * 14) * 30 * Math.exp(-(d - 0.35) * 5)) : 0;
+    gPin(c, 900, y - rimb, 1.15, '#ff4d5a');
+    if (d > 0.35) { c.save(); c.globalAlpha = Math.min(1, (d - 0.35) / 0.3) * 0.5; c.strokeStyle = '#ff4d5a'; c.lineWidth = 5; c.beginPath(); c.ellipse(900, 436, 30 + (d % 1) * 50, 10 + (d % 1) * 16, 0, 0, Math.PI * 2); c.stroke(); c.restore() } }
+};
+
+/* ---------- 13. mammamia: le mani in testa (come alla fine del video di prova), poi ride ---------- */
+G.mammamia = function (c, t) {
+  const z = 1.32 - 0.06 * ease(t / 5), k = ease((t - 0.15) / 0.35), ride = t > 2.6;
+  const scuoti = !ride ? Math.sin(t * 16) * 0.05 * ease((t - 0.4) / 0.3) : 0.03 * Math.sin(t * 9);
+  const L = mixPts(RIPOSO_L, [[392, 986], [292, 860], [372, 676]], k), R = mixPts(RIPOSO_R, [[688, 986], [788, 860], [708, 676]], k);
+  gScene(c, { z, cx: 540, cy: cyInsegna(z), extra: () => gFrutta(c) }, G.back, G.front, () => gRobot(c, t, {
+    armL: null, armR: null, fronts: [L, R], tilt: scuoti, occhioni: ride ? null : { size: 1.1, look: [0, -4] }, eyes: 'happy', mouth: ride ? 'grin' : 'o', blush: true, bulb: ride ? 'party' : 'on'
+  }));
+  if (!ride && t > 0.5) { const d = (t - 0.5) % 0.9; c.save(); c.globalAlpha = Math.sin(d / 0.9 * Math.PI); const gx = 760, gy = 600 + d * 90; const g = c.createRadialGradient(gx - 4, gy - 4, 2, gx, gy, 20); g.addColorStop(0, '#e6fbff'); g.addColorStop(1, '#58c8ff');
+    c.beginPath(); c.moveTo(gx, gy - 30); c.quadraticCurveTo(gx + 20, gy, gx, gy + 18); c.quadraticCurveTo(gx - 20, gy, gx, gy - 30); c.fillStyle = g; c.fill(); c.restore() }
+  if (!ride) [[300, 470], [540, 400], [780, 470]].forEach(([x, y], i) => { const q = (t * 2 + i * 0.33) % 1; c.save(); c.globalAlpha = 0.85; c.fillStyle = '#ffd23f'; c.font = `900 ${64 + 10 * Math.sin(q * Math.PI)}px ${CR_FONT}`; c.textAlign = 'center'; c.fillText('!', x, y - q * 20); c.restore() });
+  if (ride) [[250, 560], [830, 520], [540, 380]].forEach(([x, y], i) => { const q = (t - 2.7 - i * 0.15) % 1.2; if (q >= 0 && q < 0.6) star(c, x, y, 24, Math.sin(q / 0.6 * Math.PI)) });
+};
+
+/* ---------- 14. differenziata: tre bidoni sul banco, il calendario dei giorni ---------- */
+G.differenziata = function (c, t) {
+  const z = 1.12, bidoni = [['#2f8cff', 'CARTA'], ['#ffd23f', 'PLASTICA'], ['#8a5a33', 'UMIDO']];
+  const sel = t > 3 ? Math.floor((t - 3) / 0.9) % 3 : -1;
+  const xs = [190, 300, 410];
+  gScene(c, { z, cx: 560, cy: cyInsegna(z), extra: () => {
+    bidoni.forEach(([col, nome], i) => { const s = popK(t, 0.4 + i * 0.3, 0.35); if (!s) return; const x = xs[i], y = 1118, on = sel === i;
+      c.save(); c.translate(x, y - (on ? 18 * Math.abs(Math.sin((t - 3) * 7)) : 0)); c.scale(s, s); c.shadowColor = on ? col : 'rgba(0,0,0,.4)'; c.shadowBlur = on ? 40 : 16;
+      crRR(c, -46, -150, 92, 150, 12, col); c.shadowBlur = 0; crRR(c, -52, -168, 104, 24, 8, col); crRR(c, -14, -178, 28, 12, 5, 'rgba(0,0,0,.35)');
+      c.fillStyle = 'rgba(0,0,0,.18)'; [-22, 0, 22].forEach(dx => crRR(c, dx - 4, -132, 8, 100, 4, 'rgba(0,0,0,.16)'));
+      c.fillStyle = nome === 'PLASTICA' ? '#1b2133' : '#fff'; c.font = `900 15px ${CR_FONT}`; c.textAlign = 'center'; c.fillText(nome, 0, -12); c.restore() });
+  } }, G.back, G.front, () => gRobot(c, t, {
+    armL: null, armR: RIPOSO_R, fronts: [sel >= 0 ? [[392, 986], [330, 1000], [xs[sel] + 40, 980]] : mixPts(RIPOSO_L, [[392, 986], [330, 1000], [470, 960]], ease((t - 2.6) / 0.4))],
+    occhioni: { size: 1, look: sel >= 0 ? [-30, 22] : [-20, 10] }, mouth: Math.floor(t * 2) % 2 ? 'smile' : 'talk', m: 0.4, blush: true, bulb: 'on'
+  }));
+  // il calendario con la luna: «stasera fuori il bidone»
+  const s = popK(t, 1.4, 0.4); if (s) { gBolla(c, 800, 420, 330, 250, s, [-60, -40]);
+    c.save(); c.translate(800, 420); c.scale(s, s); crRR(c, -120, -90, 240, 46, 12, '#e63946'); c.fillStyle = '#fff'; c.font = `900 28px ${CR_FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('STASERA', 0, -66);
+    for (let i = 0; i < 7; i++) { const x = -102 + i * 34, on = i === 2; crRR(c, x - 14, -30, 28, 28, 6, on ? '#e63946' : '#e2d6bf') }
+    const lx = 0, ly = 52; c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(lx, ly, 30, 0, Math.PI * 2); c.fill(); crCirc(c, lx + 13, ly - 8, 26, '#fbf8f1'); c.restore() }
+};
+
+/* ---------- 15. parcheggio: la macchinina corre sul banco, si ferma, cade la puntina ---------- */
+G.parcheggio = function (c, t) {
+  const z = 1.14, k = ease(t / 1.8), cx0 = lerp(-120, 300, k), ferma = t > 1.8;
+  const auto = (x) => { const y = 1116, sb = ferma ? 0 : Math.sin(t * 30) * 2; c.save(); c.translate(x, y + sb); c.scale(1.4, 1.4);
+    c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 14; c.shadowOffsetY = 6; c.beginPath(); c.moveTo(-90, -24); c.lineTo(-84, -56); c.lineTo(-50, -60); c.lineTo(-30, -96); c.lineTo(36, -96); c.lineTo(62, -60); c.lineTo(90, -54); c.lineTo(94, -24); c.closePath(); c.fillStyle = '#ff4d5a'; c.fill(); c.shadowBlur = 0;
+    c.fillStyle = '#bfe9ff'; c.beginPath(); c.moveTo(-24, -86); c.lineTo(-2, -86); c.lineTo(-2, -62); c.lineTo(-40, -62); c.closePath(); c.fill(); c.beginPath(); c.moveTo(6, -86); c.lineTo(30, -86); c.lineTo(48, -62); c.lineTo(6, -62); c.closePath(); c.fill();
+    crCirc(c, 88, -44, 7, '#ffd23f'); [-52, 54].forEach(wx => { crCirc(c, wx, -22, 22, '#1b2133'); crCirc(c, wx, -22, 9, '#c9ccd6') }); c.restore() };
+  gScene(c, { z, cx: 560, cy: cyInsegna(z), extra: () => {
+    if (!ferma) { c.save(); c.globalAlpha = 0.5; c.strokeStyle = '#fbf8f1'; c.lineWidth = 6; c.lineCap = 'round'; [0, 1, 2].forEach(i => { const y = 1066 + i * 18; c.beginPath(); c.moveTo(cx0 - 120 - i * 20, y); c.lineTo(cx0 - 180 - i * 30, y); c.stroke() }); c.restore() }
+    auto(cx0);
+  } }, G.back, G.front, () => gRobot(c, t, {
+    armL: RIPOSO_L, armR: null, fronts: [ferma ? mixPts(RIPOSO_R, [[688, 986], [770, 940], [820, 860]], ease((t - 2.3) / 0.4)) : RIPOSO_R],
+    occhioni: { size: 1, look: [lerp(-40, -26, k), 20] }, mouth: ferma ? 'grin' : 'o', blush: ferma, bulb: 'on'
+  }));
+  if (t > 2.0) { const d = t - 2.0, x = 300 * z - (560 * z - 540) + 0, yT = 860, y = Math.min(yT, 200 + d * 1700), rimb = d > 0.4 ? Math.max(0, Math.sin((d - 0.4) * 14) * 26 * Math.exp(-(d - 0.4) * 5)) : 0;
+    gPin(c, x, y - rimb, 1.1, '#2f8cff');
+    if (d > 0.5) { const s = popK(t, 2.6, 0.35); gBolla(c, 760, 430, 300, 150, s, [-90, -50]); if (s) { c.save(); c.translate(760, 430); c.scale(s, s); c.fillStyle = '#1b2133'; c.font = `900 54px ${CR_FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('P', -80, 2); crRR(c, -40, -18, 150, 14, 7, '#c9c2b3'); crRR(c, -40, 8, 110, 14, 7, '#c9c2b3'); c.restore() } } }
+};
+
+/* ---------- 16. fontanella: l'acqua che scorre dalla fontanella, la mappa con le gocce ---------- */
+G.fontanella = function (c, t) {
+  const z = 1.12, fx = 200, top = 900;
+  gScene(c, { z, cx: 540, cy: cyInsegna(z), extra: () => {
+    const s = popK(t, 0.3, 0.45); if (!s) return;
+    c.save(); c.translate(fx, 1118); c.scale(s, s); c.translate(-fx, -1118);
+    // la colonnina di ghisa con il rubinetto e la vaschetta
+    c.save(); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 18; c.shadowOffsetY = 8;
+    const g = c.createLinearGradient(fx - 34, 0, fx + 34, 0); g.addColorStop(0, '#2c4a3e'); g.addColorStop(0.5, '#4f7a66'); g.addColorStop(1, '#22392f');
+    crRR(c, fx - 34, top, 68, 1118 - top, 14, g); c.restore(); crCirc(c, fx, top, 40, '#3c6252'); crCirc(c, fx, top - 26, 18, '#4f7a66');
+    crRR(c, fx + 20, top + 50, 70, 18, 8, '#9aa3b3'); crRR(c, fx + 80, top + 50, 16, 30, 6, '#9aa3b3');
+    crRR(c, fx - 10, 1080, 150, 38, 12, '#5d6b7a');
+    // il getto d'acqua
+    if (t > 0.8) { c.save(); c.strokeStyle = 'rgba(160,220,255,.9)'; c.lineWidth = 12; c.lineCap = 'round'; c.shadowColor = '#7fd6ff'; c.shadowBlur = 16; c.beginPath(); c.moveTo(fx + 88, top + 80); c.quadraticCurveTo(fx + 96, top + 140, fx + 92, 1080); c.stroke(); c.restore();
+      const r = rnd(3); for (let i = 0; i < 10; i++) { const ph = (t * 1.6 + r()) % 1; crCirc(c, fx + 92 + (r() - 0.5) * 60 * ph, 1076 - Math.sin(ph * Math.PI) * 30, 5 * (1 - ph) + 2, 'rgba(180,230,255,.85)') } }
+    c.restore();
+  } }, G.back, G.front, () => gRobot(c, t, {
+    armL: null, armR: RIPOSO_R, fronts: [mixPts(RIPOSO_L, [[392, 986], [320, 960], [310, 900]], ease((t - 1.2) / 0.4))],
+    occhioni: { size: 1, look: t < 3 ? [-34, 8] : [0, 0], stelle: t > 3.2 }, mouth: t < 3 ? 'o' : 'grin', blush: true, bulb: 'on'
+  }));
+  // la mappina con le gocce che si accendono una dopo l'altra
+  const s = popK(t, 2.4, 0.4); if (s) { gBolla(c, 780, 420, 360, 300, s, [-80, -40]);
+    c.save(); c.translate(780, 420); c.scale(s, s); crRR(c, -150, -120, 300, 240, 26, '#dff2e3');
+    c.strokeStyle = '#fbf8f1'; c.lineWidth = 16; c.beginPath(); c.moveTo(-150, -30); c.lineTo(150, 10); c.moveTo(-40, -120); c.lineTo(10, 120); c.moveTo(60, -120); c.lineTo(120, 120); c.stroke();
+    [[-90, -60], [30, 50], [110, -50], [-70, 70]].forEach(([x, y], i) => { const on = t > 2.9 + i * 0.35; if (!on) return; const b = 1 + 0.2 * Math.max(0, Math.sin((t - 2.9 - i * 0.35) * 10)) * Math.exp(-(t - 2.9 - i * 0.35) * 3);
+      c.save(); c.translate(x, y); c.scale(b * 0.5, b * 0.5); c.beginPath(); c.moveTo(0, -60); c.quadraticCurveTo(44, -4, 0, 30); c.quadraticCurveTo(-44, -4, 0, -60); c.fillStyle = '#2f8cff'; c.fill(); crCirc(c, -10, -6, 9, 'rgba(255,255,255,.8)'); c.restore() });
+    c.restore() }
+};
+
+/* ---------- 17. orologio: le ultime ore, la lancetta corre ---------- */
+G.orologio = function (c, t) {
+  const z = 1.26 + 0.06 * ease(t / 5);
+  gScene(c, { z, cx: 520, cy: cyInsegna(z), extra: () => gFrutta(c) }, G.back, G.front, () => gRobot(c, t, {
+    armL: RIPOSO_L, armR: null, fronts: [mixPts(RIPOSO_R, [[688, 986], [780, 930], [820, 840]], ease((t - 0.3) / 0.4))], occhioni: { size: 1.05, look: [26, -24] }, mouth: 'o', blush: false, bulb: Math.floor(t * 3) % 2 ? 'party' : 'on'
+  }));
+  const s = popK(t, 0.2, 0.4); if (!s) return; const x = 850, y = 420;
+  c.save(); c.translate(x, y); c.scale(s, s); c.rotate(Math.sin(t * 20) * 0.04);
+  c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 24; crCirc(c, 0, 0, 130, '#e63946'); c.shadowBlur = 0; crCirc(c, 0, 0, 108, '#fbf8f1');
+  [-1, 1].forEach(sx => { crCirc(c, sx * 80, -120, 34, '#e63946'); crRR(c, sx * 80 - 8, -100, 16, 22, 4, '#e63946') });
+  c.fillStyle = '#1b2133'; for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; crRR(c, Math.cos(a) * 88 - 5, Math.sin(a) * 88 - 5, 10, 10, 5, '#1b2133') }
+  c.strokeStyle = '#1b2133'; c.lineCap = 'round'; c.lineWidth = 12; const ah = -Math.PI / 2 + t * 0.6; c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(ah) * 52, Math.sin(ah) * 52); c.stroke();
+  c.lineWidth = 7; c.strokeStyle = '#e63946'; const am = -Math.PI / 2 + t * 4.2; c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(am) * 84, Math.sin(am) * 84); c.stroke(); crCirc(c, 0, 0, 12, '#1b2133');
+  c.restore();
+  // le linee della vibrazione
+  c.save(); c.strokeStyle = '#ffd23f'; c.lineWidth = 8; c.lineCap = 'round'; c.globalAlpha = 0.6 + 0.4 * Math.sin(t * 12);
+  [[-1, -0.6], [-1, 0.4], [1, -0.6], [1, 0.4]].forEach(([sx, sy]) => { c.beginPath(); c.moveTo(x + sx * 160, y + sy * 100); c.lineTo(x + sx * 196, y + sy * 116); c.stroke() }); c.restore();
+};
+
+/* ---------- 18. conta: le lettere volano nell'urna, il contatore gira ---------- */
+G.conta = function (c, t) {
+  const z = 1.16, ux = 760, uy = 1118;
+  gScene(c, { z, cx: 580, cy: cyInsegna(z), extra: () => {
+    c.save(); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 18; c.shadowOffsetY = 8; const g = c.createLinearGradient(0, uy - 170, 0, uy); g.addColorStop(0, 'rgba(210,235,255,.55)'); g.addColorStop(1, 'rgba(160,200,240,.45)'); crRR(c, ux - 100, uy - 170, 200, 170, 18, g); c.restore();
+    c.strokeStyle = 'rgba(255,255,255,.8)'; c.lineWidth = 5; crRR(c, ux - 100, uy - 170, 200, 170, 18); c.stroke(); crRR(c, ux - 110, uy - 186, 220, 24, 10, '#2f60b9'); crRR(c, ux - 50, uy - 180, 100, 10, 5, '#1b2133');
+    for (let i = 0; i < Math.min(14, Math.floor(Math.max(0, t - 0.9) / 0.3)); i++) { const r = rnd(i + 5); c.save(); c.translate(ux - 70 + r() * 140, uy - 20 - r() * 70); c.rotate(r() * 1.5 - 0.75); crRR(c, -22, -14, 44, 28, 4, '#fbf8f1'); c.restore() }
+  } }, G.back, G.front, () => gRobot(c, t, {
+    armL: RIPOSO_L, armR: RIPOSO_R, occhioni: { size: 1, look: [30, 14 - 10 * Math.sin(t * 3)] }, mouth: Math.floor(t * 1.5) % 2 ? 'smile' : 'line', blush: false, bulb: 'on'
+  }));
+  // i foglietti con le lettere che volano dentro
+  for (let i = 0; i < 14; i++) { const t0 = 0.3 + i * 0.3, d = (t - t0) / 0.6; if (d < 0 || d > 1) continue; const L = 'ABC'[i % 3], sx = i % 2 ? 1040 : 80 + (i % 3) * 40, sy = 520 + (i % 4) * 60;
+    const ex = 540 + (ux - 580) * z, ey = 960 + (uy - 180 - cyInsegna(z)) * z, x = lerp(sx, ex, ease(d)), y = lerp(sy, ey, ease(d)) - Math.sin(d * Math.PI) * 160;
+    c.save(); c.translate(x, y); c.rotate(d * 4 * (i % 2 ? -1 : 1)); c.scale(1 - d * 0.5, 1 - d * 0.5); crRR(c, -40, -30, 80, 60, 8, '#fbf8f1'); c.fillStyle = '#1b2133'; c.font = `900 42px ${CR_FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(L, 0, 2); c.restore() }
+  // il contatore che gira
+  const n = Math.min(99, Math.floor(Math.max(0, t - 0.9) / 0.3)); const s = popK(t, 0.6, 0.4);
+  if (s) { c.save(); c.translate(780, 400); c.scale(s, s); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 20; crRR(c, -140, -70, 280, 140, 26, '#1b2133'); c.shadowBlur = 0;
+    c.strokeStyle = '#4ff0d0'; c.lineWidth = 6; crRR(c, -140, -70, 280, 140, 26); c.stroke(); c.fillStyle = '#4ff0d0'; c.shadowColor = '#4ff0d0'; c.shadowBlur = 16; c.font = `900 96px "DejaVu Sans Mono", monospace`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(String(n).padStart(2, '0'), 0, 6); c.restore() }
+};
+
+/* ---------- 19. officina: il sabato, la chiave inglese, le scintille, la bancarella in revisione ---------- */
+G.officina = function (c, t) {
+  const z = 1.22, colpo = Math.sin(t * 7), su = colpo > 0.6;
+  gScene(c, { z, cx: 520, cy: cyInsegna(z), extra: () => {
+    // la cassetta degli attrezzi sul banco
+    c.save(); c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 16; c.shadowOffsetY = 6; crRR(c, 700, 1040, 230, 78, 12, '#e63946'); c.restore(); crRR(c, 700, 1060, 230, 10, 4, '#b02a35');
+    c.strokeStyle = '#9aa3b3'; c.lineWidth = 12; c.beginPath(); c.moveTo(770, 1040); c.lineTo(780, 1006); c.lineTo(850, 1006); c.lineTo(860, 1040); c.stroke();
+    crRR(c, 720, 1010, 14, 40, 4, '#ffd23f'); crRR(c, 740, 1000, 10, 50, 4, '#9aa3b3');
+  } }, G.backNotte, G.front, () => {
+    const mano = [[392, 986], [300, 930], [240 + (su ? -10 : 10), 860 + (su ? -14 : 14)]];
+    gRobot(c, t, { armL: null, armR: RIPOSO_R, fronts: [mano], eyes: 'down', mouth: Math.floor(t * 1.3) % 3 === 2 ? 'smile' : 'line', blush: false, bulb: 'on' });
+    // la chiave inglese in mano
+    c.save(); c.translate(mano[2][0], mano[2][1]); c.rotate(-0.9 + (su ? -0.25 : 0.15)); c.fillStyle = '#c9ccd6'; crRR(c, -10, -110, 20, 110, 8, '#c9ccd6'); c.beginPath(); c.arc(0, -120, 28, 0, Math.PI * 2); c.fill(); crRR(c, -10, -160, 20, 34, 4, '#23212e'); c.restore();
+  });
+  // le scintille sul palo della bancarella
+  const sx = 540 + (180 - 520) * z, sy = 960 + (840 - cyInsegna(z)) * z, r = rnd(Math.floor(t * 7));
+  if (su) for (let i = 0; i < 16; i++) { const a = -Math.PI / 2 + (r() - 0.5) * 2.4, l = 30 + r() * 90; c.save(); c.strokeStyle = r() > 0.5 ? '#ffd23f' : '#ff8a5c'; c.lineWidth = 5; c.lineCap = 'round'; c.shadowColor = '#ffd23f'; c.shadowBlur = 14; c.beginPath(); c.moveTo(sx, sy); c.lineTo(sx + Math.cos(a) * l, sy + Math.sin(a) * l); c.stroke(); c.restore() }
+  // ingranaggi in alto
+  const gear = (x, y, r0, n, ang, col) => { c.save(); c.translate(x, y); c.rotate(ang); c.fillStyle = col; c.beginPath();
+    for (let i = 0; i < n * 2; i++) { const a0 = i * Math.PI / n, rr = i % 2 ? r0 : r0 * 1.22; c.lineTo(Math.cos(a0) * rr, Math.sin(a0) * rr) } c.closePath(); c.fill(); crCirc(c, 0, 0, r0 * 0.42, '#20233a'); c.restore() };
+  c.save(); c.globalAlpha = 0.9; gear(860, 400, 60, 10, t * 1.2, '#ffd23f'); gear(770, 320, 38, 8, -t * 1.9, '#ff8a5c'); gear(940, 300, 30, 7, -t * 2.2, '#4ff0d0'); c.restore();
+};
+
 G.guide = false;
 G.frame = function (name, t, q) {
   const c = G.out.getContext('2d'); c.setTransform(720 / 1080, 0, 0, 1280 / 1920, 0, 0); c.fillStyle = '#000'; c.fillRect(0, 0, 1080, 1920);
