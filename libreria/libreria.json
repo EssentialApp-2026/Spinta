@@ -1,6 +1,6 @@
 {
  "versione": 1,
- "nota": "Clip e immagini di Gennarino usate dal creatore video di Spinta come scene in più. Per ogni elemento: file (nella cartella libreria), tipo (video o immagine), tag (parole che fanno scegliere la scena), poster (anteprima facoltativa), umore facoltativo: \"festa\" (mai nelle frasi tristi né nella puntata senza voti), \"lavoro\" (come festa: mai triste né senza voti) o \"triste\" (solo nelle frasi tristi). Dal 9 ottobre 2026 la libreria usa il Gennarino realistico fatto con Kling (file vero-*), su tutte le frasi della puntata (tutteLeFrasi). Le clip disegnate restano in «elementi_disegnati»: per tornare a quelle, rimetterle in «elementi» e togliere tutteLeFrasi.",
+ "nota": "Clip e immagini di Gennarino usate dal creatore video di Spinta come scene in più. Per ogni elemento: file (nella cartella libreria), tipo (video o immagine), tag (parole che fanno scegliere la scena), poster (anteprima facoltativa), umore facoltativo: \"festa\" (mai nelle frasi tristi né nella puntata senza voti), \"lavoro\" (come festa: mai triste né senza voti) o \"triste\" (solo nelle frasi tristi). Dal 9 ottobre 2026 la libreria usa il Gennarino realistico fatto con Kling (file vero-*), su tutte le frasi della puntata (tutteLeFrasi). Le clip disegnate restano in «elementi_disegnati»: per tornare a quelle, rimetterle in «elementi» e togliere tutteLeFrasi. Le clip in «aperture» (panoramiche della piazza nuova) non entrano mai a caso nelle puntate: le usa solo la puntata che le chiama con «apertura».",
  "tutteLeFrasi": true,
  "elementi": [
   {
@@ -728,6 +728,15 @@
     "bello"
    ],
    "umore": "lavoro"
+  }
+ ],
+ "aperture": [
+  {
+   "file": "piazza-2026-W42.mp4",
+   "poster": "piazza-2026-W42.jpg",
+   "settimana": "2026-W42",
+   "piazza": "Piazza del Plebiscito",
+   "descrizione": "Panoramica col drone: dall'alto su Piazza del Plebiscito al tramonto (colonnato, San Francesco di Paola, Vesuvio) fino a Gennarino alla bancarella. Si usa solo come apertura della puntata della domenica (campo «apertura» nel piano della settimana)."
   }
  ]
 }

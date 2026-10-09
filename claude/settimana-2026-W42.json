@@ -11,7 +11,7 @@
   "B": "Dove ho parcheggiato",
   "C": "Dove sono le fontanelle"
  },
- "nota": "Settimana 11-17 ottobre col programma di Sam: domenica piazza nuova e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato l'officina. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è la puntata «Niente voti, niente app».",
+ "nota": "Settimana 11-17 ottobre col programma di Sam: domenica piazza nuova (si apre con la panoramica della piazza, questa settimana Piazza del Plebiscito) e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato l'officina. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è la puntata «Niente voti, niente app».",
  "puntate": [
   {
    "id": "piazza-nuova",
@@ -21,13 +21,15 @@
    "titolo": "Piazza nuova, tre idee nuove",
    "copione": [
     "Piazza nuova, idee nuove: quale costruisco?",
-    "Uè guagliù, il bancariello si è spostato in una piazza nuova!",
+    "Uè guagliù, il bancariello si è spostato in Piazza del Plebiscito!",
     "A: Promemoria della differenziata.",
     "B: Dove ho parcheggiato.",
     "C: Dove sono le fontanelle.",
     "Scrivete la lettera nei commenti, fino a mercoledì sera.",
     "Venerdì la più votata è sul banco, gratis."
-   ]
+   ],
+   "apertura": "piazza-2026-W42.mp4",
+   "aperturaFrasi": 2
   },
   {
    "id": "promemoria-lunedi",
@@ -193,10 +195,11 @@
     "Sabato in officina: domani si cambia piazza!",
     "Uè guagliù, oggi il bancariello si fa bello.",
     "Stringo i bulloni, cambio le lampadine, sistemo la tenda.",
-    "Domani mi sposto in una piazza nuova.",
+    "Domani mi sposto in una piazza nuova: indovinate quale!",
     "E vi porto tre idee nuove da votare.",
     "Voi da quale piazza mi seguite? Scrivetelo nei commenti!"
    ]
   }
- ]
+ ],
+ "piazza": "Piazza del Plebiscito"
 }

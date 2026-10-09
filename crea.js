@@ -241,7 +241,7 @@ async function crListen(){if(CR.busy)return;const l=crLines()[0];if(!l){toast('S
 
 /* ---------- libreria del repository ---------- */
 async function crLibLoad(){if(CR.lib)return CR.lib;let items=[];
-  try{const r=await fetch('libreria/libreria.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();items=(j.elementi||[]).filter(x=>x&&x.file);CR.libTutto=!!j.tutteLeFrasi;CR.libEsclusi=(j.elementi_disegnati||[]).flatMap(x=>[x.file,x.poster].filter(Boolean))}}catch(_){}
+  try{const r=await fetch('libreria/libreria.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();items=(j.elementi||[]).filter(x=>x&&x.file);CR.libTutto=!!j.tutteLeFrasi;CR.libEsclusi=[...(j.elementi_disegnati||[]),...(j.aperture||[])].flatMap(x=>[x.file,x.poster].filter(Boolean))}}catch(_){}
   try{const known=new Set(items.flatMap(x=>[x.file,x.poster].filter(Boolean)).concat(CR.libEsclusi||[])),r=await fetch(CR_BASE.api);if(r.ok){const j=await r.json();
     (Array.isArray(j)?j:[]).filter(f=>f.type==='file'&&/\.(mp4|webm|mov|m4v|jpe?g|png|webp)$/i.test(f.name)&&!known.has(f.name)&&!/poster|^_/i.test(f.name)).forEach(f=>items.push({file:f.name,tipo:/\.(jpe?g|png|webp)$/i.test(f.name)?'immagine':'video',tag:f.name.toLowerCase().replace(/\.[^.]+$/,'').split(/[^a-zàèéìòù0-9]+/).filter(w=>w.length>2)}))}}catch(_){}
   items.forEach(x=>{x.tipo=x.tipo||(/\.(jpe?g|png|webp)$/i.test(x.file)?'immagine':'video');x.tag=(x.tag||[]).map(t=>String(t).toLowerCase())});
@@ -275,6 +275,8 @@ function crWeekUse(i){const w=CR.week,p=w&&w.puntate[i];if(!p)return;
   crBoxes();crSaveSet();if(w.settimana){DB.creator.ideeW=w.settimana;save()}
   const V=crVotes();let L=(p.copione||[]).map(x=>String(x).trim()).filter(Boolean);
   if(p.tipo==='risultato'&&V&&V[p.vince])L=L.map(x=>x.replace(new RegExp('^Ha vinto la '+p.vince+'(?=:)'),`Ha vinto la ${p.vince} con ${V[p.vince]} voti`));
+  // apertura della puntata (es. la panoramica della piazza nuova la domenica): clip fissa sulle prime frasi
+  CR.apertura=p.apertura?{file:String(p.apertura),frasi:Math.max(1,+p.aperturaFrasi||2),testo:L[0]||''}:null;
   const t=$('#cr-txt');t.value=L.join('\n');CR.auto=t.value;crPrevSoon();crWeekShow();toast('Copione di Claude caricato')}
 
 /* ---------- conta i voti dagli screenshot dei commenti (un voto per persona) ---------- */
@@ -419,12 +421,17 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
       for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<(T?3:2)){use(it,x);k+=a+1;break}}});
     // se una clip torna una seconda volta riparte da dove si era fermata, così non si vede ripetere lo stesso pezzo
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
+  // apertura scelta da Claude nel piano della settimana (solo se il copione comincia ancora con la stessa frase):
+  // la clip copre le prime frasi di fila, senza ricominciare, e nessun'altra frase vicina la ripete
+  const ap=CR.apertura;if(ap&&ap.file&&items.length&&crClean(lines[0]).toLowerCase()===crClean(ap.testo).toLowerCase()){const x={file:ap.file,tipo:/\.(jpe?g|png|webp)$/i.test(ap.file)?'immagine':'video',tag:[]},k=Math.min(ap.frasi,n);
+    for(let i=0;i<k;i++){items[i].shot=x;items[i].shotCont=i>0}if(items[k]&&items[k].shot&&items[k].shot.file===ap.file)items[k].shot=null;
+    const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
   const hook=crClean(lines[0]);
   const END={idee:'Vota A, B o C nei commenti 👇',risultato:'Venerdì il regalo sul banco 🎁',regalo:'Link nel profilo · gratis 🎁',presentazione:'Scrivi la tua idea nei commenti 👇',risposta:'Scrivi la tua nei commenti 👇',nessuno:'Lunedì si vota di nuovo 👇'};
   // momenti per gli effetti sonori (gli stessi in cui compaiono le cose a schermo)
   const endS=vt.total-2.8,ev=[{t:0.03,k:'intro'}];if(com)ev.push({t:0.15,k:'pop'});if(ballot)ballot.rows.forEach(r=>ev.push({t:r.s,k:'pop'}));
   items.forEach(it=>{const free=!inBallot(it)&&it.s<endS;if(it.pop&&free)ev.push({t:it.s+0.02,k:{cal:'tick',gift:'ding',results:'swell'}[it.pop]||'pop'});
-    if(it.stamp&&free&&it.stampAt<endS)ev.push({t:it.stampAt,k:'stamp'});if(it.shot)ev.push({t:it.s,k:'whoosh'})});
+    if(it.stamp&&free&&it.stampAt<endS)ev.push({t:it.stampAt,k:'stamp'});if(it.shot&&!it.shotCont)ev.push({t:it.s,k:'whoosh'})});
   if(!(ballot&&ballot.e>endS)&&endS>1)ev.push({t:endS,k:'chime'});
   return{items,vt,total:vt.total,hook,hookShow:Math.max(2.6,items[0]?items[0].e+0.15:2.6),ser,ep,tipo,X,app,ballot,com,voti:V,events:ev,mer:crNextDow(3),ven:crNextDow(5),
     idee:{A:crIdea(s,'A'),B:crIdea(s,'B'),C:crIdea(s,'C')},

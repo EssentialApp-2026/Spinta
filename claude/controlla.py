@@ -29,6 +29,12 @@ for p in j.get('puntate', []):
     if p.get('tipo') in vinc:
         if p.get('vince') not in ('A', 'B', 'C'): err.append(f'{n}: manca "vince" (A, B o C)')
         else: vinc[p['tipo']].add(p['vince'])
+LIB = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(P))), 'libreria')
+for p in j.get('puntate', []):
+    n = p.get('id', '?')
+    if p.get('apertura') and not os.path.exists(os.path.join(LIB, p['apertura'])): err.append(f'{n}: manca la clip di apertura libreria/{p["apertura"]}')
+    # ogni domenica la piazza cambia: la puntata si apre con la panoramica della piazza nuova
+    if p.get('giorno') == 'domenica' and p.get('tipo') == 'idee' and not p.get('apertura'): err.append(f'{n}: la domenica serve "apertura" con la panoramica della piazza nuova')
 if not any(p.get('tipo') == 'nessuno' for p in j.get('puntate', [])): err.append('manca la puntata "nessuno" (giovedì, se nessuno vota: niente app)')
 for t, s in vinc.items():
     if s and s != {'A', 'B', 'C'}: err.append(f'{t}: servono le versioni per A, B e C (ci sono {sorted(s)})')
