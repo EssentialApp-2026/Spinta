@@ -1,0 +1,273 @@
+{
+ "versione": 1,
+ "voce": "Gennarino nuovo: Gemini TTS «Mako», un po' più veloce e con effetto robot",
+ "nota": "Battute già pronte: Spinta le usa al posto di Piper quando il testo della frase è uguale. Se cambi una frase, quella frase torna alla voce di Piper.",
+ "settimane": {
+  "2026-W42": [
+   {
+    "testo": "Piazza nuova, idee nuove: quale costruisco?",
+    "file": "voci/2026-W42/01.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il bancariello si è spostato in Piazza del Plebiscito!",
+    "file": "voci/2026-W42/02.mp3"
+   },
+   {
+    "testo": "A: Promemoria della differenziata.",
+    "file": "voci/2026-W42/03.mp3"
+   },
+   {
+    "testo": "B: Dove ho parcheggiato.",
+    "file": "voci/2026-W42/04.mp3"
+   },
+   {
+    "testo": "C: Dove sono le fontanelle.",
+    "file": "voci/2026-W42/05.mp3"
+   },
+   {
+    "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+    "file": "voci/2026-W42/06.mp3"
+   },
+   {
+    "testo": "Venerdì la più votata è sul banco, gratis.",
+    "file": "voci/2026-W42/07.mp3"
+   },
+   {
+    "testo": "Munnezza, macchina o acqua fresca: cosa vi serve di più?",
+    "file": "voci/2026-W42/08.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il voto è aperto da ieri.",
+    "file": "voci/2026-W42/09.mp3"
+   },
+   {
+    "testo": "Basta una lettera nei commenti per decidere.",
+    "file": "voci/2026-W42/10.mp3"
+   },
+   {
+    "testo": "Chi non ha ancora votato, ha tempo fino a mercoledì sera!",
+    "file": "voci/2026-W42/11.mp3"
+   },
+   {
+    "testo": "Mamma mia, dove ho lasciato la macchina?",
+    "file": "voci/2026-W42/12.mp3"
+   },
+   {
+    "testo": "Uè guagliù, a me succede ogni giorno!",
+    "file": "voci/2026-W42/13.mp3"
+   },
+   {
+    "testo": "E voi cosa dimenticate sempre: il bidone o il parcheggio?",
+    "file": "voci/2026-W42/14.mp3"
+   },
+   {
+    "testo": "E quando fa caldo, dove trovate una fontanella in città?",
+    "file": "voci/2026-W42/15.mp3"
+   },
+   {
+    "testo": "Per questo ho pensato a queste tre idee.",
+    "file": "voci/2026-W42/16.mp3"
+   },
+   {
+    "testo": "Ditemi nei commenti cosa vi scordate voi.",
+    "file": "voci/2026-W42/17.mp3"
+   },
+   {
+    "testo": "E chi non ha votato: A, B o C, fino a domani sera!",
+    "file": "voci/2026-W42/18.mp3"
+   },
+   {
+    "testo": "Ultime ore: stasera chiudo il voto!",
+    "file": "voci/2026-W42/19.mp3"
+   },
+   {
+    "testo": "Uè guagliù, mancano poche ore.",
+    "file": "voci/2026-W42/20.mp3"
+   },
+   {
+    "testo": "Domani vi dico chi ha vinto!",
+    "file": "voci/2026-W42/21.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: la munnezza non ci frega più!",
+    "file": "voci/2026-W42/22.mp3"
+   },
+   {
+    "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
+    "file": "voci/2026-W42/23.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: Promemoria della differenziata.",
+    "file": "voci/2026-W42/24.mp3"
+   },
+   {
+    "testo": "Mettete i giorni del vostro comune e la sera vi avviso io.",
+    "file": "voci/2026-W42/25.mp3"
+   },
+   {
+    "testo": "Da oggi ci lavoro, giorno e notte.",
+    "file": "voci/2026-W42/26.mp3"
+   },
+   {
+    "testo": "Venerdì è sul banco, gratis per tutti.",
+    "file": "voci/2026-W42/27.mp3"
+   },
+   {
+    "testo": "Da voi che giorno passa l'umido? Ditemelo nei commenti!",
+    "file": "voci/2026-W42/28.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: la macchina non si perde più!",
+    "file": "voci/2026-W42/29.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: Dove ho parcheggiato.",
+    "file": "voci/2026-W42/30.mp3"
+   },
+   {
+    "testo": "Un tocco quando scendi, e lei si ricorda il posto.",
+    "file": "voci/2026-W42/31.mp3"
+   },
+   {
+    "testo": "Mi metto subito al lavoro.",
+    "file": "voci/2026-W42/32.mp3"
+   },
+   {
+    "testo": "Vi è mai capitato di non trovarla più? Scrivetemelo!",
+    "file": "voci/2026-W42/33.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: l'acqua fresca la trovate sempre!",
+    "file": "voci/2026-W42/34.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: Dove sono le fontanelle.",
+    "file": "voci/2026-W42/35.mp3"
+   },
+   {
+    "testo": "Aprite la mappa e vedete la fontanella più vicina.",
+    "file": "voci/2026-W42/36.mp3"
+   },
+   {
+    "testo": "Qual è la fontanella più bella della vostra città? Ditemelo!",
+    "file": "voci/2026-W42/37.mp3"
+   },
+   {
+    "testo": "Zero voti: questa volta niente app.",
+    "file": "voci/2026-W42/38.mp3"
+   },
+   {
+    "testo": "Uè guagliù, ho letto tutti i commenti.",
+    "file": "voci/2026-W42/39.mp3"
+   },
+   {
+    "testo": "Ma nessuno ha scritto A, B o C.",
+    "file": "voci/2026-W42/40.mp3"
+   },
+   {
+    "testo": "Mi dispiace: venerdì niente regalo.",
+    "file": "voci/2026-W42/41.mp3"
+   },
+   {
+    "testo": "Domenica torno con tre idee nuove.",
+    "file": "voci/2026-W42/42.mp3"
+   },
+   {
+    "testo": "Basta una lettera nei commenti e decidete voi!",
+    "file": "voci/2026-W42/43.mp3"
+   },
+   {
+    "testo": "È venerdì: la munnezza ve la ricordo io!",
+    "file": "voci/2026-W42/44.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il regalo è sul banco.",
+    "file": "voci/2026-W42/45.mp3"
+   },
+   {
+    "testo": "Ecco Promemoria della differenziata.",
+    "file": "voci/2026-W42/46.mp3"
+   },
+   {
+    "testo": "Mettete i giorni del vostro comune una volta sola.",
+    "file": "voci/2026-W42/47.mp3"
+   },
+   {
+    "testo": "E la sera vi dice quale bidone mettere fuori.",
+    "file": "voci/2026-W42/48.mp3"
+   },
+   {
+    "testo": "Gratis, senza registrazione: link nel profilo.",
+    "file": "voci/2026-W42/49.mp3"
+   },
+   {
+    "testo": "Mandatela a chi si scorda sempre il bidone!",
+    "file": "voci/2026-W42/50.mp3"
+   },
+   {
+    "testo": "È venerdì: la macchina la ritrovate sempre!",
+    "file": "voci/2026-W42/51.mp3"
+   },
+   {
+    "testo": "Ecco Dove ho parcheggiato.",
+    "file": "voci/2026-W42/52.mp3"
+   },
+   {
+    "testo": "Scendi dalla macchina, tocchi un tasto, e si segna il posto.",
+    "file": "voci/2026-W42/53.mp3"
+   },
+   {
+    "testo": "Poi ti porta lì, con il timer per la sosta.",
+    "file": "voci/2026-W42/54.mp3"
+   },
+   {
+    "testo": "Mandatela a chi gira mezz'ora per trovare la macchina!",
+    "file": "voci/2026-W42/55.mp3"
+   },
+   {
+    "testo": "È venerdì: l'acqua fresca ve la trovo io!",
+    "file": "voci/2026-W42/56.mp3"
+   },
+   {
+    "testo": "Ecco Dove sono le fontanelle.",
+    "file": "voci/2026-W42/57.mp3"
+   },
+   {
+    "testo": "Aprite la mappa e vedete le fontanelle vicino a voi.",
+    "file": "voci/2026-W42/58.mp3"
+   },
+   {
+    "testo": "Un tocco, e vi porta alla più vicina.",
+    "file": "voci/2026-W42/59.mp3"
+   },
+   {
+    "testo": "Mandatela agli amici che girano con la borraccia!",
+    "file": "voci/2026-W42/60.mp3"
+   },
+   {
+    "testo": "Sabato in officina: domani si cambia piazza!",
+    "file": "voci/2026-W42/61.mp3"
+   },
+   {
+    "testo": "Uè guagliù, oggi il bancariello si fa bello.",
+    "file": "voci/2026-W42/62.mp3"
+   },
+   {
+    "testo": "Stringo i bulloni, cambio le lampadine, sistemo la tenda.",
+    "file": "voci/2026-W42/63.mp3"
+   },
+   {
+    "testo": "Domani mi sposto in una piazza nuova: indovinate quale!",
+    "file": "voci/2026-W42/64.mp3"
+   },
+   {
+    "testo": "E vi porto tre idee nuove da votare.",
+    "file": "voci/2026-W42/65.mp3"
+   },
+   {
+    "testo": "Voi da quale piazza mi seguite? Scrivetelo nei commenti!",
+    "file": "voci/2026-W42/66.mp3"
+   }
+  ]
+ }
+}

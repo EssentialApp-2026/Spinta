@@ -172,7 +172,26 @@ async function crPhon(lines,lang){const out=[];
 const crSpeak=s=>crClean(s).replace(/#\S+/g,'').replace(/@([\w.]+)/g,'$1').replace(/&/g,' e ').replace(/'O\b/g,'o').replace(/…/g,'').trim()||'…';
 function crTrim(a,sr){let s=0,e=a.length;const th=0.012,m=Math.round(sr*0.03);while(s<e&&Math.abs(a[s])<th)s++;while(e>s&&Math.abs(a[e-1])<th)e--;
   return a.slice(Math.max(0,s-m),Math.min(a.length,e+m))}
-async function crSynth(lines,s,say){const V=await crLoadTTS(s.voice,say),cfg=V.cfg;say('Preparo la pronuncia…');
+// battute già pronte con la voce nuova di Gennarino (Mako): libreria/voci/voci.json, scelte per testo uguale
+const crVKey=t=>crClean(t).toLowerCase().normalize('NFC').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+async function crVociLoad(){if(CR.voci)return CR.voci;const m=new Map();
+  try{const r=await fetch('libreria/voci/voci.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();
+    Object.values(j.settimane||{}).forEach(a=>(Array.isArray(a)?a:[]).forEach(x=>{if(x&&x.testo&&x.file&&/^voci\/[\w\-\/]+\.(m4a|mp3|wav)$/.test(x.file))m.set(crVKey(x.testo),x.file)}))}}catch(_){}
+  CR.voci=m;return m}
+async function crVocePronta(file,sr){CR.vociBuf=CR.vociBuf||new Map();const k=file+'@'+sr;if(CR.vociBuf.has(k))return CR.vociBuf.get(k);
+  const r=await fetch('libreria/'+file);if(!r.ok)throw new Error('voce pronta non trovata');
+  const ab=await new OfflineAudioContext(1,1,sr).decodeAudioData(await r.arrayBuffer());const c=crTrim(Float32Array.from(ab.getChannelData(0)),sr);CR.vociBuf.set(k,c);return c}
+async function crSynth(lines,s,say){CR.vociInfo=null;
+  const vm=(s.voice||'riccardo')==='riccardo'&&s.pronte!==false?await crVociLoad():new Map(),files=lines.map(l=>vm.get(crVKey(l))||null),n=files.filter(Boolean).length;
+  if(!n)return crSynthPiper(lines,s,say);
+  const rest=lines.map((l,i)=>files[i]?null:l),miss=rest.filter(x=>x!==null);let pip=null;
+  if(miss.length)pip=await crSynthPiper(miss,s,say);const sr=pip?pip.sr:24000;
+  say(`Uso la voce nuova di Gennarino (${n} frasi su ${lines.length})…`);
+  try{const clips=[],fatte=[];let j=0;
+    for(let i=0;i<lines.length;i++){if(files[i]){clips.push(await crVocePronta(files[i],sr));fatte.push(true)}else{clips.push(pip.clips[j++]);fatte.push(false)}}
+    CR.vociInfo={pronte:n,tot:lines.length};return{sr,clips,fatte}}
+  catch(e){console.warn('voci pronte non disponibili, uso Piper',e);CR.vociInfo=null;return crSynthPiper(lines,s,say)}}
+async function crSynthPiper(lines,s,say){const V=await crLoadTTS(s.voice,say),cfg=V.cfg;say('Preparo la pronuncia…');
   const ph=await crPhon(lines.map(crSpeak),cfg.espeak.voice);const ls=(cfg.inference.length_scale||1)*({normale:1,tiktok:0.92,veloce:0.84}[s.speed]||0.92);
   const clips=[];for(let i=0;i<lines.length;i++){if(CR.cancel)throw new Error('annullato');say(`Do la voce a Gennarino: frase ${i+1} di ${lines.length}…`);
     const ids=(ph[i]&&ph[i].phoneme_ids)||[];if(!ids.length){clips.push(new Float32Array(Math.round(cfg.audio.sample_rate*0.4)));continue}
@@ -182,7 +201,8 @@ async function crSynth(lines,s,say){const V=await crLoadTTS(s.voice,say),cfg=V.c
   return{sr:cfg.audio.sample_rate,clips}}
 // traccia della voce con effetto robot, volume uniforme e inviluppo per muovere la bocca
 async function crVoice(tts,s){const sr=44100,gap=0.22,pre=0.15,rate={no:1,leggero:1.04,forte:1.09}[s.fx]||1;
-  let t=pre;const seg=tts.clips.map(c=>{const d=c.length/tts.sr/rate,o={s:t,e:t+d};t+=d+gap;return o});const total=t+0.5;
+  const pr=i=>tts.fatte&&tts.fatte[i];   // le battute pronte hanno già velocità ed effetto robot
+  let t=pre;const seg=tts.clips.map((c,i)=>{const d=c.length/tts.sr/(pr(i)?1:rate),o={s:t,e:t+d};t+=d+gap;return o});const total=t+0.5;
   const oc=new OfflineAudioContext(1,Math.ceil(total*sr),sr),inp=oc.createGain();let node=inp;
   if(s.fx!=='no'){const forte=s.fx==='forte',depth=forte?0.34:0.15,am=oc.createGain();am.gain.value=1-depth;
     const osc=oc.createOscillator();osc.frequency.value=forte?50:32;const og=oc.createGain();og.gain.value=depth;osc.connect(og);og.connect(am.gain);osc.start(0);
@@ -190,7 +210,7 @@ async function crVoice(tts,s){const sr=44100,gap=0.22,pre=0.15,rate={no:1,legger
     inp.connect(am);inp.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(am);node=am}
   const cp=oc.createDynamicsCompressor();cp.threshold.value=-20;cp.knee.value=8;cp.ratio.value=3;cp.attack.value=0.004;cp.release.value=0.2;node.connect(cp);cp.connect(oc.destination);
   tts.clips.forEach((c,i)=>{if(!c.length)return;const b=oc.createBuffer(1,c.length,tts.sr);b.copyToChannel(c instanceof Float32Array?c:Float32Array.from(c),0);
-    const src=oc.createBufferSource();src.buffer=b;src.playbackRate.value=rate;src.connect(inp);src.start(seg[i].s)});
+    const src=oc.createBufferSource();src.buffer=b;src.playbackRate.value=pr(i)?1:rate;src.connect(pr(i)?cp:inp);src.start(seg[i].s)});
   const buf=await oc.startRendering(),d=buf.getChannelData(0);let pk=0;for(let i=0;i<d.length;i++){const v=Math.abs(d[i]);if(v>pk)pk=v}
   const g=pk>0?0.89/pk:1;for(let i=0;i<d.length;i++)d[i]*=g;
   const fps=30,win=Math.round(sr/fps),env=new Float32Array(Math.ceil(d.length/win));let mx=0;
@@ -274,7 +294,8 @@ function crWeekUse(i){const w=CR.week,p=w&&w.puntate[i];if(!p)return;
   if(p.tipo==='risposta'&&p.commento){$('#cr-com').value=String(p.commento).slice(0,300);$('#cr-cuser').value=String(p.utente||'').replace(/^@+/,'').slice(0,40)}
   crBoxes();crSaveSet();if(w.settimana){DB.creator.ideeW=w.settimana;save()}
   const V=crVotes();let L=(p.copione||[]).map(x=>String(x).trim()).filter(Boolean);
-  if(p.tipo==='risultato'&&V&&V[p.vince])L=L.map(x=>x.replace(new RegExp('^Ha vinto la '+p.vince+'(?=:)'),`Ha vinto la ${p.vince} con ${V[p.vince]} voti`));
+  const pronte=CR.voci&&CR.voci.size&&L.every(x=>CR.voci.has(crVKey(x)));   // con la voce nuova già pronta non aggiungo il numero dei voti (altrimenti quella frase tornerebbe alla voce vecchia)
+  if(p.tipo==='risultato'&&V&&V[p.vince]&&!pronte)L=L.map(x=>x.replace(new RegExp('^Ha vinto la '+p.vince+'(?=:)'),`Ha vinto la ${p.vince} con ${V[p.vince]} voti`));
   // apertura della puntata (es. la panoramica della piazza nuova la domenica): clip fissa sulle prime frasi
   CR.apertura=p.apertura?{file:String(p.apertura),frasi:Math.max(1,+p.aperturaFrasi||2),testo:L[0]||''}:null;
   const t=$('#cr-txt');t.value=L.join('\n');CR.auto=t.value;crPrevSoon();crWeekShow();toast('Copione di Claude caricato')}
@@ -707,7 +728,7 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
     len:+st.total.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep}:null,score:null,transcript:lines.join(' ').slice(0,900),topic:'',end:st.endTxt,niche:'tech',made:'creatore',
     f:{lead:0.2,pause:0,topicAt:null,pace:Math.round(shots/Math.max(1,st.total)*100)/10,hookW,subs:!!s.subs,end:true,capQ:/\?|comment|scrivete|ditemelo|dimmi/i.test(cap)},miss:[]};save();
   const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));const slot=personalSlot().when;
-  crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video pronto</h3>
+  crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video pronto</h3>${CR.vociInfo?`<div style="font-size:12.5px;color:var(--mut);margin:-4px 0 8px">🎙️ Voce nuova di Gennarino: ${CR.vociInfo.pronte} frasi su ${CR.vociInfo.tot}${CR.vociInfo.pronte<CR.vociInfo.tot?' (le frasi cambiate hanno la voce vecchia)':''}</div>`:''}
    <div style="color:var(--mut);font-size:12.5px;margin-top:4px">${st.total.toFixed(1)} s · ${(out.blob.size/1048576).toFixed(1)} MB · ${lines.length} frasi</div>
    <video class="vid" src="${CR.url}" controls playsinline></video>
    <div class="acts"><a class="btn sm" href="${CR.url}" download="${name}">⬇︎ Scarica</a>${canShare?'<button class="btn sm cy" onclick="shareFinal()">📤 Condividi su TikTok</button>':''}
@@ -719,3 +740,4 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
    <div id="cr-pub"></div><small class="n">Ricordati l'etichetta "Contenuto generato con AI" su TikTok: voce e personaggio sono creati al computer.</small></div>`);
   setTimeout(()=>{const o=$('#cr-out');if(o)o.scrollIntoView({behavior:'smooth',block:'start'})},100)}
 function crToStudio(){if(!CR.file)return;closeModal('m-crea');goTab('studio');loadVideoFile(CR.file)}
+try{crVociLoad()}catch(_){}

@@ -1,3 +1,4 @@
+import unicodedata
 """Controlla il piano della settimana prima di pubblicarlo: python3 claude/controlla.py [file]"""
 import json, re, sys, datetime, os
 # si può dare il file da controllare: python3 claude/controlla.py claude/settimana-2026-W42.json
@@ -38,5 +39,18 @@ for p in j.get('puntate', []):
 if not any(p.get('tipo') == 'nessuno' for p in j.get('puntate', [])): err.append('manca la puntata "nessuno" (giovedì, se nessuno vota: niente app)')
 for t, s in vinc.items():
     if s and s != {'A', 'B', 'C'}: err.append(f'{t}: servono le versioni per A, B e C (ci sono {sorted(s)})')
+# voci pronte (voce nuova di Gennarino): ogni frase del piano deve avere la sua battuta in libreria/voci/voci.json
+def vkey(t): return ' '.join(''.join(ch if ch.isalnum() else ' ' for ch in unicodedata.normalize('NFC', str(t).lower())).split())
+VJ = os.path.join(LIB, 'voci', 'voci.json')
+if os.path.exists(VJ):
+    vj = json.load(open(VJ, encoding='utf-8')); pronte = {}
+    for a in vj.get('settimane', {}).values():
+        for x in a: pronte[vkey(x['testo'])] = x['file']
+    for f in set(pronte.values()):
+        if not os.path.exists(os.path.join(LIB, f)): err.append(f'manca il file della voce libreria/{f}')
+    manca = [r for p in j.get('puntate', []) for r in p.get('copione', []) if vkey(r) not in pronte]
+    if manca: print(f'avviso: {len(manca)} frasi senza voce nuova (useranno Piper), es. «{manca[0]}»')
+    else: print('voci: tutte le frasi hanno la voce nuova')
+else: print('avviso: nessuna voce pronta (libreria/voci/voci.json)')
 print('\n'.join(err) if err else f'ok: {j.get("settimana")} · {len(j.get("puntate", []))} puntate')
 sys.exit(1 if err else 0)
