@@ -426,7 +426,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.10.1 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.10.2 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -1455,6 +1455,8 @@ function renderFixPanel(){
   const opt=(id,lab,desc,on,dis)=>`<label class="opt ${dis?'dis':''}" id="${id}-l"><input type="checkbox" id="${id}" ${on&&!dis?'checked':''} ${dis?'disabled':''} onchange="updEst()"><span>${lab}<small id="${id}-d">${desc}</small></span></label>`;
   const np=hasA?A.pauses.length:0;
   $('#v-fix').innerHTML=`<p class="sub" style="margin:0">Ho già attivato le correzioni consigliate. Ogni modifica aggiorna il punteggio.</p>
+  <button class="btn sm alt" style="margin-top:8px" onclick="fixNone()">✋ Video già finito? Lascialo com'è</button>
+  <small class="n">Spegne tutte le correzioni: il video esce identico, con l'audio originale (per le puntate già montate da Claude).</small>
   <div class="grp"><h4>✂️ Taglio e ritmo</h4>
    ${opt('o-trim','Taglia silenzi iniziali e finali',hasA?`Inizio ${A.lead.toFixed(1)} s · fine ${A.trail.toFixed(1)} s`:'Serve l\'audio per trovarli',g.trim,!hasA)}
    ${opt('o-pause','Rimuovi le pause lunghe',!hasA?'Serve l\'audio per trovarle':!np?'Nessuna pausa lunga da togliere':(np===1?'1 pausa trovata':np+' pause trovate')+' · tagli senza scatti',g.pause,!np)}
@@ -1475,6 +1477,7 @@ function renderFixPanel(){
   <div id="o-est" style="color:var(--mut);font-size:13px;margin-top:10px"></div>
   <button class="btn alt" onclick="goStep(5)">Avanti: esporta ↓</button>`;
   refreshSubsOpt();updEst()}
+function fixNone(){document.querySelectorAll('#v-fix input[type=checkbox]').forEach(e=>{e.checked=false});updEst();toast('Correzioni spente: il video resta com\'è')}
 function subsDesc(){return VA.hasSubs?'Il video ha già i suoi sottotitoli: li lascio così':VA.subs&&VA.subs.length?`${VA.subs.length} righe dal parlato`:'Si creano con il pilota automatico (passo 3)'}
 function refreshSubsOpt(){const e=$('#o-subs');if(!e)return;const ok=!!(VA.subs&&VA.subs.length)&&!VA.hasSubs;e.disabled=!ok;if(!ok)e.checked=false;$('#o-subs-l').classList.toggle('dis',!ok);$('#o-subs-d').textContent=subsDesc()}
 function readOpts(){const g=id=>{const e=$('#'+id);return !!(e&&e.checked&&!e.disabled)};const ser=curSeries();
@@ -1523,6 +1526,8 @@ function exportVideo(light,single){
   if(exporting||!VA)return;
   if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){toast('Il browser non supporta l\'esportazione video: aggiorna Chrome');return}
   const o=readOpts();o.light720=!!light;o.single=!!single||!!light;
+  // nessuna modifica scelta: consegno il file originale così com'è (audio e immagini intatti, niente nuova registrazione)
+  if(!['trim','pause','crop','light','vol','hook','subs','bar','speed','end','part'].some(k=>o[k])&&vFile){showResult(vFile,vFile.type||'video/mp4',o,getPlan(o));toast('Video lasciato com\'è: audio originale');return}
   if(o.hook&&!o.hookTxt){toast('Scrivi il testo dell\'hook');goStep(3);setTimeout(()=>$('#a-hookedit').focus(),400);return}
   releasePrev();
   // parte sincrona: serve il tocco dell'utente per audio e riproduzione
