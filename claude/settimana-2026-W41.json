@@ -11,7 +11,7 @@
   "B": "Timer per la moka",
   "C": "Lista della spesa a voce"
  },
- "nota": "Settimana 5-11 ottobre: si vota fino a mercoledì 7 sera, il regalo esce venerdì 9. Risultato e regalo sono pronti per tutte e tre le idee. Sabato 10: officina, domani si riparte in una piazza nuova.",
+ "nota": "Settimana 5-11 ottobre: si vota fino a mercoledì 7 sera, il regalo esce venerdì 9. Risultato e regalo sono pronti per tutte e tre le idee. Sabato 10: la puntata del cambio look, già montata a parte da Claude (non si crea in Spinta).",
  "puntate": [
   {
    "id": "dietro-le-quinte",
@@ -151,21 +151,6 @@
     "Gratis, senza registrazione, dal telefono.",
     "Link nel profilo, sul banco di Gennarino.",
     "Provatela alla prossima spesa e ditemi com'è!"
-   ]
-  },
-  {
-   "id": "officina",
-   "tipo": "libera",
-   "giorno": "sabato",
-   "data": "2026-10-10",
-   "titolo": "Sabato in officina",
-   "copione": [
-    "Sabato in officina: domani si cambia piazza!",
-    "Uè guagliù, la lista della spesa è sul banco da ieri.",
-    "Oggi il bancariello si fa bello: stringo i bulloni e sistemo la tenda.",
-    "Domani mi sposto in una piazza nuova.",
-    "E vi porto tre idee nuove da votare.",
-    "Voi da quale piazza mi seguite? Scrivetelo nei commenti!"
    ]
   }
  ]
