@@ -268,6 +268,20 @@
     "testo": "Voi da quale piazza mi seguite? Scrivetelo nei commenti!",
     "file": "voci/2026-W42/66.mp3"
    }
+  ],
+  "2026-W41": [
+   {
+    "testo": "Uè guagliù, la lista della spesa è sul banco da ieri.",
+    "file": "voci/2026-W41/01.mp3"
+   },
+   {
+    "testo": "Oggi il bancariello si fa bello: stringo i bulloni e sistemo la tenda.",
+    "file": "voci/2026-W41/02.mp3"
+   },
+   {
+    "testo": "Domani mi sposto in una piazza nuova.",
+    "file": "voci/2026-W41/03.mp3"
+   }
   ]
  }
 }

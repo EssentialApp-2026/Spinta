@@ -182,14 +182,12 @@ async function crVocePronta(file,sr){CR.vociBuf=CR.vociBuf||new Map();const k=fi
   const r=await fetch('libreria/'+file);if(!r.ok)throw new Error('voce pronta non trovata');
   const ab=await new OfflineAudioContext(1,1,sr).decodeAudioData(await r.arrayBuffer());const c=crTrim(Float32Array.from(ab.getChannelData(0)),sr);CR.vociBuf.set(k,c);return c}
 async function crSynth(lines,s,say){CR.vociInfo=null;
+  // mai due voci nello stesso video: la voce nuova solo se TUTTE le frasi sono già pronte, altrimenti tutta la puntata con Piper
   const vm=(s.voice||'riccardo')==='riccardo'&&s.pronte!==false?await crVociLoad():new Map(),files=lines.map(l=>vm.get(crVKey(l))||null),n=files.filter(Boolean).length;
-  if(!n)return crSynthPiper(lines,s,say);
-  const rest=lines.map((l,i)=>files[i]?null:l),miss=rest.filter(x=>x!==null);let pip=null;
-  if(miss.length)pip=await crSynthPiper(miss,s,say);const sr=pip?pip.sr:24000;
-  say(`Uso la voce nuova di Gennarino (${n} frasi su ${lines.length})…`);
-  try{const clips=[],fatte=[];let j=0;
-    for(let i=0;i<lines.length;i++){if(files[i]){clips.push(await crVocePronta(files[i],sr));fatte.push(true)}else{clips.push(pip.clips[j++]);fatte.push(false)}}
-    CR.vociInfo={pronte:n,tot:lines.length};return{sr,clips,fatte}}
+  if(n<lines.length){if(n)CR.vociInfo={pronte:n,tot:lines.length,vecchia:true,manca:lines.filter((l,i)=>!files[i])};return crSynthPiper(lines,s,say)}
+  say('Uso la voce nuova di Gennarino…');
+  try{const clips=[];for(const f of files)clips.push(await crVocePronta(f,24000));
+    CR.vociInfo={pronte:n,tot:lines.length};return{sr:24000,clips,fatte:files.map(()=>true)}}
   catch(e){console.warn('voci pronte non disponibili, uso Piper',e);CR.vociInfo=null;return crSynthPiper(lines,s,say)}}
 async function crSynthPiper(lines,s,say){const V=await crLoadTTS(s.voice,say),cfg=V.cfg;say('Preparo la pronuncia…');
   const ph=await crPhon(lines.map(crSpeak),cfg.espeak.voice);const ls=(cfg.inference.length_scale||1)*({normale:1,tiktok:0.92,veloce:0.84}[s.speed]||0.92);
@@ -728,7 +726,7 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
     len:+st.total.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep}:null,score:null,transcript:lines.join(' ').slice(0,900),topic:'',end:st.endTxt,niche:'tech',made:'creatore',
     f:{lead:0.2,pause:0,topicAt:null,pace:Math.round(shots/Math.max(1,st.total)*100)/10,hookW,subs:!!s.subs,end:true,capQ:/\?|comment|scrivete|ditemelo|dimmi/i.test(cap)},miss:[]};save();
   const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));const slot=personalSlot().when;
-  crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video pronto</h3>${CR.vociInfo?`<div style="font-size:12.5px;color:var(--mut);margin:-4px 0 8px">🎙️ Voce nuova di Gennarino: ${CR.vociInfo.pronte} frasi su ${CR.vociInfo.tot}${CR.vociInfo.pronte<CR.vociInfo.tot?' (le frasi cambiate hanno la voce vecchia)':''}</div>`:''}
+  crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video pronto</h3>${CR.vociInfo?(CR.vociInfo.vecchia?`<div style="font-size:12.5px;color:var(--warn,#b45309);margin:-4px 0 8px">🎙️ Voce vecchia: ${CR.vociInfo.tot-CR.vociInfo.pronte} frasi non hanno la voce nuova (es. «${esc(cutTxt(CR.vociInfo.manca[0],60))}»). Rimetti le frasi del piano o chiedi a Claude le voci nuove.</div>`:`<div style="font-size:12.5px;color:var(--mut);margin:-4px 0 8px">🎙️ Voce nuova di Gennarino in tutte le frasi</div>`):''}
    <div style="color:var(--mut);font-size:12.5px;margin-top:4px">${st.total.toFixed(1)} s · ${(out.blob.size/1048576).toFixed(1)} MB · ${lines.length} frasi</div>
    <video class="vid" src="${CR.url}" controls playsinline></video>
    <div class="acts"><a class="btn sm" href="${CR.url}" download="${name}">⬇︎ Scarica</a>${canShare?'<button class="btn sm cy" onclick="shareFinal()">📤 Condividi su TikTok</button>':''}
