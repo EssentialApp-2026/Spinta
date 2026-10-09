@@ -241,8 +241,8 @@ async function crListen(){if(CR.busy)return;const l=crLines()[0];if(!l){toast('S
 
 /* ---------- libreria del repository ---------- */
 async function crLibLoad(){if(CR.lib)return CR.lib;let items=[];
-  try{const r=await fetch('libreria/libreria.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();items=(j.elementi||[]).filter(x=>x&&x.file)}}catch(_){}
-  try{const known=new Set(items.flatMap(x=>[x.file,x.poster].filter(Boolean))),r=await fetch(CR_BASE.api);if(r.ok){const j=await r.json();
+  try{const r=await fetch('libreria/libreria.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();items=(j.elementi||[]).filter(x=>x&&x.file);CR.libTutto=!!j.tutteLeFrasi;CR.libEsclusi=(j.elementi_disegnati||[]).flatMap(x=>[x.file,x.poster].filter(Boolean))}}catch(_){}
+  try{const known=new Set(items.flatMap(x=>[x.file,x.poster].filter(Boolean)).concat(CR.libEsclusi||[])),r=await fetch(CR_BASE.api);if(r.ok){const j=await r.json();
     (Array.isArray(j)?j:[]).filter(f=>f.type==='file'&&/\.(mp4|webm|mov|m4v|jpe?g|png|webp)$/i.test(f.name)&&!known.has(f.name)&&!/poster|^_/i.test(f.name)).forEach(f=>items.push({file:f.name,tipo:/\.(jpe?g|png|webp)$/i.test(f.name)?'immagine':'video',tag:f.name.toLowerCase().replace(/\.[^.]+$/,'').split(/[^a-zàèéìòù0-9]+/).filter(w=>w.length>2)}))}}catch(_){}
   items.forEach(x=>{x.tipo=x.tipo||(/\.(jpe?g|png|webp)$/i.test(x.file)?'immagine':'video');x.tag=(x.tag||[]).map(t=>String(t).toLowerCase())});
   CR.lib=items;return items}
@@ -411,12 +411,12 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   // (anche «lavoro»: Gennarino che lavora contento non va sulle frasi tristi né nella settimana senza app)
   const allegra=x=>x.umore==='festa'||x.umore==='lavoro';
   const LIB=(lib||[]).filter(x=>!(tipo==='nessuno'&&allegra(x))),okFor=(it,x)=>!(allegra(x)&&it.expr==='sad')&&!(x.umore==='triste'&&it.expr!=='sad');
-  if(LIB.length&&n>3){const ok=it=>it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it),has=i=>!!(items[i]&&items[i].shot),
+  if(LIB.length&&n>3){const T=!!CR.libTutto,ok=it=>T?!bub(it):(it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it)),has=i=>!T&&!!(items[i]&&items[i].shot),
       near=(i,x)=>(items[i-1]&&items[i-1].shot===x)||(items[i+1]&&items[i+1].shot===x),uses=new Map(),use=(it,x)=>{it.shot=x;uses.set(x,(uses.get(x)||0)+1)};
-    items.forEach(it=>{if(it.i<1||bub(it))return;const ws=crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/),words=new Set(ws.filter((w,j)=>ws[j-1]!=='non'));let best=null,bs=0;
+    items.forEach(it=>{if((it.i<1&&!T)||bub(it))return;const ws=crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/),words=new Set(ws.filter((w,j)=>ws[j-1]!=='non'));let best=null,bs=0;
       LIB.forEach(x=>{if(!okFor(it,x))return;const sc=x.tag.filter(t=>words.has(t)).length;if(sc>bs&&!near(it.i,x)){bs=sc;best=x}});if(best)use(it,best)});
     let k=ep||0;items.forEach(it=>{if(!ok(it)||it.shot||has(it.i-1)||has(it.i+1))return;
-      for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<2){use(it,x);k+=a+1;break}}});
+      for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<(T?3:2)){use(it,x);k+=a+1;break}}});
     // se una clip torna una seconda volta riparte da dove si era fermata, così non si vede ripetere lo stesso pezzo
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
   const hook=crClean(lines[0]);

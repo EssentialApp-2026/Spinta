@@ -1,5 +1,9 @@
 # Libreria di Gennarino
 
+**Dal 9 ottobre 2026 Spinta usa il Gennarino realistico** (file `vero-*.mp4`, fatti con Kling dall'immagine `claude/kling/partenza_app.jpg`: Gennarino al mercato con i telefoni delle tre app sul banco). In `libreria.json` c'è `tutteLeFrasi: true`: ogni frase della puntata ha una clip, così non compare più il Gennarino disegnato. Le clip disegnate sono ancora qui e in `elementi_disegnati`.
+
+Clip realistiche: `vero-saluto`, `vero-commenti`, `vero-idee`, `vero-telefono`, `vero-festa`, `vero-lavora`, `vero-pensa`, `vero-ascolta`, `vero-mammamia`, `vero-ciao`, `vero-triste` (5 s ciascuna). Le grezze di Kling sono in `claude/kling/`; `claude/kling/prepara.py` rimette fermi i telefoni (Kling storpia le scritte) e le converte.
+
 Clip e immagini che il creatore video di Spinta usa come **scene in più** tra una battuta e l'altra di Gennarino.
 
 - Formati: MP4 o WebM (meglio H.264, verticali 9:16, senza testi sopra) e immagini JPG, PNG o WebP.
