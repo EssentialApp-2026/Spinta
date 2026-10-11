@@ -28,6 +28,7 @@ function crInject(){if($('#m-crea'))return;
   <p class="sub" style="margin-bottom:8px">Scrivo la puntata, le do la voce e monto il video, tutto sul telefono. Lo stile è quello delle tue puntate.</p>
   <canvas id="cr-prev" width="360" height="640" style="width:52%;display:block;margin:0 auto;border-radius:14px;background:#000"></canvas>
   <div class="row"><div><label>Puntata</label><select id="cr-tipo" onchange="crTipo()">${Object.entries(CR_TIPI).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>
+   <div id="cr-pbox"><label>Parte n.</label><input id="cr-ep" type="number" min="1" inputmode="numeric" style="width:76px" onchange="serEp(this.value);crChanged()"></div>
    <div id="cr-vbox"><label>Ha vinto</label><select id="cr-vince" onchange="crChanged()"><option>A</option><option>B</option><option>C</option></select></div></div>
   <div id="cr-ibox"><label>Le tre idee della settimana</label>
    ${['A','B','C'].map(k=>`<div style="display:flex;gap:8px;align-items:center;margin-top:6px"><b style="width:18px">${k}</b><input id="cr-i${k}" placeholder="${{A:'es. Dividi il conto in pizzeria',B:'es. Timer per la moka',C:'es. Lista della spesa a voce'}[k]}" oninput="crChanged(true)"></div>`).join('')}</div>
@@ -58,7 +59,7 @@ function crClose(){if(CR.busy&&!confirm('Il video è ancora in preparazione: chi
 function crOpen(fromPlan){crInject();const s=crSet();
   $('#cr-voice').value=s.voice;$('#cr-fx').value=s.fx;$('#cr-speed').value=s.speed;$('#cr-subs').checked=s.subs;$('#cr-bar').checked=s.bar;$('#cr-light').checked=s.light;
   $('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
-  $('#cr-tipo').value=fromPlan?'libera':(CR_TIPI[s.tipo]?s.tipo:'idee');$('#cr-vince').value=s.vince||'A';['A','B','C'].forEach(k=>$('#cr-i'+k).value=s.idee[k]||'');crBoxes();
+  {const sr=curSeries(),pb=$('#cr-pbox');if(pb){pb.style.display=sr?'':'none';$('#cr-ep').value=sr?sr.ep:''}}$('#cr-tipo').value=fromPlan?'libera':(CR_TIPI[s.tipo]?s.tipo:'idee');$('#cr-vince').value=s.vince||'A';['A','B','C'].forEach(k=>$('#cr-i'+k).value=s.idee[k]||'');crBoxes();
   if(fromPlan||!$('#cr-txt').value.trim())crFill(true);
   openModal('m-crea');crPrev();crLibLoad().then(crLibShow);crWeekLoad().then(crWeekShow)}
 function crBoxes(){const t=$('#cr-tipo').value;$('#cr-ibox').style.display=['libera','presentazione','risposta','nessuno'].includes(t)?'none':'';$('#cr-cbox').style.display=t==='risposta'?'':'none';
@@ -432,12 +433,12 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   // (anche «lavoro»: Gennarino che lavora contento non va sulle frasi tristi né nella settimana senza app)
   const allegra=x=>x.umore==='festa'||x.umore==='lavoro';
   const LIB=(lib||[]).filter(x=>!(tipo==='nessuno'&&allegra(x))),okFor=(it,x)=>!(allegra(x)&&it.expr==='sad')&&!(x.umore==='triste'&&it.expr!=='sad');
-  if(LIB.length&&n>3){const T=!!CR.libTutto,ok=it=>T?!bub(it):(it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it)),has=i=>!T&&!!(items[i]&&items[i].shot),
+  if(LIB.length&&(n>3||CR.libTutto)){const T=!!CR.libTutto,ok=it=>T?true:(it.i>0&&it.i<n-1&&it.expr!=='wave'&&!bub(it)),has=i=>!T&&!!(items[i]&&items[i].shot),
       near=(i,x)=>(items[i-1]&&items[i-1].shot===x)||(items[i+1]&&items[i+1].shot===x),uses=new Map(),use=(it,x)=>{it.shot=x;uses.set(x,(uses.get(x)||0)+1)};
-    items.forEach(it=>{if((it.i<1&&!T)||bub(it))return;const ws=crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/),words=new Set(ws.filter((w,j)=>ws[j-1]!=='non'));let best=null,bs=0;
+    items.forEach(it=>{if((it.i<1&&!T)||(!T&&bub(it)))return;const ws=crClean(it.text).toLowerCase().split(/[^a-zàèéìòù0-9]+/),words=new Set(ws.filter((w,j)=>ws[j-1]!=='non'));let best=null,bs=0;
       LIB.forEach(x=>{if(!okFor(it,x))return;const sc=x.tag.filter(t=>words.has(t)).length;if(sc>bs&&!near(it.i,x)){bs=sc;best=x}});if(best)use(it,best)});
     let k=ep||0;items.forEach(it=>{if(!ok(it)||it.shot||has(it.i-1)||has(it.i+1))return;
-      for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<(T?3:2)){use(it,x);k+=a+1;break}}});
+      for(let m=(T?3:2);m<=(T?6:2);m++){let done=false;for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<m){use(it,x);k+=a+1;done=true;break}}if(done)break}});
     // se una clip torna una seconda volta riparte da dove si era fermata, così non si vede ripetere lo stesso pezzo
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
   // apertura scelta da Claude nel piano della settimana (solo se il copione comincia ancora con la stessa frase):
@@ -605,7 +606,7 @@ function crSubs(c,words,alpha,t,pg){c.save();c.globalAlpha=alpha;c.textBaseline=
       x+=ww+(j<ln.length-1?c.measureText(' ').width:0);gi++})});c.restore()}
 // la bolla del commento a cui Gennarino risponde
 function crBubble(c,st,t){const b=st.com;if(!b||t>b.e)return;const a=Math.max(0,Math.min(1,t/0.2,(b.e-t)/0.25)),k=1-Math.pow(1-Math.min(1,t/0.25),3);
-  c.save();c.globalAlpha=a;c.translate(540,430);const sc=0.85+0.15*k;c.scale(sc,sc);c.font=`800 44px ${CR_FONT}`;const L=crWrap(c,b.txt,700,4),h=124+L.length*56;
+  c.save();c.globalAlpha=a;c.translate(540,st.items.some(x=>x.shot)?270:430);const sc=0.85+0.15*k;c.scale(sc,sc);c.font=`800 44px ${CR_FONT}`;const L=crWrap(c,b.txt,700,4),h=124+L.length*56;
   c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=30;c.shadowOffsetY=12;crRR(c,-450,-h/2,900,h,34,'#fff');c.beginPath();c.moveTo(-360,h/2-4);c.lineTo(-330,h/2+34);c.lineTo(-300,h/2-4);c.fill();c.shadowColor='transparent';
   const u=b.u||'',hue=[...u].reduce((a,ch)=>a+ch.charCodeAt(0),0)%360;crCirc(c,-386,-h/2+62,34,u?`hsl(${hue},62%,52%)`:'#8a8f9c');
   c.fillStyle='#fff';c.font=`900 34px ${CR_FONT}`;c.textAlign='center';c.textBaseline='middle';c.fillText((u[0]||'?').toUpperCase(),-386,-h/2+63);
@@ -622,6 +623,8 @@ function crMedia(c,el,t,t0,zz){const vid=el.tagName==='VIDEO';if(vid?el.readySta
 function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/1920,0,0);
   const it=st.items.find(x=>t>=x.s&&t<x.e+0.22)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
   const cam=crCam(t,it);let drawn=false;if(it&&it.shot&&media&&media.el&&media.cur===it){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,it.s,1+(cam.z-1)*0.5)}
+  // clip non ancora pronta (anteprima, copertina, primi fotogrammi): al posto del Gennarino disegnato si vede il poster della clip
+  if(!drawn&&it&&it.shot){const im=crPoster(it.shot);if(im){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,im,t,it.s,1+(cam.z-1)*0.5)}}
   // sulle clip della libreria un'ombra morbida dietro ai sottotitoli, così si leggono anche sopra l'insegna
   if(drawn&&st.subs&&it.i>0){const gr=c.createLinearGradient(0,1320,0,1700);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,'rgba(0,0,0,.42)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fillRect(0,1320,1080,380)}
   if(!drawn){c.save();c.translate(cam.cx,cam.cy);c.scale(cam.z,cam.z);c.translate(-cam.cx,-cam.cy);
@@ -645,9 +648,10 @@ let _crPT=null;function crPrevSoon(){clearTimeout(_crPT);_crPT=setTimeout(crPrev
 function crPrev(){const cv=$('#cr-prev');if(!cv)return;const lines=crLines(),s=crSet();const n=Math.max(1,lines.length);
   $('#cr-len').textContent=lines.length?`${lines.length} frasi · circa ${Math.round(lines.join(' ').split(/\s+/).length/3.3+n*0.22+0.6)} secondi`:'';
   const fake={seg:lines.map((_,i)=>({s:i*2.4,e:i*2.4+2.2})),total:n*2.4,env:new Float32Array(1).fill(0.4),fps:30};
-  const st=crState(lines.length?lines:['…'],fake,{...s,tipo:$('#cr-tipo').value,vince:$('#cr-vince').value,subs:$('#cr-subs').checked,bar:$('#cr-bar').checked},null);
+  const st=crState(lines.length?lines:['…'],fake,{...s,tipo:$('#cr-tipo').value,vince:$('#cr-vince').value,subs:$('#cr-subs').checked,bar:$('#cr-bar').checked},CR.lib||null);
   if(!CR.prevL||CR.prevL.seed!==st.seed){CR.prevL=crLayers(360,640,st);CR.prevL.seed=st.seed}
-  crDraw(cv.getContext('2d'),360,640,1.0,st,CR.prevL,null)}
+  const dr=()=>crDraw(cv.getContext('2d'),360,640,1.0,st,CR.prevL,null);dr();
+  if(!CR.lib)crLibLoad().then(()=>{if($('#cr-prev'))crPrevSoon()});else crPostersReady(st).then(()=>{if($('#cr-prev'))dr()})}
 
 /* ---------- creazione ---------- */
 function crSay(html){const o=$('#cr-out');if(o)o.innerHTML=html}
@@ -668,6 +672,11 @@ async function crMake(){if(CR.busy)return;const lines=crLines();if(lines.length<
       ${s.light?'':'<button class="btn" onclick="$(\'#cr-light\').checked=true;crSaveSet();crMake()">⚡ Riprova in modalità leggera (720p)</button>'}<small class="n">La prima volta serve la connessione per scaricare la voce.</small></div>`)}}
   finally{wakeOff(wk);try{ac.close()}catch(_){}CR.busy=false;const b=$('#cr-go');if(b)b.disabled=false}}
 // prepara la clip della libreria per una scena (al massimo due lettori video aperti insieme)
+const _crPo=new Map();
+// poster (JPG) di una clip: caricato una volta sola; crPostersReady aspetta che siano tutti pronti prima di anteprima e copertina
+function crPoster(x){if(!x||!x.poster)return null;let im=_crPo.get(x.poster);if(!im){im=new Image();im.decoding='async';im.src='libreria/'+encodeURIComponent(x.poster);_crPo.set(x.poster,im)}return im.complete&&im.naturalWidth?im:null}
+function crPostersReady(st){const L=[...new Set(st.items.filter(x=>x.shot&&x.shot.poster).map(x=>x.shot))];L.forEach(crPoster);
+  return Promise.all(L.map(x=>new Promise(r=>{const im=_crPo.get(x.poster);if(!im||im.complete)return r();im.onload=im.onerror=()=>r();setTimeout(r,4000)})))}
 function crMediaFor(item,off){if(item.tipo==='immagine'){const im=new Image();im.decoding='async';im.src='libreria/'+encodeURIComponent(item.file);return im}
   const v=hiddenVideo('libreria/'+encodeURIComponent(item.file),true);v.loop=true;
   if(off>0)v.addEventListener('loadedmetadata',()=>{try{if(v.duration>0)v.currentTime=off%v.duration}catch(_){}},{once:true});return v}
@@ -677,7 +686,7 @@ async function crRender(st,s,ac,onP){const W=s.light?720:1080,H=s.light?1280:192
   const shots=st.items.filter(x=>x.shot);const media={el:null,cur:null,next:null,nextAt:null};let si=0;
   const prepNext=()=>{const nx=shots[si++];media.next=nx?crMediaFor(nx.shot,nx.shotOff||0):null;media.nextAt=nx||null};prepNext();
   const kill=el=>{if(el&&el.tagName==='VIDEO'){try{el.pause();el.removeAttribute('src');el.load();el.remove()}catch(_){}}};
-  crDraw(ctx,W,H,0,st,L,null);
+  await crPostersReady(st);crDraw(ctx,W,H,0,st,L,null);
   const tracks=[...c.captureStream(30).getVideoTracks(),...dest.stream.getAudioTracks()];const {rec,mime}=makeRecorder(new MediaStream(tracks),s.light);
   const chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
   let t0=0,ended=false,paused=false,lastT=-1,lastMove=performance.now();
@@ -705,7 +714,7 @@ async function crRender(st,s,ac,onP){const W=s.light?720:1080,H=s.light?1280:192
   const type=((rec.mimeType||mime||'video/webm').split(';')[0])||'video/webm';let blob=new Blob(res,{type});
   if(type.includes('webm')&&window.ysFixWebmDuration)blob=await Promise.race([window.ysFixWebmDuration(blob,Math.round(st.total*1000),{logger:false}),new Promise(r=>setTimeout(()=>r(blob),8000))]).catch(()=>blob);
   // copertina: l'istante con l'hook a schermo
-  const cv=document.createElement('canvas');cv.width=1080;cv.height=1920;crDraw(cv.getContext('2d'),1080,1920,Math.min(1.2,st.hookShow-0.4),st,crLayers(1080,1920,st),null);
+  await crPostersReady(st);const cv=document.createElement('canvas');cv.width=1080;cv.height=1920;crDraw(cv.getContext('2d'),1080,1920,Math.min(1.2,st.hookShow-0.4),st,crLayers(1080,1920,st),null);
   const cover=await new Promise(r=>cv.toBlob(r,'image/jpeg',0.9));
   return{blob,type,cover}}
 function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.includes('mp4')?'mp4':'webm';
