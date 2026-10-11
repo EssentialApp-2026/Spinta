@@ -171,7 +171,7 @@ async function crPhon(lines,lang){const out=[];
   const m=await createPiperPhonemize({print:l=>{try{out.push(JSON.parse(l))}catch(_){}},printErr:()=>{},locateFile:f=>CR_BASE.pp+f});
   m.callMain(['-l',lang,'--input',JSON.stringify(lines.map(text=>({text}))),'--espeak_data','/espeak-ng-data']);return out}
 const crSpeak=s=>crClean(s).replace(/#\S+/g,'').replace(/@([\w.]+)/g,'$1').replace(/&/g,' e ').replace(/'O\b/g,'o').replace(/…/g,'').trim()||'…';
-function crTrim(a,sr){let s=0,e=a.length;const th=0.012,m=Math.round(sr*0.03);while(s<e&&Math.abs(a[s])<th)s++;while(e>s&&Math.abs(a[e-1])<th)e--;
+function crTrim(a,sr){let s=0,e=a.length;const th=0.02,m=Math.round(sr*0.012);while(s<e&&Math.abs(a[s])<th)s++;while(e>s&&Math.abs(a[e-1])<th)e--;
   return a.slice(Math.max(0,s-m),Math.min(a.length,e+m))}
 // battute già pronte con la voce nuova di Gennarino (Mako): libreria/voci/voci.json, scelte per testo uguale
 const crVKey=t=>crClean(t).toLowerCase().normalize('NFC').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -185,7 +185,7 @@ async function crVocePronta(file,sr){CR.vociBuf=CR.vociBuf||new Map();const k=fi
 async function crSynth(lines,s,say){CR.vociInfo=null;
   // mai due voci nello stesso video: la voce nuova solo se TUTTE le frasi sono già pronte, altrimenti tutta la puntata con Piper
   const vm=(s.voice||'riccardo')==='riccardo'&&s.pronte!==false?await crVociLoad():new Map(),files=lines.map(l=>vm.get(crVKey(l))||null),n=files.filter(Boolean).length;
-  if(n<lines.length){if(n)CR.vociInfo={pronte:n,tot:lines.length,vecchia:true,manca:lines.filter((l,i)=>!files[i])};return crSynthPiper(lines,s,say)}
+  if(n<lines.length){if(vm.size){CR.vociInfo={pronte:n,tot:lines.length,vecchia:true,manca:lines.filter((l,i)=>!files[i])};window._crManca=CR.vociInfo.manca.join('\n')}return crSynthPiper(lines,s,say)}
   say('Uso la voce nuova di Gennarino…');
   try{const clips=[];for(const f of files)clips.push(await crVocePronta(f,24000));
     CR.vociInfo={pronte:n,tot:lines.length};return{sr:24000,clips,fatte:files.map(()=>true)}}
@@ -199,7 +199,8 @@ async function crSynthPiper(lines,s,say){const V=await crLoadTTS(s.voice,say),cf
     clips.push(crTrim(r.output.data,cfg.audio.sample_rate));await new Promise(r=>setTimeout(r,0))}
   return{sr:cfg.audio.sample_rate,clips}}
 // traccia della voce con effetto robot, volume uniforme e inviluppo per muovere la bocca
-async function crVoice(tts,s){const sr=44100,gap=0.22,pre=0.15,rate={no:1,leggero:1.04,forte:1.09}[s.fx]||1;
+const CR_HOLD=0.07;   // pausa tra una frase e la successiva (secondi): niente tempi morti tra una scena e l'altra
+async function crVoice(tts,s){const sr=44100,gap=CR_HOLD,pre=0.08,rate={no:1,leggero:1.04,forte:1.09}[s.fx]||1;
   const pr=i=>tts.fatte&&tts.fatte[i];   // le battute pronte hanno già velocità ed effetto robot
   let t=pre;const seg=tts.clips.map((c,i)=>{const d=c.length/tts.sr/(pr(i)?1:rate),o={s:t,e:t+d};t+=d+gap;return o});const total=t+0.5;
   const oc=new OfflineAudioContext(1,Math.ceil(total*sr),sr),inp=oc.createGain();let node=inp;
@@ -440,12 +441,12 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
     let k=ep||0;items.forEach(it=>{if(!ok(it)||it.shot||has(it.i-1)||has(it.i+1))return;
       for(let m=(T?3:2);m<=(T?6:2);m++){let done=false;for(let a=0;a<LIB.length;a++){const x=LIB[(k+a)%LIB.length];if(okFor(it,x)&&!near(it.i,x)&&(uses.get(x)||0)<m){use(it,x);k+=a+1;done=true;break}}if(done)break}});
     // se una clip torna una seconda volta riparte da dove si era fermata, così non si vede ripetere lo stesso pezzo
-    const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
+    const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+CR_HOLD)})}
   // apertura scelta da Claude nel piano della settimana (solo se il copione comincia ancora con la stessa frase):
   // la clip copre le prime frasi di fila, senza ricominciare, e nessun'altra frase vicina la ripete
   const ap=CR.apertura;if(ap&&ap.file&&items.length&&crClean(lines[0]).toLowerCase()===crClean(ap.testo).toLowerCase()){const x={file:ap.file,tipo:/\.(jpe?g|png|webp)$/i.test(ap.file)?'immagine':'video',tag:[]},k=Math.min(ap.frasi,n);
     for(let i=0;i<k;i++){items[i].shot=x;items[i].shotCont=i>0}if(items[k]&&items[k].shot&&items[k].shot.file===ap.file)items[k].shot=null;
-    const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+0.22)})}
+    const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+CR_HOLD)})}
   const hook=crClean(lines[0]);
   const END={idee:'Vota A, B o C nei commenti 👇',risultato:'Venerdì il regalo sul banco 🎁',regalo:'Link nel profilo · gratis 🎁',presentazione:'Scrivi la tua idea nei commenti 👇',risposta:'Scrivi la tua nei commenti 👇',nessuno:'Lunedì si vota di nuovo 👇'};
   // momenti per gli effetti sonori (gli stessi in cui compaiono le cose a schermo)
@@ -536,7 +537,7 @@ function crWrap(c,txt,max,n){const L=[];let cur='';String(txt).split(/\s+/).forE
 function crGiftIcon(c,x,y,sz){const g=c.createLinearGradient(x,y,x+sz,y+sz);g.addColorStop(0,'#25f4ee');g.addColorStop(1,'#ff2d6f');crRR(c,x,y,sz,sz,sz*0.24,g);
   const b=sz*0.5,bx=x+(sz-b)/2,by=y+sz*0.34;crRR(c,bx,by,b,b*0.82,6,'#fff');crRR(c,bx-6,by-sz*0.1,b+12,sz*0.14,5,'#fff');
   c.fillStyle='#ff2d6f';c.fillRect(x+sz/2-5,by-sz*0.1,10,b*0.82+sz*0.1);c.strokeStyle='#fff';c.lineWidth=7;c.beginPath();c.ellipse(x+sz/2-13,by-sz*0.16,13,9,-0.5,0,Math.PI*2);c.ellipse(x+sz/2+13,by-sz*0.16,13,9,0.5,0,Math.PI*2);c.stroke()}
-function crPop(c,it,st,t){const cal=it.pop==='cal',solo=cal&&it.stamp&&it.stampAt-it.s>=0.8,end=solo?it.stampAt:it.e+0.22,a=Math.min(1,Math.max(0,(t-it.s)/0.25),Math.max(0,(end-t)/0.2));if(a<=0)return;
+function crPop(c,it,st,t){const cal=it.pop==='cal',solo=cal&&it.stamp&&it.stampAt-it.s>=0.8,end=solo?it.stampAt:it.e+CR_HOLD,a=Math.min(1,Math.max(0,(t-it.s)/0.25),Math.max(0,(end-t)/0.2));if(a<=0)return;
   const k=1-Math.pow(1-Math.min(1,(t-it.s)/0.25),3),card=(x,y,w,h)=>{c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=30;c.shadowOffsetY=12;crRR(c,x,y,w,h,28,'#fbf8f1');c.shadowColor='transparent';c.shadowBlur=0;c.shadowOffsetY=0};
   c.save();c.globalAlpha=a;c.textAlign='center';c.textBaseline='middle';
   if(cal){const d=it.calDay===3?st.mer:st.ven,sc=0.7+0.3*k;c.translate(it.stamp&&!solo?300:540,400);c.scale(sc,sc);card(-160,-165,320,330);
@@ -570,7 +571,7 @@ function crBallot(c,st,t){const b=st.ballot;if(!b||t<b.s||t>b.e)return false;
   const vis=b.rows.reduce((n,r)=>n+Math.max(0,Math.min(1,(t-r.s)/0.22)),0),h=86+vis*rh+68;   // la scheda cresce riga per riga
   c.save();c.globalAlpha=a;c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=30;c.shadowOffsetY=12;crRR(c,x,top,w,h,30,'#fbf8f1');c.shadowColor='transparent';c.shadowBlur=0;c.shadowOffsetY=0;
   c.textBaseline='middle';c.textAlign='left';c.fillStyle='#8a8f9c';c.font=`900 30px ${CR_FONT}`;c.fillText('IL VOTO DELLA SETTIMANA',x+38,top+48);
-  b.rows.forEach((r,j)=>{if(t<r.s)return;const y=top+84+j*rh,cur=t<r.e+0.22,ah=Math.min(1,(t-r.s)/0.22);c.globalAlpha=a*ah;
+  b.rows.forEach((r,j)=>{if(t<r.s)return;const y=top+84+j*rh,cur=t<r.e+CR_HOLD,ah=Math.min(1,(t-r.s)/0.22);c.globalAlpha=a*ah;
     crRR(c,x+24,y,w-48,rh-12,20,cur?'#fff1c2':'#f1ece0');if(cur){c.strokeStyle='#ffb020';c.lineWidth=4;crRR(c,x+24,y,w-48,rh-12,20);c.stroke()}
     const cy=y+(rh-12)/2;crCirc(c,x+78,cy,30,'#1b2133');c.fillStyle='#4ff0d0';c.font=`900 38px ${CR_FONT}`;c.textAlign='center';c.fillText(r.k,x+78,cy+2);
     c.textAlign='left';c.fillStyle='#1d1d26';let fs=42;c.font=`800 ${fs}px ${CR_FONT}`;while(c.measureText(r.txt).width>w-200&&fs>26){fs-=2;c.font=`800 ${fs}px ${CR_FONT}`}
@@ -621,12 +622,14 @@ function crMedia(c,el,t,t0,zz){const vid=el.tagName==='VIDEO';if(vid?el.readySta
   const w=vid?el.videoWidth:el.naturalWidth,h=vid?el.videoHeight:el.naturalHeight;if(!w||!h)return false;
   const z=(vid?1:1+Math.min(1,(t-t0)/4)*0.1)*(zz||1),r=Math.max(1080/w,1920/h)*z,dw=w*r,dh=h*r;c.drawImage(el,(1080-dw)/2,(1920-dh)/2,dw,dh);return true}
 function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/1920,0,0);
-  const it=st.items.find(x=>t>=x.s&&t<x.e+0.22)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
-  const cam=crCam(t,it);let drawn=false;if(it&&it.shot&&media&&media.el&&media.cur===it){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,it.s,1+(cam.z-1)*0.5)}
+  const it=st.items.find(x=>t>=x.s&&t<x.e+CR_HOLD)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
+  // la scena non resta mai senza clip: prima della prima frase e dopo l'ultima (finale) si vede la clip più vicina, mai il vecchio Gennarino disegnato
+  const vis=it||(st.items.length?(t<st.items[0].s?st.items[0]:[...st.items].reverse().find(x=>x.s<=t)||st.items[0]):null);
+  const cam=crCam(t,it);let drawn=false;if(vis&&vis.shot&&media&&media.el&&media.cur===vis){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,vis.s,1+(cam.z-1)*0.5)}
   // clip non ancora pronta (anteprima, copertina, primi fotogrammi): al posto del Gennarino disegnato si vede il poster della clip
-  if(!drawn&&it&&it.shot){const im=crPoster(it.shot);if(im){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,im,t,it.s,1+(cam.z-1)*0.5)}}
+  if(!drawn&&vis&&vis.shot){const im=crPoster(vis.shot);if(im){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,im,t,vis.s,1+(cam.z-1)*0.5)}}
   // sulle clip della libreria un'ombra morbida dietro ai sottotitoli, così si leggono anche sopra l'insegna
-  if(drawn&&st.subs&&it.i>0){const gr=c.createLinearGradient(0,1320,0,1700);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,'rgba(0,0,0,.42)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fillRect(0,1320,1080,380)}
+  if(drawn&&st.subs&&it&&it.i>0){const gr=c.createLinearGradient(0,1320,0,1700);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,'rgba(0,0,0,.42)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fillRect(0,1320,1080,380)}
   if(!drawn){c.save();c.translate(cam.cx,cam.cy);c.scale(cam.z,cam.z);c.translate(-cam.cx,-cam.cy);
     c.drawImage(L.back,0,0,1080,1920);crRobot(c,t,st,it,mouth);c.drawImage(L.front,0,0,1080,1920);crJar(c);c.restore()}
   // la scheda di voto ha la precedenza; negli ultimi secondi c'è il testo finale e i riquadri si fermano
@@ -646,7 +649,7 @@ function crLayers(W,H,st){return{back:crLayer(W,H,c=>crBack(c,st.seed)),front:cr
 /* ---------- anteprima ---------- */
 let _crPT=null;function crPrevSoon(){clearTimeout(_crPT);_crPT=setTimeout(crPrev,250)}
 function crPrev(){const cv=$('#cr-prev');if(!cv)return;const lines=crLines(),s=crSet();const n=Math.max(1,lines.length);
-  $('#cr-len').textContent=lines.length?`${lines.length} frasi · circa ${Math.round(lines.join(' ').split(/\s+/).length/3.3+n*0.22+0.6)} secondi`:'';
+  $('#cr-len').textContent=lines.length?`${lines.length} frasi · circa ${Math.round(lines.join(' ').split(/\s+/).length/3.3+n*CR_HOLD+0.6)} secondi`:'';
   const fake={seg:lines.map((_,i)=>({s:i*2.4,e:i*2.4+2.2})),total:n*2.4,env:new Float32Array(1).fill(0.4),fps:30};
   const st=crState(lines.length?lines:['…'],fake,{...s,tipo:$('#cr-tipo').value,vince:$('#cr-vince').value,subs:$('#cr-subs').checked,bar:$('#cr-bar').checked},CR.lib||null);
   if(!CR.prevL||CR.prevL.seed!==st.seed){CR.prevL=crLayers(360,640,st);CR.prevL.seed=st.seed}
@@ -686,7 +689,10 @@ async function crRender(st,s,ac,onP){const W=s.light?720:1080,H=s.light?1280:192
   const shots=st.items.filter(x=>x.shot);const media={el:null,cur:null,next:null,nextAt:null};let si=0;
   const prepNext=()=>{const nx=shots[si++];media.next=nx?crMediaFor(nx.shot,nx.shotOff||0):null;media.nextAt=nx||null};prepNext();
   const kill=el=>{if(el&&el.tagName==='VIDEO'){try{el.pause();el.removeAttribute('src');el.load();el.remove()}catch(_){}}};
-  await crPostersReady(st);crDraw(ctx,W,H,0,st,L,null);
+  await crPostersReady(st);
+  // la prima clip deve essere pronta prima di far partire la registrazione, così il video non si apre mai con il fermo immagine
+  if(media.next&&media.next.tagName==='VIDEO'&&media.next.readyState<2)await new Promise(r=>{const d=()=>r();media.next.addEventListener('loadeddata',d,{once:true});media.next.addEventListener('error',d,{once:true});setTimeout(d,3500)});
+  crDraw(ctx,W,H,0,st,L,null);
   const tracks=[...c.captureStream(30).getVideoTracks(),...dest.stream.getAudioTracks()];const {rec,mime}=makeRecorder(new MediaStream(tracks),s.light);
   const chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
   let t0=0,ended=false,paused=false,lastT=-1,lastMove=performance.now();
@@ -699,8 +705,8 @@ async function crRender(st,s,ac,onP){const W=s.light?720:1080,H=s.light?1280:192
     const loop=()=>{if(ended)return;if(CR.cancel){ended=true;try{rec.stop()}catch(_){}resolve(null);return}
       const t=Math.max(0,ac.currentTime-t0);
       // cambio scena della libreria (se una frase è già passata senza che toccasse a lei, salto alla successiva)
-      const it=st.items.find(x=>t>=x.s&&t<x.e+0.22);
-      while(media.nextAt&&media.nextAt!==it&&t>=media.nextAt.e+0.22){kill(media.next);prepNext()}
+      const it=st.items.find(x=>t>=x.s&&t<x.e+CR_HOLD);
+      while(media.nextAt&&media.nextAt!==it&&t>=media.nextAt.e+CR_HOLD){kill(media.next);prepNext()}
       if(it&&media.nextAt===it){kill(media.el);media.el=media.next;media.cur=it;
         if(media.el&&media.el.tagName==='VIDEO')media.el.play().catch(()=>{});prepNext()}
       else if(media.el&&media.cur&&media.cur!==it){kill(media.el);media.el=null;media.cur=null}   // scena finita: libero il lettore
@@ -735,7 +741,7 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
     len:+st.total.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep}:null,score:null,transcript:lines.join(' ').slice(0,900),topic:'',end:st.endTxt,niche:'tech',made:'creatore',
     f:{lead:0.2,pause:0,topicAt:null,pace:Math.round(shots/Math.max(1,st.total)*100)/10,hookW,subs:!!s.subs,end:true,capQ:/\?|comment|scrivete|ditemelo|dimmi/i.test(cap)},miss:[]};save();
   const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));const slot=personalSlot().when;
-  crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video pronto</h3>${CR.vociInfo?(CR.vociInfo.vecchia?`<div style="font-size:12.5px;color:var(--warn,#b45309);margin:-4px 0 8px">🎙️ Voce vecchia: ${CR.vociInfo.tot-CR.vociInfo.pronte} frasi non hanno la voce nuova (es. «${esc(cutTxt(CR.vociInfo.manca[0],60))}»). Rimetti le frasi del piano o chiedi a Claude le voci nuove.</div>`:`<div style="font-size:12.5px;color:var(--mut);margin:-4px 0 8px">🎙️ Voce nuova di Gennarino in tutte le frasi</div>`):''}
+  crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video pronto</h3>${CR.vociInfo?(CR.vociInfo.vecchia?`<div style="font-size:12.5px;color:var(--warn,#b45309);margin:-4px 0 8px">🎙️ Voce vecchia: ${CR.vociInfo.tot-CR.vociInfo.pronte} frasi non hanno la voce nuova (es. «${esc(cutTxt(CR.vociInfo.manca[0],60))}»). Per avere la voce nuova in tutto il video usa le frasi del piano così come sono, oppure chiedi a Claude le voci nuove per queste frasi. <button class="btn sm alt" onclick="copy(window._crManca||'');toast('Frasi copiate')">Copia le frasi senza voce</button></div>`:`<div style="font-size:12.5px;color:var(--mut);margin:-4px 0 8px">🎙️ Voce nuova di Gennarino in tutte le frasi</div>`):''}
    <div style="color:var(--mut);font-size:12.5px;margin-top:4px">${st.total.toFixed(1)} s · ${(out.blob.size/1048576).toFixed(1)} MB · ${lines.length} frasi</div>
    <video class="vid" src="${CR.url}" controls playsinline></video>
    <div class="acts"><a class="btn sm" href="${CR.url}" download="${name}">⬇︎ Scarica</a>${canShare?'<button class="btn sm cy" onclick="shareFinal()">📤 Condividi su TikTok</button>':''}
