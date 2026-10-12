@@ -618,8 +618,9 @@ function crCam(t,it){let z=1;const cx=540,cy=800;if(it&&it.cam)z=1.13;
   if(it){const p=Math.max(0,Math.min(1,(t-it.s)/Math.max(0.6,it.e-it.s)));z*=1+0.035*p;const q=t-it.s;if(it.i>0&&q>=0&&q<0.22)z*=1+0.05*(1-q/0.22)}
   if(t<0.4){const q=1-t/0.4;z*=1+0.16*q*q}return{z,cx,cy}}
 // una clip o un'immagine della libreria a tutto schermo (ritaglio 9:16)
-function crMedia(c,el,t,t0,zz){const vid=el.tagName==='VIDEO';if(vid?el.readyState<2:!(el.complete&&el.naturalWidth))return false;
-  const w=vid?el.videoWidth:el.naturalWidth,h=vid?el.videoHeight:el.naturalHeight;if(!w||!h)return false;
+function crMedia(c,el,t,t0,zz){const cv=el.tagName==='CANVAS'||(typeof OffscreenCanvas!=='undefined'&&el instanceof OffscreenCanvas),vid=el.tagName==='VIDEO'||cv;
+  if(cv?!el.width:el.tagName==='VIDEO'?el.readyState<2:!(el.complete&&el.naturalWidth))return false;
+  const w=cv?el.width:el.tagName==='VIDEO'?el.videoWidth:el.naturalWidth,h=cv?el.height:el.tagName==='VIDEO'?el.videoHeight:el.naturalHeight;if(!w||!h)return false;
   const z=(vid?1:1+Math.min(1,(t-t0)/4)*0.1)*(zz||1),r=Math.max(1080/w,1920/h)*z,dw=w*r,dh=h*r;c.drawImage(el,(1080-dw)/2,(1920-dh)/2,dw,dh);return true}
 function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/1920,0,0);
   const it=st.items.find(x=>t>=x.s&&t<x.e+CR_HOLD)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
@@ -627,6 +628,7 @@ function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/19
   const vis=it||(st.items.length?(t<st.items[0].s?st.items[0]:[...st.items].reverse().find(x=>x.s<=t)||st.items[0]):null);
   const cam=crCam(t,it);let drawn=false;if(vis&&vis.shot&&media&&media.el&&media.cur===vis){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,vis.s,1+(cam.z-1)*0.5)}
   // clip non ancora pronta (anteprima, copertina, primi fotogrammi): al posto del Gennarino disegnato si vede il poster della clip
+  if(drawn&&media&&media.prev&&t>=vis.s&&t<vis.s+CR_XF){c.globalAlpha=1-(t-vis.s)/CR_XF;crMedia(c,media.prev,t,vis.s,1+(cam.z-1)*0.5);c.globalAlpha=1}   // dissolvenza dalla scena di prima
   if(!drawn&&vis&&vis.shot){const im=crPoster(vis.shot);if(im){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,im,t,vis.s,1+(cam.z-1)*0.5)}}
   // sulle clip della libreria un'ombra morbida dietro ai sottotitoli, così si leggono anche sopra l'insegna
   if(drawn&&st.subs&&it&&it.i>0){const gr=c.createLinearGradient(0,1320,0,1700);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,'rgba(0,0,0,.42)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fillRect(0,1320,1080,380)}
@@ -668,7 +670,9 @@ async function crMake(){if(CR.busy)return;const lines=crLines();if(lines.length<
   try{const tts=await crSynth(lines,s,m=>crSteps(m,null));if(CR.cancel)throw new Error('annullato');
     crSteps('Monto la voce e le scene…',null);const vt=await crVoice(tts,s);const lib=await crLibLoad();const st=crState(lines,vt,s,lib);
     if(s.sfx||s.music){crSteps('Aggiungo musica ed effetti…',null);try{vt.buf=await crMix(vt,st,s)}catch(e){console.warn('musica/effetti non aggiunti',e)}}
-    const out=await crRender(st,s,ac,p=>crSteps(`Registro il video… ${Math.round(p*100)}%`,p));
+    let out=null;try{out=await crRenderMB(st,s,p=>crSteps(`Monto il video… ${Math.round(p*100)}%`,p))}catch(e){console.warn('montaggio fotogramma per fotogramma non riuscito: registro in tempo reale',e);out=null}
+    if(out&&out.cancel)throw new Error('annullato');
+    if(!out)out=await crRender(st,s,ac,p=>crSteps(`Registro il video… ${Math.round(p*100)}%`,p));
     if(CR.cancel||!out)throw new Error('annullato');crResult(out,st,lines,s)}
   catch(e){if(String(e&&e.message)==='annullato')crSay('<small class="n">Annullato.</small>');
     else{console.error(e);crSay(`<div class="card" style="margin-top:12px">❌ <b>Non sono riuscito a creare il video.</b><div style="color:var(--mut);font-size:12.5px;margin-top:6px">${esc(e&&e.message||String(e))}</div>
@@ -683,6 +687,47 @@ function crPostersReady(st){const L=[...new Set(st.items.filter(x=>x.shot&&x.sho
 function crMediaFor(item,off){if(item.tipo==='immagine'){const im=new Image();im.decoding='async';im.src='libreria/'+encodeURIComponent(item.file);return im}
   const v=hiddenVideo('libreria/'+encodeURIComponent(item.file),true);v.loop=true;
   if(off>0)v.addEventListener('loadedmetadata',()=>{try{if(v.duration>0)v.currentTime=off%v.duration}catch(_){}},{once:true});return v}
+// ── montaggio fotogramma per fotogramma con Mediabunny (MPL-2.0, github.com/Vanilagy/mediabunny, copia in lib/) ──
+// ogni fotogramma è disegnato al suo istante esatto e codificato in MP4 (H.264 + AAC): niente scatti, niente nero all'inizio,
+// dissolvenza tra le scene. Se il telefono non ha WebCodecs si torna alla registrazione in tempo reale (crRender).
+const CR_XF=0.25;   // durata della dissolvenza tra una scena e l'altra (secondi)
+let _crMB=null;function crMB(){return _crMB||(_crMB=import('./lib/mediabunny.min.mjs').catch(e=>{_crMB=null;throw e}))}
+async function crRenderMB(st,s,onP){
+  if(!window.VideoEncoder||!window.AudioEncoder||!window.VideoDecoder||!st.vt.buf)return null;
+  const MB=await crMB(),W=s.light?720:1080,H=s.light?1280:1920,fps=30,br=s.light?4e6:8e6,buf=st.vt.buf,K=window.SPINTA_MB_CODECS||{v:'avc',a:'aac'};   // SPINTA_MB_CODECS: solo per le prove
+  if(!(await MB.canEncodeVideo(K.v,{width:W,height:H,bitrate:br}))||!(await MB.canEncodeAudio(K.a,{numberOfChannels:buf.numberOfChannels,sampleRate:buf.sampleRate,bitrate:128e3})))return null;
+  const c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d'),L=crLayers(W,H,st);await crPostersReady(st);
+  // clip della libreria: aperte una volta sola, i fotogrammi si chiedono già in ordine
+  const opened=new Map(),open=async x=>{if(opened.has(x.file))return opened.get(x.file);let m=null;
+    try{if(x.tipo==='immagine'){const im=crMediaFor(x,0);await new Promise(r=>{if(im.complete)return r();im.onload=im.onerror=()=>r()});m={img:im}}
+      else{const inp=new MB.Input({source:new MB.UrlSource(new URL('libreria/'+encodeURIComponent(x.file),location.href).href),formats:MB.ALL_FORMATS}),tr=await inp.getPrimaryVideoTrack();
+        if(tr&&await tr.canDecode()){const dur=await tr.computeDuration();m={inp,dur,sink:new MB.CanvasSink(tr,{width:Math.min(W,tr.displayWidth||W)})}}else inp.dispose()}}
+    catch(e){console.warn('clip non leggibile',x.file,e)}opened.set(x.file,m);return m};
+  const N=Math.max(1,Math.ceil(st.total*fps)),first=st.items[0];
+  const visAt=t=>st.items.find(x=>t>=x.s&&t<x.e+CR_HOLD)||(first&&t<first.s?first:[...st.items].reverse().find(x=>x.s<=t)||first||null);
+  const vis=[];for(let n=0;n<N;n++)vis.push(visAt(n/fps));
+  const out=new MB.Output({format:new MB.Mp4OutputFormat({fastStart:'in-memory'}),target:new MB.BufferTarget()});
+  const vs=new MB.CanvasSource(c,{codec:K.v,bitrate:br,keyFrameInterval:2});out.addVideoTrack(vs,{frameRate:fps});
+  const as=new MB.AudioBufferSource({codec:K.a,bitrate:128e3});out.addAudioTrack(as);
+  await out.start();await as.add(buf);as.close();
+  const media={el:null,cur:null,prev:null};let gen=null;
+  try{for(let n=0;n<N;n++){if(CR.cancel){await out.cancel();return{cancel:true}}
+      const t=n/fps,v=vis[n];
+      if(v!==media.cur){   // cambio scena: la scena di prima resta per la dissolvenza (non quando la stessa clip continua)
+        const cont=v&&media.cur&&v.shot&&media.cur.shot&&v.shot.file===media.cur.shot.file&&v.shotCont;
+        media.prev=media.el&&media.cur&&media.cur.shot&&!cont?media.el:null;if(gen&&gen.return)gen.return().catch(()=>{});gen=null;media.cur=v;media.el=null;
+        if(v&&v.shot){const m=await open(v.shot);
+          if(m&&m.img)media.el=m.img;
+          else if(m&&m.sink){let k=n;const ts=[];while(k<N&&vis[k]===v){const ct=(v.shotOff||0)+Math.max(0,k/fps-v.s);ts.push(m.dur>0?ct%Math.max(0.04,m.dur-0.04):ct);k++}
+            gen=m.sink.canvasesAtTimestamps(ts)}}}
+      if(gen){const r=await gen.next();if(!r.done&&r.value)media.el=r.value.canvas}
+      crDraw(ctx,W,H,t,st,L,media);await vs.add(t,1/fps);if(n%6===0)onP(n/N)}
+    vs.close();await out.finalize()}
+  finally{if(gen&&gen.return)gen.return().catch(()=>{});opened.forEach(m=>{try{m&&m.inp&&m.inp.dispose()}catch(_){}})}
+  onP(1);const blob=new Blob([out.target.buffer],{type:'video/mp4'});
+  const cv=document.createElement('canvas');cv.width=1080;cv.height=1920;crDraw(cv.getContext('2d'),1080,1920,Math.min(1.2,st.hookShow-0.4),st,crLayers(1080,1920,st),null);
+  const cover=await new Promise(r=>cv.toBlob(r,'image/jpeg',0.9));
+  return{blob,type:'video/mp4',cover}}
 async function crRender(st,s,ac,onP){const W=s.light?720:1080,H=s.light?1280:1920,c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');
   const L=crLayers(W,H,st),dest=ac.createMediaStreamDestination(),src=ac.createBufferSource();src.buffer=st.vt.buf;src.connect(dest);
   // scene della libreria: una in onda (media.el) e la successiva già in caricamento (media.next), mai più di due lettori
