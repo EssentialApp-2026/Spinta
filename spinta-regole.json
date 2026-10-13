@@ -1,66 +1,188 @@
 {
-  "version": "2026.10.04",
-  "aggiornato": "4 ottobre 2026",
-  "prossimoAggiornamento": "lunedì 12 ottobre",
-  "durata": { "min": 10, "ideale": [15, 90], "max": 180 },
-  "hashtag": { "max": 5, "larghi": 0, "evitare": ["#fyp", "#foryou", "#viral", "#perte", "#neiperte"] },
+  "version": "2026.10.12",
+  "aggiornato": "12 ottobre 2026",
+  "prossimoAggiornamento": "lunedì 19 ottobre",
+  "durata": {
+    "min": 10,
+    "ideale": [
+      15,
+      90
+    ],
+    "max": 180
+  },
+  "hashtag": {
+    "max": 5,
+    "larghi": 0,
+    "evitare": [
+      "#fyp",
+      "#foryou",
+      "#viral",
+      "#perte",
+      "#neiperte"
+    ]
+  },
   "hookSecondi": 3,
   "pausaMin": 0.6,
-  "obiettivi": { "completamento": 70, "rewatch": 15, "frequenza": "3-5 video a settimana", "primaOraMinuti": 30 },
+  "obiettivi": {
+    "completamento": 70,
+    "rewatch": 15,
+    "frequenza": "3-5 video a settimana",
+    "primaOraMinuti": 30
+  },
   "orari": {
-    "0": ["11:00", "18:00", "20:30"],
-    "1": ["12:30", "19:00", "20:00"],
-    "2": ["12:30", "19:00", "20:00"],
-    "3": ["13:00", "19:00", "20:00"],
-    "4": ["12:30", "18:30", "20:00"],
-    "5": ["13:00", "18:00", "21:00"],
-    "6": ["11:30", "15:00", "20:30"]
+    "0": [
+      "11:00",
+      "18:00",
+      "20:30"
+    ],
+    "1": [
+      "12:30",
+      "19:00",
+      "20:00"
+    ],
+    "2": [
+      "12:30",
+      "19:00",
+      "20:00"
+    ],
+    "3": [
+      "13:00",
+      "19:00",
+      "20:00"
+    ],
+    "4": [
+      "12:30",
+      "18:30",
+      "20:00"
+    ],
+    "5": [
+      "13:00",
+      "18:00",
+      "21:00"
+    ],
+    "6": [
+      "11:30",
+      "15:00",
+      "20:30"
+    ]
   },
   "segnali": [
-    "Tempo di visione e percentuale di visione completa (i video che vanno meglio superano circa il 70%)",
+    "Tempo di visione e percentuale di visione completa (secondo le analisi i video che vanno meglio superano circa il 70%)",
     "Rewatch: oltre il 15-20% è indicato come segnale forte",
     "Condivisioni",
-    "Commenti lunghi e veloci nella prima ora",
-    "Nuovi follower dal video",
+    "Commenti (anche vocali e con foto) e nuovi follower dal video",
     "Salvataggi",
-    "Like (il segnale più debole)"
+    "Testo a schermo, parole dette e caption: aiutano TikTok a capire l'argomento e a mostrarlo nella ricerca",
+    "Like (in media il segnale più debole)"
   ],
   "novita": [
-    "Secondo le analisi i video più lunghi (60-180 s) rendono di più solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.",
-    "Secondo le analisi più recenti, i video che vanno meglio superano circa il 70% di visione completa.",
-    "TikTok funziona sempre più come motore di ricerca: dì l'argomento a voce, scrivilo a schermo e nella caption.",
-    "Secondo le analisi, hashtag generici come #fyp e #viral non aiutano più: usa da 1 a 5 hashtag specifici della tua nicchia.",
-    "L'audio originale (la tua voce) sembra favorito; i suoni di tendenza aiutano soprattutto se li usi entro 24-48 ore da quando esplodono.",
+    "Secondo Hootsuite (agg. ottobre 2026) i video lunghi (1-3 minuti) ricevono più distribuzione solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.",
+    "La ricerca conta sempre di più: dì l'argomento a voce nei primi secondi, scrivilo a schermo e usa le stesse parole chiave nella caption.",
+    "Secondo le analisi caption, voce e testo a schermo pesano quanto o più degli hashtag: usa da 1 a 5 hashtag specifici della tua nicchia, niente #fyp o #viral.",
+    "TikTok dice di evitare troppi contenuti ripetitivi di fila: alterna format e argomenti dentro la tua nicchia.",
+    "Nuovo nei commenti: puoi creare un sondaggio fino a 5 opzioni; usalo per far votare il pubblico e far crescere i commenti.",
+    "In arrivo per tutti i commenti vocali (fino a 60 s) e con foto: invita il pubblico a rispondere con la voce o con una foto.",
+    "L'audio originale (la tua voce) resta una scelta sicura; i suoni di tendenza aiutano soprattutto se li usi entro 24-48 ore, e molti non sono disponibili per gli account business.",
     "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.",
     "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.",
-    "Le serie a puntate e i format ripetibili fanno tornare il pubblico sul profilo.",
-    "Restare in una nicchia precisa rende più dei profili che parlano di tutto.",
-    "Costanza: meglio 3-5 video a settimana regolari che tanti video in pochi giorni.",
+    "Ottobre è il mese di Halloween: le serie numerate (es. «Giorno 12/31») fanno tornare il pubblico ogni giorno.",
+    "Costanza: secondo le analisi conta più pubblicare con regolarità che pubblicare tanto; meglio 3-5 video curati a settimana.",
     "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."
   ],
   "tendenze": {
-    "settimana": "28 settembre – 4 ottobre 2026",
+    "settimana": "5 – 11 ottobre 2026",
     "format": [
-      { "nome": "Serie a tema", "come": "Puntate numerate con lo stesso inizio e lo stesso personaggio: chi trova una puntata guarda le altre." },
-      { "nome": "Video-domanda", "come": "Apri o chiudi con una domanda diretta al pubblico: le analisi riportano circa il 26% di commenti in più." },
-      { "nome": "Problema → soluzione", "come": "Mostra subito un problema reale del tuo pubblico e risolvilo entro il video." },
-      { "nome": "Storytelling 60-90 s", "come": "Una mini-storia con posta in gioco, sviluppo e finale chiaro: i video più lunghi crescono se tengono fino alla fine." },
-      { "nome": "Format ripetibile", "come": "Stessa struttura ogni volta (es. «Giorno X di Y», «Valuto i vostri…»): l'algoritmo e il pubblico la riconoscono." }
+      {
+        "nome": "Serie «31 giorni di Halloween»",
+        "come": "Un video a tema al giorno per tutto ottobre, numerato (es. «Giorno 12/31»): chi ne vede uno torna per il successivo."
+      },
+      {
+        "nome": "Curiosità inquietante con colpo di scena",
+        "come": "Scrivi a schermo un fatto strano su una clip d'atmosfera e chiudi con una sorpresa che invita a riguardare il video."
+      },
+      {
+        "nome": "Tour dell'ambiente decorato",
+        "come": "Mostra casa, negozio o locale stanza per stanza e tieni il pezzo migliore per la fine."
+      },
+      {
+        "nome": "«Qualcuno deve mandare avanti la baracca»",
+        "come": "Una sola inquadratura semplice di chi lavora mentre gli altri sono via, con la frase scritta a schermo invece che detta."
+      },
+      {
+        "nome": "Panico → calma",
+        "come": "Una persona si dispera per un compito noioso, l'altra risponde tranquilla mostrando la soluzione (il tuo prodotto o trucco)."
+      },
+      {
+        "nome": "Video-domanda",
+        "come": "Apri o chiudi con una domanda diretta al pubblico, o lancia un sondaggio nei commenti."
+      }
     ],
-    "hashtag": [],
-    "suoni": [],
-    "nota": "TikTok non rende pubblici i dati sui suoni e gli hashtag di tendenza in Italia: per quelli del momento apri il TikTok Creative Center dal tuo account."
+    "hashtag": [
+      {
+        "tag": "#CityTasteTest",
+        "nicchia": "cibo",
+        "nota": "Sfida lanciata da TikTok (fonte internazionale, non verificata per l'Italia): recensione sincera di un locale con la posizione taggata."
+      }
+    ],
+    "suoni": [
+      {
+        "nome": "Ramalama (Bang Bang) – Róisín Murphy",
+        "nota": "Tendenza internazionale per il cambio d'abito di Halloween sul colpo di batteria; non verificata per l'Italia."
+      },
+      {
+        "nome": "we fell in love in october – girl in red",
+        "nota": "Tra i suoni internazionali di questo periodo secondo SocialPilot; non verificato per l'Italia."
+      },
+      {
+        "nome": "Ain't In LA – ADÉLA",
+        "nota": "Usato nel trend «Someone's gotta hold it down» (NapoleonCat); tendenza internazionale."
+      }
+    ],
+    "nota": "Questa settimana non abbiamo trovato fonti pubbliche affidabili su hashtag e suoni di tendenza in Italia: quelli elencati sono internazionali. Per i dati italiani del momento apri il TikTok Creative Center dal tuo account e, se hai un account business, filtra i suoni «Approved for Business Use»."
   },
   "fonti": [
-    { "titolo": "Hootsuite – How the TikTok algorithm works in 2026", "url": "https://blog.hootsuite.com/tiktok-algorithm/" },
-    { "titolo": "Socialync – TikTok Algorithm 2026: the 7 signals (agg. luglio 2026)", "url": "https://www.socialync.io/blog/tiktok-algorithm-2026-what-works-now" },
-    { "titolo": "Metricool – TikTok Trends 2026 (agg. agosto 2026)", "url": "https://metricool.com/tiktok-trends/" },
-    { "titolo": "DeRev – Algoritmo di TikTok 2026", "url": "https://derev.com/2026/07/algoritmo-tiktok-2026/" },
-    { "titolo": "OpusClip – TikTok's new algorithm 2026", "url": "https://www.opus.pro/blog/tiktoks-new-algorithm-2026" }
+    {
+      "titolo": "Hootsuite – How the TikTok algorithm works in 2026 (agg. 2 ottobre 2026)",
+      "url": "https://blog.hootsuite.com/tiktok-algorithm/"
+    },
+    {
+      "titolo": "Social Media Today – TikTok adds voice notes and image carousels in comments",
+      "url": "https://www.socialmediatoday.com/news/tiktok-adds-voice-notes-and-image-carousels-in-comments/829640/"
+    },
+    {
+      "titolo": "DigiTech.News – TikTok rivoluziona gli annunci con agenti AI e automazione",
+      "url": "https://www.digitech.news/digital/12/10/2026/tiktok-nuovi-strumenti-ai-pubblicita/"
+    },
+    {
+      "titolo": "Releasebot – TikTok Release Notes ottobre 2026",
+      "url": "https://releasebot.io/updates/tiktok"
+    },
+    {
+      "titolo": "TikTok Newsroom",
+      "url": "https://newsroom.tiktok.com/?lang=en"
+    },
+    {
+      "titolo": "SocialPilot – TikTok Trends October 2026 (agg. 7 ottobre)",
+      "url": "https://www.socialpilot.co/blog/tiktok-trends"
+    },
+    {
+      "titolo": "NapoleonCat – Current TikTok Trends, October 2026 (agg. 6 ottobre)",
+      "url": "https://napoleoncat.com/blog/tiktok-trends/"
+    },
+    {
+      "titolo": "Ramdam – TikTok Trends October 2026 (agg. 5 ottobre)",
+      "url": "https://www.ramd.am/blog/trends-tiktok"
+    },
+    {
+      "titolo": "Metricool – Canzoni virali TikTok del momento (agg. 5 ottobre)",
+      "url": "https://metricool.com/tiktok-songs/"
+    }
   ],
   "checklistExtra": [
     "Etichetta \"Contenuto generato con AI\" se usi voci, immagini o personaggi creati con l'AI",
     "Nessuna filigrana di altre app (CapCut, Instagram…)",
-    "Hashtag specifici della nicchia, niente #fyp o #viral"
+    "Hashtag specifici della nicchia, niente #fyp o #viral",
+    "Argomento detto a voce e scritto a schermo nei primi secondi",
+    "Account business: controlla che il suono sia approvato per uso commerciale"
   ]
 }
