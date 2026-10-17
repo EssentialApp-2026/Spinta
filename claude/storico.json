@@ -50,6 +50,34 @@
     "ultime ore per votare",
     "sabato in officina"
    ]
+  },
+  {
+   "settimana": "2026-W43",
+   "idee": {
+    "A": "Scadenze della macchina",
+    "B": "Timer per la pasta",
+    "C": "Quaderno dei prestiti"
+   },
+   "hook": [
+    "Piazza nuova, idee nuove: quale costruisco?",
+    "Bollo, pasta o prestiti: cosa vi serve di più?",
+    "Mamma mia, quand'è scaduta l'assicurazione?",
+    "Ultime ore: stasera chiudo il voto!",
+    "Ha vinto la A: il bollo non vi sorprende più!",
+    "Ha vinto la B: la pasta non scuoce più!",
+    "Ha vinto la C: i prestiti non si scordano più!",
+    "Zero voti: questa volta niente app.",
+    "È venerdì: il bollo non vi sorprende più!",
+    "È venerdì: la pasta la scolate al momento giusto!",
+    "È venerdì: i prestiti non si perdono più!",
+    "Sabato si smonta: domani cambio piazza!"
+   ],
+   "parti": [
+    "domenica: piazza nuova (Gesù Nuovo) e tre idee",
+    "martedì: cosa dimenticate sempre",
+    "mercoledì: ultime ore per votare",
+    "sabato: smontaggio della bancarella"
+   ]
   }
  ]
 }
