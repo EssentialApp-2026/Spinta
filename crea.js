@@ -175,16 +175,18 @@ function crTrim(a,sr){let s=0,e=a.length;const th=0.02,m=Math.round(sr*0.012);wh
   return a.slice(Math.max(0,s-m),Math.min(a.length,e+m))}
 // battute già pronte con la voce nuova di Gennarino (Mako): libreria/voci/voci.json, scelte per testo uguale
 const crVKey=t=>crClean(t).toLowerCase().normalize('NFC').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
-async function crVociLoad(){if(CR.voci)return CR.voci;const m=new Map();
+async function crVociLoad(){if(CR.voci)return CR.voci;const m=new Map(),W=new Map();
   try{const r=await fetch('libreria/voci/voci.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();
-    Object.values(j.settimane||{}).forEach(a=>(Array.isArray(a)?a:[]).forEach(x=>{if(x&&x.testo&&x.file&&/^voci\/[\w\-\/]+\.(m4a|mp3|wav)$/.test(x.file))m.set(crVKey(x.testo),x.file)}))}}catch(_){}
-  CR.voci=m;return m}
+    Object.entries(j.settimane||{}).forEach(([w,a])=>{const mw=new Map();(Array.isArray(a)?a:[]).forEach(x=>{if(x&&x.testo&&x.file&&/^voci\/[\w\-\/]+\.(m4a|mp3|wav)$/.test(x.file)){m.set(crVKey(x.testo),x.file);mw.set(crVKey(x.testo),x.file)}});W.set(w,mw)})}}catch(_){}
+  CR.vociW=W;CR.voci=m;return m}
+// le settimane hanno voci registrate in momenti diversi: se una sola settimana copre tutte le frasi del video uso solo quella (stessa voce dall'inizio alla fine)
+function crVociPick(lines,vm){const W=CR.vociW;if(!W||W.size<2)return vm;let best=null,bn=-1;for(const mp of W.values()){const c=lines.filter(l=>mp.has(crVKey(l))).length;if(c>=bn){best=mp;bn=c}}return bn===lines.length?best:vm}
 async function crVocePronta(file,sr){CR.vociBuf=CR.vociBuf||new Map();const k=file+'@'+sr;if(CR.vociBuf.has(k))return CR.vociBuf.get(k);
   const r=await fetch('libreria/'+file);if(!r.ok)throw new Error('voce pronta non trovata');
   const ab=await new OfflineAudioContext(1,1,sr).decodeAudioData(await r.arrayBuffer());const c=crTrim(Float32Array.from(ab.getChannelData(0)),sr);CR.vociBuf.set(k,c);return c}
 async function crSynth(lines,s,say){CR.vociInfo=null;
   // mai due voci nello stesso video: la voce nuova solo se TUTTE le frasi sono già pronte, altrimenti tutta la puntata con Piper
-  const vm=(s.voice||'riccardo')==='riccardo'&&s.pronte!==false?await crVociLoad():new Map(),files=lines.map(l=>vm.get(crVKey(l))||null),n=files.filter(Boolean).length;
+  const vm0=(s.voice||'riccardo')==='riccardo'&&s.pronte!==false?await crVociLoad():new Map(),vm=crVociPick(lines,vm0),files=lines.map(l=>vm.get(crVKey(l))||null),n=files.filter(Boolean).length;
   if(n<lines.length){if(vm.size){CR.vociInfo={pronte:n,tot:lines.length,vecchia:true,manca:lines.filter((l,i)=>!files[i])};window._crManca=CR.vociInfo.manca.join('\n')}return crSynthPiper(lines,s,say)}
   say('Uso la voce nuova di Gennarino…');
   try{const clips=[];for(const f of files)clips.push(await crVocePronta(f,24000));
