@@ -30,7 +30,8 @@
     "sposto",
     "ue",
     "uè"
-   ]
+   ],
+   "telefoni": true
   },
   {
    "file": "vero-commenti.mp4",
@@ -47,7 +48,8 @@
     "scrivetele",
     "scrivetelo",
     "sotto"
-   ]
+   ],
+   "telefoni": true
   },
   {
    "file": "vero-idee.mp4",
@@ -95,7 +97,8 @@
     "votate",
     "votazione",
     "voto"
-   ]
+   ],
+   "telefoni": true
   },
   {
    "file": "vero-telefono.mp4",
@@ -132,7 +135,8 @@
     "vedete",
     "whatsapp"
    ],
-   "umore": "festa"
+   "umore": "festa",
+   "telefoni": true
   },
   {
    "file": "vero-festa.mp4",
@@ -171,7 +175,8 @@
     "vincitore",
     "vinto"
    ],
-   "umore": "festa"
+   "umore": "festa",
+   "telefoni": true
   },
   {
    "file": "vero-lavora.mp4",
@@ -209,7 +214,8 @@
     "votato",
     "voti"
    ],
-   "umore": "lavoro"
+   "umore": "lavoro",
+   "telefoni": true
   },
   {
    "file": "vero-pensa.mp4",
@@ -234,7 +240,8 @@
     "vediamo",
     "volete",
     "votereste"
-   ]
+   ],
+   "telefoni": true
   },
   {
    "file": "vero-ascolta.mp4",
@@ -257,7 +264,8 @@
     "sapere",
     "scrivetemi",
     "sentiamo"
-   ]
+   ],
+   "telefoni": true
   },
   {
    "file": "vero-mammamia.mp4",
@@ -284,7 +292,8 @@
     "tempo",
     "ultima",
     "ultime"
-   ]
+   ],
+   "telefoni": true
   },
   {
    "file": "vero-ciao.mp4",
@@ -301,7 +310,8 @@
     "salutiamo",
     "saluto",
     "vediamo"
-   ]
+   ],
+   "telefoni": true
   },
   {
    "file": "vero-triste.mp4",
@@ -320,7 +330,8 @@
     "vuoto",
     "zero"
    ],
-   "umore": "triste"
+   "umore": "triste",
+   "telefoni": true
   }
  ],
  "elementi_disegnati": [

@@ -620,18 +620,32 @@ function crCam(t,it){let z=1;const cx=540,cy=800;if(it&&it.cam)z=1.13;
   if(it){const p=Math.max(0,Math.min(1,(t-it.s)/Math.max(0.6,it.e-it.s)));z*=1+0.035*p;const q=t-it.s;if(it.i>0&&q>=0&&q<0.22)z*=1+0.05*(1-q/0.22)}
   if(t<0.4){const q=1-t/0.4;z*=1+0.16*q*q}return{z,cx,cy}}
 // una clip o un'immagine della libreria a tutto schermo (ritaglio 9:16)
-function crMedia(c,el,t,t0,zz){const cv=el.tagName==='CANVAS'||(typeof OffscreenCanvas!=='undefined'&&el instanceof OffscreenCanvas),vid=el.tagName==='VIDEO'||cv;
+function crMedia(c,el,t,t0,zz,ov){const cv=el.tagName==='CANVAS'||(typeof OffscreenCanvas!=='undefined'&&el instanceof OffscreenCanvas),vid=el.tagName==='VIDEO'||cv;
   if(cv?!el.width:el.tagName==='VIDEO'?el.readyState<2:!(el.complete&&el.naturalWidth))return false;
   const w=cv?el.width:el.tagName==='VIDEO'?el.videoWidth:el.naturalWidth,h=cv?el.height:el.tagName==='VIDEO'?el.videoHeight:el.naturalHeight;if(!w||!h)return false;
-  const z=(vid?1:1+Math.min(1,(t-t0)/4)*0.1)*(zz||1),r=Math.max(1080/w,1920/h)*z,dw=w*r,dh=h*r;c.drawImage(el,(1080-dw)/2,(1920-dh)/2,dw,dh);return true}
+  const z=(vid?1:1+Math.min(1,(t-t0)/4)*0.1)*(zz||1),r=Math.max(1080/w,1920/h)*z,dw=w*r,dh=h*r;c.drawImage(el,(1080-dw)/2,(1920-dh)/2,dw,dh);
+  if(ov){c.save();c.translate((1080-dw)/2,(1920-dh)/2);c.scale(dw/720,dh/1280);ov(c);c.restore()}return true}
+// ── i telefoni sul banco: le clip «vero-*» hanno in basso i telefoni delle tre app; Spinta li ridisegna ogni settimana con le idee A, B, C
+// (nella libreria.json le clip che li hanno portano "telefoni": true). Coordinate della clip 720×1280.
+const CR_PH_COL={A:'#2f9e6e',B:'#3b6fd8',C:'#e08a2e'},CR_PH_X={A:130,B:360,C:590};
+const CR_PH_EMO=[[/macchin|auto|parcheg|bollo|revision|scadenz/i,'🚗'],[/pasta|timer|moka|cottur|minut|sveglia/i,'⏱️'],[/prestit|quadern|restitu|debit/i,'📒'],[/differenz|munnezz|rifiut|bidon/i,'♻️'],[/fontanell|acqua|sete|borracc/i,'💧'],[/spesa|lista/i,'🛒'],[/conto|pizz|dividi/i,'🍕'],[/scopa|carte|punti/i,'🃏'],[/farmac|medic|pillol/i,'💊'],[/bolletta|luce|gas|soldi|spes/i,'💶'],[/pianta|innaff/i,'🪴'],[/compleann|regal/i,'🎂']];
+function crPhLabel(idea){const w=crClean(idea).replace(/[.!?…]+$/,'').split(/\s+/).filter(Boolean);if(!w.length)return'';let l=w[w.length-1];if(l.length>12&&w.length>1)l=w[0];return l.charAt(0).toUpperCase()+l.slice(1)}
+function crPhones(c,st){['A','B','C'].forEach(k=>{const idea=st.idee&&st.idee[k];if(!idea)return;const cx=CR_PH_X[k],col=CR_PH_COL[k],x=cx-75,y=1040,w=150,h=228,emo=(CR_PH_EMO.find(e=>e[0].test(idea))||[0,'📱'])[1];
+    c.save();c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=14;c.shadowOffsetY=6;crRR(c,x,y,w,h,24,'#15161d');c.restore();
+    crRR(c,x+8,y+10,w-16,h-20,17,'#fbfbfd');crRR(c,cx-17,y+13,34,6,3,'#15161d');
+    crRR(c,x+16,y+34,w-32,30,9,col);c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.font=`800 ${crPhLabel(idea).length>9?15:18}px ${CR_FONT}`;c.fillText(crPhLabel(idea),cx,y+49,w-40);
+    c.fillStyle=col+'22';crRR(c,x+16,y+74,w-32,92,12,col+'22');c.font='54px "Segoe UI Emoji","Noto Color Emoji","Apple Color Emoji",sans-serif';c.fillStyle='#000';c.fillText(emo,cx,y+122);
+    crRR(c,x+16,y+176,w-32,28,9,'#e5484d');c.fillStyle='#fff';c.font=`800 14px ${CR_FONT}`;c.fillText('GRATIS',cx,y+191);
+    crCirc(c,x-4,y+12,19,'#fff');crCirc(c,x-4,y+12,15.5,col);c.fillStyle='#fff';c.font=`900 20px ${CR_FONT}`;c.fillText(k,x-4,y+13)})}
+function crOv(x,st){return x&&x.telefoni&&st&&st.idee&&(st.idee.A||st.idee.B||st.idee.C)?c=>crPhones(c,st):null}
 function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/1920,0,0);
   const it=st.items.find(x=>t>=x.s&&t<x.e+CR_HOLD)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
   // la scena non resta mai senza clip: prima della prima frase e dopo l'ultima (finale) si vede la clip più vicina, mai il vecchio Gennarino disegnato
   const vis=it||(st.items.length?(t<st.items[0].s?st.items[0]:[...st.items].reverse().find(x=>x.s<=t)||st.items[0]):null);
-  const cam=crCam(t,it);let drawn=false;if(vis&&vis.shot&&media&&media.el&&media.cur===vis){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,vis.s,1+(cam.z-1)*0.5)}
+  const cam=crCam(t,it);let drawn=false;if(vis&&vis.shot&&media&&media.el&&media.cur===vis){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,vis.s,1+(cam.z-1)*0.5,crOv(vis.shot,st))}
   // clip non ancora pronta (anteprima, copertina, primi fotogrammi): al posto del Gennarino disegnato si vede il poster della clip
-  if(drawn&&media&&media.prev&&t>=vis.s&&t<vis.s+CR_XF){c.globalAlpha=1-(t-vis.s)/CR_XF;crMedia(c,media.prev,t,vis.s,1+(cam.z-1)*0.5);c.globalAlpha=1}   // dissolvenza dalla scena di prima
-  if(!drawn&&vis&&vis.shot){const im=crPoster(vis.shot);if(im){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,im,t,vis.s,1+(cam.z-1)*0.5)}}
+  if(drawn&&media&&media.prev&&t>=vis.s&&t<vis.s+CR_XF){c.globalAlpha=1-(t-vis.s)/CR_XF;crMedia(c,media.prev,t,vis.s,1+(cam.z-1)*0.5,crOv(media.prevShot,st));c.globalAlpha=1}   // dissolvenza dalla scena di prima
+  if(!drawn&&vis&&vis.shot){const im=crPoster(vis.shot);if(im){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,im,t,vis.s,1+(cam.z-1)*0.5,crOv(vis.shot,st))}}
   // sulle clip della libreria un'ombra morbida dietro ai sottotitoli, così si leggono anche sopra l'insegna
   if(drawn&&st.subs&&it&&it.i>0){const gr=c.createLinearGradient(0,1320,0,1700);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,'rgba(0,0,0,.42)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fillRect(0,1320,1080,380)}
   if(!drawn){c.save();c.translate(cam.cx,cam.cy);c.scale(cam.z,cam.z);c.translate(-cam.cx,-cam.cy);
@@ -717,7 +731,7 @@ async function crRenderMB(st,s,onP){
       const t=n/fps,v=vis[n];
       if(v!==media.cur){   // cambio scena: la scena di prima resta per la dissolvenza (non quando la stessa clip continua)
         const cont=v&&media.cur&&v.shot&&media.cur.shot&&v.shot.file===media.cur.shot.file&&v.shotCont;
-        media.prev=media.el&&media.cur&&media.cur.shot&&!cont?media.el:null;if(gen&&gen.return)gen.return().catch(()=>{});gen=null;media.cur=v;media.el=null;
+        media.prev=media.el&&media.cur&&media.cur.shot&&!cont?media.el:null;media.prevShot=media.prev?media.cur.shot:null;if(gen&&gen.return)gen.return().catch(()=>{});gen=null;media.cur=v;media.el=null;
         if(v&&v.shot){const m=await open(v.shot);
           if(m&&m.img)media.el=m.img;
           else if(m&&m.sink){let k=n;const ts=[];while(k<N&&vis[k]===v){const ct=(v.shotOff||0)+Math.max(0,k/fps-v.s);ts.push(m.dur>0?ct%Math.max(0.04,m.dur-0.04):ct);k++}
