@@ -13,7 +13,7 @@ const CR_FONT='-apple-system,"Segoe UI",Roboto,sans-serif';
 function crNextDow(dow){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+((dow-d.getDay()+7)%7));return d}   // oggi compreso
 const CR_GIORNI=['DOMENICA','LUNEDÌ','MARTEDÌ','MERCOLEDÌ','GIOVEDÌ','VENERDÌ','SABATO'];
 const CR_TIPI={presentazione:'Presentazione della serie',idee:'Tre idee al voto',risultato:'Risultato del voto',regalo:'Il regalo del venerdì',nessuno:'Nessun voto: niente app',risposta:'Risposta a un commento',libera:'Libera (dal piano)'};
-function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0,stile:'classico'},d);
+function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0,stile:'spiegone'},d);
   s.idee=Object.assign({A:'',B:'',C:''},d.idee||{});delete s.goal;delete s.likes;return s}
 function crSaveSet(){const v=id=>$('#'+id);const s=crSet();
   DB.creator=Object.assign(s,{voice:v('cr-voice').value,fx:v('cr-fx').value,speed:v('cr-speed').value,subs:v('cr-subs').checked,bar:v('cr-bar').checked,light:v('cr-light').checked,
@@ -27,6 +27,7 @@ function crInject(){if($('#m-crea'))return;
   <h2>🎬 Crea con Gennarino</h2>
   <p class="sub" style="margin-bottom:8px">Scrivo la puntata, le do la voce e monto il video, tutto sul telefono. Lo stile è quello delle tue puntate.</p>
   <canvas id="cr-prev" width="360" height="640" style="width:52%;display:block;margin:0 auto;border-radius:14px;background:#000"></canvas>
+  <div class="row"><div style="flex:1"><label>Stile del montaggio</label><select id="cr-stile" onchange="crSaveSet();crPrev()"><option value="spiegone">⭐ Spiegone (consigliato) · grafiche animate sopra, Gennarino sotto</option><option value="classico">Classico · Gennarino a tutto schermo</option></select></div></div>
   <div class="row"><div><label>Puntata</label><select id="cr-tipo" onchange="crTipo()">${Object.entries(CR_TIPI).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>
    <div id="cr-pbox"><label>Parte n.</label><input id="cr-ep" type="number" min="1" inputmode="numeric" style="width:76px" onchange="serEp(this.value);crChanged()"></div>
    <div id="cr-vbox"><label>Ha vinto</label><select id="cr-vince" onchange="crChanged()"><option>A</option><option>B</option><option>C</option></select></div></div>
@@ -45,8 +46,7 @@ function crInject(){if($('#m-crea'))return;
   <small class="n">Gennarino chiude sempre chiedendo di votare o di scrivere nei commenti.</small>
   <div class="row"><div><label>Voce</label><select id="cr-voice" onchange="crSaveSet()">${Object.entries(CR_VOICES).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join('')}</select></div>
    <div><label>Effetto robot</label><select id="cr-fx" onchange="crSaveSet()"><option value="no">Nessuno</option><option value="leggero">Leggero</option><option value="forte">Forte</option></select></div></div>
-  <div class="row"><div><label>Stile del montaggio</label><select id="cr-stile" onchange="crSaveSet();crPrev()"><option value="classico">Classico · Gennarino a tutto schermo</option><option value="spiegone">Spiegone · grafiche animate sopra, Gennarino sotto</option></select></div></div>
-  <div class="row"><div><label>Ritmo</label><select id="cr-speed" onchange="crSaveSet()"><option value="normale">Normale</option><option value="tiktok">Svelto</option><option value="veloce">Veloce</option></select></div>
+    <div class="row"><div><label>Ritmo</label><select id="cr-speed" onchange="crSaveSet()"><option value="normale">Normale</option><option value="tiktok">Svelto</option><option value="veloce">Veloce</option></select></div>
    <div><label>&nbsp;</label><button class="btn alt" id="cr-listen" style="margin:0" onclick="crListen()">▶︎ Ascolta la prima frase</button></div></div>
   <div class="grp" style="margin-top:12px">${opt('cr-subs','Sottotitoli parola per parola, con le parole chiave in giallo',true)}${opt('cr-sfx','Effetti sonori',true)}${opt('cr-music','Musica di sottofondo leggera, creata dal telefono (niente diritti)',true)}${opt('cr-bar','Barra di avanzamento',true)}${opt('cr-light','Modalità leggera (720p) per telefoni lenti',false)}</div>
   <details id="cr-lib"><summary>Libreria del repository</summary><div id="cr-libin" style="margin-top:8px">Carico…</div></details>
@@ -59,7 +59,7 @@ function crInject(){if($('#m-crea'))return;
 function crClose(){if(CR.busy&&!confirm('Il video è ancora in preparazione: chiudere e annullare?'))return;if(CR.busy)CR.cancel=true;closeModal('m-crea')}
 function crOpen(fromPlan){crInject();const s=crSet();
   $('#cr-voice').value=s.voice;$('#cr-fx').value=s.fx;$('#cr-speed').value=s.speed;$('#cr-subs').checked=s.subs;$('#cr-bar').checked=s.bar;$('#cr-light').checked=s.light;
-  $('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-stile').value=s.stile==='spiegone'?'spiegone':'classico';$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
+  $('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-stile').value=s.stile==='classico'?'classico':'spiegone';$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
   {const sr=curSeries(),pb=$('#cr-pbox');if(pb){pb.style.display=sr?'':'none';$('#cr-ep').value=sr?sr.ep:''}}$('#cr-tipo').value=fromPlan?'libera':(CR_TIPI[s.tipo]?s.tipo:'idee');$('#cr-vince').value=s.vince||'A';['A','B','C'].forEach(k=>$('#cr-i'+k).value=s.idee[k]||'');crBoxes();
   if(fromPlan||!$('#cr-txt').value.trim())crFill(true);
   openModal('m-crea');crPrev();crLibLoad().then(crLibShow);crWeekLoad().then(crWeekShow)}
