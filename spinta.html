@@ -297,6 +297,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
     <button data-k="cap">Caption</button>
     <button data-k="ideas">Idee</button>
     <button data-k="algo">Algoritmo</button>
+    <button data-k="skill">Skill</button>
   </div>
   <div class="tool" id="tool-hook">
   <h2>Generatore di hook</h2>
@@ -350,6 +351,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </div>
   <div id="c-out" class="out"></div>
 </div>
+  <div class="tool" id="tool-skill" style="display:none"><div id="sk-root"></div></div>
   <div class="tool" id="tool-ideas" style="display:none">
   <h2>Idee, serie e trend</h2>
   <p class="sub">Le serie a puntate fanno tornare le persone sul profilo. I format di tendenza possono dare una spinta in più.</p>
@@ -426,7 +428,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.12.3 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.13.0 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -990,7 +992,7 @@ function goTab(t){document.querySelectorAll('#nav button').forEach(x=>x.classLis
 $('#nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)goTab(b.dataset.t)});
 $('#tool-seg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   document.querySelectorAll('#tool-seg button').forEach(x=>x.classList.toggle('on',x===b));
-  document.querySelectorAll('.tool').forEach(x=>x.style.display=x.id==='tool-'+b.dataset.k?'':'none');if(b.dataset.k==='algo')renderRulesCard()});
+  document.querySelectorAll('.tool').forEach(x=>x.style.display=x.id==='tool-'+b.dataset.k?'':'none');if(b.dataset.k==='algo')renderRulesCard();if(b.dataset.k==='skill'){(window.skInit?Promise.resolve():loadScript('skill.js?v=1')).then(()=>skInit()).catch(()=>toast('Non riesco a caricare le skill: riprova'))}});
 /* passi dello Studio */
 function stp(n,state){const el=$('#s'+n);if(el&&state)el.dataset.state=state}
 function stpToggle(n){const el=$('#s'+n);if(el.dataset.state==='locked'){toast('Prima carica un video');return}el.classList.toggle('open')}
