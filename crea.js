@@ -13,11 +13,11 @@ const CR_FONT='-apple-system,"Segoe UI",Roboto,sans-serif';
 function crNextDow(dow){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+((dow-d.getDay()+7)%7));return d}   // oggi compreso
 const CR_GIORNI=['DOMENICA','LUNEDÌ','MARTEDÌ','MERCOLEDÌ','GIOVEDÌ','VENERDÌ','SABATO'];
 const CR_TIPI={presentazione:'Presentazione della serie',idee:'Tre idee al voto',risultato:'Risultato del voto',regalo:'Il regalo del venerdì',nessuno:'Nessun voto: niente app',risposta:'Risposta a un commento',libera:'Libera (dal piano)'};
-function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0},d);
+function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0,stile:'classico'},d);
   s.idee=Object.assign({A:'',B:'',C:''},d.idee||{});delete s.goal;delete s.likes;return s}
 function crSaveSet(){const v=id=>$('#'+id);const s=crSet();
   DB.creator=Object.assign(s,{voice:v('cr-voice').value,fx:v('cr-fx').value,speed:v('cr-speed').value,subs:v('cr-subs').checked,bar:v('cr-bar').checked,light:v('cr-light').checked,
-    sfx:v('cr-sfx').checked,music:v('cr-music').checked,bolla:v('cr-bolla').checked,com:v('cr-com').value.trim().slice(0,300),comUser:v('cr-cuser').value.trim().replace(/^@+/,'').slice(0,40),
+    sfx:v('cr-sfx').checked,music:v('cr-music').checked,bolla:v('cr-bolla').checked,stile:v('cr-stile').value,com:v('cr-com').value.trim().slice(0,300),comUser:v('cr-cuser').value.trim().replace(/^@+/,'').slice(0,40),
     tipo:v('cr-tipo').value,vince:v('cr-vince').value,idee:{A:v('cr-iA').value.trim(),B:v('cr-iB').value.trim(),C:v('cr-iC').value.trim()}});save()}
 
 /* ---------- finestra del creatore ---------- */
@@ -45,6 +45,7 @@ function crInject(){if($('#m-crea'))return;
   <small class="n">Gennarino chiude sempre chiedendo di votare o di scrivere nei commenti.</small>
   <div class="row"><div><label>Voce</label><select id="cr-voice" onchange="crSaveSet()">${Object.entries(CR_VOICES).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join('')}</select></div>
    <div><label>Effetto robot</label><select id="cr-fx" onchange="crSaveSet()"><option value="no">Nessuno</option><option value="leggero">Leggero</option><option value="forte">Forte</option></select></div></div>
+  <div class="row"><div><label>Stile del montaggio</label><select id="cr-stile" onchange="crSaveSet();crPrev()"><option value="classico">Classico · Gennarino a tutto schermo</option><option value="spiegone">Spiegone · grafiche animate sopra, Gennarino sotto</option></select></div></div>
   <div class="row"><div><label>Ritmo</label><select id="cr-speed" onchange="crSaveSet()"><option value="normale">Normale</option><option value="tiktok">Svelto</option><option value="veloce">Veloce</option></select></div>
    <div><label>&nbsp;</label><button class="btn alt" id="cr-listen" style="margin:0" onclick="crListen()">▶︎ Ascolta la prima frase</button></div></div>
   <div class="grp" style="margin-top:12px">${opt('cr-subs','Sottotitoli parola per parola, con le parole chiave in giallo',true)}${opt('cr-sfx','Effetti sonori',true)}${opt('cr-music','Musica di sottofondo leggera, creata dal telefono (niente diritti)',true)}${opt('cr-bar','Barra di avanzamento',true)}${opt('cr-light','Modalità leggera (720p) per telefoni lenti',false)}</div>
@@ -58,7 +59,7 @@ function crInject(){if($('#m-crea'))return;
 function crClose(){if(CR.busy&&!confirm('Il video è ancora in preparazione: chiudere e annullare?'))return;if(CR.busy)CR.cancel=true;closeModal('m-crea')}
 function crOpen(fromPlan){crInject();const s=crSet();
   $('#cr-voice').value=s.voice;$('#cr-fx').value=s.fx;$('#cr-speed').value=s.speed;$('#cr-subs').checked=s.subs;$('#cr-bar').checked=s.bar;$('#cr-light').checked=s.light;
-  $('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
+  $('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-stile').value=s.stile==='spiegone'?'spiegone':'classico';$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
   {const sr=curSeries(),pb=$('#cr-pbox');if(pb){pb.style.display=sr?'':'none';$('#cr-ep').value=sr?sr.ep:''}}$('#cr-tipo').value=fromPlan?'libera':(CR_TIPI[s.tipo]?s.tipo:'idee');$('#cr-vince').value=s.vince||'A';['A','B','C'].forEach(k=>$('#cr-i'+k).value=s.idee[k]||'');crBoxes();
   if(fromPlan||!$('#cr-txt').value.trim())crFill(true);
   openModal('m-crea');crPrev();crLibLoad().then(crLibShow);crWeekLoad().then(crWeekShow)}
@@ -449,6 +450,12 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   const ap=CR.apertura;if(ap&&ap.file&&items.length&&crClean(lines[0]).toLowerCase()===crClean(ap.testo).toLowerCase()){const x={file:ap.file,tipo:/\.(jpe?g|png|webp)$/i.test(ap.file)?'immagine':'video',tag:[]},k=Math.min(ap.frasi,n);
     for(let i=0;i<k;i++){items[i].shot=x;items[i].shotCont=i>0}if(items[k]&&items[k].shot&&items[k].shot.file===ap.file)items[k].shot=null;
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+CR_HOLD)})}
+  // stile «Spiegone»: grafiche animate sopra e Gennarino in una finestra sotto, con la parola che sta dicendo; ogni tanto stacco a tutto schermo.
+  // A tutto schermo: hook, finale, tre frasi e le frasi con riquadri/timbri/bolla (che hanno già la loro grafica). La scheda di voto A/B/C sta nelle schede sopra.
+  const SP=s.stile==='spiegone';
+  if(SP){let sc=0;items.forEach(it=>{it.fs=it.i===0||it.i===n-1||it.e>vt.total-2.8||!it.shot||!!it.pop||!!it.stamp||bub(it)||(it.i%3===0&&!inBallot(it));
+    if(it.fs)sc++;it.sc=sc});
+    items.forEach(it=>{if(!it.fs){const f=items.find(x=>x.sc===it.sc&&!x.fs);it.scS=f.s}})}
   const hook=crClean(lines[0]);
   const END={idee:'Vota A, B o C nei commenti 👇',risultato:'Venerdì il regalo sul banco 🎁',regalo:'Link nel profilo · gratis 🎁',presentazione:'Scrivi la tua idea nei commenti 👇',risposta:'Scrivi la tua nei commenti 👇',nessuno:'Lunedì si vota di nuovo 👇'};
   // momenti per gli effetti sonori (gli stessi in cui compaiono le cose a schermo)
@@ -458,7 +465,7 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
   if(!(ballot&&ballot.e>endS)&&endS>1)ev.push({t:endS,k:'chime'});
   return{items,vt,total:vt.total,hook,hookShow:Math.max(2.6,items[0]?items[0].e+0.15:2.6),ser,ep,tipo,X,app,ballot,com,voti:V,events:ev,mer:crNextDow(3),ven:crNextDow(5),
     idee:{A:crIdea(s,'A'),B:crIdea(s,'B'),C:crIdea(s,'C')},
-    endTxt:END[tipo]||(ser?`Parte ${ep+1} in arrivo 🔔`:'Ci vediamo al banco 🔔'),subs:s.subs,bar:s.bar,seed:(ep||1)*7}}
+    stile:SP?'spiegone':'classico',head:CR_HEAD[tipo]||CR_HEAD.libera,endTxt:END[tipo]||(ser?`Parte ${ep+1} in arrivo 🔔`:'Ci vediamo al banco 🔔'),subs:s.subs,bar:s.bar,seed:(ep||1)*7}}
 
 /* ---------- disegno: Gennarino alla bancarella (stile delle puntate) ---------- */
 function crRand(seed){let x=seed>>>0||1;return()=>{x^=x<<13;x>>>=0;x^=x>>17;x^=x<<5;x>>>=0;return x/4294967296}}
@@ -638,8 +645,66 @@ function crPhones(c,st){['A','B','C'].forEach(k=>{const idea=st.idee&&st.idee[k]
     crRR(c,x+16,y+176,w-32,28,9,'#e5484d');c.fillStyle='#fff';c.font=`800 14px ${CR_FONT}`;c.fillText('GRATIS',cx,y+191);
     crCirc(c,x-4,y+12,19,'#fff');crCirc(c,x-4,y+12,15.5,col);c.fillStyle='#fff';c.font=`900 20px ${CR_FONT}`;c.fillText(k,x-4,y+13)})}
 function crOv(x,st){return x&&x.telefoni&&st&&st.idee&&(st.idee.A||st.idee.B||st.idee.C)?c=>crPhones(c,st):null}
+/* ---------- stile «Spiegone»: grafiche animate sopra, Gennarino sotto ---------- */
+const CR_SERIF='Georgia,"Times New Roman",serif',CR_LIME='#c8f169';
+const CR_HEAD={idee:['Gennarino','lancia le tre idee'],risultato:['Il voto','è chiuso'],regalo:['Il regalo','è sul banco'],presentazione:['Gennarino','si presenta'],risposta:['Gennarino','risponde a voi'],nessuno:['Questa settimana','niente app'],libera:['Dal banco','di Gennarino']};
+const crEase=x=>1-Math.pow(1-Math.max(0,Math.min(1,x)),3);
+// frase corta per la scheda: senza «Uè guagliù», tagliata a una parola intera
+function crKey(txt,max){const s=crClean(txt).replace(/^(uè guagliù|uè|ue|guagliù)[,!\s]+/i,'').replace(/[.!?…]+$/,'');if(s.length<=max)return s;
+  let o='';for(const w of s.split(/\s+/)){if((o+' '+w).trim().length>max)break;o=(o+' '+w).trim()}return(o||s.slice(0,max))+'…'}
+function crEmoji(txt,it){const m=CR_PH_EMO.find(e=>e[0].test(txt));return m?m[1]:({sad:'😢',happy:'🎉',think:'🤔',surprised:'😮',wave:'👋'}[it.expr]||'💬')}
+// la parola che Gennarino sta dicendo e quando è cominciata (stesso calcolo dei sottotitoli)
+function crActWord(words,pg,t){if(!pg||t<pg.s)return null;const wt=words.map(w=>w.length+2),tw=wt.reduce((a,b)=>a+b,0);let acc=pg.s;
+  for(let i=0;i<words.length;i++){const d=(pg.e-pg.s)*wt[i]/tw;if(t<acc+d)return{i,s:acc};acc+=d}return t<pg.e+0.25?{i:words.length-1,s:acc-(pg.e-pg.s)*wt[words.length-1]/tw}:null}
+// la clip (o il poster) di Gennarino per la frase in onda; null se non è ancora pronta
+function crSplitEl(vis,media){if(!vis||!vis.shot)return null;if(media&&media.el&&media.cur===vis){const e=media.el;
+    if(e.tagName==='VIDEO'?e.readyState>=2:(e.complete&&e.naturalWidth))return e}
+  const im=crPoster(vis.shot);return im||null}
+function crSplit(c,t,st,it,el){
+  // sfondo blu notte con un bagliore verde in basso
+  const g=c.createLinearGradient(0,0,0,1920);g.addColorStop(0,'#090f2e');g.addColorStop(1,'#141d4c');c.fillStyle=g;c.fillRect(0,0,1080,1920);
+  const rg=c.createRadialGradient(930,1720,0,930,1720,760);rg.addColorStop(0,'rgba(130,240,90,.26)');rg.addColorStop(1,'rgba(130,240,90,0)');c.fillStyle=rg;c.fillRect(0,900,1080,1020);
+  const rb=c.createRadialGradient(80,1250,0,80,1250,620);rb.addColorStop(0,'rgba(70,90,255,.30)');rb.addColorStop(1,'rgba(70,90,255,0)');c.fillStyle=rb;c.fillRect(0,900,1080,1020);
+  // titolo: un nome in corsivo e il resto in grassetto
+  const ha=crEase((t-it.scS)/0.45),hd=st.head;c.save();c.globalAlpha=ha;c.translate(0,(1-ha)*-24);c.textAlign='center';c.textBaseline='middle';
+  c.font=`italic 400 56px ${CR_SERIF}`;c.fillStyle='#b4bfff';c.fillText(hd[0],540,150);
+  c.font=`900 78px ${CR_FONT}`;c.fillStyle='#fff';c.fillText(hd[1],540,238);c.restore();
+  // schede: una per frase, l'ultima evidenziata, le vecchie scivolano su (al massimo tre)
+  const L=st.items.filter(x=>x.sc===it.sc&&!x.fs&&x.i<=it.i),first=Math.max(0,L.length-3),k=crEase((t-it.s)/0.4),CH=190,Y0=340;
+  L.forEach((x,j)=>{if(j<first-1)return;const newest=j===L.length-1,pos=j-first+(L.length>3?1-k:0);let a=1;if(j===first-1)a=1-k;if(newest)a=k;if(a<=0.01)return;
+    const y=Y0+pos*(CH+22)+(newest&&L.length<=3?(1-k)*50:0),dim=!newest&&!(j===L.length-2&&k<1)?1:1,hl=newest;
+    c.save();c.globalAlpha=a;
+    if(hl){c.shadowColor='rgba(200,241,105,.45)';c.shadowBlur=36}
+    crRR(c,70,y,940,CH,34,hl?CR_LIME:'rgba(255,255,255,.10)');c.shadowColor='transparent';
+    if(!hl){c.strokeStyle='rgba(255,255,255,.22)';c.lineWidth=2;crRR(c,70,y,940,CH,34);c.stroke()}
+    const txt=x.opt?x.optTxt:x.text,lab=x.opt?'Idea '+x.opt:'Gennarino dice';
+    c.textAlign='left';c.textBaseline='middle';c.font=`italic 400 34px ${CR_SERIF}`;c.fillStyle=hl?'rgba(10,15,46,.65)':'rgba(255,255,255,.55)';c.fillText(lab,112,y+40);
+    c.font=`900 46px ${CR_FONT}`;c.fillStyle=hl?'#0a0f2e':'#fff';const ln=crWrap(c,crKey(txt,60),690,2);
+    ln.forEach((l,q)=>c.fillText(l,112,y+(ln.length>1?96:108)+q*54-(ln.length>1?8:0)));
+    // distintivo a destra: la lettera dell'idea oppure un'emoji
+    const bx=920,by=y+CH/2;crCirc(c,bx,by,50,x.opt?CR_PH_COL[x.opt]:(hl?'#0a0f2e':'rgba(255,255,255,.16)'));
+    c.textAlign='center';if(x.opt){c.fillStyle='#fff';c.font=`900 56px ${CR_FONT}`;c.fillText(x.opt,bx,by+3)}
+    else{c.font='50px "Segoe UI Emoji","Noto Color Emoji","Apple Color Emoji",sans-serif';c.fillStyle='#000';c.fillText(crEmoji(txt,x),bx,by+4)}
+    c.restore()});
+  // la parola che sta dicendo, grande, sopra la finestra
+  const pg=it.pages.find(p=>t>=p.s&&t<p.e+0.25)||it.pages[it.pages.length-1],aw=st.subs&&pg?crActWord(pg.w,pg,t):null;
+  if(aw){const w=pg.w[aw.i].replace(/^[«"“(]+|[»"”)]+$/g,''),bare=w.replace(/[^\p{L}\p{N}]/gu,''),q=crEase((t-aw.s)/0.1),sc=1+0.14*(1-q);
+    c.save();c.translate(540,1085);c.scale(sc,sc);c.textAlign='center';c.textBaseline='middle';c.font=`900 92px ${CR_FONT}`;c.lineJoin='round';c.lineWidth=12;c.strokeStyle='#0a0f2e';c.strokeText(w,0,0);
+    c.fillStyle=CR_HL.test(bare)||/^[ABC]$/.test(bare)?CR_LIME:'#fff';c.fillText(w,0,0,940);c.restore()}
+  // finestra con Gennarino
+  const X=70,Y=1170,W=940,H=560;
+  c.save();c.shadowColor='rgba(0,0,0,.5)';c.shadowBlur=40;c.shadowOffsetY=14;crRR(c,X,Y,W,H,46,'#000');c.restore();
+  c.save();crRR(c,X,Y,W,H,46);c.clip();
+  if(el){const ew=el.tagName==='VIDEO'?el.videoWidth:el.naturalWidth,eh=el.tagName==='VIDEO'?el.videoHeight:el.naturalHeight;
+    if(ew&&eh){const cam=crCam(t,it),r=Math.max(W/ew,H/eh)*(1+(cam.z-1)*0.6),dw=ew*r,dh=eh*r,dx=X+(W-dw)/2,dy=Math.max(Y+H-dh,Math.min(Y,Y+H*0.5-dh*0.36));
+      c.drawImage(el,dx,dy,dw,dh);const ov=crOv(it.shot,st);if(ov){c.save();c.translate(dx,dy);c.scale(dw/720,dh/1280);ov(c);c.restore()}}}
+  c.restore();c.save();c.strokeStyle='rgba(200,241,105,.55)';c.lineWidth=4;crRR(c,X,Y,W,H,46);c.stroke();c.restore();
+  // firma sotto la finestra
+  c.save();c.textAlign='center';c.textBaseline='middle';c.font=`italic 400 38px ${CR_SERIF}`;c.fillStyle='rgba(255,255,255,.5)';c.fillText("'O Bancariello",540,1815);c.restore()}
 function crDraw(ctx,W,H,t,st,L,media){const c=ctx;c.setTransform(W/1080,0,0,H/1920,0,0);
   const it=st.items.find(x=>t>=x.s&&t<x.e+CR_HOLD)||null;const k=Math.min(st.vt.env.length-1,Math.max(0,Math.floor(t*st.vt.fps)));const mouth=it?st.vt.env[k]:0;
+  // stile «Spiegone»: nelle frasi non a tutto schermo si disegna la scena divisa (grafiche sopra, Gennarino sotto); se la clip non è pronta si ricade sul classico
+  if(st.stile==='spiegone'&&it&&!it.fs){const el=crSplitEl(it,media);if(el){crSplit(c,t,st,it,el);if(st.bar){const h=12;c.fillStyle='rgba(255,255,255,.25)';c.fillRect(0,1920-h,1080,h);const gr=c.createLinearGradient(0,0,1080,0);gr.addColorStop(0,'#ff2d6f');gr.addColorStop(1,'#25f4ee');c.fillStyle=gr;c.fillRect(0,1920-h,1080*Math.min(1,t/st.total),h)}c.setTransform(1,0,0,1,0,0);return}}
   // la scena non resta mai senza clip: prima della prima frase e dopo l'ultima (finale) si vede la clip più vicina, mai il vecchio Gennarino disegnato
   const vis=it||(st.items.length?(t<st.items[0].s?st.items[0]:[...st.items].reverse().find(x=>x.s<=t)||st.items[0]):null);
   const cam=crCam(t,it);let drawn=false;if(vis&&vis.shot&&media&&media.el&&media.cur===vis){c.fillStyle='#000';c.fillRect(0,0,1080,1920);drawn=crMedia(c,media.el,t,vis.s,1+(cam.z-1)*0.5,crOv(vis.shot,st))}
