@@ -1,0 +1,91 @@
+STILE: Vivace, allegro ed energico, voce brillante
+Ogni blocco = una generazione in AI Studio (voce Mako). Frasi separate da <long pause>.
+
+=== BLOCCO 1 (10 frasi) ===
+Piazza nuova, tre idee nuove: quale costruisco?
+<long pause>
+Uè guagliù, il bancariello si è spostato!
+<long pause>
+A: Cosa scade nel frigo.
+<long pause>
+B: Sveglia per le strisce blu.
+<long pause>
+C: Turni di casa.
+<long pause>
+Latte scaduto, strisce blu o piatti: chi vi frega di più?
+<long pause>
+Mamma mia, quel formaggio era scaduto da una settimana!
+<long pause>
+Uè guagliù, a me succede sempre!
+<long pause>
+E il parcheggio a strisce blu: quante multe per cinque minuti?
+<long pause>
+E a casa: chi ha lavato i piatti ieri?
+
+=== BLOCCO 2 (10 frasi) ===
+Ditemi nei commenti cosa vi frega ogni giorno.
+<long pause>
+Stasera chiudo le urne: manca poco!
+<long pause>
+Uè guagliù, l'ultima occasione per votare.
+<long pause>
+Una lettera nei commenti e avete deciso.
+<long pause>
+Ha vinto la A: il frigo non vi frega più!
+<long pause>
+Ha vinto la A: Cosa scade nel frigo.
+<long pause>
+Segnate cosa mettete in frigo e vi dico quando scade.
+<long pause>
+Cosa vi si butta sempre? Ditemelo nei commenti!
+<long pause>
+Ha vinto la B: le strisce blu non vi fregano più!
+<long pause>
+Ha vinto la B: Sveglia per le strisce blu.
+
+=== BLOCCO 3 (10 frasi) ===
+Dite quando parcheggiate e vi suono prima che scada il tempo.
+<long pause>
+Quante multe avete preso? Ditemelo nei commenti!
+<long pause>
+Ha vinto la C: a casa i turni sono chiari!
+<long pause>
+Ha vinto la C: Turni di casa.
+<long pause>
+Scrivete chi fa cosa e vi dico a chi tocca oggi.
+<long pause>
+Chi a casa non fa mai niente? Ditemelo nei commenti!
+<long pause>
+È venerdì: il frigo adesso parla da solo!
+<long pause>
+Ecco Cosa scade nel frigo.
+<long pause>
+Segnate cosa mettete in frigo e quando scade.
+<long pause>
+Vi dico io cosa mangiare per primo.
+
+=== BLOCCO 4 (10 frasi) ===
+Mandatela a chi butta sempre il latte!
+<long pause>
+È venerdì: le strisce blu non vi fregano più!
+<long pause>
+Ecco Sveglia per le strisce blu.
+<long pause>
+Dite a che ora avete parcheggiato.
+<long pause>
+Suona prima che scada il tempo.
+<long pause>
+Mandatela a chi prende sempre la multa!
+<long pause>
+È venerdì: a casa si sa a chi tocca!
+<long pause>
+Ecco Turni di casa.
+<long pause>
+Scrivete i lavori di casa e chi li fa.
+<long pause>
+Ogni giorno vi dice a chi tocca.
+
+=== BLOCCO 5 (2 frasi) ===
+Mandatela a chi a casa non fa mai niente!
+<long pause>
+Saluto la piazza: grazie per questa settimana!
