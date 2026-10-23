@@ -78,6 +78,34 @@
     "mercoledì: ultime ore per votare",
     "sabato: smontaggio della bancarella"
    ]
+  },
+  {
+   "settimana": "2026-W44",
+   "idee": {
+    "A": "Cosa scade nel frigo",
+    "B": "Sveglia per le strisce blu",
+    "C": "Turni di casa"
+   },
+   "hook": [
+    "Piazza nuova, tre idee nuove: quale costruisco?",
+    "Latte scaduto, strisce blu o piatti: chi vi frega di più?",
+    "Mamma mia, quel formaggio era scaduto da una settimana!",
+    "Stasera chiudo le urne: manca poco!",
+    "Ha vinto la A: il frigo non vi frega più!",
+    "Ha vinto la B: le strisce blu non vi fregano più!",
+    "Ha vinto la C: a casa i turni sono chiari!",
+    "Zero voti: questa volta niente app.",
+    "È venerdì: il frigo adesso parla da solo!",
+    "È venerdì: le strisce blu non vi fregano più!",
+    "È venerdì: a casa si sa a chi tocca!",
+    "Sabato si smonta: domani cambio piazza!"
+   ],
+   "parti": [
+    "domenica: piazza nuova e tre idee",
+    "martedì: cosa vi frega ogni giorno",
+    "mercoledì: ultime ore per votare",
+    "sabato: smontaggio della bancarella"
+   ]
   }
  ]
 }

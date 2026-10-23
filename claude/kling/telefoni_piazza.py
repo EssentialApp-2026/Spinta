@@ -1,6 +1,6 @@
 """Sostituisce i tre telefoni sul banco nella panoramica della piazza con quelli della settimana.
 Uso: python3 telefoni_piazza.py ingresso.mp4 uscita.mp4 poster.jpg "Macchina:auto" "Pasta:timer" "Prestiti:quaderno"
-Ogni telefono è «Nome:icona» (icone: auto, timer, quaderno, bidone, goccia, carrello, altro).
+Ogni telefono è «Nome:icona» (icone: auto, timer, quaderno, bidone, goccia, carrello, frigo, casa, parcheggio, altro).
 I telefoni vecchi sono nelle posizioni del primo fotogramma (BOX: x, y, larghezza, altezza); il davanti del banco si segue di fotogramma
 in fotogramma (ECC, trasformazione affine), i vecchi telefoni si cancellano con inpaint e i nuovi si disegnano nella stessa posizione e misura.
 Va fatto solo se la clip è quella del banco con i telefoni nelle stesse posizioni (la panoramica della piazza della settimana)."""
@@ -32,6 +32,16 @@ def icon(d, kind, cx, cy, r, col):
         for k, c in enumerate([(40, 110, 230), (240, 200, 30), (130, 80, 40)]): d.rounded_rectangle([cx - r + k * r * .7, cy - r * .8, cx - r * .4 + k * r * .7, cy + r], 2, fill=c)
     elif kind == 'goccia':
         d.polygon([(cx, cy - r), (cx + r * .7, cy + r * .3), (cx - r * .7, cy + r * .3)], fill=(40, 140, 230)); d.ellipse([cx - r * .7, cy - r * .1, cx + r * .7, cy + r * .9], fill=(40, 140, 230))
+    elif kind == 'frigo':
+        d.rounded_rectangle([cx - r * .6, cy - r, cx + r * .6, cy + r], r * .15, fill=(235, 240, 245), outline=(120, 130, 150), width=max(2, int(r * .1)))
+        d.line([cx - r * .6, cy - r * .15, cx + r * .6, cy - r * .15], fill=(120, 130, 150), width=max(2, int(r * .1)))
+        d.line([cx + r * .35, cy - r * .7, cx + r * .35, cy - r * .35], fill=(120, 130, 150), width=max(2, int(r * .12)))
+    elif kind == 'casa':
+        d.polygon([(cx - r, cy), (cx, cy - r), (cx + r, cy)], fill=(214, 40, 40)); d.rectangle([cx - r * .75, cy, cx + r * .75, cy + r * .85], fill=(240, 215, 160))
+        d.rectangle([cx - r * .2, cy + r * .3, cx + r * .2, cy + r * .85], fill=(120, 72, 38))
+    elif kind == 'parcheggio':
+        d.rounded_rectangle([cx - r * .85, cy - r * .85, cx + r * .85, cy + r * .85], r * .2, fill=(40, 100, 220))
+        f = ImageFont.truetype(FONT, int(r * 1.5)); d.text((cx, cy + r * .05), 'P', font=f, fill=(255, 255, 255), anchor='mm')
     elif kind == 'carrello':
         d.polygon([(cx - r, cy - r * .6), (cx + r, cy - r * .6), (cx + r * .7, cy + r * .3), (cx - r * .6, cy + r * .3)], fill=col)
         for sx in (-.4, .5): d.ellipse([cx + sx * r - r * .2, cy + r * .45, cx + sx * r + r * .2, cy + r * .85], fill=(30, 30, 40))
