@@ -4,7 +4,7 @@ Ogni blocco = una generazione in AI Studio (voce Mako). Frasi separate da <long 
 === BLOCCO 1 (10 frasi) ===
 Piazza nuova, tre idee nuove: quale costruisco?
 <long pause>
-Uè guagliù, il bancariello si è spostato!
+Uè guagliù, il bancariello si è spostato in Piazza Bellini!
 <long pause>
 A: Cosa scade nel frigo.
 <long pause>
@@ -88,4 +88,4 @@ Ogni giorno vi dice a chi tocca.
 === BLOCCO 5 (2 frasi) ===
 Mandatela a chi a casa non fa mai niente!
 <long pause>
-Saluto la piazza: grazie per questa settimana!
+Saluto Piazza Bellini: grazie per questa settimana!
