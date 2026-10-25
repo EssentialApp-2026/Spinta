@@ -66,7 +66,547 @@
    "somiglia": 0.612,
    "sentito": "Venevi la più votata e sul banco gratis!",
    "seme": 0
+  },
+  {
+   "file": "m10.mp3",
+   "testo": "Latte scaduto, strisce blu o piatti: chi vi frega di più?",
+   "fonte": "copia",
+   "capito": 0.82,
+   "somiglia": 0.647,
+   "sentito": "latte scaduto, strisce blu o piatti, ki mi frega di più.",
+   "seme": 1
+  },
+  {
+   "file": "m11.mp3",
+   "testo": "Uè guagliù, il voto è aperto da ieri.",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.485,
+   "sentito": "Ué, Guayou, il voto è aperto da ieri.",
+   "seme": 0
+  },
+  {
+   "file": "m12.mp3",
+   "testo": "Basta una lettera nei commenti per decidere.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.546,
+   "sentito": "Basta una lettera nei commenti per decidere.",
+   "seme": 1
+  },
+  {
+   "file": "m13.mp3",
+   "testo": "Chi non ha ancora votato, ha tempo fino a mercoledì sera!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.684,
+   "sentito": "Chi non ha ancora votato ha tempo fino a mercoledì sera.",
+   "seme": 0
+  },
+  {
+   "file": "m14.mp3",
+   "testo": "Mamma mia, quel formaggio era scaduto da una settimana!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.698,
+   "sentito": "Mamma mia, quel formaggio era scaduto da una settimana!",
+   "seme": 1
+  },
+  {
+   "file": "m15.mp3",
+   "testo": "Uè guagliù, a me succede sempre!",
+   "fonte": "copia",
+   "capito": 0.73,
+   "somiglia": 0.464,
+   "sentito": "\"Wegwaiju\" a me succede sempre.",
+   "seme": 1
+  },
+  {
+   "file": "m16.mp3",
+   "testo": "E il parcheggio a strisce blu: quante multe per cinque minuti?",
+   "fonte": "copia",
+   "capito": 0.76,
+   "somiglia": 0.65,
+   "sentito": "e il Parcheggio Astrisce Blu. Quante molte per 5 minuti?",
+   "seme": 1
+  },
+  {
+   "file": "m17.mp3",
+   "testo": "E a casa: chi ha lavato i piatti ieri?",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.519,
+   "sentito": "E a casa chi ha lavato i piatti ieri?",
+   "seme": 1
+  },
+  {
+   "file": "m18.mp3",
+   "testo": "Per questo ho pensato a queste tre idee.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.499,
+   "sentito": "Per questo ho pensato a queste tre idee.",
+   "seme": 1
+  },
+  {
+   "file": "m19.mp3",
+   "testo": "Ditemi nei commenti cosa vi frega ogni giorno.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.583,
+   "sentito": "Ditemi nei commenti cosa vi frega ogni giorno.",
+   "seme": 1
+  },
+  {
+   "file": "m20.mp3",
+   "testo": "E chi non ha votato: A, B o C, fino a domani sera!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.665,
+   "sentito": "E chi non ha votato? A, B o C, fino a domani sera.",
+   "seme": 0
+  },
+  {
+   "file": "m21.mp3",
+   "testo": "Stasera chiudo le urne: manca poco!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.502,
+   "sentito": "Stasera chiudo le urne, manca poco!",
+   "seme": 0
+  },
+  {
+   "file": "m22.mp3",
+   "testo": "Uè guagliù, l'ultima occasione per votare.",
+   "fonte": "copia",
+   "capito": 0.71,
+   "somiglia": 0.527,
+   "sentito": "We, Guayou, l'ultima occasione per votare.",
+   "seme": 1
+  },
+  {
+   "file": "m23.mp3",
+   "testo": "Una lettera nei commenti e avete deciso.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.629,
+   "sentito": "Una lettera nei commenti e avete deciso.",
+   "seme": 1
+  },
+  {
+   "file": "m24.mp3",
+   "testo": "Domani vi dico chi ha vinto!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.72,
+   "sentito": "Domani vi dico chi ha vinto",
+   "seme": 0
+  },
+  {
+   "file": "m25.mp3",
+   "testo": "Ha vinto la A: il frigo non vi frega più!",
+   "fonte": "copia",
+   "capito": 0.84,
+   "somiglia": 0.433,
+   "sentito": "A vinto là, il frigo non vi frega più.",
+   "seme": 0
+  },
+  {
+   "file": "m26.mp3",
+   "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
+   "fonte": "copia",
+   "capito": 0.84,
+   "somiglia": 0.728,
+   "sentito": "- Ué, Guayou, ho contato i voti, avete scelto voi!",
+   "seme": 0
+  },
+  {
+   "file": "m27.mp3",
+   "testo": "Ha vinto la A: Cosa scade nel frigo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.498,
+   "sentito": "Ha vinto la A, cosa scade nel frigo?",
+   "seme": 1
+  },
+  {
+   "file": "m28.mp3",
+   "testo": "Segnate cosa mettete in frigo e vi dico quando scade.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.625,
+   "sentito": "Segnate cosa mettete in frigo e vi dico quando scade.",
+   "seme": 0
+  },
+  {
+   "file": "m29.mp3",
+   "testo": "Da oggi ci lavoro, giorno e notte.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.518,
+   "sentito": "Da oggi ci lavoro giorno e notte.",
+   "seme": 0
+  },
+  {
+   "file": "m30.mp3",
+   "testo": "Venerdì è sul banco, gratis per tutti.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.535,
+   "sentito": "Venerdì è sul banco, gratis per tutti!",
+   "seme": 1
+  },
+  {
+   "file": "m31.mp3",
+   "testo": "Cosa vi si butta sempre? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.672,
+   "sentito": "Cosa vi si butta sempre? Ditemelo nei commenti!",
+   "seme": 1
+  },
+  {
+   "file": "m32.mp3",
+   "testo": "Ha vinto la B: le strisce blu non vi fregano più!",
+   "fonte": "copia",
+   "capito": 0.96,
+   "somiglia": 0.596,
+   "sentito": "Ha vinto la B, le strisce e blu non vi fregano più.",
+   "seme": 0
+  },
+  {
+   "file": "m33.mp3",
+   "testo": "Ha vinto la B: Sveglia per le strisce blu.",
+   "fonte": "copia",
+   "capito": 0.95,
+   "somiglia": 0.48,
+   "sentito": "Ha vinto la B, sveglia per le strisce strisce blu.",
+   "seme": 1
+  },
+  {
+   "file": "m34.mp3",
+   "testo": "Dite quando parcheggiate e vi suono prima che scada il tempo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.78,
+   "sentito": "Dite quando parcheggiate e vi suono prima che scada il tempo.",
+   "seme": 1
+  },
+  {
+   "file": "m35.mp3",
+   "testo": "Quante multe avete preso? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.581,
+   "sentito": "Quante multe avete preso? Ditemelo nei commenti!",
+   "seme": 0
+  },
+  {
+   "file": "m36.mp3",
+   "testo": "Ha vinto la C: a casa i turni sono chiari!",
+   "fonte": "copia",
+   "capito": 0.84,
+   "somiglia": 0.64,
+   "sentito": "Avvinto la C, a casa i turni sono chiari.",
+   "seme": 1
+  },
+  {
+   "file": "m37.mp3",
+   "testo": "Ha vinto la C: Turni di casa.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.518,
+   "sentito": "Ha vinto la C, turni di casa.",
+   "seme": 0
+  },
+  {
+   "file": "m38.mp3",
+   "testo": "Scrivete chi fa cosa e vi dico a chi tocca oggi.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.576,
+   "sentito": "Scrivete chi fa cosa e vi dico a chi tocca oggi.",
+   "seme": 0
+  },
+  {
+   "file": "m39.mp3",
+   "testo": "Chi a casa non fa mai niente? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.658,
+   "sentito": "Chi a casa non fa mai niente, ditemelo nei commenti.",
+   "seme": 0
+  },
+  {
+   "file": "m40.mp3",
+   "testo": "Zero voti: questa volta niente app.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.582,
+   "sentito": "Zero voti, questa volta niente appina.",
+   "seme": 1
+  },
+  {
+   "file": "m41.mp3",
+   "testo": "Uè guagliù, ho letto tutti i commenti.",
+   "fonte": "copia",
+   "capito": 0.71,
+   "somiglia": 0.506,
+   "sentito": "Què, Guayou, ho letto tutti i commenti.",
+   "seme": 1
+  },
+  {
+   "file": "m42.mp3",
+   "testo": "Ma nessuno ha scritto A, B o C.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.447,
+   "sentito": "Ma nessuno ha scritto A, B o C.",
+   "seme": 0
+  },
+  {
+   "file": "m43.mp3",
+   "testo": "Mi dispiace: venerdì niente regalo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.671,
+   "sentito": "Mi dispiace venerdì niente regalo.",
+   "seme": 0
+  },
+  {
+   "file": "m44.mp3",
+   "testo": "Domenica torno con tre idee nuove.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.542,
+   "sentito": "Domenica attorno con tre idee nuove.",
+   "seme": 1
+  },
+  {
+   "file": "m45.mp3",
+   "testo": "Basta una lettera nei commenti e decidete voi!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.604,
+   "sentito": "Basta una lettera nei commenti e decidete voi!",
+   "seme": 1
+  },
+  {
+   "file": "m46.mp3",
+   "testo": "È venerdì: il frigo adesso parla da solo!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.519,
+   "sentito": "E venerdì, il frigo adesso parla da solo.",
+   "seme": 1
+  },
+  {
+   "file": "m47.mp3",
+   "testo": "Uè guagliù, il regalo è sul banco.",
+   "fonte": "copia",
+   "capito": 0.71,
+   "somiglia": 0.533,
+   "sentito": "Weh, Guayu, il regalo è sul banco.",
+   "seme": 0
+  },
+  {
+   "file": "m48.mp3",
+   "testo": "Ecco Cosa scade nel frigo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.508,
+   "sentito": "Ecco cosa scade nel frigo.",
+   "seme": 1
+  },
+  {
+   "file": "m49.mp3",
+   "testo": "Segnate cosa mettete in frigo e quando scade.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.63,
+   "sentito": "Segnate cosa mettete in frigo e quando scade.",
+   "seme": 0
+  },
+  {
+   "file": "m50.mp3",
+   "testo": "Vi dico io cosa mangiare per primo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.536,
+   "sentito": "Vi dico io cosa mangiare per primo.",
+   "seme": 0
+  },
+  {
+   "file": "m51.mp3",
+   "testo": "Gratis, senza registrazione: link nel profilo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.807,
+   "sentito": "Gratis, senza registrazione, link nel profilo.",
+   "seme": 1
+  },
+  {
+   "file": "m52.mp3",
+   "testo": "Mandatela a chi butta sempre il latte!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.461,
+   "sentito": "Mandatela a chi butta sempre il latte.",
+   "seme": 1
+  },
+  {
+   "file": "m53.mp3",
+   "testo": "È venerdì: le strisce blu non vi fregano più!",
+   "fonte": "copia",
+   "capito": 0.82,
+   "somiglia": 0.701,
+   "sentito": "e venerdì le strisce e venerdì le strisce blu non vi fregano più.",
+   "seme": 1
+  },
+  {
+   "file": "m54.mp3",
+   "testo": "Ecco Sveglia per le strisce blu.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.484,
+   "sentito": "Ecco sveglia per le strici blu.",
+   "seme": 0
+  },
+  {
+   "file": "m55.mp3",
+   "testo": "Dite a che ora avete parcheggiato.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.602,
+   "sentito": "Dite a che ora avete parcheggiato.",
+   "seme": 0
+  },
+  {
+   "file": "m56.mp3",
+   "testo": "Suona prima che scada il tempo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.541,
+   "sentito": "Suona prima che scada il tempo.",
+   "seme": 1
+  },
+  {
+   "file": "m57.mp3",
+   "testo": "Mandatela a chi prende sempre la multa!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.623,
+   "sentito": "Mandatela a chi prende sempre la multa.",
+   "seme": 1
+  },
+  {
+   "file": "m58.mp3",
+   "testo": "È venerdì: a casa si sa a chi tocca!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.475,
+   "sentito": "E venerdì, a casa si sa a chi tocca.",
+   "seme": 1
+  },
+  {
+   "file": "m59.mp3",
+   "testo": "Ecco Turni di casa.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.489,
+   "sentito": "Ecco turni di casa.",
+   "seme": 0
+  },
+  {
+   "file": "m60.mp3",
+   "testo": "Scrivete i lavori di casa e chi li fa.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.527,
+   "sentito": "Scrivete i lavori di casa e chi li fa.",
+   "seme": 1
+  },
+  {
+   "file": "m61.mp3",
+   "testo": "Ogni giorno vi dice a chi tocca.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.499,
+   "sentito": "Ogni giorno vi dice a chi tocca.",
+   "seme": 1
+  },
+  {
+   "file": "m62.mp3",
+   "testo": "Mandatela a chi a casa non fa mai niente!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.491,
+   "sentito": "Mandatela a chi a casa non fa mai niente.",
+   "seme": 1
+  },
+  {
+   "file": "m63.mp3",
+   "testo": "Sabato si smonta: domani cambio piazza!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.581,
+   "sentito": "Sabato si smonta. Domani cambio piazza.",
+   "seme": 0
+  },
+  {
+   "file": "m64.mp3",
+   "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
+   "fonte": "copia",
+   "capito": 0.78,
+   "somiglia": 0.623,
+   "sentito": "Weh, Guayu, chiudo la tenda e piego il banco.",
+   "seme": 1
+  },
+  {
+   "file": "m65.mp3",
+   "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.652,
+   "sentito": "Arrotolo le lampadine e metto tutto nel scarvetto.",
+   "seme": 0
+  },
+  {
+   "file": "m66.mp3",
+   "testo": "Saluto Piazza Bellini: grazie per questa settimana!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.684,
+   "sentito": "Saluto Piazza Bellini! Grazie per questa settimana!",
+   "seme": 1
+  },
+  {
+   "file": "m67.mp3",
+   "testo": "Dove vado domani? Non ve lo dico ancora.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.745,
+   "sentito": "Dove vado domani? Non ve lo dico ancora.",
+   "seme": 0
+  },
+  {
+   "file": "m68.mp3",
+   "testo": "Domani piazza nuova e tre idee nuove da votare.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.61,
+   "sentito": "Domani, piazza nuova e tre idee nuove da votare.",
+   "seme": 0
+  },
+  {
+   "file": "m69.mp3",
+   "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.694,
+   "sentito": "Secondo voi dove mi sposto, scrivetelo nei commenti.",
+   "seme": 1
   }
  ],
- "ultimo": 9
+ "ultimo": 69
 }
