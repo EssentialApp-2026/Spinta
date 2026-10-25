@@ -1,6 +1,100 @@
-settimana 2026-W46 dal 2026-11-08
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W46 Acqua:💧 Garanzie:🧾 Uovo:🥚 --piazza Piazza Garibaldi
-{"piazza": "Piazza Garibaldi", "file": "piazza-2026-W46.mp4", "poster": "piazza-2026-W46.jpg", "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg", "licenza": "CC0", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_Centrale_Station_-_Piazza_Garibaldi_Entrance_01.jpg", "torna": false}
-persone tolte: 24, foto rifatta per il 8.0%
+settimana 2026-W44 dal 2026-10-25
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/voci.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W44.json --rifai
+2k4 (18s) | È venerdì: il frigo adesso parla da solo! | e venerdì il Friga adesso parla da sola.
+45.mp3 2.03s capito 0.57 sara1.02k4 (16s) | Uè guagliù, il regalo è sul banco. | Qua giù il regalo è sul banga.
+46.mp3 1.56s capito 0.80 paola1.1k4 (14s) | Ecco Cosa scade nel frigo. | Ecco cosa scade nel fidato.
+47.mp3 2.67s capito 0.75 sara1.02k4 (18s) | Segnate cosa mettete in frigo e quando scade. | Segnate cosa mettete in friga e quando scada.
+48.mp3 2.27s capito 0.71 sara1.02k8 (16s) | Vi dico io cosa mangiare per primo. | Vi dico io cosa manciare per prima.
+49.mp3 3.06s capito 0.83 sara0.95k4 (19s) | Gratis, senza registrazione: link nel profilo. | Grati senza registrazione, link nel profilo.
+50.mp3 1.74s capito 0.43 paola1.0k4 (16s) | Mandatela a chi butta sempre il latte! | Mandatela a chi vuotta se ha enviellato.
+51.mp3 2.57s capito 0.78 sara1.02k4 (19s) | È venerdì: le strisce blu non vi fregano più! | e venerdì le stri sable non vi fregano più.
+52.mp3 1.91s capito 0.50 sara1.02k4 (15s) | Ecco Sveglia per le strisce blu. | Ecca sveglia per le stri sableau.
+53.mp3 2.11s capito 0.67 sara1.02k4 (15s) | Dite a che ora avete parcheggiato. | Dito a che ora avete parcheggiata.
+54.mp3 1.99s capito 0.83 sara1.02k4 (15s) | Suona prima che scada il tempo. | Suona prima che scada il temba.
+55.mp3 2.33s capito 0.86 sara1.02k4 (17s) | Mandatela a chi prende sempre la multa! | Mandatela a chi prende sembra la multa.
+56.mp3 2.29s capito 0.94 sara0.95k4 (8s) | È venerdì: a casa si sa a chi tocca! | E venerdì a casa si sa chi tocca.
+57.mp3 1.53s capito 0.75 sara1.02k4 (12s) | Ecco Turni di casa. | Ecco tourne di casa
+58.mp3 2.25s capito 0.67 sara1.02k4 (17s) | Scrivete i lavori di casa e chi li fa. | Scrivete il lavoro di casa e che li fa.
+59.mp3 1.56s capito 0.93 paola1.0k4 (13s) | Ogni giorno vi dice a chi tocca. | poi ogni giorno vi dice a chi tocca.
+60.mp3 2.42s capito 0.71 sara0.95k4 (17s) | Mandatela a chi a casa non fa mai niente! | Mandatela che a casa non fa mai nienda.
+61.mp3 2.58s capito 0.83 sara1.02k8 (19s) | Sabato si smonta: domani cambio piazza! | Sabato si smonda, domani cambio piazza
+62.mp3 2.52s capito 0.50 sara0.95k4 (20s) | Uè guagliù, chiudo la tenda e piego il banco. | O e qual giù chiudo la tenda e piega il banga.
+63.mp3 2.65s capito 0.50 paola1.0k4 (21s) | Arrotolo le lampadine e metto tutto nel carretto. | arrotole le lambadine e metto tutte nel carretta.
+64.mp3 3.07s capito 0.86 sara1.02k4 (22s) | Saluto Piazza Bellini: grazie per questa settimana! | Saluto Piazza Bellina, grazie per questa settimana.
+65.mp3 2.60s capito 0.88 sara0.95k4 (19s) | Dove vado domani? Non ve lo dico ancora. | Dove fate domani? Non ve lo dico ancora.
+66.mp3 2.89s capito 1.00 sara1.02k4 (5s) | Domani piazza nuova e tre idee nuove da votare. | Domani piazza nuova e tre idee nuove da votare.
+67.mp3 3.01s capito 0.75 sara1.02k4 (21s) | Secondo voi dove mi sposto? Scrivetelo nei commenti! | Secondo voi dove mi spasta scrivetela nei commenti.
+media capito 0.71
 
-panoramica rifatta piazza-2026-W46.mp4 Piazza Garibaldi
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W44.json
+voci: tutte le frasi hanno la voce nuova
+ok: 2026-W44 · 12 puntate
+ 
+voci rifatte 2026-W44
+settimana 2026-W45 dal 2026-11-01
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/voci.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json --rifai
+3 2.39s capito 0.88 paola1.1k4 (19s) | È venerdì: le piante bevono al momento giusto! | E venerdì, le piando bevono al momento giusto.
+45.mp3 2.03s capito 0.57 sara1.02k4 (16s) | Uè guagliù, il regalo è sul banco. | Qua giù il regalo è sul banga.
+46.mp3 1.33s capito 0.44 paola1.0k4 (13s) | Ecco Innaffia le piante. | Ecco in assia le piano.
+47.mp3 2.94s capito 0.70 sara1.02k4 (20s) | Per ogni pianta dite ogni quanti giorni vuole l'acqua. | Per ogni pianda dite ogni quando giorno vuole l'acqua.
+48.mp3 2.30s capito 0.77 sara0.95k4 (16s) | Vi dico io quale innaffiare oggi. | Vi dico io quale è innastiaro oggi?
+49.mp3 3.06s capito 0.83 sara0.95k4 (19s) | Gratis, senza registrazione: link nel profilo. | Grati senza registrazione, link nel profilo.
+50.mp3 2.97s capito 0.70 sara0.95k4 (20s) | Mandatela a chi ha il balcone pieno di piante secche! | Mandatela a chi è il balcone pieno di pianto secca.
+51.mp3 2.47s capito 0.78 sara1.02k4 (18s) | È venerdì: a carte i punti li segno io! | e venerdì a carta i punti li segna io.
+52.mp3 1.90s capito 0.67 sara1.02k4 (15s) | Ecco Segnapunti della scopa. | Ecco, segna Punda della scopa.
+53.mp3 1.97s capito 0.83 sara0.95k4 (14s) | Toccate i punti di ogni mano. | Toccate i punti di ogni mana.
+54.mp3 1.83s capito 0.55 sara1.02k8 (15s) | Vi dico io chi arriva prima. | Vedica io che arriva prima.
+55.mp3 1.80s capito 0.46 paola1.1k4 (17s) | Mandatela a chi imbroglia sempre a carte! | Mandatela a chi poi ha senbaccato.
+56.mp3 1.92s capito 0.80 sara1.02k4 (15s) | È venerdì: decide la ruota! | e venerdì decida la ruota
+57.mp3 1.76s capito 0.80 sara1.02k4 (14s) | Ecco Chi scende la munnezza. | Ecca chi scende la munnezza!
+58.mp3 1.77s capito 0.67 sara1.02k4 (14s) | Scrivete i nomi di casa. | scrivete i nomadi casa.
+59.mp3 2.28s capito 0.80 sara1.02k8 (17s) | Girate e la sorte sceglie chi tocca. | Girato e la sorte sceglie a chi tocca.
+60.mp3 2.17s capito 0.86 sara1.02k4 (16s) | Mandatela a chi fa sempre il furbo! | Mandatela a chi fa sempre il furba.
+61.mp3 2.58s capito 0.83 sara1.02k8 (19s) | Sabato si smonta: domani cambio piazza! | Sabato si smonda, domani cambio piazza
+62.mp3 2.52s capito 0.50 sara0.95k4 (19s) | Uè guagliù, chiudo la tenda e piego il banco. | O e qual giù chiudo la tenda e piega il banga.
+63.mp3 2.57s capito 0.75 paola1.0k4 (20s) | Arrotolo le lampadine e metto tutto nel carretto. | arrotolo le lambadine e metto tutte nel carretto
+64.mp3 3.03s capito 1.00 sara1.02k4 (5s) | Saluto Piazza Carità: grazie per questa settimana! | Saluto Piazza Carità, grazie per questa settimana.
+65.mp3 2.60s capito 0.88 sara0.95k4 (18s) | Dove vado domani? Non ve lo dico ancora. | Dove fate domani? Non ve lo dico ancora.
+66.mp3 2.89s capito 1.00 sara1.02k4 (5s) | Domani piazza nuova e tre idee nuove da votare. | Domani piazza nuova e tre idee nuove da votare.
+67.mp3 3.01s capito 0.75 sara1.02k4 (21s) | Secondo voi dove mi sposto? Scrivetelo nei commenti! | Secondo voi dove mi spasta scrivetela nei commenti.
+media capito 0.72
+
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
+voci: tutte le frasi hanno la voce nuova
+ok: 2026-W45 · 12 puntate
+ 
+voci rifatte 2026-W45
+settimana 2026-W46 dal 2026-11-08
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/voci.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json --rifai
+mmenti e decidete a voi!
+44.mp3 1.98s capito 0.88 paola1.0k4 (17s) | È venerdì: l'acqua si conta da sola! | e venerdì l'acqua si quando da sola
+45.mp3 2.03s capito 0.57 sara1.02k4 (17s) | Uè guagliù, il regalo è sul banco. | Qua giù il regalo è sul banga.
+46.mp3 1.77s capito 0.40 sara1.02k4 (14s) | Ecco Quanta acqua ho bevuto. | Ecco quando acqua o bevute.
+47.mp3 2.11s capito 1.00 sara1.02k4 (4s) | Toccate più ogni volta che bevete. | Toccate più ogni volta che bevete.
+48.mp3 2.33s capito 1.00 sara1.02k4 (4s) | Vi faccio vedere come va la settimana. | Vi faccio vedere come va la settimana.
+49.mp3 3.06s capito 0.83 sara0.95k4 (19s) | Gratis, senza registrazione: link nel profilo. | Grati senza registrazione, link nel profilo.
+50.mp3 2.08s capito 1.00 sara1.02k4 (4s) | Mandatela a chi beve solo caffè! | Mandatela a chi beve solo caffè.
+51.mp3 2.26s capito 0.86 sara1.02k4 (17s) | È venerdì: le garanzie le tengo io! | e venerdì le garanzie le tenga io.
+52.mp3 1.80s capito 0.50 sara1.02k8 (15s) | Ecco Garanzie e scontrini. | Ecca garanzie e scondrina.
+53.mp3 2.17s capito 1.00 sara1.02k4 (4s) | Segnate cosa comprate e quando. | Segnate cosa comprate e quando.
+54.mp3 2.33s capito 1.00 sara1.02k4 (4s) | Vi avviso prima che scada la garanzia. | Vi avviso prima che scada la garanzia.
+55.mp3 2.53s capito 0.86 sara1.02k8 (17s) | Mandatela a chi perde sempre gli scontrini! | Mandatela a chi perde sempre gli scondrina.
+56.mp3 2.56s capito 0.89 sara1.02k4 (20s) | È venerdì: l'uovo viene come lo volete voi! | e venerdì l'uova viene come lo volete voi.
+57.mp3 1.79s capito 1.00 sara1.02k4 (3s) | Ecco l'uovo sodo perfetto. | Ecco l'uovo sodo perfetto!
+58.mp3 2.35s capito 0.73 sara1.02k8 (18s) | Scegliete: alla coque, barzotto o sodo. | Scegliete alla coque barzotto-sode.
+59.mp3 1.39s capito 0.80 paola1.0k4 (14s) | Vi suono quando è pronto. | Vi suono quando è pronta.
+60.mp3 2.16s capito 1.00 sara1.02k4 (4s) | Mandatela a chi fa le uova di gomma! | Mandatela a chi fa le uova di gomma.
+61.mp3 2.58s capito 0.83 sara1.02k8 (19s) | Sabato si smonta: domani cambio piazza! | Sabato si smonda, domani cambio piazza
+62.mp3 2.52s capito 0.50 sara0.95k4 (20s) | Uè guagliù, chiudo la tenda e piego il banco. | O e qual giù chiudo la tenda e piega il banga.
+63.mp3 2.61s capito 0.62 paola1.0k4 (20s) | Arrotolo le lampadine e metto tutto nel carretto. | Arrotovele la madina e metto tutto nel carretto.
+64.mp3 3.18s capito 0.86 sara1.02k4 (22s) | Saluto Piazza Garibaldi: grazie per questa settimana! | Saluto Piazza Garibald, grazie per questa settimana.
+65.mp3 2.60s capito 0.88 sara0.95k4 (18s) | Dove vado domani? Non ve lo dico ancora. | Dove fate domani? Non ve lo dico ancora.
+66.mp3 2.89s capito 1.00 sara1.02k4 (5s) | Domani piazza nuova e tre idee nuove da votare. | Domani piazza nuova e tre idee nuove da votare.
+67.mp3 3.01s capito 0.75 sara1.02k4 (21s) | Secondo voi dove mi sposto? Scrivetelo nei commenti! | Secondo voi dove mi spasta scrivetela nei commenti.
+media capito 0.74
+
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
+voci: tutte le frasi hanno la voce nuova
+ok: 2026-W46 · 12 puntate
+ 
+voci rifatte 2026-W46
