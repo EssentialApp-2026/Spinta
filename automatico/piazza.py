@@ -6,7 +6,8 @@
 1. Prende la prossima piazza vera di Napoli da automatico/piazze.json (foto CC0 o pubblico dominio già controllate),
    oppure ne cerca una nuova su Wikimedia Commons con le stesse regole (solo CC0/pubblico dominio, foto recenti, orizzontali,
    niente interni, dettagli o stampe antiche); se sono finite tutte, torna nella piazza dove manca da più tempo.
-2. Ritaglia la foto in verticale 9:16 e ci mette la bancarella con Gennarino (automatico/bancarella.png) sul selciato,
+2. Toglie le persone vere dalla foto (automatico/persone.py: nei video non deve esserci nessuna persona reale),
+   la ritaglia in verticale 9:16 e ci mette la bancarella con Gennarino (automatico/bancarella.png) sul selciato,
    con l'ombra e i tre telefoni delle idee della settimana (A, B, C) sul banco.
 3. Fa il volo in avanti (la piazza si avvicina piano, la bancarella di più: sembra un drone) e scrive
    libreria/piazza-<settimana>.mp4 e .jpg e la voce in «aperture» di libreria/libreria.json.
@@ -97,14 +98,25 @@ def cerca_su_commons(nome, spiega=None):
     return sorted(cand, reverse=True)
 
 
-def scegli_piazza():
-    usate = piazze_usate()
+def segna_scartata(nome, motivo):
+    """Una piazza la cui foto non va (per esempio troppa gente da togliere) non si riprova più."""
+    pp = os.path.join(QUI, 'piazze.json'); pz = json.load(open(pp, encoding='utf-8'))
+    for x in pz['piazze'] + pz.get('trovate', []):
+        if x['nome'].lower() == nome.lower(): x['scartata'] = motivo
+    if not any(x['nome'].lower() == nome.lower() for x in pz['piazze'] + pz.get('trovate', [])):
+        pz.setdefault('trovate', []).append({'nome': nome, 'file': '', 'licenza': '', 'scartata': motivo})
+    json.dump(pz, open(pp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+
+
+def scegli_piazza(salta=()):
+    usate = piazze_usate() | {x.lower() for x in salta}
     pz = json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8'))
-    for p in pz['piazze'] + pz.get('trovate', []):
+    buone = [p for p in pz['piazze'] + pz.get('trovate', []) if not p.get('scartata') and p.get('file')]
+    for p in buone:
         if p['nome'].lower() not in usate: return p
     # finite quelle controllate: se ne cerca una nuova su Commons (e si segna in «trovate», così la prossima volta c'è già)
     for nome in pz.get('da_cercare', []):
-        if nome.lower() in usate or any(nome.lower() == t['nome'].lower() for t in pz.get('trovate', [])): continue
+        if nome.lower() in usate or any(nome.lower() == t['nome'].lower() for t in pz['piazze'] + pz.get('trovate', [])): continue
         try: cand = cerca_su_commons(nome)
         except Exception as e: print('ricerca non riuscita per', nome, e, file=sys.stderr); continue
         if cand:
@@ -115,7 +127,7 @@ def scegli_piazza():
     # proprio finite tutte: si torna nella piazza dove Gennarino manca da più tempo (la foto è già controllata)
     ultima = {}
     for a in aperture(): ultima[a.get('piazza', '').lower()] = max(ultima.get(a.get('piazza', '').lower(), ''), a.get('settimana', ''))
-    note = sorted(pz['piazze'] + pz.get('trovate', []), key=lambda p: ultima.get(p['nome'].lower(), ''))
+    note = sorted([p for p in buone if p['nome'].lower() not in {x.lower() for x in salta}], key=lambda p: ultima.get(p['nome'].lower(), ''))
     if note: return dict(note[0], torna=True)
     raise SystemExit('nessuna piazza con foto libera')
 
@@ -199,7 +211,7 @@ def armonizza(stall, bg):
     return Image.fromarray(s.astype(np.uint8), 'RGBA')
 
 
-def video(foto, telefoni, uscita, poster, centro=0.5):
+def video(foto, telefoni, uscita, poster, centro=0.5, solo_locandina=False):
     bg = ritaglia(foto, centro)
     st = armonizza(bancarella(telefoni), bg)
     hb = int(H * 2 * 0.36); st = st.resize((int(st.width * hb / st.height), hb), Image.LANCZOS)
@@ -211,10 +223,10 @@ def video(foto, telefoni, uscita, poster, centro=0.5):
     bg = Image.composite(Image.new('RGB', bg.size, (20, 18, 16)), bg, ombra)
     px, py = cx, base - st.height * 0.62                   # il punto dove arriva il volo: la faccia di Gennarino
     sw0, sh0 = st.size; n = int(DUR * FPS)
-    p = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
+    p = None if solo_locandina else subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
                           '-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', uscita], stdin=subprocess.PIPE)
     mezzo = None
-    for i in range(n):
+    for i in ([n // 3] if solo_locandina else range(n)):
         t = i / (n - 1); e = t * t * (3 - 2 * t)
         z = 1 + 0.22 * e; zs = 1 + 1.05 * e                 # la piazza si avvicina poco, la bancarella di più (sembra un drone)
         dy = 0.06 * e * H * 2                                 # e la camera scende un po' verso il banco
@@ -224,8 +236,8 @@ def video(foto, telefoni, uscita, poster, centro=0.5):
         fr.paste(s2, (x, y), s2)
         out = fr.resize((W, H), Image.LANCZOS)
         if i == n // 3: mezzo = out
-        p.stdin.write(out.tobytes())
-    p.stdin.close(); p.wait()
+        if p: p.stdin.write(out.tobytes())
+    if p: p.stdin.close(); p.wait()
     mezzo.save(poster, quality=85)
 
 
@@ -235,16 +247,38 @@ def main():
     foto = nome = None
     if '--foto' in a: i = a.index('--foto'); foto = a[i + 1]; del a[i:i + 2]
     if '--nome' in a: i = a.index('--nome'); nome = a[i + 1]; del a[i:i + 2]
+    forzata = None
+    if '--piazza' in a: i = a.index('--piazza'); forzata = a[i + 1]; del a[i:i + 2]
     telefoni = [(x.split(':', 1)[0], x.split(':', 1)[1] if ':' in x else '⭐') for x in a[:3]]
-    if foto: p = {'nome': nome or 'Piazza', 'file': os.path.basename(foto), 'licenza': 'data a mano'}; url = ''; lic = p['licenza']
+    import persone
+    if foto:
+        pz = json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8'))
+        nota = next((x for x in pz['piazze'] + pz.get('trovate', []) if x['nome'].lower() == (nome or '').lower()), {})
+        p = dict(nota, nome=nome or 'Piazza', file=nota.get('file') or os.path.basename(foto)); url = ''; lic = nota.get('licenza') or 'data a mano'
+        foto = persone.togli(foto)                     # nessuna persona vera nei video
     else:
-        p = scegli_piazza(); foto, url, lic = scarica_foto(p)
+        salta = set()
+        for _ in range(6):
+            if forzata:
+                pz = json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8'))
+                p = next(x for x in pz['piazze'] + pz.get('trovate', []) if x['nome'].lower() == forzata.lower())
+            else:
+                p = scegli_piazza(salta)
+            foto, url, lic = scarica_foto(p)
+            try:
+                foto = persone.togli(foto); break          # nessuna persona vera nei video
+            except persone.TroppaGente as e:
+                print(f"{p['nome']}: {e}, scelgo un'altra piazza", file=sys.stderr, flush=True)
+                if forzata: raise
+                segna_scartata(p['nome'], 'troppa gente: ' + str(e)); salta.add(p['nome'])
+        else:
+            raise SystemExit('nessuna piazza con una foto pulibile')
     mp4 = f'piazza-{sett}.mp4'; jpg = f'piazza-{sett}.jpg'
     video(foto, telefoni, os.path.join(LIB, mp4), os.path.join(LIB, jpg), float(p.get('centro', 0.5)))
     lp = os.path.join(LIB, 'libreria.json'); l = json.load(open(lp, encoding='utf-8'))
     l['aperture'] = [x for x in l.get('aperture', []) if x.get('file') != mp4] + [{
         'file': mp4, 'poster': jpg, 'settimana': sett, 'piazza': p['nome'], 'foto': p['file'], 'licenza': lic,
-        'descrizione': f"Volo in avanti su {p['nome']} (foto vera, {lic}: «{p['file'].replace('File:', '')}», nessun credito da citare) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."}]
+        'descrizione': f"Volo in avanti su {p['nome']} (foto vera, {lic}: «{p['file'].replace('File:', '')}», nessun credito da citare; le persone vere sono state tolte da automatico/persone.py) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."}]
     json.dump(l, open(lp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print(json.dumps({'piazza': p['nome'], 'file': mp4, 'poster': jpg, 'foto': p['file'], 'licenza': lic, 'pagina': url, 'torna': bool(p.get('torna'))}, ensure_ascii=False))
 

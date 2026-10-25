@@ -111,12 +111,19 @@ def prova(out):
     """Fa la locandina della panoramica (bancarella compresa) per le foto di automatico/piazze-prova.json, per sceglierle a occhio."""
     import tempfile, subprocess
     os.makedirs(out, exist_ok=True)
+    import persone
     for x in json.load(open(os.path.join(QUI, 'piazze-prova.json'), encoding='utf-8')):
         try: foto, url, lic = P.scarica_foto(x)
         except BaseException as e: print('non scaricata', x['file'], e, flush=True); continue
-        for c in x.get('centri', [0.5]):
-            nome = re.sub(r'[^a-z0-9]+', '-', x['nome'].lower()).strip('-') + f'-{int(c * 100)}'
-            P.video(foto, [('Prova', '⭐'), ('Idea', '💡'), ('Gratis', '🎁')], tempfile.mktemp(suffix='.mp4'), os.path.join(out, f'prova-{nome}.jpg'), c)
+        slug = re.sub(r'[^a-z0-9]+', '-', x['nome'].lower()).strip('-')
+        try:
+            pulita = persone.togli(foto, os.path.join(out, f'foto-{slug}.jpg'))      # come nella settimana vera: senza persone
+        except persone.TroppaGente as e:
+            print('TROPPA GENTE', x['nome'], e, flush=True); continue
+        Image.open(foto).convert('RGB').save(os.path.join(out, f'foto-{slug}-prima.jpg'), quality=85)
+        for c in x.get('centri', [x.get('centro', 0.5)]):
+            nome = slug + f'-{int(c * 100)}'
+            P.video(pulita, [('Prova', '⭐'), ('Idea', '💡'), ('Gratis', '🎁')], tempfile.mktemp(suffix='.mp4'), os.path.join(out, f'prova-{nome}.jpg'), c, solo_locandina=True)
             print('fatta', nome, lic, flush=True)
 
 

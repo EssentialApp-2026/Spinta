@@ -3,6 +3,7 @@
     python3 automatico/settimana.py                 # prepara la prossima settimana (domenica dopo oggi)
     python3 automatico/settimana.py 2026-W45        # una settimana precisa
     python3 automatico/settimana.py 2026-W44 --solo-regali   # rifà solo le app regalo e il banco
+    python3 automatico/settimana.py 2026-W45 --rifai-piazza  # rifà solo la panoramica della domenica (stessa piazza)
 
 Passi (ognuno salta da solo se è già fatto):
   1. tre idee nuove dal catalogo (automatico/catalogo.json, poi automatico/idee-ai.json scritte dal modello AI locale, automatico/ai.py);
@@ -233,6 +234,12 @@ def main():
         scrivi(os.path.join(ROOT, 'claude', 'settimana.json'), j, indent=2)   # copia di riserva: l'ultima settimana preparata
         esegui([sys.executable, 'claude/controlla.py', pp])
     if j is None: raise SystemExit('manca il piano ' + pp)
+    if '--rifai-piazza' in sys.argv:
+        # rifà solo la panoramica della domenica (stessa piazza, stessi telefoni): per esempio per togliere le persone da una già fatta
+        tel = [f"{j['telefoni'][k]['nome']}:{j['telefoni'][k]['emoji']}" for k in 'ABC']
+        out = json.loads(esegui([sys.executable, 'automatico/piazza.py', sett, *tel, '--piazza', j['piazza']]).strip().splitlines()[-1])
+        print('panoramica rifatta', out['file'], out['piazza'], flush=True)
+        return
     if '--senza-voci' not in sys.argv and '--solo-regali' not in sys.argv:
         esegui([sys.executable, 'automatico/voci.py', pp])
         esegui([sys.executable, 'claude/controlla.py', pp])
