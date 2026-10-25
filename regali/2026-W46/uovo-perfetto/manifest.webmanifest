@@ -1,0 +1,25 @@
+{
+  "name": "L'uovo sodo perfetto · Gennarino",
+  "short_name": "Uovo",
+  "description": "Scegli alla coque, barzotto o sodo e ti suono quando è pronto: si calcola da quando l'acqua bolle. Funziona anche senza internet.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf3e2",
+  "theme_color": "#171a33",
+  "icons": [
+    {
+      "src": "icona-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icona-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

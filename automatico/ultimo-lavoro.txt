@@ -1,42 +1,42 @@
-settimana 2026-W45 dal 2026-11-01
-idee: ['Innaffia le piante', 'Segnapunti della scopa', 'Chi scende la munnezza']
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W45 Piante:🪴 Scopa:🃏 Sorte:🎲
-{"piazza": "Piazza Carità", "file": "piazza-2026-W45.mp4", "poster": "piazza-2026-W45.jpg", "foto": "File:Napoli - Piazza Carità.jpg", "licenza": "Public domain", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_-_Piazza_Carit%C3%A0.jpg"}
+settimana 2026-W46 dal 2026-11-08
+idee: ['Quanta acqua ho bevuto', 'Garanzie e scontrini', "L'uovo sodo perfetto"]
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W46 Acqua:💧 Garanzie:🧾 Uovo:🥚
+{"piazza": "Piazza Garibaldi", "file": "piazza-2026-W46.mp4", "poster": "piazza-2026-W46.jpg", "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg", "licenza": "CC0", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_Centrale_Station_-_Piazza_Garibaldi_Entrance_01.jpg", "torna": false}
  
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
-avviso: 42 frasi senza voce nuova (useranno Piper), es. «Uè guagliù, il bancariello si è spostato in Piazza Carità!»
-ok: 2026-W45 · 12 puntate
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
+avviso: 42 frasi senza voce nuova (useranno Piper), es. «Uè guagliù, il bancariello si è spostato in Piazza Garibaldi!»
+ok: 2026-W46 · 12 puntate
  
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/voci.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
-te non si litiga più! | Ha vinto la B, a carte non si litiga più.
-14.mp3 2.26s capito 0.77 sara1.02k4 (14s) | Ha vinto la B: Segnapunti della scopa. | Ha vinto la bissegnaponti della scopa.
-15.mp3 2.86s capito 1.00 sara1.02k4 (4s) | Toccate i punti di ogni mano e vi dico chi vince. | Toccate i punti di ogni mano e vi dico chi vince!
-16.mp3 4.01s capito 0.67 sara1.02k4 (22s) | Scopa, briscola o tressette: voi a cosa giocate? Ditemelo nei commenti! | Scopa brisco la O3-7. Voi a cosa giocate e ditemelo nei commenti.
-17.mp3 2.68s capito 1.00 paola1.1k4 (16s) | Ha vinto la C: decide la sorte, non si litiga più! | Ha vinto la C, decide la sorte, non si litiga più.
-18.mp3 2.20s capito 1.00 sara1.02k4 (3s) | Ha vinto la C: Chi scende la munnezza. | Ha vinto la C chi scende la munnezza
-19.mp3 2.76s capito 1.00 sara1.02k4 (4s) | Scrivete i nomi e la ruota decide chi tocca. | Scrivete i nomi e la ruota decide chi tocca.
-20.mp3 3.02s capito 1.00 sara1.02k4 (4s) | A casa vostra chi scende sempre? Ditemelo nei commenti! | A casa vostra chi scende sempre, ditemelo nei commenti.
-21.mp3 2.75s capito 1.00 sara1.02k8 (11s) | È venerdì: le piante bevono al momento giusto! | e venerdì le piante bevono al momento giusto.
-22.mp3 1.66s capito 1.00 sara1.02k4 (3s) | Ecco Innaffia le piante. | Ecco innaffia le piante.
-23.mp3 3.11s capito 1.00 sara1.02k4 (4s) | Per ogni pianta dite ogni quanti giorni vuole l'acqua. | Per ogni pianta dite ogni quanti giorni vuole l'acqua.
-24.mp3 2.27s capito 1.00 sara1.02k4 (3s) | Vi dico io quale innaffiare oggi. | Vi dico io quale innaffiare oggi.
-25.mp3 2.95s capito 0.90 sara0.95k4 (16s) | Mandatela a chi ha il balcone pieno di piante secche! | Mandatela a chi è il balcone pieno di piante secche.
-26.mp3 2.44s capito 1.00 sara1.02k8 (10s) | È venerdì: a carte i punti li segno io! | e venerdì a carte i punti li segno io.
-27.mp3 1.92s capito 0.67 sara1.02k4 (12s) | Ecco Segnapunti della scopa. | Ecco segna punti della scopa.
-28.mp3 1.87s capito 1.00 sara1.02k4 (3s) | Toccate i punti di ogni mano. | Toccate i punti di ogni mano.
-29.mp3 1.90s capito 0.83 sara0.95k4 (11s) | Vi dico io chi arriva prima. | Vi dico io che arriva prima.
-30.mp3 2.31s capito 0.71 sara1.02k8 (13s) | Mandatela a chi imbroglia sempre a carte! | Mandatela a Kim Broglia sempre a carte.
-31.mp3 1.90s capito 1.00 sara1.02k4 (2s) | È venerdì: decide la ruota! | e venerdì decide la ruota
-32.mp3 1.74s capito 1.00 sara1.02k4 (3s) | Ecco Chi scende la munnezza. | Ecco chi scende la munnezza.
-33.mp3 1.75s capito 1.00 sara1.02k4 (3s) | Scrivete i nomi di casa. | Scrivete i nomi di casa.
-34.mp3 2.28s capito 1.00 sara1.02k4 (3s) | Girate e la sorte sceglie chi tocca. | Girate e la sorte sceglie chi tocca.
-35.mp3 2.16s capito 1.00 sara1.02k4 (3s) | Mandatela a chi fa sempre il furbo! | Mandatela a chi fa sempre il furbo.
-36.mp3 3.03s capito 1.00 sara1.02k4 (4s) | Saluto Piazza Carità: grazie per questa settimana! | Saluto Piazza Carità, grazie per questa settimana.
-media capito 0.92
- [0;93m2026-10-25 06:55:27.031573437 [W:onnxruntime:Default, device_discovery.cc:95 GetPciBusId] Skipping pci_bus_id for PCI path at "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/5620e0c7-8062-4dce-aeb7-520c7ef76171" because filename "5620e0c7-8062-4dce-aeb7-520c7ef76171" did not match expected pattern of [0-9a-f]+:[0-9a-f]+:[0-9a-f]+[.][0-9a-f]+[m
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/voci.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
+ nei commenti e decidete voi.
+44.mp3 2.13s capito 1.00 sara1.02k4 (2s) | È venerdì: l'acqua si conta da sola! | e venerdì l'acqua si conta da sola.
+45.mp3 2.06s capito 0.71 sara1.02k4 (8s) | Uè guagliù, il regalo è sul banco. | Voi quaggiù il regalo e sul banco!
+46.mp3 1.82s capito 1.00 sara1.02k4 (2s) | Ecco Quanta acqua ho bevuto. | Ecco quanta acqua ho bevuto!
+47.mp3 2.14s capito 1.00 sara1.02k4 (2s) | Toccate più ogni volta che bevete. | Toccate più ogni volta che bevete.
+48.mp3 2.28s capito 1.00 sara1.02k4 (2s) | Vi faccio vedere come va la settimana. | Vi faccio vedere come va la settimana.
+49.mp3 2.87s capito 0.83 sara1.02k4 (10s) | Gratis, senza registrazione: link nel profilo. | Grati senza registrazione, link nel profilo.
+50.mp3 2.06s capito 1.00 sara1.02k4 (2s) | Mandatela a chi beve solo caffè! | Mandatela a chi beve solo caffè.
+51.mp3 2.17s capito 1.00 sara1.02k4 (2s) | È venerdì: le garanzie le tengo io! | e venerdì le garanzie le tengo io.
+52.mp3 1.77s capito 1.00 sara1.02k8 (5s) | Ecco Garanzie e scontrini. | Ecco Garanzie e Scontrini.
+53.mp3 2.19s capito 1.00 sara1.02k4 (2s) | Segnate cosa comprate e quando. | Segnate cosa comprate e quando.
+54.mp3 2.28s capito 1.00 sara1.02k4 (2s) | Vi avviso prima che scada la garanzia. | Vi avviso prima che scada la garanzia.
+55.mp3 2.46s capito 1.00 sara1.02k4 (2s) | Mandatela a chi perde sempre gli scontrini! | Mandatela a chi perde sempre gli scontrini.
+56.mp3 2.47s capito 1.00 sara1.02k4 (2s) | È venerdì: l'uovo viene come lo volete voi! | E venerdì l'uovo viene come lo volete voi.
+57.mp3 1.88s capito 1.00 sara0.95k4 (3s) | Ecco l'uovo sodo perfetto. | ecco l'uovo sodo perfetto
+58.mp3 2.43s capito 0.67 sara0.95k4 (9s) | Scegliete: alla coque, barzotto o sodo. | Scegliete alla coquie barzzotto o sodo.
+59.mp3 1.77s capito 1.00 sara1.02k4 (2s) | Vi suono quando è pronto. | Vi suono quando è pronto.
+60.mp3 2.16s capito 1.00 sara1.02k4 (2s) | Mandatela a chi fa le uova di gomma! | Mandatela a chi fa le uova di gomma.
+61.mp3 2.55s capito 1.00 sara1.02k4 (2s) | Sabato si smonta: domani cambio piazza! | Sabato si smonta, domani cambio piazza
+62.mp3 2.49s capito 0.84 sara1.02k4 (10s) | Uè guagliù, chiudo la tenda e piego il banco. | Ue guai jiu chiudo la tenda e piego il banco.
+63.mp3 2.86s capito 1.00 sara1.02k4 (2s) | Arrotolo le lampadine e metto tutto nel carretto. | arrotolo le lampadine e metto tutto nel carretto.
+64.mp3 3.20s capito 1.00 sara1.02k4 (3s) | Saluto Piazza Garibaldi: grazie per questa settimana! | Saluto Piazza Garibaldi, grazie per questa settimana.
+65.mp3 2.52s capito 1.00 sara0.95k4 (4s) | Dove vado domani? Non ve lo dico ancora. | Dove vado domani non ve lo dico ancora?
+66.mp3 2.83s capito 1.00 sara1.02k4 (2s) | Domani piazza nuova e tre idee nuove da votare. | Domani piazza nuova e tre idee nuove da votare.
+67.mp3 3.14s capito 1.00 sara0.95k4 (5s) | Secondo voi dove mi sposto? Scrivetelo nei commenti! | Secondo voi dove mi sposto, scrivetelo nei commenti.
+media capito 0.93
 
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
 voci: tutte le frasi hanno la voce nuova
-ok: 2026-W45 · 12 puntate
+ok: 2026-W46 · 12 puntate
  
-fatto 2026-W45
+fatto 2026-W46

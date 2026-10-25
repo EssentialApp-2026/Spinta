@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L&#x27;uovo sodo perfetto · Gennarino</title>
+<meta name="description" content="Scegli alla coque, barzotto o sodo e ti suono quando è pronto: si calcola da quando l&#x27;acqua bolle. Funziona anche senza internet.">
+<meta name="theme-color" content="#171a33">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icona-192.png">
+<link rel="apple-touch-icon" href="icona-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Uovo">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Figtree:wght@400;600;800&display=swap">
+<style>
+:root{
+  --notte:#171a33; --carta:#fbf3e2; --carta-2:#f3e8d0; --riga:#e2d5b8;
+  --inchiostro:#2a2230; --tenue:#7a6f63; --pomodoro:#e63946; --pomodoro-scuro:#b02a35;
+  --led:#1aa88c; --ok:#1d7a55; --avviso:#c46a00;
+  --display:"Bungee","Arial Black",Impact,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{--carta:#1d2140;--carta-2:#262b52;--riga:#363b6b;--inchiostro:#eef0ff;--tenue:#a9aed6;--led:#4ff0d0;--ok:#57d39a;--avviso:#ffb454;color-scheme:dark}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--carta);color:var(--inchiostro);font-family:var(--body);font-size:17px;line-height:1.45;min-height:100dvh;padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+button,input,select{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.tenda{height:34px;background:repeating-linear-gradient(90deg,var(--pomodoro) 0 44px,#fbf3e2 44px 88px);position:relative}
+.tenda::after{content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;
+  background:radial-gradient(circle at 22px 0,var(--pomodoro) 21px,transparent 22px) 0 0/88px 14px repeat-x,
+             radial-gradient(circle at 66px 0,#fbf3e2 21px,transparent 22px) 0 0/88px 14px repeat-x}
+main{max-width:520px;margin:0 auto;padding:30px 16px 0;display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+p{margin:0}
+header{display:flex;gap:14px;align-items:center}
+header>div{min-width:0}
+header svg{flex:0 0 64px;width:64px;height:auto}
+header h1{font-family:var(--display);font-weight:400;font-size:1.55rem;line-height:1.05;margin:0;overflow-wrap:anywhere}
+header p{margin:2px 0 0;color:var(--tenue);font-size:.92rem}
+h2{font-family:var(--display);font-weight:400;font-size:1.05rem;margin:0 0 10px}
+.scheda{background:var(--carta-2);border:2px solid var(--riga);border-radius:18px;padding:16px;min-width:0}
+.campi{display:grid;gap:12px}
+.campi label{display:grid;gap:4px;font-weight:800;font-size:.92rem;min-width:0}
+input[type=text],input[type=date],input[type=time],input[type=number],select{width:100%;min-width:0;border:2px solid var(--riga);background:var(--carta);color:var(--inchiostro);border-radius:12px;padding:11px 12px;font-weight:600}
+input:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--led);outline-offset:2px}
+.due{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tre{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.grande{width:100%;border:0;border-radius:18px;background:var(--pomodoro);color:#fff;font-family:var(--display);font-size:1.3rem;padding:16px;cursor:pointer;box-shadow:0 7px 0 var(--pomodoro-scuro);touch-action:manipulation}
+.grande:active{transform:translateY(5px);box-shadow:0 2px 0 var(--pomodoro-scuro)}
+.grande.verde{background:var(--led);box-shadow:0 7px 0 #0e6e5c}
+.grande:disabled{opacity:.5}
+.piccolo{border:2px solid var(--riga);background:var(--carta);border-radius:14px;padding:11px 10px;font-weight:800;cursor:pointer;touch-action:manipulation;min-width:0}
+.piccolo[aria-pressed=true]{background:var(--pomodoro);border-color:var(--pomodoro);color:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{border:2px solid var(--riga);background:var(--carta);border-radius:999px;padding:6px 12px;font-weight:800;font-size:.9rem;cursor:pointer;touch-action:manipulation}
+.chips button[aria-pressed=true]{background:var(--notte);border-color:var(--notte);color:#fff}
+.chips .x{border-style:dashed}
+.lista{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.voce{background:var(--carta);border:2px solid var(--riga);border-left-width:8px;border-radius:14px;padding:12px;display:grid;gap:6px;min-width:0}
+.voce.rosso{border-left-color:var(--pomodoro)}
+.voce.giallo{border-left-color:var(--avviso)}
+.voce.verde{border-left-color:var(--led)}
+.voce.spento{opacity:.6}
+.voce .r1{display:flex;justify-content:space-between;gap:10px;align-items:baseline;min-width:0}
+.voce b{overflow-wrap:anywhere}
+.voce .sub{color:var(--tenue);font-size:.92rem;overflow-wrap:anywhere}
+.voce .sub.forte{color:var(--avviso);font-weight:800}
+.voce .sub.rosso{color:var(--pomodoro);font-weight:800}
+.az{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.az button{border:2px solid var(--riga);background:var(--carta-2);border-radius:10px;padding:7px 10px;font-weight:800;font-size:.9rem;cursor:pointer;touch-action:manipulation}
+.az .ok{background:var(--led);border-color:var(--led);color:#06352c}
+.az .no{color:var(--pomodoro)}
+.vuoto{text-align:center;color:var(--tenue);padding:12px}
+.conta{display:flex;gap:12px;flex-wrap:wrap;font-size:.95rem;color:var(--tenue)}
+.conta b{color:var(--inchiostro)}
+.msg{color:var(--ok);font-weight:800;min-height:1.3em}
+.err{color:var(--pomodoro);font-weight:800;min-height:1.3em}
+.nota{color:var(--tenue);font-size:.9rem}
+.grosso{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,8vw,2.3rem);line-height:1.1;overflow-wrap:anywhere}
+.orologio{display:grid;justify-items:center;gap:14px}
+.anello{position:relative;width:min(72vw,270px);aspect-ratio:1}
+.anello svg{width:100%;height:100%;transform:rotate(-90deg)}
+.anello circle{fill:none;stroke-width:12;stroke-linecap:round}
+.anello .fondo{stroke:var(--riga)}
+.anello .corsa{stroke:var(--pomodoro);transition:stroke-dashoffset .25s linear}
+.anello.presto .corsa{stroke:var(--avviso)}
+.anello.finito .corsa{stroke:var(--led)}
+.tempo{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.tempo b{font-family:var(--display);font-weight:400;font-size:clamp(2.4rem,14vw,3.4rem);line-height:1;font-variant-numeric:tabular-nums}
+.tempo span{color:var(--tenue);font-size:.95rem;margin-top:4px}
+.allarme{color:var(--pomodoro);font-weight:800;text-align:center;animation:lampeggia .8s steps(2) infinite}
+@keyframes lampeggia{50%{opacity:.35}}
+.regola{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.regola b{font-family:var(--display);font-weight:400;font-size:1.4rem;text-align:center}
+.regola button{width:52px;height:52px;border-radius:50%;border:2px solid var(--riga);background:var(--carta);font-size:1.5rem;font-weight:800;cursor:pointer;touch-action:manipulation}
+.punti{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.squadra{background:var(--carta);border:2px solid var(--riga);border-radius:16px;padding:12px;display:grid;gap:8px;justify-items:center;min-width:0}
+.squadra input{text-align:center;font-weight:800}
+.squadra .n{font-family:var(--display);font-size:3rem;line-height:1}
+.squadra.vince{border-color:var(--led);box-shadow:0 0 0 3px var(--led) inset}
+.tab{width:100%;border-collapse:collapse;font-size:.9rem}
+.tab th,.tab td{border-bottom:1px solid var(--riga);padding:6px 4px;text-align:left;vertical-align:top}
+.tab th{color:var(--tenue);font-weight:800}
+.tab tr.oggi td{font-weight:800}
+.barre{display:flex;gap:4px;align-items:flex-end;height:44px}
+.barre span{flex:1;background:var(--led);border-radius:4px 4px 0 0;min-height:2px}
+.ruota{min-height:3.2em;display:grid;place-content:center;text-align:center}
+footer{max-width:520px;margin:6px auto 0;padding:0 16px;text-align:center;color:var(--tenue);font-size:.88rem}
+footer a{color:inherit}
+@media (prefers-reduced-motion:reduce){.allarme{animation:none}.anello .corsa{transition:none}}
+</style>
+</head>
+<body>
+<div class="tenda"></div>
+<main>
+  <header>
+    <svg viewBox="0 0 120 130" aria-hidden="true">
+      <line x1="60" y1="6" x2="60" y2="22" stroke="#a9aed6" stroke-width="4"/>
+      <circle cx="60" cy="8" r="7" fill="#e63946"/>
+      <rect x="10" y="20" width="100" height="66" rx="20" fill="#e8edf5"/>
+      <rect x="18" y="27" width="84" height="52" rx="14" fill="#0e1824"/>
+      <rect x="2" y="42" width="10" height="20" rx="4" fill="#ff7a5a"/>
+      <rect x="108" y="42" width="10" height="20" rx="4" fill="#ff7a5a"/>
+      <path d="M33 52 q9 -11 18 0" stroke="#4ff0d0" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M69 52 q9 -11 18 0" stroke="#4ff0d0" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <rect x="51" y="62" width="18" height="6" rx="3" fill="#4ff0d0"/>
+      <rect x="24" y="92" width="72" height="38" rx="14" fill="#ced6e2"/>
+      <rect x="38" y="100" width="44" height="16" rx="5" fill="#28344a"/>
+      <circle cx="47" cy="108" r="3" fill="#4ff0d0"/><circle cx="56" cy="108" r="3" fill="#4ff0d0"/><circle cx="65" cy="108" r="3" fill="#4ff0d0"/><circle cx="74" cy="108" r="3" fill="#1e5a5a"/>
+    </svg>
+    <div>
+      <h1 id="titolo"></h1>
+      <p id="slogan"></p>
+    </div>
+  </header>
+  <div id="app" style="display:grid;gap:20px;min-width:0"></div>
+</main>
+<footer><span id="piede"></span><br>
+  <a href="https://essentialapp-2026.github.io/bancariello/">'O Bancariello</a> · <a href="https://www.tiktok.com/@bancariello.gennarino" target="_blank" rel="noopener">Gennarino su TikTok</a></footer>
+<script>
+"use strict";
+const CFG = {"nome": "L'uovo sodo perfetto", "tipo": "timer", "slogan": "Alla coque, barzotto o sodo. Un regalo di Gennarino.", "chiave": "uovo-perfetto-v1", "opzioni": {"preset": [{"nome": "Alla coque · 3 min", "min": 3}, {"nome": "Barzotto · 6 min", "min": 6}, {"nome": "Sodo · 9 min", "min": 9}, {"nome": "Sodo sodo · 11 min", "min": 11}], "passo": 1, "avvisaPrima": 0, "etichetta": "Uovo", "avvia": "L'acqua bolle: via!", "ferma": "Ferma", "testoFine": "L'uovo è pronto: subito sotto l'acqua fredda!", "basta": "Fatto!", "partito": "Via! È pronto alle {ora}.", "titoloScelta": "Come lo vuoi?", "consigli": ["Il tempo parte quando l'acqua bolle e ci metti l'uovo.", "Appena suona, mettilo sotto l'acqua fredda: così si sguscia meglio."]}, "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."};
+const O = CFG.opzioni || {};
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, "0");
+function el(tag, attr, ...figli){
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attr || {})){
+    if (v == null || v === false) continue;
+    if (k === "on") for (const [ev, f] of Object.entries(v)) e.addEventListener(ev, f);
+    else if (k === "class") e.className = v;
+    else if (k === "text") e.textContent = v;
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const f of figli.flat()) if (f != null && f !== false) e.append(f.nodeType ? f : document.createTextNode(String(f)));
+  return e;
+}
+const CHIAVE = CFG.chiave || ("regalo-" + (CFG.tipo || "app") + "-v1");
+function leggi(def){ try { const v = JSON.parse(localStorage.getItem(CHIAVE) || "null"); return v && typeof v === "object" ? Object.assign(structuredClone(def), v) : structuredClone(def); } catch (_) { return structuredClone(def); } }
+let avvisoMemoria = false;
+function salva(stato){ try { localStorage.setItem(CHIAVE, JSON.stringify(stato)); } catch (_) { if (!avvisoMemoria){ avvisoMemoria = true; alertaMsg("Non riesco a salvare: la memoria del browser è bloccata."); } } }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const iso = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const oggi = () => iso(new Date());
+const piuGiorni = (s, n) => { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + n); return iso(d); };
+const tra = (a, b) => Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / 864e5);
+const dataIt = s => { if (!s) return ""; const [a, m, g] = s.split("-"); return g + "/" + m + "/" + a; };
+const GIORNI = ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"];
+const giornoDi = s => GIORNI[new Date(s + "T12:00:00").getDay()];
+const fra = n => n === 0 ? "oggi" : n === 1 ? "domani" : n === -1 ? "ieri" : n > 1 ? "fra " + n + " giorni" : n + " giorni fa";
+let msgEl = null;
+function msg(t, err){ if (!msgEl) return; msgEl.className = err ? "err" : "msg"; msgEl.textContent = t || ""; if (t) clearTimeout(msg.t), msg.t = setTimeout(() => { if (msgEl.textContent === t) msgEl.textContent = ""; }, 4000); }
+function alertaMsg(t){ msg(t, true); }
+function scheda(titolo, ...figli){ return el("section", { class: "scheda", "aria-label": titolo }, titolo ? el("h2", { text: titolo }) : null, ...figli); }
+async function copia(t){ try { await navigator.clipboard.writeText(t); msg("Copiato."); } catch (_) { msg("Non riesco a copiare da qui.", true); } }
+function whatsapp(t){ window.open("https://wa.me/?text=" + encodeURIComponent(t), "_blank", "noopener"); }
+async function condividi(t){ if (navigator.share){ try { await navigator.share({ text: t }); return; } catch (e) { if (e && e.name === "AbortError") return; } } whatsapp(t); }
+
+/* ---------- promemoria nel calendario del telefono (.ics): suonano anche con l'app chiusa ---------- */
+function icsData(s, hhmm){ const [h, m] = (hhmm || "09:00").split(":"); return s.replace(/-/g, "") + "T" + pad(+h) + pad(+m) + "00"; }
+function icsTesto(t){ return String(t).replace(/\\/g, "\\\\").replace(/[,;]/g, m => "\\" + m).replace(/\n/g, "\\n"); }
+async function calendario(eventi, nomeFile){
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Gennarino//Regalo//IT", "CALSCALE:GREGORIAN"];
+  const ora = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  for (const e of eventi){
+    L.push("BEGIN:VEVENT", "UID:" + uid() + "@gennarino", "DTSTAMP:" + ora, "DTSTART:" + icsData(e.data, e.ora), "DURATION:PT15M", "SUMMARY:" + icsTesto(e.titolo));
+    if (e.nota) L.push("DESCRIPTION:" + icsTesto(e.nota));
+    if (e.ripeti) L.push("RRULE:" + e.ripeti);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsTesto(e.titolo), "TRIGGER:-PT" + Math.max(0, e.prima || 0) + "M", "END:VALARM", "END:VEVENT");
+  }
+  L.push("END:VCALENDAR");
+  const file = new File([L.join("\r\n")], (nomeFile || "promemoria") + ".ics", { type: "text/calendar" });
+  if (navigator.canShare && navigator.canShare({ files: [file] })){ try { await navigator.share({ files: [file], title: CFG.nome }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+  const a = el("a", { href: URL.createObjectURL(file), download: file.name }); document.body.append(a); a.click(); a.remove();
+  msg("Aprilo e il promemoria entra nel calendario del telefono.");
+}
+
+/* ---------- suono e vibrazione ---------- */
+let ac = null;
+function bip(volte, freq){
+  try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); ac.resume && ac.resume();
+    for (let i = 0; i < (volte || 3); i++){ const o = ac.createOscillator(), g = ac.createGain(); o.type = "square"; o.frequency.value = freq || 880;
+      const t = ac.currentTime + i * 0.32; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+      o.connect(g).connect(ac.destination); o.start(t); o.stop(t + 0.25); }
+  } catch (_) {}
+  try { navigator.vibrate && navigator.vibrate([250, 120, 250, 120, 400]); } catch (_) {}
+}
+async function notifica(t){
+  try { if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const r = await navigator.serviceWorker?.getRegistration(); if (r) r.showNotification(CFG.nome, { body: t, icon: "icona-192.png", vibrate: [250, 120, 250] }); else new Notification(CFG.nome, { body: t });
+  } catch (_) {}
+}
+let lock = null;
+async function schermoAcceso(si){ try { if (si && "wakeLock" in navigator){ lock = await navigator.wakeLock.request("screen"); } else if (!si && lock){ await lock.release(); lock = null; } } catch (_) {} }
+
+/* =================== I MODELLI =================== */
+const MODELLI = {};
+
+/* ---- scadenze: cose con una data (frigo, documenti, garanzie, bollette) ---- */
+MODELLI.scadenze = function(root){
+  const S = leggi({ voci: [] }), avviso = O.avviso ?? 2;
+  const cosa = el("input", { type: "text", id: "cosa", maxlength: 80, placeholder: O.placeholder || "Cosa", list: "sugg" });
+  const quando = el("input", { type: "date", id: "quando", value: piuGiorni(oggi(), O.giorniBase || 3) });
+  const sugg = el("datalist", { id: "sugg" }, (O.suggerimenti || []).map(s => el("option", { value: s })));
+  const err = el("div", { class: "err", role: "alert" });
+  const rapidi = el("div", { class: "chips", "aria-label": "Fra quanti giorni" }, (O.rapidi || [1, 3, 7, 30]).map(n =>
+    el("button", { type: "button", text: n === 1 ? "domani" : "fra " + n + (O.unita === "mesi" ? " mesi" : " giorni"), on: { click: () => { quando.value = O.unita === "mesi" ? (() => { const d = new Date(); d.setMonth(d.getMonth() + n); return iso(d); })() : piuGiorni(oggi(), n); } } })));
+  const esempi = el("div", { class: "chips", "aria-label": "Esempi" }, Object.entries(O.durate || {}).slice(0, 10).map(([k, n]) =>
+    el("button", { type: "button", class: "x", text: k, on: { click: () => { cosa.value = k; quando.value = piuGiorni(oggi(), n); } } })));
+  const form = el("form", { class: "campi", autocomplete: "off", novalidate: true, on: { submit: e => {
+    e.preventDefault(); const c = cosa.value.trim(); if (!c){ err.textContent = O.erroreVuoto || "Scrivi cosa."; return; }
+    if (!quando.value){ err.textContent = "Scegli la data."; return; }
+    err.textContent = ""; S.voci.push({ id: uid(), cosa: c, quando: quando.value, dal: oggi(), fatto: "" }); salva(S);
+    cosa.value = ""; quando.value = piuGiorni(oggi(), O.giorniBase || 3); msg(O.scritto || "Segnato."); disegna(); } } },
+    el("label", {}, O.etichetta || "Cosa", cosa), sugg, esempi.children.length ? el("div", { class: "nota", text: O.notaEsempi || "Tocca un esempio e la data si mette da sola:" }) : null, esempi.children.length ? esempi : null,
+    el("label", {}, O.etichettaData || "Scade il", quando), rapidi, err, el("button", { type: "submit", class: "grande", text: O.bottone || "Segna" }));
+  let filtro = "aperti", conferma = null;
+  const filtri = el("div", { class: "chips" }, [["aperti", O.filtroAperti || "Da tenere d'occhio"], ["chiusi", O.filtroChiusi || "Fatti"]].map(([f, t]) =>
+    el("button", { type: "button", "aria-pressed": f === filtro, text: t, on: { click: e => { filtro = f; [...filtri.children].forEach(b => b.setAttribute("aria-pressed", b === e.currentTarget)); disegna(); } } })));
+  const conta = el("p", { class: "conta" }), lista = el("ul", { class: "lista" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const azioni = el("div", { class: "due" },
+    el("button", { type: "button", class: "piccolo", text: "Manda la lista", on: { click: () => {
+      const a = S.voci.filter(v => !v.fatto).sort((x, y) => x.quando.localeCompare(y.quando));
+      condividi(a.length ? (CFG.nome + "\n" + a.map(v => "- " + v.cosa + ": " + (O.parola || "scade") + " " + fra(tra(oggi(), v.quando)) + " (" + dataIt(v.quando) + ")").join("\n")) : CFG.nome + ": niente in scadenza.");
+    } } }),
+    el("button", { type: "button", class: "piccolo", text: "Promemoria nel calendario", on: { click: () => {
+      const a = S.voci.filter(v => !v.fatto && v.quando >= oggi()); if (!a.length){ msg("Niente da ricordare.", true); return; }
+      calendario(a.map(v => ({ data: v.quando >= piuGiorni(oggi(), avviso) ? piuGiorni(v.quando, -avviso) : oggi(), ora: O.ora || "09:00", titolo: (O.promemoria || "{cosa} scade {quando}").replace("{cosa}", v.cosa).replace("{quando}", dataIt(v.quando)), nota: CFG.nome })), "scadenze");
+    } } }));
+  root.append(scheda(O.titoloForm || "Segna", form), scheda(O.titoloLista || "L'elenco", filtri, conta, lista, azioni, msgEl));
+  function stato(v){ const n = tra(oggi(), v.quando); return n < 0 ? ["rosso", (O.scaduto || "Scaduto") + " da " + (-n) + (n === -1 ? " giorno" : " giorni")] : n === 0 ? ["rosso", (O.oggi || "Scade oggi")] : n <= avviso ? ["giallo", (O.presto || "Scade") + " " + fra(n)] : ["verde", (O.parola ? O.parola[0].toUpperCase() + O.parola.slice(1) : "Scade") + " " + fra(n)]; }
+  function disegna(){
+    const aperti = S.voci.filter(v => !v.fatto), chiusi = S.voci.filter(v => v.fatto);
+    const sc = aperti.filter(v => tra(oggi(), v.quando) < 0).length, pr = aperti.filter(v => { const n = tra(oggi(), v.quando); return n >= 0 && n <= avviso; }).length;
+    conta.replaceChildren(el("span", {}, el("b", { text: aperti.length }), " " + (O.contaTutti || "da tenere d'occhio")), el("span", {}, el("b", { text: pr }), " " + (O.contaPresto || "in scadenza")), el("span", {}, el("b", { text: sc }), " " + (O.contaScaduti || "scaduti")));
+    const l = (filtro === "aperti" ? aperti : chiusi).slice().sort((a, b) => filtro === "aperti" ? a.quando.localeCompare(b.quando) : b.fatto.localeCompare(a.fatto));
+    lista.replaceChildren(...(l.length ? l.map(v => {
+      const [col, t] = stato(v);
+      const az = el("div", { class: "az" });
+      if (!v.fatto) az.append(el("button", { type: "button", class: "ok", text: O.fatto || "Fatto", on: { click: () => { v.fatto = oggi(); conferma = null; salva(S); disegna(); } } }));
+      else az.append(el("button", { type: "button", text: "Rimetti", on: { click: () => { v.fatto = ""; salva(S); disegna(); } } }));
+      if (conferma === v.id) az.append(el("button", { type: "button", class: "no", text: "Sì, cancella", on: { click: () => { S.voci = S.voci.filter(x => x.id !== v.id); conferma = null; salva(S); disegna(); } } }), el("button", { type: "button", text: "No", on: { click: () => { conferma = null; disegna(); } } }));
+      else az.append(el("button", { type: "button", class: "no", text: "Cancella", on: { click: () => { conferma = v.id; disegna(); } } }));
+      return el("li", { class: "voce " + (v.fatto ? "spento" : col) }, el("div", { class: "r1" }, el("b", { text: v.cosa }), el("span", { class: "nota", text: dataIt(v.quando) })),
+        el("div", { class: "sub" + (v.fatto ? "" : col === "rosso" ? " rosso" : col === "giallo" ? " forte" : ""), text: v.fatto ? (O.fattoIl || "Fatto il") + " " + dataIt(v.fatto) : t + " · " + giornoDi(v.quando) }), az);
+    }) : [el("li", { class: "vuoto", text: filtro === "aperti" ? (O.vuoto || "Niente in scadenza.") : "Ancora niente qui." })]));
+  }
+  disegna();
+};
+
+/* ---- timer: sosta, cottura, lavatrice ---- */
+MODELLI.timer = function(root){
+  const S = leggi({ fine: 0, durata: (O.preset && O.preset[0] ? O.preset[0].min : 10) * 60000, avvisato: false, finito: false, acceso: true, ultimo: 0 });
+  const R = 120, C = 2 * Math.PI * R;
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 280 280");
+  [["fondo"], ["corsa"]].forEach(([c]) => { const k = document.createElementNS(svg.namespaceURI, "circle"); k.setAttribute("class", c); k.setAttribute("cx", 140); k.setAttribute("cy", 140); k.setAttribute("r", R); if (c === "corsa"){ k.setAttribute("stroke-dasharray", C); k.setAttribute("stroke-dashoffset", 0); } svg.append(k); });
+  const ring = svg.lastChild, tb = el("b", { text: "00:00" }), ts = el("span", { text: O.etichetta || "Timer" });
+  const anello = el("div", { class: "anello" }, svg, el("div", { class: "tempo" }, tb, ts));
+  const avviso = el("div", { class: "allarme", role: "alert" }); avviso.hidden = true;
+  const preset = el("div", { class: "due" }, (O.preset || [{ nome: "10 minuti", min: 10 }]).map(p => el("button", { type: "button", class: "piccolo", "data-min": p.min, text: p.nome, on: { click: () => { if (S.fine) return; S.durata = p.min * 60000; S.ultimo = p.min; salva(S); disegna(); } } })));
+  const regola = el("div", { class: "regola" }, el("button", { type: "button", "aria-label": "Meno", text: "−", on: { click: () => cambia(-(O.passo || 5)) } }), el("div", {}, el("b", { id: "durata" }), el("small", { class: "nota", style: "display:block;text-align:center", text: "tocca − e +" })), el("button", { type: "button", "aria-label": "Più", text: "+", on: { click: () => cambia(O.passo || 5) } }));
+  const finoAlle = el("input", { type: "time", id: "fino" });
+  const via = el("button", { type: "button", class: "grande", on: { click: () => S.fine ? ferma() : avvia() } });
+  const basta = el("button", { type: "button", class: "grande verde", text: O.basta || "Ok, basta", on: { click: () => { S.finito = false; S.fine = 0; salva(S); avviso.hidden = true; clearInterval(squillo); disegna(); } } }); basta.hidden = true;
+  const acceso = el("input", { type: "checkbox", id: "acceso" }); acceso.checked = S.acceso;
+  acceso.addEventListener("change", () => { S.acceso = acceso.checked; salva(S); schermoAcceso(S.acceso && !!S.fine); });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const cal = el("button", { type: "button", class: "piccolo", text: O.calendario || "Promemoria nel calendario", on: { click: () => {
+    const fine = S.fine ? new Date(S.fine) : new Date(Date.now() + S.durata);
+    calendario([{ data: iso(fine), ora: pad(fine.getHours()) + ":" + pad(fine.getMinutes()), prima: O.avvisaPrima || 0, titolo: (O.promemoria || "{nome}: finisce alle {ora}").replace("{nome}", CFG.nome).replace("{ora}", pad(fine.getHours()) + ":" + pad(fine.getMinutes())) }], "timer");
+  } } });
+  root.append(scheda("", el("div", { class: "orologio" }, anello, avviso, via, basta)),
+    scheda(O.titoloScelta || "Quanto tempo?", preset, el("div", { style: "height:12px" }), regola,
+      O.orario ? el("label", { class: "campi", style: "margin-top:12px;font-weight:800" }, O.etichettaOrario || "Oppure: finisce alle", finoAlle) : null,
+      el("label", { style: "display:flex;gap:10px;align-items:center;margin-top:12px;color:var(--tenue)" }, acceso, "Tieni lo schermo acceso mentre conta"),
+      el("div", { class: "due", style: "margin-top:12px" }, cal, el("button", { type: "button", class: "piccolo", text: "Avvisami con una notifica", on: { click: async () => { try { const p = await Notification.requestPermission(); msg(p === "granted" ? "Ok: ti avviso anche con una notifica." : "Le notifiche sono spente nel telefono.", p !== "granted"); } catch (_) { msg("Questo telefono non fa notifiche dal browser.", true); } } } })),
+      (O.consigli || []).length ? el("ul", { class: "nota", style: "margin:12px 0 0;padding-left:1.2em" }, O.consigli.map(c => el("li", { text: c }))) : null, msgEl));
+  if (O.orario) finoAlle.addEventListener("change", () => { if (!finoAlle.value || S.fine) return; const [h, m] = finoAlle.value.split(":").map(Number); const d = new Date(); d.setHours(h, m, 0, 0); if (d < new Date()) d.setDate(d.getDate() + 1); S.durata = d - Date.now(); salva(S); disegna(); });
+  function cambia(min){ if (S.fine){ S.fine = Math.max(Date.now() + 60000, S.fine + min * 60000); S.avvisato = false; } else S.durata = Math.max(60000, S.durata + min * 60000); salva(S); disegna(); }
+  function avvia(){ S.fine = Date.now() + S.durata; S.avvisato = false; S.finito = false; salva(S); bip(1, 660); schermoAcceso(S.acceso); msg((O.partito || "Parto! Finisce alle {ora}.").replace("{ora}", orario(S.fine))); disegna(); }
+  function ferma(){ S.fine = 0; S.finito = false; salva(S); schermoAcceso(false); disegna(); }
+  const orario = t => { const d = new Date(t); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+  const mmss = ms => { const s = Math.max(0, Math.ceil(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return h ? h + ":" + pad(m) + ":" + pad(s % 60) : pad(m) + ":" + pad(s % 60); };
+  let squillo = null;
+  function disegna(){
+    const ora = Date.now(), resto = S.fine ? S.fine - ora : S.durata, tot = S.fine ? Math.max(1, S.durata) : S.durata;
+    tb.textContent = mmss(resto); ts.textContent = S.fine ? (O.finisce || "finisce alle") + " " + orario(S.fine) : (O.etichetta || "Timer");
+    ring.setAttribute("stroke-dashoffset", S.fine ? C * (1 - Math.max(0, resto) / tot) : 0);
+    anello.classList.toggle("presto", !!S.fine && resto <= (O.avvisaPrima || 0) * 60000 && resto > 0);
+    anello.classList.toggle("finito", !!S.finito);
+    via.textContent = S.fine ? (O.ferma || "Ferma") : (O.avvia || "Avvia");
+    via.hidden = !!S.finito; basta.hidden = !S.finito;
+    $("durata").textContent = mmss(S.fine ? resto : S.durata);
+    [...preset.children].forEach(b => b.setAttribute("aria-pressed", !S.fine && +b.dataset.min * 60000 === S.durata));
+  }
+  function giro(){
+    if (S.fine){ const resto = S.fine - Date.now();
+      if (!S.avvisato && O.avvisaPrima && resto <= O.avvisaPrima * 60000 && resto > 0){ S.avvisato = true; salva(S); bip(2, 740); const t = (O.testoPrima || "Mancano {min} minuti!").replace("{min}", O.avvisaPrima); notifica(t); avviso.hidden = false; avviso.textContent = t; setTimeout(() => { if (!S.finito) avviso.hidden = true; }, 15000); }
+      if (resto <= 0){ S.fine = 0; S.finito = true; salva(S); avviso.hidden = false; avviso.textContent = O.testoFine || "Tempo scaduto!"; notifica(O.testoFine || "Tempo scaduto!"); bip(4, 880); clearInterval(squillo); squillo = setInterval(() => S.finito ? bip(3, 880) : clearInterval(squillo), 4000); schermoAcceso(false); }
+    }
+    disegna();
+  }
+  setInterval(giro, 250); giro(); if (S.fine) schermoAcceso(S.acceso);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.fine) schermoAcceso(S.acceso); });
+};
+
+/* ---- turni: chi fa cosa oggi ---- */
+MODELLI.turni = function(root){
+  const S = leggi({ persone: O.persone || ["Io", "Tu"], compiti: O.compiti || ["Piatti"], inizio: oggi(), fatti: {} });
+  const giro = O.giro === "settimana" ? 7 : 1;
+  const chi = (i, giorno) => { const n = S.persone.length; if (!n) return "—"; const k = Math.floor(tra(S.inizio, giorno) / giro); return S.persone[(((i + k) % n) + n) % n]; };
+  const oggiBox = el("div", { style: "display:grid;gap:10px" }), domani = el("p", { class: "nota" }), tab = el("table", { class: "tab" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const pInput = el("input", { type: "text", maxlength: 30, placeholder: O.placeholderPersona || "Nome" }), cInput = el("input", { type: "text", maxlength: 50, placeholder: O.placeholderCompito || "Lavoro di casa" });
+  const persone = el("div", { class: "chips" }), compiti = el("div", { class: "chips" });
+  const aggiungi = (inp, arr, nome) => el("form", { class: "due", style: "margin-top:8px", on: { submit: e => { e.preventDefault(); const v = inp.value.trim(); if (!v) return; if (arr().length >= 12){ msg("Bastano dodici.", true); return; } arr().push(v); inp.value = ""; salva(S); disegna(); } } }, inp, el("button", { type: "submit", class: "piccolo", text: "Aggiungi " + nome }));
+  root.append(
+    scheda(O.titoloOggi || "Oggi tocca a…", el("p", { class: "nota", id: "giorno" }), oggiBox, domani,
+      el("div", { class: "due", style: "margin-top:12px" },
+        el("button", { type: "button", class: "piccolo", text: "Manda i turni di oggi", on: { click: () => condividi((O.messaggio || "Turni di oggi") + " (" + giornoDi(oggi()) + ")\n" + S.compiti.map((c, i) => "- " + c + ": " + chi(i, oggi())).join("\n")) } }),
+        el("button", { type: "button", class: "piccolo", text: "Ricomincia da oggi", on: { click: () => { S.inizio = oggi(); salva(S); disegna(); msg("Il giro ricomincia da oggi."); } } })), msgEl),
+    scheda(O.titoloSettimana || "La settimana", el("div", { style: "overflow-x:auto" }, tab)),
+    scheda(O.titoloPersone || "Chi c'è in casa", persone, aggiungi(pInput, () => S.persone, "")),
+    scheda(O.titoloCompiti || "I lavori", compiti, aggiungi(cInput, () => S.compiti, "")));
+  function chipLista(box, arr){ box.replaceChildren(...arr.map((v, i) => el("button", { type: "button", text: v + " ✕", "aria-label": "Togli " + v, on: { click: () => { arr.splice(i, 1); salva(S); disegna(); } } }))); }
+  function disegna(){
+    const g = oggi(); $("giorno").textContent = giornoDi(g)[0].toUpperCase() + giornoDi(g).slice(1) + " " + dataIt(g);
+    const fatti = S.fatti[g] || [];
+    oggiBox.replaceChildren(...(S.compiti.length && S.persone.length ? S.compiti.map((c, i) => {
+      const f = fatti.includes(i);
+      return el("div", { class: "voce " + (f ? "spento" : "verde") }, el("div", { class: "r1" }, el("b", { text: c }), el("span", { class: "grosso", style: "font-size:1.25rem", text: chi(i, g) })),
+        el("div", { class: "az" }, el("button", { type: "button", class: f ? "" : "ok", text: f ? "Rimetti da fare" : "Fatto!", on: { click: () => { const a = S.fatti[g] || (S.fatti[g] = []); f ? a.splice(a.indexOf(i), 1) : a.push(i); for (const k of Object.keys(S.fatti)) if (k < piuGiorni(g, -14)) delete S.fatti[k]; salva(S); disegna(); } } })));
+    }) : [el("p", { class: "vuoto", text: "Aggiungi le persone e i lavori qui sotto." })]));
+    const d = piuGiorni(g, 1); domani.textContent = S.compiti.length && S.persone.length ? "Domani: " + S.compiti.map((c, i) => c.toLowerCase() + " → " + chi(i, d)).join(", ") + "." : "";
+    const giorni = [...Array(7)].map((_, k) => piuGiorni(g, k));
+    tab.replaceChildren(el("tr", {}, el("th", { text: "" }), S.compiti.map(c => el("th", { text: c }))), ...giorni.map(x => el("tr", { class: x === g ? "oggi" : "" }, el("td", { text: giornoDi(x).slice(0, 3) + " " + x.slice(8) }), S.compiti.map((c, i) => el("td", { text: chi(i, x) })))));
+    chipLista(persone, S.persone); chipLista(compiti, S.compiti);
+  }
+  disegna();
+};
+
+/* ---- lista: valigia, spesa, cose da comprare (anche a voce) ---- */
+MODELLI.lista = function(root){
+  const S = leggi({ voci: [] }); const REP = O.reparti || {};
+  const repDi = n => { const t = n.toLowerCase(); for (const [r, parole] of Object.entries(REP)) if (parole.some(p => t.includes(p))) return r; return O.altro || "Altro"; };
+  const inp = el("input", { type: "text", maxlength: 60, placeholder: O.placeholder || "Cosa ti serve" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const aggiungi = testo => { const parti = String(testo).split(/,|;|\s+e\s+|\s+poi\s+|\n/i).map(s => s.trim()).filter(Boolean); let n = 0;
+    for (const p of parti){ const nome = p[0].toUpperCase() + p.slice(1); if (S.voci.some(v => v.nome.toLowerCase() === nome.toLowerCase() && !v.preso)) continue; S.voci.push({ id: uid(), nome, rep: repDi(nome), preso: false }); n++; }
+    salva(S); disegna(); if (n) msg(n === 1 ? "Aggiunto." : n + " cose aggiunte."); };
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const voce = el("button", { type: "button", class: "piccolo", text: "🎤 Dillo a voce", on: { click: () => { try { const r = new SR(); r.lang = "it-IT"; r.interimResults = false; r.onresult = e => aggiungi(e.results[0][0].transcript); r.onerror = () => msg("Non ho sentito bene, riprova.", true); r.start(); msg("Ti ascolto…"); } catch (_) { msg("Il microfono qui non funziona.", true); } } } });
+  if (!SR || O.voce === false) voce.hidden = true;
+  const esempi = el("div", { class: "chips" }, (O.esempi || []).map(x => el("button", { type: "button", class: "x", text: "+ " + x, on: { click: () => aggiungi(x) } })));
+  const box = el("div", { style: "display:grid;gap:14px" });
+  root.append(scheda(O.titoloForm || "Aggiungi", el("form", { class: "due", autocomplete: "off", on: { submit: e => { e.preventDefault(); if (inp.value.trim()) aggiungi(inp.value); inp.value = ""; } } }, inp, el("button", { type: "submit", class: "piccolo", text: "Aggiungi" })),
+      el("div", { style: "height:10px" }), voce, esempi.children.length ? el("div", { style: "margin-top:10px" }, el("p", { class: "nota", text: O.notaEsempi || "Le solite cose:" }), esempi) : null, msgEl),
+    scheda(O.titoloLista || "La lista", el("p", { class: "conta", id: "contaL" }), box,
+      el("div", { class: "due", style: "margin-top:12px" },
+        el("button", { type: "button", class: "piccolo", text: "Manda su WhatsApp", on: { click: () => { const a = S.voci.filter(v => !v.preso); condividi(a.length ? CFG.nome + "\n" + a.map(v => "- " + v.nome).join("\n") : CFG.nome + ": tutto preso!"); } } }),
+        el("button", { type: "button", class: "piccolo", text: O.togli || "Togli le spuntate", on: { click: () => { S.voci = S.voci.filter(v => !v.preso); salva(S); disegna(); } } }))));
+  function disegna(){
+    const gruppi = {}; S.voci.forEach(v => (gruppi[v.rep] = gruppi[v.rep] || []).push(v));
+    $("contaL").replaceChildren(el("span", {}, el("b", { text: S.voci.filter(v => !v.preso).length }), " da prendere"), el("span", {}, el("b", { text: S.voci.filter(v => v.preso).length }), " " + (O.presi || "presi")));
+    box.replaceChildren(...(S.voci.length ? Object.keys(gruppi).sort().map(r => el("div", {}, el("h2", { style: "font-size:.95rem;margin:0 0 6px", text: r }),
+      el("ul", { class: "lista" }, gruppi[r].map(v => el("li", { class: "voce " + (v.preso ? "spento" : "verde"), style: "cursor:pointer", on: { click: () => { v.preso = !v.preso; salva(S); disegna(); } } },
+        el("div", { class: "r1" }, el("b", { text: (v.preso ? "✓ " : "") + v.nome, style: v.preso ? "text-decoration:line-through" : "" }), el("span", { class: "nota", text: v.preso ? "tocca per rimettere" : "tocca quando c'è" }))))))) : [el("p", { class: "vuoto", text: O.vuoto || "La lista è vuota." })]));
+  }
+  disegna();
+};
+
+/* ---- registro: chi ha cosa, chi mi deve cosa ---- */
+MODELLI.registro = function(root){
+  const S = leggi({ voci: [] }); const V = O.versi || [["Io a lui", "A chi"], ["Lui a me", "Da chi"]];
+  let verso = 0, filtro = "aperti", conferma = null;
+  const vb = el("div", { class: "due" }, V.map(([t], i) => el("button", { type: "button", class: "piccolo", "aria-pressed": i === 0, text: t, on: { click: () => { verso = i; [...vb.children].forEach((b, k) => b.setAttribute("aria-pressed", k === i)); chiL.firstChild.textContent = V[i][1]; } } })));
+  const cosa = el("input", { type: "text", maxlength: 80, placeholder: O.placeholder || "Cosa" }), chiI = el("input", { type: "text", maxlength: 60, placeholder: "Nome" });
+  const soldi = el("input", { type: "number", min: 0, step: "0.01", inputmode: "decimal", placeholder: "0,00" }), entro = el("input", { type: "date" });
+  const chiL = el("label", {}, V[0][1], chiI), err = el("div", { class: "err", role: "alert" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const form = el("form", { class: "campi", autocomplete: "off", novalidate: true, on: { submit: e => { e.preventDefault();
+    const c = cosa.value.trim(), n = chiI.value.trim(); if (!c || !n){ err.textContent = !c ? (O.erroreCosa || "Scrivi cosa.") : "Scrivi il nome."; return; } err.textContent = "";
+    S.voci.unshift({ id: uid(), cosa: c, chi: n, verso, euro: O.soldi && soldi.value ? +soldi.value : 0, entro: entro.value || "", dal: oggi(), chiuso: "" }); salva(S);
+    cosa.value = chiI.value = soldi.value = entro.value = ""; msg(O.scritto || "Scritto."); disegna(); } } },
+    V.length > 1 ? vb : null, el("label", {}, O.etichetta || "Cosa", cosa), chiL, O.soldi ? el("label", {}, "Quanto (euro, se vuoi)", soldi) : null, el("label", {}, O.etichettaData || "Entro il (se vuoi)", entro), err, el("button", { type: "submit", class: "grande", text: O.bottone || "Segna" }));
+  const filtri = el("div", { class: "chips" }, [["aperti", O.filtroAperti || "Ancora aperti"], ["chiusi", O.filtroChiusi || "Chiusi"]].map(([f, t]) => el("button", { type: "button", "aria-pressed": f === filtro, text: t, on: { click: e => { filtro = f; [...filtri.children].forEach(b => b.setAttribute("aria-pressed", b === e.currentTarget)); disegna(); } } })));
+  const conta = el("p", { class: "conta" }), lista = el("ul", { class: "lista" });
+  root.append(scheda(O.titoloForm || "Segna", form), scheda(O.titoloLista || "L'elenco", filtri, conta, lista,
+    el("div", { class: "due", style: "margin-top:12px" }, el("button", { type: "button", class: "piccolo", text: "Copia l'elenco", on: { click: () => { const a = S.voci.filter(v => !v.chiuso); copia(a.length ? CFG.nome + " (" + dataIt(oggi()) + ")\n" + a.map(v => "- " + v.cosa + (v.euro ? " (" + v.euro.toFixed(2).replace(".", ",") + " €)" : "") + " · " + V[v.verso][1].toLowerCase() + " " + v.chi + (v.entro ? " · entro " + dataIt(v.entro) : "")).join("\n") : CFG.nome + ": tutto chiuso."); } } }),
+      el("button", { type: "button", class: "piccolo", text: "Cancella i chiusi", on: { click: () => { S.voci = S.voci.filter(v => !v.chiuso); salva(S); disegna(); } } })), msgEl));
+  function disegna(){
+    const aperti = S.voci.filter(v => !v.chiuso), chiusi = S.voci.filter(v => v.chiuso);
+    const tot = k => aperti.filter(v => v.verso === k).reduce((s, v) => s + (v.euro || 0), 0);
+    conta.replaceChildren(el("span", {}, el("b", { text: aperti.length }), " aperti"), O.soldi ? el("span", {}, el("b", { text: tot(0).toFixed(2).replace(".", ",") + " €" }), " " + (O.soldiDati || "da ricevere")) : null, O.soldi && V.length > 1 ? el("span", {}, el("b", { text: tot(1).toFixed(2).replace(".", ",") + " €" }), " " + (O.soldiPresi || "da dare")) : null);
+    const l = filtro === "aperti" ? aperti : chiusi;
+    lista.replaceChildren(...(l.length ? l.map(v => { const sc = !v.chiuso && v.entro && v.entro < oggi();
+      const az = el("div", { class: "az" });
+      if (!v.chiuso){ az.append(el("button", { type: "button", class: "ok", text: O.chiudi || "Chiuso", on: { click: () => { v.chiuso = oggi(); salva(S); disegna(); } } }));
+        if (v.verso === 0 && O.whatsapp !== false) az.append(el("button", { type: "button", text: "Scrivigli su WhatsApp", on: { click: () => whatsapp((O.messaggio || "Ciao {chi}, ti ricordi di {cosa}? Grazie!").replace("{chi}", v.chi).replace("{cosa}", v.cosa)) } })); }
+      else az.append(el("button", { type: "button", text: "Riapri", on: { click: () => { v.chiuso = ""; salva(S); disegna(); } } }));
+      if (conferma === v.id) az.append(el("button", { type: "button", class: "no", text: "Sì, cancella", on: { click: () => { S.voci = S.voci.filter(x => x.id !== v.id); conferma = null; salva(S); disegna(); } } }), el("button", { type: "button", text: "No", on: { click: () => { conferma = null; disegna(); } } }));
+      else az.append(el("button", { type: "button", class: "no", text: "Cancella", on: { click: () => { conferma = v.id; disegna(); } } }));
+      return el("li", { class: "voce " + (v.chiuso ? "spento" : v.verso ? "verde" : "rosso") }, el("div", { class: "r1" }, el("b", { text: v.cosa + (v.euro ? " · " + v.euro.toFixed(2).replace(".", ",") + " €" : "") })),
+        el("div", { class: "sub", text: V[v.verso][1] + " " + v.chi + " · dal " + dataIt(v.dal) }), v.entro || v.chiuso ? el("div", { class: "sub" + (sc ? " forte" : ""), text: v.chiuso ? (O.chiusoIl || "Chiuso il") + " " + dataIt(v.chiuso) : "Entro il " + dataIt(v.entro) + (sc ? " (passato!)" : "") }) : null, az);
+    }) : [el("li", { class: "vuoto", text: filtro === "aperti" ? (O.vuoto || "Niente di aperto.") : "Ancora niente qui." })]));
+  }
+  disegna();
+};
+
+/* ---- ricorrenze: cose da fare ogni tot giorni (piante, filtri, spazzolino) ---- */
+MODELLI.ricorrenze = function(root){
+  const S = leggi({ voci: (O.esempi || []).map(e => ({ id: uid(), nome: e.nome, ogni: e.ogni, ultimo: oggi() })) });
+  const nome = el("input", { type: "text", maxlength: 60, placeholder: O.placeholder || "Cosa" }), ogni = el("input", { type: "number", min: 1, max: 365, value: O.ogniBase || 7, inputmode: "numeric" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const lista = el("ul", { class: "lista" });
+  root.append(scheda(O.titoloLista || "Oggi da fare", lista, el("div", { class: "due", style: "margin-top:12px" },
+      el("button", { type: "button", class: "piccolo", text: "Promemoria nel calendario", on: { click: () => { if (!S.voci.length) return; calendario(S.voci.map(v => ({ data: prossima(v) < oggi() ? oggi() : prossima(v), ora: O.ora || "09:00", titolo: (O.promemoria || "{nome}: tocca oggi").replace("{nome}", v.nome), ripeti: "FREQ=DAILY;INTERVAL=" + v.ogni })), "ricorrenze"); } } }),
+      el("button", { type: "button", class: "piccolo", text: "Manda l'elenco", on: { click: () => condividi(CFG.nome + "\n" + S.voci.map(v => "- " + v.nome + ": ogni " + v.ogni + " giorni, prossima " + dataIt(prossima(v))).join("\n")) } })), msgEl),
+    scheda(O.titoloForm || "Aggiungi", el("form", { class: "campi", autocomplete: "off", on: { submit: e => { e.preventDefault(); const n = nome.value.trim(); if (!n) return; S.voci.push({ id: uid(), nome: n, ogni: Math.max(1, +ogni.value || 7), ultimo: oggi() }); nome.value = ""; salva(S); disegna(); msg("Aggiunto: contiamo da oggi."); } } },
+      el("label", {}, O.etichetta || "Cosa", nome), el("label", {}, "Ogni quanti giorni", ogni), el("button", { type: "submit", class: "grande", text: O.bottone || "Aggiungi" }))));
+  const prossima = v => piuGiorni(v.ultimo, v.ogni);
+  function disegna(){
+    const l = S.voci.slice().sort((a, b) => prossima(a).localeCompare(prossima(b)));
+    lista.replaceChildren(...(l.length ? l.map(v => { const n = tra(oggi(), prossima(v)), col = n < 0 ? "rosso" : n === 0 ? "giallo" : "verde";
+      return el("li", { class: "voce " + col }, el("div", { class: "r1" }, el("b", { text: v.nome }), el("span", { class: "nota", text: "ogni " + v.ogni + (v.ogni === 1 ? " giorno" : " giorni") })),
+        el("div", { class: "sub" + (n < 0 ? " rosso" : n === 0 ? " forte" : ""), text: n < 0 ? (O.ritardo || "In ritardo di") + " " + (-n) + (n === -1 ? " giorno" : " giorni") : n === 0 ? (O.oggiTesto || "Tocca oggi") : "Prossima " + fra(n) + " · " + giornoDi(prossima(v)) }),
+        el("div", { class: "sub", text: (O.ultimaVolta || "Ultima volta") + ": " + dataIt(v.ultimo) }),
+        el("div", { class: "az" }, el("button", { type: "button", class: "ok", text: O.fatto || "Fatto oggi", on: { click: () => { v.ultimo = oggi(); salva(S); disegna(); msg("Segnato: prossima " + dataIt(prossima(v)) + "."); } } }),
+          el("button", { type: "button", class: "no", text: "Togli", on: { click: () => { S.voci = S.voci.filter(x => x.id !== v.id); salva(S); disegna(); } } })));
+    }) : [el("li", { class: "vuoto", text: O.vuoto || "Aggiungi qualcosa qui sotto." })]));
+  }
+  disegna();
+};
+
+/* ---- segnapunti: scopa, briscola, tressette ---- */
+MODELLI.segnapunti = function(root){
+  const G = O.giochi || [{ nome: "Scopa", fino: 11 }];
+  const S = leggi({ g: 0, nomi: O.squadre || ["Noi", "Voi"], mani: [], vinte: [0, 0] });
+  const scelta = el("select", { "aria-label": "Gioco", on: { change: () => { S.g = +scelta.value; salva(S); disegna(); } } }, G.map((g, i) => el("option", { value: i, text: g.nome + (g.fino ? " · a " + g.fino : "") })));
+  const box = el("div", { class: "punti" }), banner = el("p", { class: "grosso", style: "text-align:center" }), storia = el("ul", { class: "lista" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const tot = k => S.mani.reduce((s, m) => s + (m[k] || 0), 0);
+  root.append(scheda("", el("label", { class: "campi", style: "font-weight:800" }, O.etichettaGioco || "Che si gioca?", scelta), el("div", { style: "height:12px" }), box, banner,
+      el("div", { class: "due", style: "margin-top:12px" }, el("button", { type: "button", class: "piccolo", text: "Annulla l'ultimo", on: { click: () => { S.mani.pop(); salva(S); disegna(); } } }),
+        el("button", { type: "button", class: "piccolo", text: "Nuova partita", on: { click: () => { S.mani = []; salva(S); disegna(); msg("Carte mischiate: si ricomincia."); } } })),
+      el("button", { type: "button", class: "piccolo", style: "width:100%;margin-top:10px", text: "Manda il risultato", on: { click: () => condividi(G[S.g].nome + ": " + S.nomi[0] + " " + tot(0) + " - " + tot(1) + " " + S.nomi[1] + (S.vinte[0] + S.vinte[1] ? "\nPartite vinte: " + S.vinte[0] + " a " + S.vinte[1] : "")) } }), msgEl),
+    scheda(O.titoloStoria || "Le mani", storia));
+  function punti(k, n){ if (fine()) return; const m = [0, 0]; m[k] = n; S.mani.push(m); const f = fine(); if (f !== null){ S.vinte[f]++; bip(3, 990); } salva(S); disegna(); }
+  function fine(){ const f = G[S.g].fino; if (!f) return null; const a = tot(0), b = tot(1); if (Math.max(a, b) >= f && a !== b) return a > b ? 0 : 1; return null; }
+  function disegna(){
+    scelta.value = S.g; const f = fine();
+    box.replaceChildren(...[0, 1].map(k => { const nome = el("input", { type: "text", value: S.nomi[k], maxlength: 20, "aria-label": "Nome squadra", on: { change: e => { S.nomi[k] = e.target.value.trim() || (k ? "Voi" : "Noi"); salva(S); disegna(); } } });
+      return el("div", { class: "squadra" + (f === k ? " vince" : "") }, nome, el("div", { class: "n", text: tot(k) }),
+        el("div", { class: "tre" }, (G[S.g].bottoni || [1, 2, 3]).map(n => el("button", { type: "button", class: "piccolo", text: "+" + n, on: { click: () => punti(k, n) } }))),
+        el("button", { type: "button", class: "piccolo", style: "width:100%", text: "−1", on: { click: () => punti(k, -1) } }), el("div", { class: "nota", text: "vinte: " + S.vinte[k] }));
+    }));
+    banner.textContent = f !== null ? (O.vince || "Ha vinto {nome}!").replace("{nome}", S.nomi[f]) : G[S.g].fino ? "Si arriva a " + G[S.g].fino : "";
+    storia.replaceChildren(...(S.mani.length ? S.mani.slice().reverse().slice(0, 30).map((m, i) => el("li", { class: "voce", style: "padding:8px 12px" }, el("div", { class: "r1" }, el("span", { text: "Mano " + (S.mani.length - i) }), el("b", { text: (m[0] ? S.nomi[0] + " " + (m[0] > 0 ? "+" : "") + m[0] : S.nomi[1] + " " + (m[1] > 0 ? "+" : "") + m[1]) }))))
+      : [el("li", { class: "vuoto", text: "Tocca +1, +2 o +3 sotto la squadra che ha fatto punti." })]));
+  }
+  disegna();
+};
+
+/* ---- sorteggio: chi tocca, cosa si mangia ---- */
+MODELLI.sorteggio = function(root){
+  const S = leggi({ liste: O.liste || [{ nome: "Chi tocca", voci: ["Mamma", "Papà"] }], c: 0, usciti: {} });
+  const tabs = el("div", { class: "chips" }), ruota = el("div", { class: "ruota grosso", text: "?" }), voci = el("div", { class: "chips" });
+  const inp = el("input", { type: "text", maxlength: 40, placeholder: O.placeholder || "Aggiungi un nome o una cosa" }), norip = el("input", { type: "checkbox" }); norip.checked = O.senzaRipetere !== false;
+  msgEl = el("p", { class: "msg", role: "status" });
+  const gira = el("button", { type: "button", class: "grande", text: O.gira || "Gira!", on: { click: () => {
+    const L = S.liste[S.c]; if (!L || L.voci.length < 2){ msg("Servono almeno due voci.", true); return; }
+    let pool = L.voci; const us = S.usciti[S.c] || []; if (norip.checked){ pool = L.voci.filter(v => !us.includes(v)); if (!pool.length){ S.usciti[S.c] = []; pool = L.voci; } }
+    const scelto = pool[Math.floor(Math.random() * pool.length)]; let k = 0, t = 60; gira.disabled = true;
+    const step = () => { ruota.textContent = L.voci[k++ % L.voci.length]; t *= 1.12; if (t < 420) setTimeout(step, t); else { ruota.textContent = scelto; gira.disabled = false; if (norip.checked) (S.usciti[S.c] = S.usciti[S.c] || []).push(scelto); salva(S); bip(2, 990); msg((O.risultato || "È uscito: {x}!").replace("{x}", scelto)); mostraSmorfia(scelto); disegnaUsciti(); } };
+    smorfiaEl.textContent = ""; step(); } } });
+  const smorfiaEl = el("p", { class: "nota", style: "text-align:center;font-size:1.05rem;font-weight:800" });
+  const mostraSmorfia = x => { smorfiaEl.textContent = O.smorfia && O.smorfia[x] ? O.smorfia[x] : ""; };
+  const uscitiEl = el("p", { class: "nota" });
+  const disegnaUsciti = () => { const us = S.usciti[S.c] || []; uscitiEl.textContent = norip.checked && us.length ? "Già usciti (" + us.length + "): " + us.join(", ") : ""; };
+  const squadreEl = el("div", { class: "punti", style: "margin-top:12px" });
+  const faiSquadre = el("button", { type: "button", class: "piccolo", style: "width:100%;margin-top:10px", text: O.testoSquadre || "Fai due squadre", on: { click: () => {
+    const v = S.liste[S.c].voci.slice(); if (v.length < 2){ msg("Servono almeno due nomi.", true); return; }
+    for (let i = v.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [v[i], v[j]] = [v[j], v[i]]; }
+    const a = v.filter((_, i) => i % 2 === 0), b = v.filter((_, i) => i % 2 === 1);
+    squadreEl.replaceChildren(...[["Squadra 1", a], ["Squadra 2", b]].map(([t, l]) => el("div", { class: "squadra" }, el("b", { text: t }), el("div", { text: l.join(", ") }))));
+    S.ultimeSquadre = [a, b]; salva(S); bip(2, 990); } } });
+  if (!O.squadre) faiSquadre.hidden = true;
+  root.append(scheda("", tabs, el("div", { style: "height:10px" }), ruota, smorfiaEl, gira,
+      el("label", { style: "display:flex;gap:10px;align-items:center;margin-top:12px;color:var(--tenue)" }, norip, "Senza ripetere finché non escono tutti"),
+      el("button", { type: "button", class: "piccolo", style: "width:100%;margin-top:10px", text: "Manda il risultato", on: { click: () => condividi(squadreEl.children.length ? "Squadre: " + [...squadreEl.children].map(x => x.textContent).join(" · ") : S.liste[S.c].nome + ": " + ruota.textContent + (smorfiaEl.textContent ? " (" + smorfiaEl.textContent + ")" : "")) } }),
+      faiSquadre, squadreEl, uscitiEl, el("button", { type: "button", class: "piccolo", style: "width:100%;margin-top:10px", text: O.ricomincia || "Ricomincia da capo", on: { click: () => { S.usciti[S.c] = []; salva(S); ruota.textContent = "?"; smorfiaEl.textContent = ""; disegnaUsciti(); msg("Si ricomincia."); } } }), msgEl),
+    scheda(O.titoloVoci || "Le voci", voci, el("form", { class: "due", style: "margin-top:10px", on: { submit: e => { e.preventDefault(); const v = inp.value.trim(); if (!v) return; S.liste[S.c].voci.push(v); inp.value = ""; salva(S); disegna(); } } }, inp, el("button", { type: "submit", class: "piccolo", text: "Aggiungi" }))));
+  function disegna(){
+    if (!S.liste[S.c]) S.c = 0;
+    tabs.replaceChildren(...S.liste.map((l, i) => el("button", { type: "button", "aria-pressed": i === S.c, text: l.nome, on: { click: () => { S.c = i; ruota.textContent = "?"; smorfiaEl.textContent = ""; squadreEl.replaceChildren(); salva(S); disegna(); } } })));
+    tabs.hidden = S.liste.length < 2;
+    const tante = S.liste[S.c].voci.length > 24;
+    voci.replaceChildren(...(tante ? [el("p", { class: "nota", text: S.liste[S.c].voci.length + " voci (da " + S.liste[S.c].voci[0] + " a " + S.liste[S.c].voci[S.liste[S.c].voci.length - 1] + ")" })] : S.liste[S.c].voci.map((v, i) => el("button", { type: "button", text: v + " ✕", "aria-label": "Togli " + v, on: { click: () => { S.liste[S.c].voci.splice(i, 1); salva(S); disegna(); } } }))));
+    disegnaUsciti();
+  }
+  disegna();
+};
+
+/* ---- calendario: cosa succede ogni giorno della settimana (differenziata, mercato) ---- */
+MODELLI.calendario = function(root){
+  const S = leggi({ giorni: O.giorni || {}, ora: O.ora || "20:00" });
+  const stasera = el("p", { class: "grosso" }), domani = el("p", { class: "nota" }), tab = el("div", { class: "campi" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  const ora = el("input", { type: "time", value: S.ora, on: { change: e => { S.ora = e.target.value || "20:00"; salva(S); } } });
+  root.append(scheda(O.titoloOggi || "Oggi", stasera, domani, el("div", { class: "due", style: "margin-top:12px" },
+      el("button", { type: "button", class: "piccolo", text: "Promemoria ogni settimana", on: { click: () => { const BY = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"], ev = [];
+        for (let k = 0; k < 7; k++){ const d = piuGiorni(oggi(), k), t = S.giorni[new Date(d + "T12:00:00").getDay()]; if (t) ev.push({ data: d, ora: S.ora, titolo: (O.promemoria || "{cosa}").replace("{cosa}", t), ripeti: "FREQ=WEEKLY;BYDAY=" + BY[new Date(d + "T12:00:00").getDay()] }); }
+        if (!ev.length){ msg("Scrivi prima cosa c'è nei giorni.", true); return; } calendario(ev, "settimana"); } } }),
+      el("button", { type: "button", class: "piccolo", text: "Manda la settimana", on: { click: () => condividi(CFG.nome + "\n" + [1, 2, 3, 4, 5, 6, 0].map(g => GIORNI[g] + ": " + (S.giorni[g] || "—")).join("\n")) } })), msgEl),
+    scheda(O.titoloSettimana || "La settimana", tab, el("label", { class: "campi", style: "margin-top:12px;font-weight:800" }, O.etichettaOra || "Avvisami alle", ora)));
+  function disegna(){
+    const g = new Date().getDay(), t = S.giorni[g], d = S.giorni[(g + 1) % 7];
+    stasera.textContent = t ? (O.testoOggi || "Oggi: {cosa}").replace("{cosa}", t) : (O.niente || "Oggi niente.");
+    domani.textContent = "Domani (" + GIORNI[(g + 1) % 7] + "): " + (d || "niente") + ".";
+    tab.replaceChildren(...[1, 2, 3, 4, 5, 6, 0].map(k => el("label", {}, GIORNI[k][0].toUpperCase() + GIORNI[k].slice(1) + (k === g ? " (oggi)" : ""), el("input", { type: "text", maxlength: 60, value: S.giorni[k] || "", placeholder: "—", on: { change: e => { S.giorni[k] = e.target.value.trim(); salva(S); disegna(); } } }))));
+  }
+  disegna();
+};
+
+/* ---- contatore: quante volte al giorno (acqua, caffè, passi) ---- */
+MODELLI.contatore = function(root){
+  const S = leggi({ voci: O.voci || [{ nome: "Bicchieri d'acqua", emoji: "💧", obiettivo: 8 }], conti: {} });
+  const box = el("div", { style: "display:grid;gap:12px" });
+  msgEl = el("p", { class: "msg", role: "status" });
+  root.append(scheda(O.titolo || "Oggi", box, el("button", { type: "button", class: "piccolo", style: "width:100%;margin-top:12px", text: "Manda il riepilogo", on: { click: () => condividi(CFG.nome + " (" + dataIt(oggi()) + ")\n" + S.voci.map(v => "- " + v.nome + ": " + n(v.nome, oggi()) + (v.obiettivo ? "/" + v.obiettivo : "")).join("\n")) } }), msgEl));
+  const n = (nome, g) => (S.conti[g] || {})[nome] || 0;
+  function cambia(nome, d){ const g = oggi(), c = S.conti[g] || (S.conti[g] = {}); c[nome] = Math.max(0, (c[nome] || 0) + d); for (const k of Object.keys(S.conti)) if (k < piuGiorni(g, -30)) delete S.conti[k]; salva(S); disegna();
+    const v = S.voci.find(x => x.nome === nome); if (d > 0 && v && v.obiettivo && c[nome] === v.obiettivo){ bip(2, 990); msg((O.brav || "Obiettivo raggiunto: bravo!")); } }
+  function disegna(){
+    box.replaceChildren(...S.voci.map(v => { const c = n(v.nome, oggi()), sett = [...Array(7)].map((_, k) => n(v.nome, piuGiorni(oggi(), k - 6))), mx = Math.max(1, v.obiettivo || 0, ...sett);
+      return el("div", { class: "voce verde" }, el("div", { class: "r1" }, el("b", { text: (v.emoji ? v.emoji + " " : "") + v.nome }), el("span", { class: "nota", text: v.obiettivo ? "obiettivo " + v.obiettivo : "" })),
+        el("div", { class: "regola" }, el("button", { type: "button", text: "−", "aria-label": "Meno", on: { click: () => cambia(v.nome, -1) } }), el("b", { class: "grosso", text: c }), el("button", { type: "button", text: "+", "aria-label": "Più", on: { click: () => cambia(v.nome, 1) } })),
+        el("div", { class: "barre", "aria-label": "Ultimi sette giorni" }, sett.map(x => el("span", { style: "height:" + Math.round(4 + 40 * x / mx) + "px", title: x }))), el("div", { class: "nota", text: "ultimi sette giorni" }));
+    }));
+  }
+  disegna();
+};
+
+/* =================== AVVIO =================== */
+$("titolo").textContent = CFG.nome || "Il regalo";
+$("slogan").textContent = CFG.slogan || "Un regalo di Gennarino.";
+$("piede").textContent = CFG.piede || "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet.";
+(MODELLI[CFG.tipo] || MODELLI.lista)($("app"));
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>

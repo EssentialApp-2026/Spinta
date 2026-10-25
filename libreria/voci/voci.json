@@ -1116,6 +1116,276 @@
     "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
     "file": "voci/2026-W45/67.mp3"
    }
+  ],
+  "2026-W46": [
+   {
+    "testo": "Piazza nuova, tre idee nuove: quale costruisco?",
+    "file": "voci/2026-W46/01.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il bancariello si è spostato in Piazza Garibaldi!",
+    "file": "voci/2026-W46/02.mp3"
+   },
+   {
+    "testo": "A: Quanta acqua ho bevuto.",
+    "file": "voci/2026-W46/03.mp3"
+   },
+   {
+    "testo": "B: Garanzie e scontrini.",
+    "file": "voci/2026-W46/04.mp3"
+   },
+   {
+    "testo": "C: L'uovo sodo perfetto.",
+    "file": "voci/2026-W46/05.mp3"
+   },
+   {
+    "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+    "file": "voci/2026-W46/06.mp3"
+   },
+   {
+    "testo": "Venerdì la più votata è sul banco, gratis.",
+    "file": "voci/2026-W46/07.mp3"
+   },
+   {
+    "testo": "L'acqua che non beviamo, la garanzia scaduta o l'uovo troppo duro: chi vi frega di più?",
+    "file": "voci/2026-W46/08.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il voto è aperto da ieri.",
+    "file": "voci/2026-W46/09.mp3"
+   },
+   {
+    "testo": "Basta una lettera nei commenti per decidere.",
+    "file": "voci/2026-W46/10.mp3"
+   },
+   {
+    "testo": "Chi non ha ancora votato, ha tempo fino a mercoledì sera!",
+    "file": "voci/2026-W46/11.mp3"
+   },
+   {
+    "testo": "Mamma mia, a fine giornata ho bevuto solo un caffè!",
+    "file": "voci/2026-W46/12.mp3"
+   },
+   {
+    "testo": "Uè guagliù, a me succede sempre!",
+    "file": "voci/2026-W46/13.mp3"
+   },
+   {
+    "testo": "E le garanzie: sapete quando scadono?",
+    "file": "voci/2026-W46/14.mp3"
+   },
+   {
+    "testo": "E l'uovo sodo: vi viene sempre come volete?",
+    "file": "voci/2026-W46/15.mp3"
+   },
+   {
+    "testo": "Per questo ho pensato a queste tre idee.",
+    "file": "voci/2026-W46/16.mp3"
+   },
+   {
+    "testo": "Ditemi nei commenti cosa vi frega ogni giorno.",
+    "file": "voci/2026-W46/17.mp3"
+   },
+   {
+    "testo": "E chi non ha votato: A, B o C, fino a domani sera!",
+    "file": "voci/2026-W46/18.mp3"
+   },
+   {
+    "testo": "Stasera chiudo le urne: manca poco!",
+    "file": "voci/2026-W46/19.mp3"
+   },
+   {
+    "testo": "Uè guagliù, l'ultima occasione per votare.",
+    "file": "voci/2026-W46/20.mp3"
+   },
+   {
+    "testo": "Una lettera nei commenti e avete deciso.",
+    "file": "voci/2026-W46/21.mp3"
+   },
+   {
+    "testo": "Domani vi dico chi ha vinto!",
+    "file": "voci/2026-W46/22.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: l'acqua non ve la scordate più!",
+    "file": "voci/2026-W46/23.mp3"
+   },
+   {
+    "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
+    "file": "voci/2026-W46/24.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: Quanta acqua ho bevuto.",
+    "file": "voci/2026-W46/25.mp3"
+   },
+   {
+    "testo": "Toccate ogni bicchiere e vi dico quanto manca.",
+    "file": "voci/2026-W46/26.mp3"
+   },
+   {
+    "testo": "Da oggi ci lavoro, giorno e notte.",
+    "file": "voci/2026-W46/27.mp3"
+   },
+   {
+    "testo": "Venerdì è sul banco, gratis per tutti.",
+    "file": "voci/2026-W46/28.mp3"
+   },
+   {
+    "testo": "Quanti bicchieri bevete voi? Ditemelo nei commenti!",
+    "file": "voci/2026-W46/29.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: le garanzie non scadono più di nascosto!",
+    "file": "voci/2026-W46/30.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: Garanzie e scontrini.",
+    "file": "voci/2026-W46/31.mp3"
+   },
+   {
+    "testo": "Segnate cosa avete comprato e vi dico fino a quando c'è la garanzia.",
+    "file": "voci/2026-W46/32.mp3"
+   },
+   {
+    "testo": "Cosa vi si è rotto appena finita la garanzia? Ditemelo nei commenti!",
+    "file": "voci/2026-W46/33.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: l'uovo viene sempre giusto!",
+    "file": "voci/2026-W46/34.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: L'uovo sodo perfetto.",
+    "file": "voci/2026-W46/35.mp3"
+   },
+   {
+    "testo": "Scegliete come lo volete e vi suono al momento giusto.",
+    "file": "voci/2026-W46/36.mp3"
+   },
+   {
+    "testo": "Voi l'uovo come lo volete? Ditemelo nei commenti!",
+    "file": "voci/2026-W46/37.mp3"
+   },
+   {
+    "testo": "Zero voti: questa volta niente app.",
+    "file": "voci/2026-W46/38.mp3"
+   },
+   {
+    "testo": "Uè guagliù, ho letto tutti i commenti.",
+    "file": "voci/2026-W46/39.mp3"
+   },
+   {
+    "testo": "Ma nessuno ha scritto A, B o C.",
+    "file": "voci/2026-W46/40.mp3"
+   },
+   {
+    "testo": "Mi dispiace: venerdì niente regalo.",
+    "file": "voci/2026-W46/41.mp3"
+   },
+   {
+    "testo": "Domenica torno con tre idee nuove.",
+    "file": "voci/2026-W46/42.mp3"
+   },
+   {
+    "testo": "Basta una lettera nei commenti e decidete voi!",
+    "file": "voci/2026-W46/43.mp3"
+   },
+   {
+    "testo": "È venerdì: l'acqua si conta da sola!",
+    "file": "voci/2026-W46/44.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il regalo è sul banco.",
+    "file": "voci/2026-W46/45.mp3"
+   },
+   {
+    "testo": "Ecco Quanta acqua ho bevuto.",
+    "file": "voci/2026-W46/46.mp3"
+   },
+   {
+    "testo": "Toccate più ogni volta che bevete.",
+    "file": "voci/2026-W46/47.mp3"
+   },
+   {
+    "testo": "Vi faccio vedere come va la settimana.",
+    "file": "voci/2026-W46/48.mp3"
+   },
+   {
+    "testo": "Gratis, senza registrazione: link nel profilo.",
+    "file": "voci/2026-W46/49.mp3"
+   },
+   {
+    "testo": "Mandatela a chi beve solo caffè!",
+    "file": "voci/2026-W46/50.mp3"
+   },
+   {
+    "testo": "È venerdì: le garanzie le tengo io!",
+    "file": "voci/2026-W46/51.mp3"
+   },
+   {
+    "testo": "Ecco Garanzie e scontrini.",
+    "file": "voci/2026-W46/52.mp3"
+   },
+   {
+    "testo": "Segnate cosa comprate e quando.",
+    "file": "voci/2026-W46/53.mp3"
+   },
+   {
+    "testo": "Vi avviso prima che scada la garanzia.",
+    "file": "voci/2026-W46/54.mp3"
+   },
+   {
+    "testo": "Mandatela a chi perde sempre gli scontrini!",
+    "file": "voci/2026-W46/55.mp3"
+   },
+   {
+    "testo": "È venerdì: l'uovo viene come lo volete voi!",
+    "file": "voci/2026-W46/56.mp3"
+   },
+   {
+    "testo": "Ecco l'uovo sodo perfetto.",
+    "file": "voci/2026-W46/57.mp3"
+   },
+   {
+    "testo": "Scegliete: alla coque, barzotto o sodo.",
+    "file": "voci/2026-W46/58.mp3"
+   },
+   {
+    "testo": "Vi suono quando è pronto.",
+    "file": "voci/2026-W46/59.mp3"
+   },
+   {
+    "testo": "Mandatela a chi fa le uova di gomma!",
+    "file": "voci/2026-W46/60.mp3"
+   },
+   {
+    "testo": "Sabato si smonta: domani cambio piazza!",
+    "file": "voci/2026-W46/61.mp3"
+   },
+   {
+    "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
+    "file": "voci/2026-W46/62.mp3"
+   },
+   {
+    "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
+    "file": "voci/2026-W46/63.mp3"
+   },
+   {
+    "testo": "Saluto Piazza Garibaldi: grazie per questa settimana!",
+    "file": "voci/2026-W46/64.mp3"
+   },
+   {
+    "testo": "Dove vado domani? Non ve lo dico ancora.",
+    "file": "voci/2026-W46/65.mp3"
+   },
+   {
+    "testo": "Domani piazza nuova e tre idee nuove da votare.",
+    "file": "voci/2026-W46/66.mp3"
+   },
+   {
+    "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
+    "file": "voci/2026-W46/67.mp3"
+   }
   ]
  }
 }

@@ -1,39 +1,53 @@
 {
   "versione": 1,
-  "settimana": "2026-W45",
-  "dal": "2026-11-01",
-  "al": "2026-11-08",
+  "settimana": "2026-W46",
+  "dal": "2026-11-08",
+  "al": "2026-11-15",
   "scritto": "2026-10-25",
-  "voto_fino_a": "2026-11-04",
-  "regalo": "2026-11-06",
+  "voto_fino_a": "2026-11-11",
+  "regalo": "2026-11-13",
   "idee": {
-    "A": "Innaffia le piante",
-    "B": "Segnapunti della scopa",
-    "C": "Chi scende la munnezza"
+    "A": "Quanta acqua ho bevuto",
+    "B": "Garanzie e scontrini",
+    "C": "L'uovo sodo perfetto"
   },
   "idee_id": {
-    "A": "piante-acqua",
-    "B": "segnapunti-scopa",
-    "C": "chi-scende"
+    "A": "acqua-bicchieri",
+    "B": "garanzie",
+    "C": "uovo-perfetto"
   },
-  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Carità e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
+  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Garibaldi e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
+  "telefoni": {
+    "A": {
+      "nome": "Acqua",
+      "emoji": "💧"
+    },
+    "B": {
+      "nome": "Garanzie",
+      "emoji": "🧾"
+    },
+    "C": {
+      "nome": "Uovo",
+      "emoji": "🥚"
+    }
+  },
   "puntate": [
     {
       "id": "piazza-nuova",
       "tipo": "idee",
       "giorno": "domenica",
       "titolo": "Piazza nuova, tre idee nuove",
-      "data": "2026-11-01",
+      "data": "2026-11-08",
       "copione": [
         "Piazza nuova, tre idee nuove: quale costruisco?",
-        "Uè guagliù, il bancariello si è spostato in Piazza Carità!",
-        "A: Innaffia le piante.",
-        "B: Segnapunti della scopa.",
-        "C: Chi scende la munnezza.",
+        "Uè guagliù, il bancariello si è spostato in Piazza Garibaldi!",
+        "A: Quanta acqua ho bevuto.",
+        "B: Garanzie e scontrini.",
+        "C: L'uovo sodo perfetto.",
         "Scrivete la lettera nei commenti, fino a mercoledì sera.",
         "Venerdì la più votata è sul banco, gratis."
       ],
-      "apertura": "piazza-2026-W45.mp4",
+      "apertura": "piazza-2026-W46.mp4",
       "aperturaFrasi": 2
     },
     {
@@ -42,11 +56,11 @@
       "giorno": "lunedì",
       "titolo": "Avete già votato?",
       "copione": [
-        "Piante secche, i conti a carte o chi scende: chi vi frega di più?",
+        "L'acqua che non beviamo, la garanzia scaduta o l'uovo troppo duro: chi vi frega di più?",
         "Uè guagliù, il voto è aperto da ieri.",
-        "A: Innaffia le piante.",
-        "B: Segnapunti della scopa.",
-        "C: Chi scende la munnezza.",
+        "A: Quanta acqua ho bevuto.",
+        "B: Garanzie e scontrini.",
+        "C: L'uovo sodo perfetto.",
         "Basta una lettera nei commenti per decidere.",
         "Chi non ha ancora votato, ha tempo fino a mercoledì sera!"
       ]
@@ -57,10 +71,10 @@
       "giorno": "martedì",
       "titolo": "Cosa vi frega ogni giorno?",
       "copione": [
-        "Mamma mia, il basilico sul balcone è tutto secco!",
+        "Mamma mia, a fine giornata ho bevuto solo un caffè!",
         "Uè guagliù, a me succede sempre!",
-        "E a carte: chi segna i punti senza imbrogliare?",
-        "E la sera: chi scende la munnezza?",
+        "E le garanzie: sapete quando scadono?",
+        "E l'uovo sodo: vi viene sempre come volete?",
         "Per questo ho pensato a queste tre idee.",
         "Ditemi nei commenti cosa vi frega ogni giorno.",
         "E chi non ha votato: A, B o C, fino a domani sera!"
@@ -74,9 +88,9 @@
       "copione": [
         "Stasera chiudo le urne: manca poco!",
         "Uè guagliù, l'ultima occasione per votare.",
-        "A: Innaffia le piante.",
-        "B: Segnapunti della scopa.",
-        "C: Chi scende la munnezza.",
+        "A: Quanta acqua ho bevuto.",
+        "B: Garanzie e scontrini.",
+        "C: L'uovo sodo perfetto.",
         "Una lettera nei commenti e avete deciso.",
         "Domani vi dico chi ha vinto!"
       ]
@@ -88,13 +102,13 @@
       "titolo": "Risultato del voto",
       "vince": "A",
       "copione": [
-        "Ha vinto la A: le piante non si seccano più!",
+        "Ha vinto la A: l'acqua non ve la scordate più!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la A: Innaffia le piante.",
-        "Dite ogni quanto vanno innaffiate e vi avviso io.",
+        "Ha vinto la A: Quanta acqua ho bevuto.",
+        "Toccate ogni bicchiere e vi dico quanto manca.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Che piante tenete sul balcone? Ditemelo nei commenti!"
+        "Quanti bicchieri bevete voi? Ditemelo nei commenti!"
       ]
     },
     {
@@ -104,13 +118,13 @@
       "titolo": "Risultato del voto",
       "vince": "B",
       "copione": [
-        "Ha vinto la B: a carte non si litiga più!",
+        "Ha vinto la B: le garanzie non scadono più di nascosto!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la B: Segnapunti della scopa.",
-        "Toccate i punti di ogni mano e vi dico chi vince.",
+        "Ha vinto la B: Garanzie e scontrini.",
+        "Segnate cosa avete comprato e vi dico fino a quando c'è la garanzia.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Scopa, briscola o tressette: voi a cosa giocate? Ditemelo nei commenti!"
+        "Cosa vi si è rotto appena finita la garanzia? Ditemelo nei commenti!"
       ]
     },
     {
@@ -120,13 +134,13 @@
       "titolo": "Risultato del voto",
       "vince": "C",
       "copione": [
-        "Ha vinto la C: decide la sorte, non si litiga più!",
+        "Ha vinto la C: l'uovo viene sempre giusto!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la C: Chi scende la munnezza.",
-        "Scrivete i nomi e la ruota decide chi tocca.",
+        "Ha vinto la C: L'uovo sodo perfetto.",
+        "Scegliete come lo volete e vi suono al momento giusto.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "A casa vostra chi scende sempre? Ditemelo nei commenti!"
+        "Voi l'uovo come lo volete? Ditemelo nei commenti!"
       ]
     },
     {
@@ -150,13 +164,13 @@
       "titolo": "Il regalo è sul banco",
       "vince": "A",
       "copione": [
-        "È venerdì: le piante bevono al momento giusto!",
+        "È venerdì: l'acqua si conta da sola!",
         "Uè guagliù, il regalo è sul banco.",
-        "Ecco Innaffia le piante.",
-        "Per ogni pianta dite ogni quanti giorni vuole l'acqua.",
-        "Vi dico io quale innaffiare oggi.",
+        "Ecco Quanta acqua ho bevuto.",
+        "Toccate più ogni volta che bevete.",
+        "Vi faccio vedere come va la settimana.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi ha il balcone pieno di piante secche!"
+        "Mandatela a chi beve solo caffè!"
       ]
     },
     {
@@ -166,13 +180,13 @@
       "titolo": "Il regalo è sul banco",
       "vince": "B",
       "copione": [
-        "È venerdì: a carte i punti li segno io!",
+        "È venerdì: le garanzie le tengo io!",
         "Uè guagliù, il regalo è sul banco.",
-        "Ecco Segnapunti della scopa.",
-        "Toccate i punti di ogni mano.",
-        "Vi dico io chi arriva prima.",
+        "Ecco Garanzie e scontrini.",
+        "Segnate cosa comprate e quando.",
+        "Vi avviso prima che scada la garanzia.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi imbroglia sempre a carte!"
+        "Mandatela a chi perde sempre gli scontrini!"
       ]
     },
     {
@@ -182,13 +196,13 @@
       "titolo": "Il regalo è sul banco",
       "vince": "C",
       "copione": [
-        "È venerdì: decide la ruota!",
+        "È venerdì: l'uovo viene come lo volete voi!",
         "Uè guagliù, il regalo è sul banco.",
-        "Ecco Chi scende la munnezza.",
-        "Scrivete i nomi di casa.",
-        "Girate e la sorte sceglie chi tocca.",
+        "Ecco l'uovo sodo perfetto.",
+        "Scegliete: alla coque, barzotto o sodo.",
+        "Vi suono quando è pronto.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi fa sempre il furbo!"
+        "Mandatela a chi fa le uova di gomma!"
       ]
     },
     {
@@ -200,26 +214,12 @@
         "Sabato si smonta: domani cambio piazza!",
         "Uè guagliù, chiudo la tenda e piego il banco.",
         "Arrotolo le lampadine e metto tutto nel carretto.",
-        "Saluto Piazza Carità: grazie per questa settimana!",
+        "Saluto Piazza Garibaldi: grazie per questa settimana!",
         "Dove vado domani? Non ve lo dico ancora.",
         "Domani piazza nuova e tre idee nuove da votare.",
         "Secondo voi dove mi sposto? Scrivetelo nei commenti!"
       ]
     }
   ],
-  "piazza": "Piazza Carità",
-  "telefoni": {
-    "A": {
-      "nome": "Piante",
-      "emoji": "🪴"
-    },
-    "B": {
-      "nome": "Scopa",
-      "emoji": "🃏"
-    },
-    "C": {
-      "nome": "Sorte",
-      "emoji": "🎲"
-    }
-  }
+  "piazza": "Piazza Garibaldi"
 }

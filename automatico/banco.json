@@ -98,6 +98,55 @@
    ],
    "conteggio": "",
    "vince": ""
+  },
+  {
+   "settimana": "2026-W46",
+   "dal": "2026-11-08T00:00:00+01:00",
+   "chiude": "2026-11-11T23:59:00+01:00",
+   "uscita": "2026-11-13T19:00:00+01:00",
+   "piazza": "Piazza Garibaldi",
+   "regali": {
+    "A": {
+     "id": "acqua-bicchieri",
+     "nome": "Quanta acqua ho bevuto",
+     "emoji": "💧",
+     "descrizione": "Un tocco per ogni bicchiere d'acqua: vedi quanti ne mancano per arrivare a otto e come è andata la settimana. Funziona anche senza internet.",
+     "link": "../Spinta/regali/2026-W46/acqua-bicchieri/"
+    },
+    "B": {
+     "id": "garanzie",
+     "nome": "Garanzie e scontrini",
+     "emoji": "🧾",
+     "descrizione": "Segni cosa hai comprato e fino a quando c'è la garanzia: in cima quelle che scadono prima, e il promemoria va nel calendario. Tutto resta sul tuo telefono.",
+     "link": "../Spinta/regali/2026-W46/garanzie/"
+    },
+    "C": {
+     "id": "uovo-perfetto",
+     "nome": "L'uovo sodo perfetto",
+     "emoji": "🥚",
+     "descrizione": "Scegli alla coque, barzotto o sodo e ti suono quando è pronto: si calcola da quando l'acqua bolle. Funziona anche senza internet.",
+     "link": "../Spinta/regali/2026-W46/uovo-perfetto/"
+    }
+   },
+   "opzioni": [
+    {
+     "lettera": "A",
+     "idea": "Quanta acqua ho bevuto",
+     "voti": 0
+    },
+    {
+     "lettera": "B",
+     "idea": "Garanzie e scontrini",
+     "voti": 0
+    },
+    {
+     "lettera": "C",
+     "idea": "L'uovo sodo perfetto",
+     "voti": 0
+    }
+   ],
+   "conteggio": "",
+   "vince": ""
   }
  ]
 }

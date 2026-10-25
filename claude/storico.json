@@ -137,6 +137,37 @@
     "mercoledì: Ultime ore per votare",
     "sabato: Si smonta la bancarella"
    ]
+  },
+  {
+   "settimana": "2026-W46",
+   "idee": {
+    "A": "Quanta acqua ho bevuto",
+    "B": "Garanzie e scontrini",
+    "C": "L'uovo sodo perfetto"
+   },
+   "piazza": "Piazza Garibaldi",
+   "fatto_da": "automatico/settimana.py",
+   "hook": [
+    "Piazza nuova, tre idee nuove: quale costruisco?",
+    "L'acqua che non beviamo, la garanzia scaduta o l'uovo troppo duro: chi vi frega di più?",
+    "Mamma mia, a fine giornata ho bevuto solo un caffè!",
+    "Stasera chiudo le urne: manca poco!",
+    "Ha vinto la A: l'acqua non ve la scordate più!",
+    "Ha vinto la B: le garanzie non scadono più di nascosto!",
+    "Ha vinto la C: l'uovo viene sempre giusto!",
+    "Zero voti: questa volta niente app.",
+    "È venerdì: l'acqua si conta da sola!",
+    "È venerdì: le garanzie le tengo io!",
+    "È venerdì: l'uovo viene come lo volete voi!",
+    "Sabato si smonta: domani cambio piazza!"
+   ],
+   "parti": [
+    "domenica: Piazza nuova, tre idee nuove",
+    "lunedì: Avete già votato?",
+    "martedì: Cosa vi frega ogni giorno?",
+    "mercoledì: Ultime ore per votare",
+    "sabato: Si smonta la bancarella"
+   ]
   }
  ]
 }
