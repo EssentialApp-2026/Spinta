@@ -1,5 +1,5 @@
 {
- "nota": "Piazze vere di Napoli per la panoramica della domenica, in ordine. Foto controllate a mano: solo CC0 o pubblico dominio (nessun credito da citare). Usate: si saltano da sole (libreria.json, aperture). Finite queste, automatico/piazza.py cerca su Commons quelle di «da_cercare». Quando sono finite tutte (anche quelle trovate in automatico, in «trovate»), si torna nella piazza dove Gennarino manca da più tempo.",
+ "nota": "Piazze vere di Napoli per la panoramica della domenica, in ordine. Foto controllate a occhio (anche con la bancarella sopra): solo CC0 o pubblico dominio, nessun credito da citare; «centro» (0-1) dice dove ritagliare in verticale. Usate: si saltano da sole (libreria.json, aperture). Finite queste, automatico/piazza.py cerca su Commons quelle di «da_cercare» e le segna in «trovate»; quando sono finite tutte, si torna nella piazza dove Gennarino manca da più tempo. Per cercarne altre a mano: Actions → «Cerca piazze nuove» (automatico/cerca_piazze.py fa i fogli con le miniature in claude/piazze-candidate/).",
  "piazze": [
   {
    "nome": "Piazza Carità",
@@ -12,9 +12,21 @@
    "licenza": "CC0"
   },
   {
+   "nome": "Piazza Dante",
+   "file": "File:Convento Soriano.jpg",
+   "licenza": "Public domain",
+   "centro": 0.35
+  },
+  {
    "nome": "Piazza Quattro Giornate",
    "file": "File:Piazza Quattro Giornate - Vomero 100 0379.jpg",
    "licenza": "Public domain"
+  },
+  {
+   "nome": "Piazza Matteotti",
+   "file": "File:Napoli - Palazzo delle poste.jpg",
+   "licenza": "Public domain",
+   "centro": 0.5
   },
   {
    "nome": "Piazza Medaglie d'Oro",
@@ -22,9 +34,21 @@
    "licenza": "CC0"
   },
   {
+   "nome": "Piazza Amedeo",
+   "file": "File:Piazza Amedeo 100 2776.JPG",
+   "licenza": "Public domain",
+   "centro": 0.5
+  },
+  {
    "nome": "Piazza San Domenico Maggiore",
    "file": "File:Napoli - piazza San Domenico Maggiore e guglia 1030736.JPG",
    "licenza": "Public domain"
+  },
+  {
+   "nome": "Piazza Carlo III",
+   "file": "File:\"Albergo dei Poveri\" (after 1751) - Architect Ferdinando Fuga (Florence 1699-Naples 1781) - Naples (23598555603).jpg",
+   "licenza": "Public domain",
+   "centro": 0.5
   },
   {
    "nome": "Piazza Cavour",
@@ -53,13 +77,11 @@
   }
  ],
  "da_cercare": [
-  "Piazza Dante",
   "Piazza Municipio",
   "Piazza Vanvitelli",
   "Piazza dei Martiri",
   "Piazza Trieste e Trento",
   "Piazza Sannazaro",
-  "Piazza Amedeo",
   "Piazza Vittoria",
   "Piazza Museo",
   "Piazza Sanità",
@@ -69,7 +91,6 @@
   "Piazza Immacolata",
   "Piazza San Gaetano",
   "Piazza Nicola Amore",
-  "Piazza Carlo III",
   "Piazza Bovio"
  ]
 }
