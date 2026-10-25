@@ -1,6 +1,6 @@
 {
  "versione": 1,
- "voce": "Gennarino nuovo: Gemini TTS «Mako», un po' più veloce e con effetto robot",
+ "voce": "Gennarino nuovo: W42-W43 Gemini TTS «Mako» con effetto robot; dalla W44 lo stesso timbro rifatto gratis da automatico/voci.py (Kokoro/Piper italiano + kNN-VC dalle battute Mako grezze, scelta della versione più chiara con Whisper)",
  "nota": "Battute già pronte: Spinta le usa al posto di Piper quando il testo della frase è uguale. Se cambi una frase, quella frase torna alla voce di Piper.",
  "settimane": {
   "2026-W42": [
@@ -575,6 +575,176 @@
    {
     "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
     "file": "voci/2026-W43/66.mp3"
+   }
+  ],
+  "2026-W44": [
+   {
+    "testo": "Piazza nuova, tre idee nuove: quale costruisco?",
+    "file": "voci/2026-W44/01.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il bancariello si è spostato in Piazza Bellini!",
+    "file": "voci/2026-W44/02.mp3"
+   },
+   {
+    "testo": "A: Cosa scade nel frigo.",
+    "file": "voci/2026-W44/03.mp3"
+   },
+   {
+    "testo": "B: Sveglia per le strisce blu.",
+    "file": "voci/2026-W44/04.mp3"
+   },
+   {
+    "testo": "C: Turni di casa.",
+    "file": "voci/2026-W44/05.mp3"
+   },
+   {
+    "testo": "Latte scaduto, strisce blu o piatti: chi vi frega di più?",
+    "file": "voci/2026-W44/06.mp3"
+   },
+   {
+    "testo": "Mamma mia, quel formaggio era scaduto da una settimana!",
+    "file": "voci/2026-W44/07.mp3"
+   },
+   {
+    "testo": "Uè guagliù, a me succede sempre!",
+    "file": "voci/2026-W44/08.mp3"
+   },
+   {
+    "testo": "E il parcheggio a strisce blu: quante multe per cinque minuti?",
+    "file": "voci/2026-W44/09.mp3"
+   },
+   {
+    "testo": "E a casa: chi ha lavato i piatti ieri?",
+    "file": "voci/2026-W44/10.mp3"
+   },
+   {
+    "testo": "Ditemi nei commenti cosa vi frega ogni giorno.",
+    "file": "voci/2026-W44/11.mp3"
+   },
+   {
+    "testo": "Stasera chiudo le urne: manca poco!",
+    "file": "voci/2026-W44/12.mp3"
+   },
+   {
+    "testo": "Uè guagliù, l'ultima occasione per votare.",
+    "file": "voci/2026-W44/13.mp3"
+   },
+   {
+    "testo": "Una lettera nei commenti e avete deciso.",
+    "file": "voci/2026-W44/14.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: il frigo non vi frega più!",
+    "file": "voci/2026-W44/15.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: Cosa scade nel frigo.",
+    "file": "voci/2026-W44/16.mp3"
+   },
+   {
+    "testo": "Segnate cosa mettete in frigo e vi dico quando scade.",
+    "file": "voci/2026-W44/17.mp3"
+   },
+   {
+    "testo": "Cosa vi si butta sempre? Ditemelo nei commenti!",
+    "file": "voci/2026-W44/18.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: le strisce blu non vi fregano più!",
+    "file": "voci/2026-W44/19.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: Sveglia per le strisce blu.",
+    "file": "voci/2026-W44/20.mp3"
+   },
+   {
+    "testo": "Dite quando parcheggiate e vi suono prima che scada il tempo.",
+    "file": "voci/2026-W44/21.mp3"
+   },
+   {
+    "testo": "Quante multe avete preso? Ditemelo nei commenti!",
+    "file": "voci/2026-W44/22.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: a casa i turni sono chiari!",
+    "file": "voci/2026-W44/23.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: Turni di casa.",
+    "file": "voci/2026-W44/24.mp3"
+   },
+   {
+    "testo": "Scrivete chi fa cosa e vi dico a chi tocca oggi.",
+    "file": "voci/2026-W44/25.mp3"
+   },
+   {
+    "testo": "Chi a casa non fa mai niente? Ditemelo nei commenti!",
+    "file": "voci/2026-W44/26.mp3"
+   },
+   {
+    "testo": "È venerdì: il frigo adesso parla da solo!",
+    "file": "voci/2026-W44/27.mp3"
+   },
+   {
+    "testo": "Ecco Cosa scade nel frigo.",
+    "file": "voci/2026-W44/28.mp3"
+   },
+   {
+    "testo": "Segnate cosa mettete in frigo e quando scade.",
+    "file": "voci/2026-W44/29.mp3"
+   },
+   {
+    "testo": "Vi dico io cosa mangiare per primo.",
+    "file": "voci/2026-W44/30.mp3"
+   },
+   {
+    "testo": "Mandatela a chi butta sempre il latte!",
+    "file": "voci/2026-W44/31.mp3"
+   },
+   {
+    "testo": "È venerdì: le strisce blu non vi fregano più!",
+    "file": "voci/2026-W44/32.mp3"
+   },
+   {
+    "testo": "Ecco Sveglia per le strisce blu.",
+    "file": "voci/2026-W44/33.mp3"
+   },
+   {
+    "testo": "Dite a che ora avete parcheggiato.",
+    "file": "voci/2026-W44/34.mp3"
+   },
+   {
+    "testo": "Suona prima che scada il tempo.",
+    "file": "voci/2026-W44/35.mp3"
+   },
+   {
+    "testo": "Mandatela a chi prende sempre la multa!",
+    "file": "voci/2026-W44/36.mp3"
+   },
+   {
+    "testo": "È venerdì: a casa si sa a chi tocca!",
+    "file": "voci/2026-W44/37.mp3"
+   },
+   {
+    "testo": "Ecco Turni di casa.",
+    "file": "voci/2026-W44/38.mp3"
+   },
+   {
+    "testo": "Scrivete i lavori di casa e chi li fa.",
+    "file": "voci/2026-W44/39.mp3"
+   },
+   {
+    "testo": "Ogni giorno vi dice a chi tocca.",
+    "file": "voci/2026-W44/40.mp3"
+   },
+   {
+    "testo": "Mandatela a chi a casa non fa mai niente!",
+    "file": "voci/2026-W44/41.mp3"
+   },
+   {
+    "testo": "Saluto Piazza Bellini: grazie per questa settimana!",
+    "file": "voci/2026-W44/42.mp3"
    }
   ]
  }
