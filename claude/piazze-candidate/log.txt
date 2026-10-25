@@ -1,0 +1,97 @@
+    incategory:"Piazza Dante (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Dante (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Dante" Napoli haswbstatement:P275=Q6938433: 4 trovate, 1 buone
+    "Piazza Dante" Napoli haswbstatement:P6216=Q19652: 8 trovate, 1 buone
+    "Piazza Dante" Napoli filetype:bitmap: 50 trovate, 1 buone
+Piazza Dante ['File:Piazza Dante, Napels No. 6150 Napoli (serietitel), RP-F-00-1207.jpg', 'File:View of the "Foro Carolino" Piazza Dante in Naples, with scenographic decorations for birth of the princess Maria Luisa of Bourbon.jpeg', 'File:Napoli Piazza e Monumento Dante.jpg']
+    incategory:"Piazza del Municipio (Naples)" haswbstatement:P275=Q6938433: 1 trovate, 1 buone
+    incategory:"Piazza del Municipio (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Municipio" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
+    "Piazza Municipio" Napoli haswbstatement:P6216=Q19652: 13 trovate, 0 buone
+    "Piazza Municipio" Napoli filetype:bitmap: 50 trovate, 0 buone
+Piazza Municipio ['File:Palazzo in piazza del Municipio 4 - Napoli.jpg']
+    incategory:"Piazza Vanvitelli (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Vanvitelli (Naples)" haswbstatement:P6216=Q19652: 2 trovate, 0 buone
+    "Piazza Vanvitelli" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Vanvitelli" Napoli haswbstatement:P6216=Q19652: 2 trovate, 0 buone
+    "Piazza Vanvitelli" Napoli filetype:bitmap: 10 trovate, 0 buone
+Piazza Vanvitelli []
+    incategory:"Piazza dei Martiri (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza dei Martiri (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza dei Martiri" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
+    "Piazza dei Martiri" Napoli haswbstatement:P6216=Q19652: 4 trovate, 0 buone
+    "Piazza dei Martiri" Napoli filetype:bitmap: 48 trovate, 0 buone
+Piazza dei Martiri []
+    incategory:"Piazza Trieste e Trento (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Trieste e Trento (Naples)" haswbstatement:P6216=Q19652: 1 trovate, 0 buone
+    "Piazza Trieste e Trento" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
+    "Piazza Trieste e Trento" Napoli haswbstatement:P6216=Q19652: 4 trovate, 0 buone
+    "Piazza Trieste e Trento" Napoli filetype:bitmap: 50 trovate, 0 buone
+Piazza Trieste e Trento []
+    incategory:"Piazza Sannazaro (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Sannazaro (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Sannazaro" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Sannazaro" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Sannazaro" Napoli filetype:bitmap: 8 trovate, 0 buone
+Piazza Sannazaro []
+    incategory:"Piazza Amedeo (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Amedeo (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Amedeo" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Amedeo" Napoli haswbstatement:P6216=Q19652: 1 trovate, 0 buone
+    "Piazza Amedeo" Napoli filetype:bitmap: 30 trovate, 1 buone
+Piazza Amedeo ['File:Piazza Amedeo 100 2776.JPG']
+    incategory:"Piazza Vittoria (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Vittoria (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Vittoria" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
+    "Piazza Vittoria" Napoli haswbstatement:P6216=Q19652: 24 trovate, 0 buone
+    "Piazza Vittoria" Napoli filetype:bitmap: 50 trovate, 0 buone
+Piazza Vittoria []
+    "Piazza Museo" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Museo" Napoli haswbstatement:P6216=Q19652: 1 trovate, 0 buone
+    "Piazza Museo" Napoli filetype:bitmap: 10 trovate, 0 buone
+Piazza Museo []
+    "Piazza Sanità" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Sanità" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Sanità" Napoli filetype:bitmap: 0 trovate, 0 buone
+Piazza Sanità []
+    "Piazza Montesanto" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Montesanto" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Montesanto" Napoli filetype:bitmap: 6 trovate, 0 buone
+Piazza Montesanto []
+    "Piazza Leonardo" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Leonardo" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Leonardo" Napoli filetype:bitmap: 1 trovate, 0 buone
+Piazza Leonardo []
+    "Piazza degli Artisti" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
+    "Piazza degli Artisti" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza degli Artisti" Napoli filetype:bitmap: 4 trovate, 0 buone
+Piazza degli Artisti []
+    "Piazza Immacolata" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Immacolata" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Immacolata" Napoli filetype:bitmap: 0 trovate, 0 buone
+Piazza Immacolata []
+    incategory:"Piazza San Gaetano (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza San Gaetano (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza San Gaetano" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza San Gaetano" Napoli haswbstatement:P6216=Q19652: 1 trovate, 0 buone
+    "Piazza San Gaetano" Napoli filetype:bitmap: 34 trovate, 0 buone
+Piazza San Gaetano []
+    incategory:"Piazza Nicola Amore (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Nicola Amore (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Nicola Amore" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Nicola Amore" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Nicola Amore" Napoli filetype:bitmap: 26 trovate, 0 buone
+Piazza Nicola Amore []
+    incategory:"Piazza Carlo III (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Carlo III (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Carlo III" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Carlo III" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Carlo III" Napoli filetype:bitmap: 12 trovate, 0 buone
+Piazza Carlo III []
+    incategory:"Piazza Giovanni Bovio (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    incategory:"Piazza Giovanni Bovio (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Bovio" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
+    "Piazza Bovio" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
+    "Piazza Bovio" Napoli filetype:bitmap: 10 trovate, 0 buone
+Piazza Bovio []
+fatto claude/piazze-candidate
