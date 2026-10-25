@@ -591,14 +591,6 @@
     "file": "voci/2026-W44/m03.mp3"
    },
    {
-    "testo": "B: Sveglia per le strisce blu.",
-    "file": "voci/2026-W44/m04.mp3"
-   },
-   {
-    "testo": "C: Turni di casa.",
-    "file": "voci/2026-W44/m05.mp3"
-   },
-   {
     "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
     "file": "voci/2026-W44/m08.mp3"
    },
@@ -623,16 +615,8 @@
     "file": "voci/2026-W44/m13.mp3"
    },
    {
-    "testo": "Mamma mia, quel formaggio era scaduto da una settimana!",
-    "file": "voci/2026-W44/m14.mp3"
-   },
-   {
     "testo": "Uè guagliù, a me succede sempre!",
     "file": "voci/2026-W44/m15.mp3"
-   },
-   {
-    "testo": "E il parcheggio a strisce blu: quante multe per cinque minuti?",
-    "file": "voci/2026-W44/m16.mp3"
    },
    {
     "testo": "E a casa: chi ha lavato i piatti ieri?",
@@ -647,10 +631,6 @@
     "file": "voci/2026-W44/m19.mp3"
    },
    {
-    "testo": "E chi non ha votato: A, B o C, fino a domani sera!",
-    "file": "voci/2026-W44/m20.mp3"
-   },
-   {
     "testo": "Stasera chiudo le urne: manca poco!",
     "file": "voci/2026-W44/m21.mp3"
    },
@@ -659,24 +639,12 @@
     "file": "voci/2026-W44/m22.mp3"
    },
    {
-    "testo": "Una lettera nei commenti e avete deciso.",
-    "file": "voci/2026-W44/m23.mp3"
-   },
-   {
     "testo": "Domani vi dico chi ha vinto!",
     "file": "voci/2026-W44/m24.mp3"
    },
    {
     "testo": "Ha vinto la A: il frigo non vi frega più!",
     "file": "voci/2026-W44/m25.mp3"
-   },
-   {
-    "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
-    "file": "voci/2026-W44/m26.mp3"
-   },
-   {
-    "testo": "Ha vinto la A: Cosa scade nel frigo.",
-    "file": "voci/2026-W44/m27.mp3"
    },
    {
     "testo": "Segnate cosa mettete in frigo e vi dico quando scade.",
@@ -689,10 +657,6 @@
    {
     "testo": "Venerdì è sul banco, gratis per tutti.",
     "file": "voci/2026-W44/m30.mp3"
-   },
-   {
-    "testo": "Cosa vi si butta sempre? Ditemelo nei commenti!",
-    "file": "voci/2026-W44/m31.mp3"
    },
    {
     "testo": "Ha vinto la B: le strisce blu non vi fregano più!",
@@ -727,20 +691,8 @@
     "file": "voci/2026-W44/m39.mp3"
    },
    {
-    "testo": "Zero voti: questa volta niente app.",
-    "file": "voci/2026-W44/m40.mp3"
-   },
-   {
     "testo": "Uè guagliù, ho letto tutti i commenti.",
     "file": "voci/2026-W44/m41.mp3"
-   },
-   {
-    "testo": "Ma nessuno ha scritto A, B o C.",
-    "file": "voci/2026-W44/m42.mp3"
-   },
-   {
-    "testo": "Mi dispiace: venerdì niente regalo.",
-    "file": "voci/2026-W44/m43.mp3"
    },
    {
     "testo": "Domenica torno con tre idee nuove.",
@@ -751,10 +703,6 @@
     "file": "voci/2026-W44/m45.mp3"
    },
    {
-    "testo": "È venerdì: il frigo adesso parla da solo!",
-    "file": "voci/2026-W44/m46.mp3"
-   },
-   {
     "testo": "Uè guagliù, il regalo è sul banco.",
     "file": "voci/2026-W44/m47.mp3"
    },
@@ -763,24 +711,12 @@
     "file": "voci/2026-W44/m48.mp3"
    },
    {
-    "testo": "Segnate cosa mettete in frigo e quando scade.",
-    "file": "voci/2026-W44/m49.mp3"
-   },
-   {
     "testo": "Vi dico io cosa mangiare per primo.",
     "file": "voci/2026-W44/m50.mp3"
    },
    {
-    "testo": "Gratis, senza registrazione: link nel profilo.",
-    "file": "voci/2026-W44/m51.mp3"
-   },
-   {
     "testo": "Mandatela a chi butta sempre il latte!",
     "file": "voci/2026-W44/m52.mp3"
-   },
-   {
-    "testo": "È venerdì: le strisce blu non vi fregano più!",
-    "file": "voci/2026-W44/m53.mp3"
    },
    {
     "testo": "Ecco Sveglia per le strisce blu.",
@@ -795,16 +731,8 @@
     "file": "voci/2026-W44/m56.mp3"
    },
    {
-    "testo": "Mandatela a chi prende sempre la multa!",
-    "file": "voci/2026-W44/m57.mp3"
-   },
-   {
     "testo": "È venerdì: a casa si sa a chi tocca!",
     "file": "voci/2026-W44/m58.mp3"
-   },
-   {
-    "testo": "Ecco Turni di casa.",
-    "file": "voci/2026-W44/m59.mp3"
    },
    {
     "testo": "Scrivete i lavori di casa e chi li fa.",
@@ -823,28 +751,100 @@
     "file": "voci/2026-W44/m63.mp3"
    },
    {
-    "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
-    "file": "voci/2026-W44/m64.mp3"
-   },
-   {
-    "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
-    "file": "voci/2026-W44/m65.mp3"
-   },
-   {
     "testo": "Saluto Piazza Bellini: grazie per questa settimana!",
     "file": "voci/2026-W44/m66.mp3"
-   },
-   {
-    "testo": "Dove vado domani? Non ve lo dico ancora.",
-    "file": "voci/2026-W44/m67.mp3"
    },
    {
     "testo": "Domani piazza nuova e tre idee nuove da votare.",
     "file": "voci/2026-W44/m68.mp3"
    },
    {
+    "testo": "B: Sveglia per le strisce blu.",
+    "file": "voci/2026-W44/m70.mp3"
+   },
+   {
+    "testo": "C: Turni di casa.",
+    "file": "voci/2026-W44/m71.mp3"
+   },
+   {
+    "testo": "Mamma mia, quel formaggio era scaduto da una settimana!",
+    "file": "voci/2026-W44/m72.mp3"
+   },
+   {
+    "testo": "E il parcheggio a strisce blu: quante multe per cinque minuti?",
+    "file": "voci/2026-W44/m73.mp3"
+   },
+   {
+    "testo": "E chi non ha votato: A, B o C, fino a domani sera!",
+    "file": "voci/2026-W44/m74.mp3"
+   },
+   {
+    "testo": "Una lettera nei commenti e avete deciso.",
+    "file": "voci/2026-W44/m75.mp3"
+   },
+   {
+    "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
+    "file": "voci/2026-W44/m76.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: Cosa scade nel frigo.",
+    "file": "voci/2026-W44/m77.mp3"
+   },
+   {
+    "testo": "Cosa vi si butta sempre? Ditemelo nei commenti!",
+    "file": "voci/2026-W44/m78.mp3"
+   },
+   {
+    "testo": "Zero voti: questa volta niente app.",
+    "file": "voci/2026-W44/m79.mp3"
+   },
+   {
+    "testo": "Ma nessuno ha scritto A, B o C.",
+    "file": "voci/2026-W44/m80.mp3"
+   },
+   {
+    "testo": "Mi dispiace: venerdì niente regalo.",
+    "file": "voci/2026-W44/m81.mp3"
+   },
+   {
+    "testo": "È venerdì: il frigo adesso parla da solo!",
+    "file": "voci/2026-W44/m82.mp3"
+   },
+   {
+    "testo": "Segnate cosa mettete in frigo e quando scade.",
+    "file": "voci/2026-W44/m83.mp3"
+   },
+   {
+    "testo": "Gratis, senza registrazione: link nel profilo.",
+    "file": "voci/2026-W44/m84.mp3"
+   },
+   {
+    "testo": "È venerdì: le strisce blu non vi fregano più!",
+    "file": "voci/2026-W44/m85.mp3"
+   },
+   {
+    "testo": "Mandatela a chi prende sempre la multa!",
+    "file": "voci/2026-W44/m86.mp3"
+   },
+   {
+    "testo": "Ecco Turni di casa.",
+    "file": "voci/2026-W44/m87.mp3"
+   },
+   {
+    "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
+    "file": "voci/2026-W44/m88.mp3"
+   },
+   {
+    "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
+    "file": "voci/2026-W44/m89.mp3"
+   },
+   {
+    "testo": "Dove vado domani? Non ve lo dico ancora.",
+    "file": "voci/2026-W44/m90.mp3"
+   },
+   {
     "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
-    "file": "voci/2026-W44/m69.mp3"
+    "file": "voci/2026-W44/m91.mp3"
    }
   ],
   "2026-W45": [

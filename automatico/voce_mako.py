@@ -4,6 +4,7 @@
     python3 automatico/voce_mako.py settimana claude/settimana-2026-W44.json  # le battute della settimana -> claude/voci/prove/2026-W44/
     python3 automatico/voce_mako.py settimana claude/settimana-2026-W44.json --solo piazza-nuova    # solo le battute di quella puntata
     python3 automatico/voce_mako.py installa 2026-W44 [--parziale]            # le battute preparate vanno in libreria/voci (le usa Spinta)
+    python3 automatico/voce_mako.py sistema 2026-W44                          # ripulisce le battute già preparate (rumorini, pause lunghe)
     python3 automatico/voce_mako.py prova                                     # prove: sabato W43 e domenica W46 -> claude/voci/prove/
 
 Come lavora (tutto gratis; gira su GitHub, perché il modello si scarica da Hugging Face):
@@ -14,7 +15,8 @@ Come lavora (tutto gratis; gira su GitHub, perché il modello si scarica da Hugg
      e ERes2Net di 3D-Speaker, Apache-2.0) misurano quanto somiglia alla Mako vera; si tiene la migliore;
   3. TUTTE le frasi con la copia, anche quelle che Mako aveva già detto: una voce sola (Sam, 25 ottobre: «il mix vecchio nuovo
      non mi piace»); con SPINTA_ORIGINALI=si quelle frasi si prenderebbero invece dagli originali W42-W43;
-  4. lo stesso effetto robot delle W43 (voci.EFFETTO), MP3 24 kHz mono 64k.
+  4. lo stesso effetto robot delle W43 (voci.EFFETTO), poi ripulisci(): via i rumorini dopo la fine della frase e pause interne
+     al massimo 0,35 s (sennò in Spinta tra una frase e l'altra resta una pausa lunga); MP3 24 kHz mono 64k.
 Vivacità e cfg: SPINTA_VIVACITA e SPINTA_CFG (0,6 e 0,5 = «vivace»; 0,85 e 0,35 = «molto vivace»).
 Pacchetti: torch==2.6.0 torchaudio==2.6.0 (CPU) chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
 """
@@ -59,10 +61,70 @@ def taglia(y, sr):
     return y[max(0, idx[0] - int(0.04 * sr)):min(len(y), idx[-1] + int(0.12 * sr))] if len(idx) else y
 
 
-def salva_mp3(y, sr, dest):
-    w = scrivi_wav(y, sr)
-    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', w, '-af', V.EFFETTO, '-ar', str(SR_OUT), '-ac', '1', '-c:a', 'libmp3lame', '-b:a', '64k', dest], check=True)
+def ripulisci(y, sr, soglia=0.02, pausa_max=0.35, coda_max=0.3, stacco=0.3, parola_vera=None):
+    """Sistema la frase già con l'effetto (livello finale): via i rumorini staccati dopo la fine (o prima dell'inizio), che non
+    lasciano a Spinta tagliare il silenzio e fanno sentire una pausa lunga tra una frase e l'altra (Sam, 25 ottobre: «tra la B e la C
+    ci sta una pausa»), e nessuna pausa dentro la frase più lunga di pausa_max secondi. soglia = la stessa di crTrim in crea.js.
+    Un pezzo staccato più lungo (fino a 0,6 s) si toglie solo se parola_vera(audio del pezzo, 'fine'|'inizio') dice che non è
+    una parola della frase (Whisper); senza parola_vera solo dopo un buco di almeno 0,6 s e se dura meno di 0,5 s."""
+    fr = int(sr * 0.01); n = len(y) // fr
+    if n < 3: return y
+    voce = np.abs(y[:n * fr]).reshape(n, fr).max(1) > soglia
+    pezzi, s0, zitto = [], None, 0
+    for i in range(n):
+        if voce[i]:
+            if s0 is None: s0 = i
+            zitto = 0
+        elif s0 is not None:
+            zitto += 1
+            if zitto >= 15: pezzi.append([s0, i - zitto + 1]); s0, zitto = None, 0
+    if s0 is not None: pezzi.append([s0, n - zitto])
+    if not pezzi: return y
+    dur = lambda p: (p[1] - p[0]) * 0.01
+    def staccato(corto, buco, dove):
+        if buco < stacco: return False
+        if dur(corto) < coda_max: return True
+        if dur(corto) >= 0.6: return False
+        if parola_vera is not None: return not parola_vera(y[corto[0] * fr:corto[1] * fr], dove)
+        return dur(corto) < 0.5 and buco >= 0.6
+    buco = lambda i: (pezzi[i + 1][0] - pezzi[i][1]) * 0.01          # silenzio tra il pezzo i e il pezzo i+1
+    while len(pezzi) > 1:       # alla fine: il gruppetto dopo l'ultimo buco grande (anche fatto di più rumorini vicini)
+        k = next((i for i in range(len(pezzi) - 2, -1, -1) if buco(i) >= stacco), None)
+        if k is None or not staccato([pezzi[k + 1][0], pezzi[-1][1]], buco(k), 'fine'): break
+        pezzi = pezzi[:k + 1]
+    while len(pezzi) > 1:       # all'inizio, lo stesso
+        k = next((i for i in range(len(pezzi) - 1) if buco(i) >= stacco), None)
+        if k is None or not staccato([pezzi[0][0], pezzi[k][1]], buco(k), 'inizio'): break
+        pezzi = pezzi[k + 1:]
+    meta = int(pausa_max * sr / 2); parti = []; da = max(0, pezzi[0][0] * fr - int(0.04 * sr))
+    for k in range(len(pezzi) - 1):
+        fine, dopo = pezzi[k][1] * fr, pezzi[k + 1][0] * fr
+        if dopo - fine > pausa_max * sr: parti.append(y[da:fine + meta]); da = dopo - meta
+    parti.append(y[da:min(len(y), pezzi[-1][1] * fr + int(0.12 * sr))])
+    out = parti[0]
+    for q in parti[1:]:          # giunte nel silenzio, con una dissolvenza di 5 ms per non sentire scatti
+        f = min(int(0.005 * sr), len(out), len(q))
+        out = np.concatenate([out[:len(out) - f], out[len(out) - f:] * np.linspace(1, 0, f) + q[:f] * np.linspace(0, 1, f), q[f:]]) if f else np.concatenate([out, q])
+    return out.astype(np.float32)
+
+
+def effetto(y, sr):
+    """L'effetto robot delle W43 (voci.EFFETTO, con la normalizzazione del volume): ritorna l'audio a 24 kHz."""
+    import soundfile as sf
+    w, o = scrivi_wav(y, sr), tempfile.mktemp(suffix='.wav')
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', w, '-af', V.EFFETTO, '-ar', str(SR_OUT), '-ac', '1', o], check=True)
+    z, _ = sf.read(o, dtype='float32'); os.remove(w); os.remove(o)
+    return z
+
+
+def codifica(z, dest, kbps=64):
+    w = scrivi_wav(z, SR_OUT)
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', w, '-ar', str(SR_OUT), '-ac', '1', '-c:a', 'libmp3lame', '-b:a', f'{kbps}k', dest], check=True)
     os.remove(w)
+
+
+def salva_mp3(y, sr, dest, parola_vera=None):
+    codifica(ripulisci(effetto(y, sr), SR_OUT, parola_vera=parola_vera), dest)
 
 
 def unisci(files, dest, pausa=0.45):
@@ -119,6 +181,15 @@ class Giudice:
         s = self.asr.create_stream(); s.accept_waveform(SR, x); self.asr.decode_stream(s)
         return s.result.text.strip()
 
+    def parola_vera(self, testo):
+        """Per ripulisci(): il pezzetto staccato alla fine (o all'inizio) è una delle ultime (prime) parole della frase?"""
+        w = V.parole(V.da_leggere(testo))
+        def f(z, dove):
+            x = np.interp(np.arange(0, len(z), SR_OUT / SR), np.arange(len(z)), z).astype(np.float32)     # 24 -> 16 kHz
+            sentite = set(V.parole(self.ascolta(x)))
+            return bool(sentite & set(w[-2:] if dove == 'fine' else w[:2]))
+        return f
+
     def somiglia(self, x):
         return float(np.mean([self.impronta(k, x) @ self.mako[k] for k in self.ex]))
 
@@ -170,7 +241,7 @@ class Clona:
 def versione(c, g, testo, cartella, seme=0):
     """Una versione della frase, già con l'effetto robot: (file mp3, capito, somiglia, sentito, secondi)."""
     t0 = time.time(); y, sr = c.battuta(testo, seme)
-    f = os.path.join(cartella, f'{V.vkey(testo)[:40].replace(" ", "-")}-{seme}.mp3'); salva_mp3(y, sr, f)
+    f = os.path.join(cartella, f'{V.vkey(testo)[:40].replace(" ", "-")}-{seme}.mp3'); salva_mp3(y, sr, f, g.parola_vera(testo))
     capito, som, h = g.voto(carica(f), testo)
     return f, capito, som, h, round(time.time() - t0)
 
@@ -257,7 +328,7 @@ def settimana(piano_path, solo=(), k=2):
             print(nome, '|', testo, flush=True)
             f, capito, som, h, seme = migliore(c, g, testo, tmp, k)
             shutil.copy(f, os.path.join(dest, nome))
-            b = {'file': nome, 'testo': testo, 'fonte': 'copia', 'capito': round(capito, 2), 'somiglia': round(som, 3), 'sentito': h, 'seme': seme}
+            b = {'file': nome, 'testo': testo, 'fonte': 'copia', 'capito': round(capito, 2), 'somiglia': round(som, 3), 'sentito': h, 'seme': seme, 'ripulita': True}
         stato['battute'].append(b)
         json.dump(stato, open(sp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)     # salvato dopo ogni frase
     copie = [b for b in stato['battute'] if b['fonte'] == 'copia']
@@ -298,6 +369,35 @@ def installa(sett, parziale=False):
     return True
 
 
+def sistema(sett):
+    """Ripulisce le battute già preparate di una settimana (rumorini dopo la fine, pause troppo lunghe) senza rifarle:
+    le battute cambiate prendono un nome nuovo (così nessun telefono tiene la versione vecchia); se Whisper capisce meno di prima,
+    resta quella di prima. Poi «installa»."""
+    import soundfile as sf
+    da = os.path.join(PROVE, sett); sp = os.path.join(da, 'voci.json'); stato = json.load(open(sp, encoding='utf-8'))
+    numero = lambda f: int(m.group(1)) if (m := re.match(r'm(\d+)\.mp3$', os.path.basename(f))) else 0
+    gia = os.listdir(os.path.join(LIB, sett)) if os.path.isdir(os.path.join(LIB, sett)) else []
+    n = max([numero(b['file']) for b in stato['battute']] + [numero(f) for f in gia] + [stato.get('ultimo', 0)]) + 1
+    g = Giudice(); cambiate = 0
+    for b in stato['battute']:
+        if b.get('ripulita'): continue
+        f = os.path.join(da, b['file'])
+        out = subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-ac', '1', '-ar', str(SR_OUT), '-f', 'f32le', '-'], capture_output=True, check=True).stdout
+        z = np.frombuffer(out, np.float32).copy(); r = ripulisci(z, SR_OUT, parola_vera=g.parola_vera(b['testo']))
+        if len(z) - len(r) < int(0.05 * SR_OUT): continue
+        nuovo = f'm{n:02d}.mp3'; tmp = tempfile.mktemp(suffix='.mp3'); codifica(r, tmp, kbps=96)
+        prima = V.somiglianza(b['testo'], g.ascolta(carica(f))); capito, som, h = g.voto(carica(tmp), b['testo'])
+        if capito < prima - 0.25:      # Whisper cambia idea anche per niente (±0,15): si scarta solo se capisce molto meno
+            print(f'{sett} {b["file"]} lasciata com\'era (capito {prima:.2f} -> {capito:.2f}) | {b["testo"]}', flush=True); os.remove(tmp); continue
+        shutil.move(tmp, os.path.join(da, nuovo)); os.remove(f)
+        print(f'{sett} {b["file"]} -> {nuovo}: {len(z) / SR_OUT:.2f}s -> {len(r) / SR_OUT:.2f}s, capito {prima:.2f} -> {capito:.2f} | {b["testo"]}', flush=True)
+        b.update(file=nuovo, capito=round(capito, 2), somiglia=round(som, 3), sentito=h, ripulita=True); stato['ultimo'] = n; n += 1; cambiate += 1
+        json.dump(stato, open(sp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    json.dump(stato, open(sp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    print(sett, 'battute ripulite:', cambiate, flush=True)
+    return cambiate
+
+
 def prova():
     """Il sabato W43 (stesse frasi del video di Sam) e la domenica W46, nelle due vivacità, per sentirle."""
     os.makedirs(PROVE, exist_ok=True)
@@ -322,5 +422,7 @@ if __name__ == '__main__':
     elif a[:1] == ['installa'] and len(a) > 1:
         esiti = [installa(s, parziale='--parziale' in a) for s in a[1:] if not s.startswith('--')]
         if not all(esiti): sys.exit(1)       # una settimana non installata: chi chiama (settimana.py) usa la voce di riserva
+    elif a[:1] == ['sistema'] and len(a) > 1:
+        for s in a[1:]: sistema(s)
     elif a[:1] == ['prova']: prova()
     else: raise SystemExit(__doc__)
