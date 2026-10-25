@@ -33,7 +33,7 @@ permissions:
   contents: write
   pages: write
 concurrency:
-  group: spinta-voce
+  group: spinta-voce-${{ github.event.inputs.settimane }}     # settimane diverse possono girare insieme
   cancel-in-progress: false
 env:
   SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
