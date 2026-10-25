@@ -49,6 +49,55 @@
    ],
    "conteggio": "",
    "vince": ""
+  },
+  {
+   "settimana": "2026-W45",
+   "dal": "2026-11-01T00:00:00+01:00",
+   "chiude": "2026-11-04T23:59:00+01:00",
+   "uscita": "2026-11-06T19:00:00+01:00",
+   "piazza": "Piazza Carità",
+   "regali": {
+    "A": {
+     "id": "piante-acqua",
+     "nome": "Innaffia le piante",
+     "emoji": "🪴",
+     "descrizione": "Per ogni pianta segni ogni quanti giorni vuole l'acqua: ogni giorno ti dico quale innaffiare, e il promemoria va nel calendario del telefono. Funziona anche senza internet.",
+     "link": "../Spinta/regali/2026-W45/piante-acqua/"
+    },
+    "B": {
+     "id": "segnapunti-scopa",
+     "nome": "Segnapunti della scopa",
+     "emoji": "🃏",
+     "descrizione": "Il segnapunti per scopa, tressette e briscola: tocchi i punti di ogni mano, si vede chi arriva prima e si tengono le partite vinte. Funziona anche senza internet.",
+     "link": "../Spinta/regali/2026-W45/segnapunti-scopa/"
+    },
+    "C": {
+     "id": "chi-scende",
+     "nome": "Chi scende la munnezza",
+     "emoji": "🎲",
+     "descrizione": "Scrivi i nomi, giri e la sorte sceglie chi scende la spazzatura, chi lava i piatti o dove si mangia stasera. Senza ripetere finché non sono usciti tutti.",
+     "link": "../Spinta/regali/2026-W45/chi-scende/"
+    }
+   },
+   "opzioni": [
+    {
+     "lettera": "A",
+     "idea": "Innaffia le piante",
+     "voti": 0
+    },
+    {
+     "lettera": "B",
+     "idea": "Segnapunti della scopa",
+     "voti": 0
+    },
+    {
+     "lettera": "C",
+     "idea": "Chi scende la munnezza",
+     "voti": 0
+    }
+   ],
+   "conteggio": "",
+   "vince": ""
   }
  ]
 }

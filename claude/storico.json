@@ -106,6 +106,37 @@
     "mercoledì: ultime ore per votare",
     "sabato: smontaggio della bancarella"
    ]
+  },
+  {
+   "settimana": "2026-W45",
+   "idee": {
+    "A": "Innaffia le piante",
+    "B": "Segnapunti della scopa",
+    "C": "Chi scende la munnezza"
+   },
+   "piazza": "Piazza Carità",
+   "fatto_da": "automatico/settimana.py",
+   "hook": [
+    "Piazza nuova, tre idee nuove: quale costruisco?",
+    "Piante secche, i conti a carte o chi scende: chi vi frega di più?",
+    "Mamma mia, il basilico sul balcone è tutto secco!",
+    "Stasera chiudo le urne: manca poco!",
+    "Ha vinto la A: le piante non si seccano più!",
+    "Ha vinto la B: a carte non si litiga più!",
+    "Ha vinto la C: decide la sorte, non si litiga più!",
+    "Zero voti: questa volta niente app.",
+    "È venerdì: le piante bevono al momento giusto!",
+    "È venerdì: a carte i punti li segno io!",
+    "È venerdì: decide la ruota!",
+    "Sabato si smonta: domani cambio piazza!"
+   ],
+   "parti": [
+    "domenica: Piazza nuova, tre idee nuove",
+    "lunedì: Avete già votato?",
+    "martedì: Cosa vi frega ogni giorno?",
+    "mercoledì: Ultime ore per votare",
+    "sabato: Si smonta la bancarella"
+   ]
   }
  ]
 }

@@ -1,0 +1,42 @@
+settimana 2026-W45 dal 2026-11-01
+idee: ['Innaffia le piante', 'Segnapunti della scopa', 'Chi scende la munnezza']
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W45 Piante:🪴 Scopa:🃏 Sorte:🎲
+{"piazza": "Piazza Carità", "file": "piazza-2026-W45.mp4", "poster": "piazza-2026-W45.jpg", "foto": "File:Napoli - Piazza Carità.jpg", "licenza": "Public domain", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_-_Piazza_Carit%C3%A0.jpg"}
+ 
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
+avviso: 42 frasi senza voce nuova (useranno Piper), es. «Uè guagliù, il bancariello si è spostato in Piazza Carità!»
+ok: 2026-W45 · 12 puntate
+ 
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/voci.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
+te non si litiga più! | Ha vinto la B, a carte non si litiga più.
+14.mp3 2.26s capito 0.77 sara1.02k4 (14s) | Ha vinto la B: Segnapunti della scopa. | Ha vinto la bissegnaponti della scopa.
+15.mp3 2.86s capito 1.00 sara1.02k4 (4s) | Toccate i punti di ogni mano e vi dico chi vince. | Toccate i punti di ogni mano e vi dico chi vince!
+16.mp3 4.01s capito 0.67 sara1.02k4 (22s) | Scopa, briscola o tressette: voi a cosa giocate? Ditemelo nei commenti! | Scopa brisco la O3-7. Voi a cosa giocate e ditemelo nei commenti.
+17.mp3 2.68s capito 1.00 paola1.1k4 (16s) | Ha vinto la C: decide la sorte, non si litiga più! | Ha vinto la C, decide la sorte, non si litiga più.
+18.mp3 2.20s capito 1.00 sara1.02k4 (3s) | Ha vinto la C: Chi scende la munnezza. | Ha vinto la C chi scende la munnezza
+19.mp3 2.76s capito 1.00 sara1.02k4 (4s) | Scrivete i nomi e la ruota decide chi tocca. | Scrivete i nomi e la ruota decide chi tocca.
+20.mp3 3.02s capito 1.00 sara1.02k4 (4s) | A casa vostra chi scende sempre? Ditemelo nei commenti! | A casa vostra chi scende sempre, ditemelo nei commenti.
+21.mp3 2.75s capito 1.00 sara1.02k8 (11s) | È venerdì: le piante bevono al momento giusto! | e venerdì le piante bevono al momento giusto.
+22.mp3 1.66s capito 1.00 sara1.02k4 (3s) | Ecco Innaffia le piante. | Ecco innaffia le piante.
+23.mp3 3.11s capito 1.00 sara1.02k4 (4s) | Per ogni pianta dite ogni quanti giorni vuole l'acqua. | Per ogni pianta dite ogni quanti giorni vuole l'acqua.
+24.mp3 2.27s capito 1.00 sara1.02k4 (3s) | Vi dico io quale innaffiare oggi. | Vi dico io quale innaffiare oggi.
+25.mp3 2.95s capito 0.90 sara0.95k4 (16s) | Mandatela a chi ha il balcone pieno di piante secche! | Mandatela a chi è il balcone pieno di piante secche.
+26.mp3 2.44s capito 1.00 sara1.02k8 (10s) | È venerdì: a carte i punti li segno io! | e venerdì a carte i punti li segno io.
+27.mp3 1.92s capito 0.67 sara1.02k4 (12s) | Ecco Segnapunti della scopa. | Ecco segna punti della scopa.
+28.mp3 1.87s capito 1.00 sara1.02k4 (3s) | Toccate i punti di ogni mano. | Toccate i punti di ogni mano.
+29.mp3 1.90s capito 0.83 sara0.95k4 (11s) | Vi dico io chi arriva prima. | Vi dico io che arriva prima.
+30.mp3 2.31s capito 0.71 sara1.02k8 (13s) | Mandatela a chi imbroglia sempre a carte! | Mandatela a Kim Broglia sempre a carte.
+31.mp3 1.90s capito 1.00 sara1.02k4 (2s) | È venerdì: decide la ruota! | e venerdì decide la ruota
+32.mp3 1.74s capito 1.00 sara1.02k4 (3s) | Ecco Chi scende la munnezza. | Ecco chi scende la munnezza.
+33.mp3 1.75s capito 1.00 sara1.02k4 (3s) | Scrivete i nomi di casa. | Scrivete i nomi di casa.
+34.mp3 2.28s capito 1.00 sara1.02k4 (3s) | Girate e la sorte sceglie chi tocca. | Girate e la sorte sceglie chi tocca.
+35.mp3 2.16s capito 1.00 sara1.02k4 (3s) | Mandatela a chi fa sempre il furbo! | Mandatela a chi fa sempre il furbo.
+36.mp3 3.03s capito 1.00 sara1.02k4 (4s) | Saluto Piazza Carità: grazie per questa settimana! | Saluto Piazza Carità, grazie per questa settimana.
+media capito 0.92
+ [0;93m2026-10-25 06:55:27.031573437 [W:onnxruntime:Default, device_discovery.cc:95 GetPciBusId] Skipping pci_bus_id for PCI path at "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/5620e0c7-8062-4dce-aeb7-520c7ef76171" because filename "5620e0c7-8062-4dce-aeb7-520c7ef76171" did not match expected pattern of [0-9a-f]+:[0-9a-f]+:[0-9a-f]+[.][0-9a-f]+[m
+
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
+voci: tutte le frasi hanno la voce nuova
+ok: 2026-W45 · 12 puntate
+ 
+fatto 2026-W45

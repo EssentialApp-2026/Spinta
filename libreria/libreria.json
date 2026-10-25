@@ -762,6 +762,13 @@
    "settimana": "2026-W44",
    "piazza": "Piazza Bellini",
    "descrizione": "Panoramica col drone che avanza in Piazza Bellini (palazzo rosso, palma, statua di Vincenzo Bellini e mura greche veri) fino a Gennarino che saluta dalla bancarella, con i telefoni delle idee W44 (Frigo, Blu, Casa) sul banco. Fatta da una foto di pubblico dominio di Wikimedia Commons («NapoliPiazzaBellini.jpg»): nessun credito da citare. Si usa solo come apertura della puntata della domenica (campo «apertura» nel piano della settimana)."
+  },
+  {
+   "file": "piazza-2026-W45.mp4",
+   "poster": "piazza-2026-W45.jpg",
+   "settimana": "2026-W45",
+   "piazza": "Piazza Carità",
+   "descrizione": "Volo in avanti su Piazza Carità (foto vera, Public domain: «Napoli - Piazza Carità.jpg», nessun credito da citare) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."
   }
  ]
 }
