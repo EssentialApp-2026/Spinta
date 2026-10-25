@@ -61,6 +61,59 @@
     "09-10"
    ],
    "nota": "Scritta dal modello AI il 25 ottobre 2026 e sistemata a mano da Claude (nome, battute, stagione). Le altre 5 idee di quel giro sono state tolte: doppioni o idee deboli."
+  },
+  {
+   "nome": "Lista della spesa al mercato",
+   "emoji": "🛒",
+   "telefono": "Spesa",
+   "problema": "dimenticare il parmigiano",
+   "storia": "Mamma mia, sono tornato a casa senza il pesce! Che disastro!",
+   "domandaE": "E la spesa al mercato: vi è mai capitato di dimenticare qualcosa?",
+   "vince": "al mercato non si dimentica più niente!",
+   "cosa": "Scrivete cosa serve e l'app vi ricorda a voce mentre fate la spesa.",
+   "domanda": "Cosa vi dimenticate sempre al mercato? Ditemelo nei commenti!",
+   "regalo": "la spesa è facile e veloce!",
+   "righe": [
+    "Scrivete i prodotti che vi servono.",
+    "L'app vi ricorda a voce mentre fate la spesa."
+   ],
+   "manda": "Mandatela a chi dimentica sempre il basilico!",
+   "descrizione": "Scrivete la lista della spesa e l'app vi ricorda a voce cosa comprare mentre siete al mercato: così non dimenticate più niente. Funziona anche senza internet.",
+   "id": "lista-della-spesa-al-mercato",
+   "fatto_da": "ai",
+   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
+   "voto_ai": 8.3,
+   "scritta": "2026-10-25",
+   "app": {
+    "nome": "Lista della spesa al mercato",
+    "breve": "Spesa",
+    "emoji": "🛒",
+    "tipo": "lista",
+    "slogan": "Al mercato non si dimentica più niente. Un regalo di Gennarino.",
+    "descrizione": "Scrivete la lista della spesa e l'app vi ricorda a voce cosa comprare mentre siete al mercato: così non dimenticate più niente. Funziona anche senza internet.",
+    "chiave": "lista-della-spesa-al-mercato-v1",
+    "opzioni": {
+     "esempi": [
+      "Pomodori",
+      "Melanzane",
+      "Zucchine",
+      "Pasta",
+      "Pane",
+      "Latte",
+      "Uova",
+      "Formaggio",
+      "Salumi",
+      "Frutta fresca",
+      "Pesce fresco",
+      "Carne macinata"
+     ],
+     "placeholder": "Cosa ti serve?",
+     "titoloLista": "La spesa al mercato",
+     "presi": "Spuntati dalla lista",
+     "togli": "Sclear le spuntate"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
   }
  ]
 }

@@ -1,773 +1,153 @@
 modello lmstudio-community/gemma-3-12b-it-GGUF gemma-3-12b-it-Q4_K_M.gguf
-niente programma pronto, compilo llama.cpp: list index out of range
--- The C compiler identification is GNU 13.3.0
--- The CXX compiler identification is GNU 13.3.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- llama.cpp version: 0.7.0-dev
-CMAKE_BUILD_TYPE=Release
--- Found Git: /usr/bin/git (found version "2.55.0")
--- The ASM compiler identification is GNU
--- Found assembler: /usr/bin/cc
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE
--- Warning: ccache not found - consider installing it for faster compilation or disable this warning with GGML_CCACHE=OFF
--- CMAKE_SYSTEM_PROCESSOR: x86_64
--- GGML_SYSTEM_ARCH: x86
--- Found OpenMP_C: -fopenmp (found version "4.5")
--- Found OpenMP_CXX: -fopenmp (found version "4.5")
--- Found OpenMP: TRUE (found version "4.5")
--- Including CPU backend
--- x86 detected
--- Adding CPU backend variant ggml-cpu: -march=native 
--- ggml version: 0.27.0
--- ggml commit:  2280f0f
--- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")
--- Performing Test OPENSSL_VERSION_SUPPORTED
--- Performing Test OPENSSL_VERSION_SUPPORTED - Success
--- OpenSSL found: 3.0.13
--- Generating embedded license file for target: llama-app
--- Configuring done (1.1s)
--- Generating done (0.3s)
--- Build files have been written to: /home/runner/.cache/spinta-modelli/llama/src/build
-[  2%] Building CXX object vendor/hash/CMakeFiles/vendor-hash.dir/hash.cpp.o
-[  2%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml.c.o
-[  2%] Building CXX object vendor/cpp-httplib/CMakeFiles/cpp-httplib.dir/httplib.cpp.o
-[  2%] Building CXX object common/CMakeFiles/llama-common-base.dir/build-info.cpp.o
-[  2%] Building C object vendor/hash/CMakeFiles/vendor-hash.dir/xxhash/xxhash.c.o
-[  2%] Linking CXX static library libllama-common-base.a
-[  2%] Built target llama-common-base
-[  2%] Provisioning UI assets
--- UI: downloading from b1: https://huggingface.co/buckets/ggml-org/llama-ui/resolve/b1/dist.tar.gz
--- UI: download dist.tar.gz.sha256 from b1 failed: "HTTP response code said error"
--- UI: downloading from latest: https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/dist.tar.gz
-[  2%] Building CXX object vendor/hash/CMakeFiles/vendor-hash.dir/sha1/sha1.c.o
--- UI: archive verified and extracted
--- UI: HF download succeeded, stamp updated (ggml-org/llama-ui|b1, resolved: latest)
-[  2%] Building C object vendor/hash/CMakeFiles/vendor-hash.dir/sha256/sha256.c.o
-[  4%] Linking CXX static library libvendor-hash.a
-[  4%] Built target vendor-hash
-[  4%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml.cpp.o
--- UI: gzip compression applied (/home/runner/.cache/spinta-modelli/llama/src/build/tools/ui/ui-gzip/_gzip)
-[  4%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-alloc.c.o
-[  6%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend.cpp.o
-[  6%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend-meta.cpp.o
-[  6%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-opt.cpp.o
-[  6%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-threading.cpp.o
-[  6%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-quants.c.o
-[  8%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/gguf.cpp.o
--- UI: embedded 70 assets
-[  8%] Built target llama-ui-assets
-[  8%] Building CXX object tools/ui/CMakeFiles/llama-ui.dir/ui.cpp.o
-[  8%] Linking CXX static library libllama-ui.a
-[  8%] Built target llama-ui
-[  8%] Linking CXX shared library ../../bin/libggml-base.so
-[  8%] Built target ggml-base
-[  8%] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.c.o
-[  8%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.cpp.o
-[ 10%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/repack.cpp.o
-[ 10%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/hbm.cpp.o
-[ 10%] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/quants.c.o
-[ 10%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/traits.cpp.o
-[ 10%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/amx.cpp.o
-[ 12%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/mmq.cpp.o
-[ 12%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/tiled/tiled.cpp.o
-[ 12%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/tiled/tiled-kernel.cpp.o
-[ 12%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/binary-ops.cpp.o
-[ 14%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/unary-ops.cpp.o
-[ 14%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/vec.cpp.o
-[ 14%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ops.cpp.o
-[ 14%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/llamafile/sgemm.cpp.o
-[ 14%] Linking CXX static library libcpp-httplib.a
-[ 14%] Built target cpp-httplib
-[ 14%] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/arch/x86/quants.c.o
-[ 16%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/arch/x86/repack.cpp.o
-[ 16%] Linking CXX shared library ../../bin/libggml-cpu.so
-[ 16%] Built target ggml-cpu
-[ 16%] Building CXX object ggml/src/CMakeFiles/ggml.dir/ggml-backend-dl.cpp.o
-[ 16%] Building CXX object ggml/src/CMakeFiles/ggml.dir/ggml-backend-reg.cpp.o
-[ 18%] Linking CXX shared library ../../bin/libggml.so
-[ 18%] Built target ggml
-[ 20%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_10_cxx.cxx.o
-[ 20%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_9_cxx.cxx.o
-[ 20%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_8_cxx.cxx.o
-[ 20%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_7_cxx.cxx.o
-[ 20%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_6_cxx.cxx.o
-[ 22%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_5_cxx.cxx.o
-[ 22%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_4_cxx.cxx.o
-[ 22%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_3_cxx.cxx.o
-[ 22%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_2_cxx.cxx.o
-[ 24%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_1_cxx.cxx.o
-[ 24%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_0_cxx.cxx.o
-[ 24%] Building CXX object src/CMakeFiles/llama.dir/llama.cpp.o
-[ 24%] Building CXX object src/CMakeFiles/llama.dir/llama-adapter.cpp.o
-[ 24%] Building CXX object src/CMakeFiles/llama.dir/llama-arch.cpp.o
-[ 26%] Building CXX object src/CMakeFiles/llama.dir/llama-batch.cpp.o
-[ 26%] Building CXX object src/CMakeFiles/llama.dir/llama-chat.cpp.o
-[ 26%] Building CXX object src/CMakeFiles/llama.dir/llama-context.cpp.o
-[ 26%] Building CXX object src/CMakeFiles/llama.dir/llama-cparams.cpp.o
-[ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-grammar.cpp.o
-[ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-graph.cpp.o
-[ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-hparams.cpp.o
-[ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-impl.cpp.o
-[ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-io.cpp.o
-[ 30%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache.cpp.o
-[ 30%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-iswa.cpp.o
-[ 30%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsa.cpp.o
-[ 30%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsa-iswa.cpp.o
-[ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-msa.cpp.o
-[ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsv4.cpp.o
-[ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-memory.cpp.o
-[ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-moe-cache.cpp.o
-[ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid.cpp.o
-[ 34%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid-iswa.cpp.o
-[ 34%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid-idx.cpp.o
-[ 34%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-recurrent.cpp.o
-[ 34%] Building CXX object src/CMakeFiles/llama.dir/llama-mmap.cpp.o
-[ 36%] Building CXX object src/CMakeFiles/llama.dir/llama-model-loader.cpp.o
-[ 36%] Building CXX object src/CMakeFiles/llama.dir/llama-model-saver.cpp.o
-[ 36%] Building CXX object src/CMakeFiles/llama.dir/llama-model.cpp.o
-[ 36%] Building CXX object src/CMakeFiles/llama.dir/llama-quant.cpp.o
-[ 36%] Building CXX object src/CMakeFiles/llama.dir/llama-sampler.cpp.o
-[ 38%] Building CXX object src/CMakeFiles/llama.dir/llama-vocab.cpp.o
-[ 38%] Building CXX object src/CMakeFiles/llama.dir/unicode-data.cpp.o
-[ 38%] Building CXX object src/CMakeFiles/llama.dir/unicode.cpp.o
-[ 38%] Linking CXX shared library ../bin/libllama.so
-[ 38%] Built target llama
-[ 38%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/parsers.cpp.o
-[ 38%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd.cpp.o
-[ 38%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-audio.cpp.o
-[ 38%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/cohere2moe.cpp.o
-[ 38%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/deepseek.cpp.o
-[ 38%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-image.cpp.o
-[ 40%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper.cpp.o
-[ 42%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/functionary-v3-2.cpp.o
-[ 42%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper-gen.cpp.o
-[ 42%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/gemma4.cpp.o
-[ 42%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/clip.cpp.o
-[ 42%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/gigachat-v3.cpp.o
-[ 42%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/cogvlm.cpp.o
-[ 42%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/gpt-oss.cpp.o
-[ 44%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/harmony-xml.cpp.o
-[ 44%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/k2-horizon.cpp.o
-[ 44%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/kimi-k2.cpp.o
-[ 44%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/kimi-k3.cpp.o
-[ 46%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/conformer.cpp.o
-[ 46%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseek4v.cpp.o
-[ 46%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/dots3note.cpp.o
-[ 46%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/ling3.cpp.o
-[ 48%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/lfm2.cpp.o
-[ 48%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/llm-jp-harmony.cpp.o
-[ 48%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/dotsocr.cpp.o
-[ 48%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/exaone4_5.cpp.o
-[ 48%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/minicpm5.cpp.o
-[ 48%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/minimax-m3.cpp.o
-[ 51%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/ministral3.cpp.o
-[ 53%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4a.cpp.o
-[ 53%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4v.cpp.o
-[ 53%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4ua.cpp.o
-[ 53%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/muse-glimmer.cpp.o
-[ 53%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/muse-spark.cpp.o
-[ 53%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4uv.cpp.o
-[ 53%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/qwen3-coder.cpp.o
-[ 55%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/glm4v.cpp.o
-[ 55%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/granite-speech.cpp.o
-[ 55%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/granite4-vision.cpp.o
-[ 55%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/hunyuanvl.cpp.o
-[ 55%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/translate-gemma.cpp.o
-[ 55%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/internvl.cpp.o
-[ 57%] Building CXX object common/CMakeFiles/llama-common.dir/arg.cpp.o
-[ 57%] Building CXX object common/CMakeFiles/llama-common.dir/chat-auto-parser-generator.cpp.o
-[ 59%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/kimivl.cpp.o
-[ 59%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/kimik25.cpp.o
-[ 59%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/nemotron-v2-vl.cpp.o
-[ 59%] Building CXX object common/CMakeFiles/llama-common.dir/chat-auto-parser-helpers.cpp.o
-[ 59%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/nemotron-omni.cpp.o
-[ 61%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/muse-glimmer.cpp.o
-[ 61%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/muse-spark-audio.cpp.o
-[ 61%] Building CXX object common/CMakeFiles/llama-common.dir/chat-diff-analyzer.cpp.o
-[ 61%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/llama4.cpp.o
-[ 61%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/llava.cpp.o
-[ 63%] Building CXX object common/CMakeFiles/llama-common.dir/chat-peg-parser.cpp.o
-[ 63%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/minicpmv.cpp.o
-[ 65%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/paddleocr.cpp.o
-[ 65%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/pixtral.cpp.o
-[ 65%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen2vl.cpp.o
-[ 65%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/sensenova-u1.cpp.o
-[ 67%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/minimax-m3.cpp.o
-[ 67%] Building CXX object common/CMakeFiles/llama-common.dir/chat.cpp.o
-[ 67%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3vl.cpp.o
-[ 67%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/ling3vl.cpp.o
-[ 67%] Building CXX object common/CMakeFiles/llama-common.dir/common.cpp.o
-[ 67%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mimovl.cpp.o
-[ 67%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3a.cpp.o
-[ 69%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mimo-audio.cpp.o
-[ 69%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3tts-spkenc.cpp.o
-[ 69%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3tts-gen.cpp.o
-[ 69%] Building CXX object common/CMakeFiles/llama-common.dir/console.cpp.o
-[ 69%] Building CXX object common/CMakeFiles/llama-common.dir/debug.cpp.o
-[ 71%] Building CXX object common/CMakeFiles/llama-common.dir/download.cpp.o
-[ 71%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/pockettts-seanet.cpp.o
-[ 73%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/pockettts-spkenc.cpp.o
-[ 73%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/pockettts-gen.cpp.o
-[ 73%] Building CXX object common/CMakeFiles/llama-common.dir/fit.cpp.o
-[ 73%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/soprano.cpp.o
-[ 73%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/step3vl.cpp.o
-[ 73%] Building CXX object common/CMakeFiles/llama-common.dir/file-lock.cpp.o
-[ 73%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/siglip.cpp.o
-[ 73%] Building CXX object common/CMakeFiles/llama-common.dir/hf-cache.cpp.o
-[ 75%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/whisper-enc.cpp.o
-[ 77%] Building CXX object common/CMakeFiles/llama-common.dir/imatrix-loader.cpp.o
-[ 77%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/voxtral-rt.cpp.o
-[ 77%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseekocr.cpp.o
-[ 77%] Building CXX object common/CMakeFiles/llama-common.dir/json-schema-to-grammar.cpp.o
-[ 77%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseekocr2.cpp.o
-[ 77%] Building CXX object common/CMakeFiles/llama-common.dir/json-schema.cpp.o
-[ 77%] Building CXX object common/CMakeFiles/llama-common.dir/json.cpp.o
-[ 79%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mobilenetv5.cpp.o
-[ 79%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/youtuvl.cpp.o
-[ 79%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/yasa2.cpp.o
-[ 79%] Building CXX object common/CMakeFiles/llama-common.dir/llguidance.cpp.o
-[ 79%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/parakeet.cpp.o
-[ 81%] Building CXX object common/CMakeFiles/llama-common.dir/log.cpp.o
-[ 81%] Linking CXX shared library ../../bin/libmtmd.so
-[ 81%] Built target mtmd
-[ 81%] Building CXX object common/CMakeFiles/llama-common.dir/ngram-cache.cpp.o
-[ 81%] Building CXX object common/CMakeFiles/llama-common.dir/ngram-map.cpp.o
-[ 81%] Building CXX object common/CMakeFiles/llama-common.dir/ngram-mod.cpp.o
-[ 83%] Building CXX object common/CMakeFiles/llama-common.dir/peg-parser.cpp.o
-[ 83%] Building CXX object common/CMakeFiles/llama-common.dir/preset.cpp.o
-[ 83%] Building CXX object common/CMakeFiles/llama-common.dir/reasoning-budget.cpp.o
-[ 83%] Building CXX object common/CMakeFiles/llama-common.dir/sampling.cpp.o
-[ 83%] Building CXX object common/CMakeFiles/llama-common.dir/speculative.cpp.o
-[ 85%] Building CXX object common/CMakeFiles/llama-common.dir/subproc.cpp.o
-[ 85%] Building CXX object common/CMakeFiles/llama-common.dir/trie.cpp.o
-[ 85%] Building CXX object common/CMakeFiles/llama-common.dir/unicode.cpp.o
-[ 85%] Building CXX object common/CMakeFiles/llama-common.dir/jinja/lexer.cpp.o
-[ 87%] Building CXX object common/CMakeFiles/llama-common.dir/jinja/parser.cpp.o
-[ 87%] Building CXX object common/CMakeFiles/llama-common.dir/jinja/runtime.cpp.o
-[ 87%] Building CXX object common/CMakeFiles/llama-common.dir/jinja/value.cpp.o
-[ 87%] Building CXX object common/CMakeFiles/llama-common.dir/jinja/string.cpp.o
-[ 87%] Building CXX object common/CMakeFiles/llama-common.dir/jinja/caps.cpp.o
-[ 89%] Linking CXX shared library ../bin/libllama-common.so
-[ 89%] Built target llama-common
-[ 91%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-chat.cpp.o
-[ 91%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-task.cpp.o
-[ 91%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-queue.cpp.o
-[ 91%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-common.cpp.o
-[ 93%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-decision.cpp.o
-[ 93%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-context.cpp.o
-[ 93%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-stream.cpp.o
-[ 93%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-tools.cpp.o
-[ 93%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-mcp.cpp.o
-[ 95%] Building CXX object tools/server/CMakeFiles/server-context.dir/server-schema.cpp.o
-[ 95%] Linking CXX static library libserver-context.a
-[ 95%] Built target server-context
-[ 95%] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server.cpp.o
-[ 95%] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server-connect.cpp.o
-[ 97%] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server-http.cpp.o
-[ 97%] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server-models.cpp.o
-[ 97%] Linking CXX shared library ../../bin/libllama-server-impl.so
-[ 97%] Built target llama-server-impl
-[100%] Building CXX object tools/server/CMakeFiles/llama-server.dir/main.cpp.o
-[100%] Linking CXX executable ../../bin/llama-server
-[100%] Built target llama-server
-modello pronto: lmstudio-community/gemma-3-12b-it-GGUF (282s)
+modello pronto: lmstudio-community/gemma-3-12b-it-GGUF (36s)
 
 == giro 1: penso a idee nuove
-  (423s, 1324+909 token, lettura 8.7 t/s, scrittura 3.4 t/s)
-  ok     Ricetta della nonna · registro · non si ricorda più la ricetta della nonna 
-  ok     Turni del grigliore · turni · chi cucina alla griglia a ogni barbecue 
-  ok     Scadenze dei giochi · scadenze · dimenticare quando si deve restituire un gioco ai bambini 
-  ok     Lista dei regali di compleanno · lista · dimenticare i regali di compleanno 
-  ok     Timer per la pizza · timer · la pizza bruciata 
-  scarto Contatore piegamenti a Natale · contatore · fare gli addominali durante le feste (già fatta)
-  ok     Ricorrenze dei vestiti · ricorrenze · non lavare i vestiti bianchi regolarmente 
-  ok     Sorteggio del pranzo di Natale · sorteggio · chi porta cosa al pranzo di Natale 
-  ok     Calendario dei visite dai parenti · calendario · non ricordare le visite dai parenti 
-  ok     Registro dei prestiti di libri · registro · dimenticare chi ti ha prestato un libro 
-  ok     Scadenze della revisione auto · scadenze · dimenticare la revisione della macchina 
-  scarto Timer per la pasta fresca · timer · la pasta troppo cotta (già fatta)
-  (304s, 1390+506 token, lettura 8.7 t/s, scrittura 3.5 t/s)
-  giudizio Ricetta della nonna: utile 7 chiara 9 nuova 6 adatta 10 → 7.8
-  giudizio Turni del grigliore: utile 5 chiara 8 nuova 4 adatta 9 → 6.2 (scartata)
-  giudizio Scadenze dei giochi: utile 6 chiara 7 nuova 5 adatta 9 → 6.6 (scartata)
-  giudizio Lista dei regali di compleanno: utile 8 chiara 9 nuova 3 adatta 10 → 7.6 (scartata)
-  giudizio Timer per la pizza: utile 9 chiara 9 nuova 2 adatta 10 → 7.8 (scartata)
-  giudizio Ricorrenze dei vestiti: utile 4 chiara 8 nuova 3 adatta 9 → 5.6 (scartata)
-  giudizio Sorteggio del pranzo di Natale: utile 7 chiara 8 nuova 4 adatta 10 → 7.2 (scartata)
-  giudizio Calendario dei visite dai parenti: utile 6 chiara 7 nuova 2 adatta 10 → 6.2 (scartata)
-  giudizio Registro dei prestiti di libri: utile 4 chiara 7 nuova 6 adatta 9 → 6.0 (scartata)
-  giudizio Scadenze della revisione auto: utile 9 chiara 8 nuova 5 adatta 10 → 8.2 (scartata)
-
--- scrivo «Ricetta della nonna» (registro)
-  (281s, 1630+318 token, lettura 8.7 t/s, scrittura 3.4 t/s)
-  sistemo: problema troppo lungo (41>35); cosa troppo lungo (104>95)
-  (20s, 82+43 token, lettura 8.3 t/s, scrittura 4.2 t/s)
-  (13s, 65+25 token, lettura 8.3 t/s, scrittura 4.2 t/s)
-  (18s, 81+38 token, lettura 8.4 t/s, scrittura 4.3 t/s)
-  (116s, 392+277 token, lettura 8.9 t/s, scrittura 3.9 t/s)
-  prova dell'app nel browser: ok
-  TENUTA: Ricetta della nonna · registro · voto 7.8
+  (391s, 1431+811 token, lettura 8.6 t/s, scrittura 3.6 t/s)
+  ok     Ricordi il tagliando · scadenze · dimenticare la revisione 
+  scarto Quando cambio il filtro · ricorrenze · aria condizionata sporca (come «Cambia lo spazzolino»)
+  ok     A chi tocca il bagno · turni · litigi per il bagno 
+  ok     Cosa compro al mercato · lista · dimenticare la frutta 
+  ok     Chi mi presta il trapano · registro · non sapere chi ha cosa 
+  scarto Quanto manca all'autobus · timer · perdere l'autobus (come «Quanto manca a…»)
+  ok     Chi paga la benzina · sorteggio · litigare per la benzina 
+  scarto Prossima visita dal dentista · scadenze · dimenticare il dentista (come «Ricordi il tagliando»)
+  scarto Chi porta il cane a spasso · turni · chi porta fuori il cane (come «Turni del cane»)
+  ok     Quanti biscotti ho mangiato · contatore · troppi biscotti 
+  ok     Quando pulisco il forno · ricorrenze · forno sporco 
+  scarto Cose da fare a casa mia · calendario · dimenticare le faccende domestiche (come «Turni di casa»)
+  (297s, 1587+417 token, lettura 8.6 t/s, scrittura 3.7 t/s)
+  giudizio Ricordi il tagliando: utile 7 chiara 9 nuova 6 adatta 10 tipo 8 → 7.8 (scartata)
+  giudizio A chi tocca il bagno: utile 8 chiara 8 nuova 7 adatta 10 tipo 7 → 8.0 (scartata)
+  giudizio Cosa compro al mercato: utile 6 chiara 9 nuova 5 adatta 10 tipo 7 → 7.2 (scartata)
+  giudizio Chi mi presta il trapano: utile 7 chiara 8 nuova 6 adatta 10 tipo 6 → 7.3 (scartata)
+  giudizio Chi paga la benzina: utile 6 chiara 8 nuova 7 adatta 10 tipo 5 → 7.0 (scartata)
+  giudizio Quanti biscotti ho mangiato: utile 5 chiara 8 nuova 4 adatta 9 tipo 6 → 6.2 (scartata)
+  giudizio Quando pulisco il forno: utile 6 chiara 9 nuova 5 adatta 10 tipo 7 → 7.2 (scartata)
 
 == giro 2: penso a idee nuove
-  (293s, 1342+806 token, lettura 8.4 t/s, scrittura 3.5 t/s)
-  ok     Ricorda il tagliando · scadenze · dimenticare il tagliando della macchina 
-  ok     Turni per il barbecue · turni · chi porta cosa al barbecue 
-  ok     Lista dei regali di compleanno · lista · dimenticare un regalo di compleanno 
-  ok     Chi pulisce il forno · turni · il forno sporco 
-  ok     Promemoria per la pallavolo · calendario · dimenticare quando c'è la partita di pallavolo 
-  ok     Timer per la pizza · timer · la pizza bruciata 
-  scarto Chi porta il cane al parco · turni · chi deve portare il cane al parco (già fatta)
-  ok     Registro dei prestiti di libri · registro · dimenticare chi ha cosa in prestito 
-  ok     Ricorrenze per pulire il frigo · ricorrenze · il frigo sporco e maleodorante 
-  ok     Segnapunti per le carte a briscola · segnapunti · contare i punti a briscola 
-  ok     Sorteggio per il presepe · sorteggio · chi fa cosa per il presepe 
-  ok     Contatore di bicchieri di limonata · contatore · non bere abbastanza limonata d'estate 
-  (308s, 1334+560 token, lettura 8.8 t/s, scrittura 3.6 t/s)
-  giudizio Ricorda il tagliando: utile 7 chiara 9 nuova 6 adatta 10 → 7.8
-  giudizio Turni per il barbecue: utile 8 chiara 9 nuova 7 adatta 10 → 8.4
-  giudizio Lista dei regali di compleanno: utile 6 chiara 9 nuova 4 adatta 10 → 7.0 (scartata)
-  giudizio Chi pulisce il forno: utile 5 chiara 9 nuova 6 adatta 10 → 7.0 (scartata)
-  giudizio Promemoria per la pallavolo: utile 4 chiara 8 nuova 5 adatta 10 → 6.2 (scartata)
-  giudizio Timer per la pizza: utile 9 chiara 9 nuova 4 adatta 10 → 8.2 (scartata)
-  giudizio Registro dei prestiti di libri: utile 3 chiara 8 nuova 5 adatta 10 → 5.8 (scartata)
-  giudizio Ricorrenze per pulire il frigo: utile 6 chiara 8 nuova 6 adatta 10 → 7.2 (scartata)
-  giudizio Segnapunti per le carte a briscola: utile 7 chiara 9 nuova 3 adatta 10 → 7.2 (scartata)
-  giudizio Sorteggio per il presepe: utile 5 chiara 8 nuova 4 adatta 10 → 6.4 (scartata)
-  giudizio Contatore di bicchieri di limonata: utile 4 chiara 8 nuova 6 adatta 10 → 6.4 (scartata)
-
--- scrivo «Turni per il barbecue» (turni)
-  (253s, 1549+268 token, lettura 8.7 t/s, scrittura 3.6 t/s)
-  da rifare: parola vietata in storia: birra
-  (113s, 1846+268 token, lettura 8.1 t/s, scrittura 3.5 t/s)
-  (79s, 321+168 token, lettura 8.9 t/s, scrittura 4.0 t/s)
-  prova dell'app nel browser: ok
-  TENUTA: Turni BBQ · turni · voto 8.4
-
--- scrivo «Ricorda il tagliando» (scadenze)
-  (264s, 1597+288 token, lettura 8.7 t/s, scrittura 3.6 t/s)
-  (179s, 598+433 token, lettura 9.0 t/s, scrittura 3.9 t/s)
-  prova dell'app nel browser: ok
-  TENUTA: Ricorda il tagliando · scadenze · voto 7.8
+  (240s, 1431+886 token, lettura 4.3 t/s, scrittura 3.7 t/s)
+  scarto Ricordi di visita medica · scadenze · dimenticare il prossimo appuntamento (tema vietato)
+  ok     Turni del presepe · turni · chi si occupa del presepe 
+  ok     Lista della spesa per la festa · lista · dimenticare ingredienti per la festa 
+  ok     Registro dei libri presi in prestito · registro · non ricordare chi ha cosa 
+  scarto Ricorrenze cambio gomme invernali · ricorrenze · dimenticare di cambiare le gomme (nome telegrafico)
+  ok     Segnapunti dei giochi da tavolo · segnapunti · perdere il conto dei punti 
+  scarto Sorteggio dei compiti a scuola · sorteggio · decidere chi fa cosa a scuola (come «Timer per i compiti»)
+  ok     Calendario delle gite fuori porta · calendario · perdere di vista le gite programmate 
+  ok     Contatore delle chiamate perse · contatore · non sapere quante chiamate perse 
+  scarto Timer del risotto perfetto · timer · risotto scotto o troppo al dente (come «L'uovo sodo perfetto»)
+  scarto Scadenze delle multe · scadenze · dimenticare le scadenze delle multe (come «Documenti in scadenza»)
+  ok     Turni del divano · turni · chi ha il diritto al divano 
+  (183s, 1640+417 token, lettura 8.3 t/s, scrittura 3.7 t/s)
+  giudizio Turni del presepe: utile 7 chiara 9 nuova 6 adatta 10 tipo 8 → 7.8 (scartata)
+  giudizio Lista della spesa per la festa: utile 8 chiara 9 nuova 5 adatta 10 tipo 7 → 7.8 (scartata)
+  giudizio Registro dei libri presi in prestito: utile 6 chiara 8 nuova 7 adatta 10 tipo 6 → 7.2 (scartata)
+  giudizio Segnapunti dei giochi da tavolo: utile 7 chiara 9 nuova 4 adatta 10 tipo 7 → 7.3 (scartata)
+  giudizio Calendario delle gite fuori porta: utile 6 chiara 8 nuova 6 adatta 10 tipo 5 → 6.8 (scartata)
+  giudizio Contatore delle chiamate perse: utile 5 chiara 7 nuova 7 adatta 9 tipo 4 → 6.2 (scartata)
+  giudizio Turni del divano: utile 6 chiara 8 nuova 6 adatta 10 tipo 7 → 7.2 (scartata)
 
 == giro 3: penso a idee nuove
-  (290s, 1373+805 token, lettura 8.4 t/s, scrittura 3.6 t/s)
-  ok     Controllo revisione auto · scadenze · dimenticare la revisione 
-  ok     Timer pizza croccante · timer · la pizza bruciata 
-  scarto Turni festa di compleanno · turni · chi porta cosa alla festa (tema vietato)
-  ok     Lista regali parenti · registro · dimenticare chi cosa deve regalare 
-  ok     Ricorrenze pulizia pavimenti · ricorrenze · pavimenti sempre sporchi 
-  ok     Segnapunti partita a briscola · segnapunti · perdere il conto dei punti 
-  ok     Sorteggio gite fuori porta · sorteggio · litigare su dove andare 
-  ok     Calendario palestra figli · calendario · perdere gli impegni sportivi 
-  ok     Contatore bicchiere acqua · contatore · bere poca acqua 
-  ok     Registro prestiti amici · registro · dimenticare chi cosa ha prestato 
-  scarto Timer pasta al dente · timer · la pasta scotta (già fatta)
-  ok     Lista cose da fare al mare · lista · dimenticare qualcosa al mare 
-  (203s, 1301+510 token, lettura 7.7 t/s, scrittura 3.6 t/s)
-  giudizio Controllo revisione auto: utile 7 chiara 9 nuova 6 adatta 10 → 7.8
-  giudizio Timer pizza croccante: utile 6 chiara 9 nuova 7 adatta 10 → 7.6 (scartata)
-  giudizio Lista regali parenti: utile 8 chiara 8 nuova 5 adatta 10 → 7.8 (scartata)
-  giudizio Ricorrenze pulizia pavimenti: utile 5 chiara 8 nuova 4 adatta 10 → 6.4 (scartata)
-  giudizio Segnapunti partita a briscola: utile 9 chiara 9 nuova 4 adatta 10 → 8.2 (scartata)
-  giudizio Sorteggio gite fuori porta: utile 7 chiara 8 nuova 7 adatta 10 → 7.8
-  giudizio Calendario palestra figli: utile 6 chiara 8 nuova 6 adatta 10 → 7.2 (scartata)
-  giudizio Contatore bicchiere acqua: utile 7 chiara 8 nuova 6 adatta 10 → 7.6
-  giudizio Registro prestiti amici: utile 6 chiara 8 nuova 7 adatta 10 → 7.4 (scartata)
-  giudizio Lista cose da fare al mare: utile 8 chiara 9 nuova 6 adatta 10 → 8.2
+  (227s, 1431+853 token, lettura 4.2 t/s, scrittura 3.8 t/s)
+  scarto Scadenze dei documenti auto · scadenze · dimenticare la revisione (come «Documenti in scadenza»)
+  ok     Timer della pizza · timer · la pizza bruciata 
+  ok     Turni della pulizia · turni · chi pulisce il bagno 
+  ok     Lista della spesa al mercato · lista · dimenticare qualcosa al mercato 
+  ok     Registro dei prestiti a parenti · registro · chi mi deve soldi 
+  scarto Ricorrenze cambio filtro aria · ricorrenze · filtro aria sporco (nome telegrafico)
+  scarto Segnapunti del gioco a carte · segnapunti · perdere i punti a carte (come «Segnapunti della scopa»)
+  ok     Sorteggio per l'aperitivo · sorteggio · chi offre l'aperitivo 
+  ok     Calendario dei corsi di cucina · calendario · dimenticare il corso di cucina 
+  scarto Contatore bicchieri d'acqua a scuola · contatore · bere poca acqua a scuola (come «Quanta acqua ho bevuto»)
+  scarto Scadenze bollette gas · scadenze · dimenticare la bolletta del gas (nome telegrafico)
+  scarto Timer per la cottura della pasta · timer · la pasta scotta (già fatta)
+  (153s, 1580+360 token, lettura 8.3 t/s, scrittura 3.7 t/s)
+  giudizio Timer della pizza: utile 7 chiara 9 nuova 6 adatta 10 tipo 9 → 8.0 (scartata)
+  giudizio Turni della pulizia: utile 6 chiara 8 nuova 4 adatta 10 tipo 8 → 7.0 (scartata)
+  giudizio Lista della spesa al mercato: utile 8 chiara 9 nuova 7 adatta 10 tipo 8 → 8.3
+  giudizio Registro dei prestiti a parenti: utile 5 chiara 7 nuova 5 adatta 9 tipo 7 → 6.3 (scartata)
+  giudizio Sorteggio per l'aperitivo: utile 7 chiara 8 nuova 6 adatta 10 tipo 8 → 7.7 (scartata)
+  giudizio Calendario dei corsi di cucina: utile 6 chiara 8 nuova 5 adatta 10 tipo 8 → 7.2 (scartata)
 
--- scrivo «Lista cose da fare al mare» (lista)
-  (266s, 1595+292 token, lettura 8.7 t/s, scrittura 3.6 t/s)
-  (78s, 305+179 token, lettura 8.8 t/s, scrittura 4.1 t/s)
+-- scrivo «Lista della spesa al mercato» (lista)
+  (270s, 1632+299 token, lettura 8.7 t/s, scrittura 3.7 t/s)
+  (94s, 382+207 token, lettura 8.9 t/s, scrittura 4.0 t/s)
   prova dell'app nel browser: ok
-  TENUTA: Lista mare perfetto · lista · voto 8.2
+  TENUTA: Lista della spesa al mercato · lista · voto 8.3
 
--- scrivo «Sorteggio gite fuori porta» (sorteggio)
-  (266s, 1582+297 token, lettura 8.7 t/s, scrittura 3.6 t/s)
-  (136s, 331+383 token, lettura 8.6 t/s, scrittura 4.0 t/s)
-  prova dell'app nel browser: ok
-  TENUTA: Gite a sorta · sorteggio · voto 7.8
+== giro 4: penso a idee nuove
+  (289s, 1448+825 token, lettura 8.3 t/s, scrittura 3.7 t/s)
+  ok     Ricordare il tagliando · scadenze · dimenticare il tagliando 
+  ok     Turni del terrazzo · turni · terrazzo sempre sporco 
+  scarto Lista dei libri di scuola · lista · dimenticare libri a scuola (come «Lista della spesa al mercato»)
+  ok     Registro dei prestiti di attrezzi · registro · attrezzi persi o non restituiti 
+  ok     Ricorrenze della manutenzione · ricorrenze · dimenticare la manutenzione 
+  scarto Segnapunti della partita a carte · segnapunti · contare i punti a mano (come «Segnapunti della scopa»)
+  scarto Sorteggio dei compiti a casa · sorteggio · sempre gli stessi a fare i compiti (come «Turni di casa»)
+  scarto Calendario delle visite mediche · calendario · dimenticare le visite (tema vietato)
+  ok     Contatore delle pizze al mese · contatore · mangiare troppa pizza 
+  scarto Timer per la cottura del ragù · timer · ragù troppo o poco cotto (come «L'uovo sodo perfetto»)
+  scarto Lista della spesa al supermercato · lista · dimenticare la pasta al supermercato (come «Lista della spesa al mercato»)
+  scarto Registro dei regali per i nipoti · registro · dimenticare cosa regalare ai nipoti (come «La lista dei regali di Natale»)
+  (135s, 1539+305 token, lettura 8.2 t/s, scrittura 3.7 t/s)
+  giudizio Ricordare il tagliando: utile 9 chiara 10 nuova 6 adatta 10 tipo 9 → 8.8 (scartata)
+  giudizio Turni del terrazzo: utile 7 chiara 8 nuova 5 adatta 10 tipo 7 → 7.3 (scartata)
+  giudizio Registro dei prestiti di attrezzi: utile 6 chiara 7 nuova 7 adatta 10 tipo 8 → 7.3 (scartata)
+  giudizio Ricorrenze della manutenzione: utile 8 chiara 9 nuova 6 adatta 10 tipo 8 → 8.2 (scartata)
+  giudizio Contatore delle pizze al mese: utile 5 chiara 8 nuova 4 adatta 10 tipo 7 → 6.5 (scartata)
 
--- scrivo «Contatore bicchiere acqua» (contatore)
-  (247s, 1540+255 token, lettura 8.7 t/s, scrittura 3.6 t/s)
-  (72s, 239+180 token, lettura 8.7 t/s, scrittura 4.2 t/s)
-  prova dell'app nel browser: ok
-  TENUTA: Contatore bicchiere acqua · contatore · voto 7.6
-
-idee tenute: 6 su 6 · scartate dopo la scrittura: 0 · 75 minuti
+idee tenute: 1 su 6 · scartate dopo la scrittura: 0 · 39 minuti
 salvate in /home/runner/work/Spinta/Spinta/automatico/idee-ai.json
 [
  {
-  "nome": "Ricetta della nonna",
-  "emoji": "👵",
-  "telefono": "Ricette",
-  "problema": "ha perso la ricetta della nonna",
-  "storia": "Mamma mia, voglio fare la pastiera come la nonna, ma non ricordo più come si fa!",
-  "domandaE": "E le ricette della nonna: le sapete ancora tutte a memoria?",
-  "vince": "la pastiera è garantita dalla nonna!",
-  "cosa": "Scrivete le ricette di famiglia, ingredienti e preparazione. Condividetele con le persone care.",
-  "domanda": "Qual è la ricetta della nonna che vi manca di più? Ditemelo nei commenti!",
-  "regalo": "la pastiera è pronta!",
+  "nome": "Lista della spesa al mercato",
+  "emoji": "🛒",
+  "telefono": "Spesa",
+  "problema": "dimenticare il parmigiano",
+  "storia": "Mamma mia, sono tornato a casa senza il pesce! Che disastro!",
+  "domandaE": "E la spesa al mercato: vi è mai capitato di dimenticare qualcosa?",
+  "vince": "al mercato non si dimentica più niente!",
+  "cosa": "Scrivete cosa serve e l'app vi ricorda a voce mentre fate la spesa.",
+  "domanda": "Cosa vi dimenticate sempre al mercato? Ditemelo nei commenti!",
+  "regalo": "la spesa è facile e veloce!",
   "righe": [
-   "Scrivete gli ingredienti e i passaggi.",
-   "Potete anche fare una foto al piatto finito."
+   "Scrivete i prodotti che vi servono.",
+   "L'app vi ricorda a voce mentre fate la spesa."
   ],
-  "manda": "Mandatela a chi cucina come una regina!",
-  "descrizione": "Scrivi le ricette della nonna, gli ingredienti e i passaggi, fai una foto al piatto finito: le salvi e le condividi con chi vuoi. Tutto resta sul tuo telefono.",
-  "id": "ricetta-della-nonna",
+  "manda": "Mandatela a chi dimentica sempre il basilico!",
+  "descrizione": "Scrivete la lista della spesa e l'app vi ricorda a voce cosa comprare mentre siete al mercato: così non dimenticate più niente. Funziona anche senza internet.",
+  "id": "lista-della-spesa-al-mercato",
   "fatto_da": "ai",
   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
-  "voto_ai": 7.8,
+  "voto_ai": 8.3,
   "scritta": "2026-10-25",
   "app": {
-   "nome": "Ricetta della nonna",
-   "breve": "Ricette",
-   "emoji": "👵",
-   "tipo": "registro",
-   "slogan": "Il sapore della tradizione, sempre con te. Un regalo di Gennarino.",
-   "descrizione": "Scrivi le ricette della nonna, gli ingredienti e i passaggi, fai una foto al piatto finito: le salvi e le condividi con chi vuoi. Tutto resta sul tuo telefono.",
-   "chiave": "ricetta-della-nonna-v1",
-   "opzioni": {
-    "versi": [
-     [
-      "Aggiungi Ricetta",
-      "Per la sezione"
-     ]
-    ],
-    "soldi": false,
-    "etichetta": "Nome della ricetta",
-    "placeholder": "Es: Pasta e Patate della Nonna",
-    "etichettaData": "Data di creazione (opzionale)",
-    "bottone": "Salva Ricetta",
-    "titoloForm": "Crea una nuova ricetta",
-    "titoloLista": "Le mie ricette",
-    "filtroAperti": "Tutte",
-    "filtroChiusi": "Preferite",
-    "chiudi": "Ricetta salvata!",
-    "chiusoIl": "Creato il",
-    "scritto": "Ricetta aggiunta con successo.",
-    "vuoto": "Nessuna ricetta ancora. Aggiungine una!",
-    "erroreCosa": "Dai un nome alla tua ricetta.",
-    "whatsapp": false
-   },
-   "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
-  }
- },
- {
-  "nome": "Turni BBQ",
-  "emoji": "🍖",
-  "telefono": "Bbq",
-  "problema": "chi porta cosa al barbecue",
-  "storia": "Mamma mia, al barbecue si litiga sempre: chi porta il pane, chi la carne, chi le patatine!",
-  "domandaE": "E al barbecue: chi porta il limone?",
-  "vince": "al barbecue tutti sono contenti!",
-  "cosa": "Scrivete chi c’è e cosa porta e vi dico chi porta cosa.",
-  "domanda": "Qual è il vostro piatto preferito al barbecue? Ditemelo nei commenti!",
-  "regalo": "al barbecue si sa chi porta cosa!",
-  "righe": [
-   "Scrivete chi c’è al barbecue e cosa porta.",
-   "L'app vi dice a chi tocca portare cosa."
-  ],
-  "manda": "Mandatela a chi al barbecue porta sempre solo la forchetta!",
-  "descrizione": "Scrivi chi viene al barbecue e cosa porta: l’app ti dice a chi tocca portare cosa, così non ci sono discussioni e tutti mangiano contenti. I turni li condividi col gruppo.",
-  "id": "turni-bbq",
-  "fatto_da": "ai",
-  "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
-  "voto_ai": 8.4,
-  "scritta": "2026-10-25",
-  "app": {
-   "nome": "Turni BBQ",
-   "breve": "Bbq",
-   "emoji": "🍖",
-   "tipo": "turni",
-   "slogan": "BBQ senza stress. Un regalo di Gennarino.",
-   "descrizione": "Scrivi chi viene al barbecue e cosa porta: l’app ti dice a chi tocca portare cosa, così non ci sono discussioni e tutti mangiano contenti. I turni li condividi col gruppo.",
-   "chiave": "turni-bbq-v1",
-   "opzioni": {
-    "persone": [
-     "Mamma",
-     "Papà",
-     "Ciro",
-     "Sofia",
-     "Zia Maria"
-    ],
-    "compiti": [
-     "Carne alla brace",
-     "Contorno",
-     "Pane e bevande",
-     "Dolce",
-     "Tavolo e stoviglie"
-    ],
-    "giro": "settimana",
-    "messaggio": "Turni BBQ",
-    "titoloOggi": "Oggi tocca a…",
-    "titoloPersone": "Chi c'è al BBQ",
-    "titoloCompiti": "Cosa porta chi",
-    "placeholderPersona": "Nome",
-    "placeholderCompito": "Descrizione del piatto/cosa da portare…"
-   },
-   "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
-  }
- },
- {
-  "nome": "Ricorda il tagliando",
-  "emoji": "🚗",
-  "telefono": "Tagliando",
-  "problema": "dimenticare il tagliando",
-  "storia": "Mamma mia, mi hanno fermato per il tagliando scaduto!",
-  "domandaE": "E il tagliando della macchina: chi lo ricorda mai?",
-  "vince": "il tagliando non vi frega più!",
-  "cosa": "Segnate quando fare il tagliando e vi ricordo io.",
-  "domanda": "Cosa vi è capitato per il tagliando dimenticato? Ditemelo nei commenti!",
-  "regalo": "il tagliando adesso è sempre in regola!",
-  "righe": [
-   "Segnate quando fare il tagliando.",
-   "Vi avviso prima che scada, così andate tranquilli."
-  ],
-  "manda": "Mandatela a chi ha sempre la macchina a posto!",
-  "descrizione": "Segni quando fare il tagliando della macchina: in cima quello da fare per primo, e ti metto il promemoria nel calendario. Tutto resta sul tuo telefono e funziona anche senza internet.",
-  "id": "ricorda-il-tagliando",
-  "fatto_da": "ai",
-  "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
-  "voto_ai": 7.8,
-  "scritta": "2026-10-25",
-  "app": {
-   "nome": "Ricorda il tagliando",
-   "breve": "Tagliando",
-   "emoji": "🚗",
-   "tipo": "scadenze",
-   "slogan": "Tagliando sempre in regola. Un regalo di Gennarino.",
-   "descrizione": "Segni quando fare il tagliando della macchina: in cima quello da fare per primo, e ti metto il promemoria nel calendario. Tutto resta sul tuo telefono e funziona anche senza internet.",
-   "chiave": "ricorda-il-tagliando-v1",
-   "opzioni": {
-    "etichetta": "Cosa devo controllare?",
-    "placeholder": "Cambio olio, filtri, candele…",
-    "etichettaData": "Tagliando previsto il",
-    "giorniBase": 30,
-    "rapidi": [
-     1,
-     7,
-     14,
-     30
-    ],
-    "avviso": 7,
-    "notaEsempi": "Scrivi cosa devi fare e quando (controlla sempre il libretto):",
-    "bottone": "Aggiungi tagliando",
-    "titoloForm": "Aggiungi tagliando",
-    "titoloLista": "I miei tagliandi",
-    "filtroAperti": "Da fare",
-    "filtroChiusi": "Fatto",
-    "fatto": "Fatto",
-    "fattoIl": "Fatto il",
-    "scritto": "Aggiunto tagliando.",
-    "vuoto": "Niente tagliandi in scadenza: tutto a posto!",
-    "contaTutti": "tagliandi",
-    "contaPresto": "da fare presto",
-    "contaScaduti": "scaduti",
-    "promemoria": "Tagliando: {cosa} previsto per il {quando}.",
-    "erroreVuoto": "Scrivi cosa devi controllare e quando, guagliò! Al",
-    "durate": {
-     "Cambio olio e filtri": 6,
-     "Tagliando completo": 12,
-     "Controllo freni": 3,
-     "Sostituzione pneumatici": 180,
-     "Controllo batteria": 60
-    }
-   },
-   "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
-  }
- },
- {
-  "nome": "Lista mare perfetto",
-  "emoji": "🏖️",
-  "telefono": "Mare",
-  "problema": "il telo dimenticato in spiaggia",
-  "storia": "Mamma mia, al mare senza telo e senza crema, che disastro!",
-  "domandaE": "E al mare: cosa vi serve per essere felici?",
-  "vince": "al mare non manca niente!",
-  "cosa": "Spuntate le cose mentre le prendete e siete pronti per il mare.",
-  "domanda": "Cosa non vi dimenticate mai al mare? Ditemelo nei commenti!",
-  "regalo": "al mare si parte subito!",
-  "righe": [
-   "Create la vostra lista con le cose che servono.",
-   "Spuntatele e partite tranquilli."
-  ],
-  "manda": "Mandatela a chi dimentica sempre il telo!",
-  "descrizione": "La lista per la giornata al mare: teli, crema, occhiali, ombrellone e tutto il necessario per godervi il sole. Spuntate le cose mentre le prendete e partite senza pensieri. Funziona anche senza internet.",
-  "id": "lista-mare-perfetto",
-  "fatto_da": "ai",
-  "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
-  "voto_ai": 8.2,
-  "scritta": "2026-10-25",
-  "app": {
-   "nome": "Lista mare perfetto",
-   "breve": "Mare",
-   "emoji": "🏖️",
+   "nome": "Lista della spesa al mercato",
+   "breve": "Spesa",
+   "emoji": "🛒",
    "tipo": "lista",
-   "slogan": "Pronti per un tuffo. Un regalo di Gennarino.",
-   "descrizione": "La lista per la giornata al mare: teli, crema, occhiali, ombrellone e tutto il necessario per godervi il sole. Spuntate le cose mentre le prendete e partite senza pensieri. Funziona anche senza internet.",
-   "chiave": "lista-mare-perfetto-v1",
+   "slogan": "Al mercato non si dimentica più niente. Un regalo di Gennarino.",
+   "descrizione": "Scrivete la lista della spesa e l'app vi ricorda a voce cosa comprare mentre siete al mercato: così non dimenticate più niente. Funziona anche senza internet.",
+   "chiave": "lista-della-spesa-al-mercato-v1",
    "opzioni": {
     "esempi": [
-     "Costume da bagno",
-     "Asciugamano mare",
-     "Crema solare",
-     "Cappellino/Bandana",
-     "Occhiali da sole",
-     "Ciabatte",
-     "Giochi da spiaggia (palla, sec"
+     "Pomodori",
+     "Melanzane",
+     "Zucchine",
+     "Pasta",
+     "Pane",
+     "Latte",
+     "Uova",
+     "Formaggio",
+     "Salumi",
+     "Frutta fresca",
+     "Pesce fresco",
+     "Carne macinata"
     ],
-    "placeholder": "Cosa ti serve per il mare?",
-    "titoloLista": "Lista Mare Perfetto",
-    "presi": "Spuntato!",
-    "togli": "Deseleziona",
-    "notaEsempi": "Cose essenziali per la tua giornata al mare:",
-    "vuoto": "La tua lista è vuota. Aggiungi le cose che ti servono per il"
-   },
-   "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
-  }
- },
- {
-  "nome": "Gite a sorta",
-  "emoji": "🏞️",
-  "telefono": "Sorteggio",
-  "problema": "litigare su dove andare in gita",
-  "storia": "Mamma mia, ogni volta si litiga su dove fare la gita!",
-  "domandaE": "E la gita: chi decide dove andare?",
-  "vince": "la sorte decide, e basta!",
-  "cosa": "Scrivete i posti e fate girare la ruota: il destino vi guiderà.",
-  "domanda": "Qual è il posto che sognate di visitare? Ditemelo nei commenti!",
-  "regalo": "la gita è gratis!",
-  "righe": [
-   "Scrivete i posti che vi piacciono.",
-   "Girate e scoprite la vostra prossima destinazione."
-  ],
-  "manda": "Mandatela a chi non vuole mai fare la stessa gita!",
-  "descrizione": "Scrivi i posti che ti interessano, fai girare la ruota e scopri la prossima gita con gli amici. Senza litigare, solo divertimento. Funziona anche senza internet.",
-  "id": "gite-a-sorta",
-  "fatto_da": "ai",
-  "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
-  "voto_ai": 7.8,
-  "scritta": "2026-10-25",
-  "app": {
-   "nome": "Gite a sorta",
-   "breve": "Sorteggio",
-   "emoji": "🏞️",
-   "tipo": "sorteggio",
-   "slogan": "La destinazione è scritta nel destino. Un regalo di Gennarino.",
-   "descrizione": "Scrivi i posti che ti interessano, fai girare la ruota e scopri la prossima gita con gli amici. Senza litigare, solo divertimento. Funziona anche senza internet.",
-   "chiave": "gite-a-sorta-v1",
-   "opzioni": {
-    "liste": [
-     {
-      "nome": "Dove andiamo?",
-      "voci": [
-       "Pompei e il Vesuvio",
-       "Ischia (spiaggia e castel",
-       "Napoli Sotterranea e Spcc",
-       "Reggia di Caserta",
-       "Costiera Amalfitana (Posl",
-       "Ercolano (altro sito)",
-       "Parco di Grignano",
-       "Procida (colori e relax)",
-       "Capri (Blue Grotto)",
-       "Casandino (festa e cibo)"
-      ]
-     },
-     {
-      "nome": "Cosa facciamo?",
-      "voci": [
-       "Pranzo al mare",
-       "Gita in barca",
-       "Visita guidata",
-       "Gelato e passeggiata",
-       "Picnic in campagna",
-       "Museo e storia",
-       "Shopping",
-       "Gelato e parco giochi",
-       "Escursione in montagna",
-       "Assaggiamo la pizza fritt"
-      ]
-     },
-     {
-      "nome": "Chi porta {cosa}?",
-      "voci": [
-       "Mamma",
-       "Papà",
-       "Ciro",
-       "Sofia",
-       "Nonna",
-       "Zio {nome}"
-      ]
-     }
-    ],
-    "gira": "Gira la ruota!",
-    "risultato": "La prossima gita sarà a: {x}! {quando} a",
-    "placeholder": "Aggiungi un posto o un'attività"
-   },
-   "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
-  }
- },
- {
-  "nome": "Contatore bicchiere acqua",
-  "emoji": "💧",
-  "telefono": "Acqua",
-  "problema": "l'acqua che non beviamo",
-  "storia": "Mamma mia, mi scordo sempre di bere l'acqua!",
-  "domandaE": "E l'acqua: quanti bicchieri dovremmo bere al giorno?",
-  "vince": "l'acqua è importante, ricordatelo!",
-  "cosa": "Toccate ogni bicchiere e vi faccio vedere come state andando.",
-  "domanda": "Quanti bicchieri bevete voi? Ditemelo nei commenti!",
-  "regalo": "l'acqua si conta da sola!",
-  "righe": [
-   "Toccate ogni bicchiere che bevete.",
-   "Vi faccio vedere come va la settimana."
-  ],
-  "manda": "Mandatela a chi si dimentica di bere!",
-  "descrizione": "Un tocco per ogni bicchiere d'acqua: raggiungete il vostro obiettivo giornaliero e vedete come state andando. Funziona anche senza internet.",
-  "id": "contatore-bicchiere-acqua",
-  "fatto_da": "ai",
-  "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
-  "voto_ai": 7.6,
-  "scritta": "2026-10-25",
-  "app": {
-   "nome": "Contatore bicchiere acqua",
-   "breve": "Acqua",
-   "emoji": "💧",
-   "tipo": "contatore",
-   "slogan": "Un bicchiere alla volta, più sani. Un regalo di Gennarino.",
-   "descrizione": "Un tocco per ogni bicchiere d'acqua: raggiungete il vostro obiettivo giornaliero e vedete come state andando. Funziona anche senza internet.",
-   "chiave": "contatore-bicchiere-acqua-v1",
-   "opzioni": {
-    "voci": [
-     {
-      "nome": "Bicchieri d'acqua",
-      "emoji": "💧",
-      "obiettivo": 8
-     },
-     {
-      "nome": "Bicchieri di tè",
-      "emoji": "🍵",
-      "obiettivo": 2
-     },
-     {
-      "nome": "Bicchieri di succo",
-      "emoji": "🍹",
-      "obiettivo": 1
-     }
-    ],
-    "titolo": "Oggi",
-    "brav": "Ua', bravo! Hai raggiunto l'obiettivo dei bicchier"
+    "placeholder": "Cosa ti serve?",
+    "titoloLista": "La spesa al mercato",
+    "presi": "Spuntati dalla lista",
+    "togli": "Sclear le spuntate"
    },
    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
   }
