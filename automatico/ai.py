@@ -175,7 +175,7 @@ def OGG(props, req=None): return {'type': 'object', 'additionalProperties': Fals
 # lunghezze vere (in caratteri) di ogni battuta; nello schema si lascia più spazio, così il modello non taglia a metà frase
 LIMITI = dict(nome=40, telefono=10, problema=35, storia=100, domandaE=95, vince=65, cosa=95, domanda=100, regalo=65, riga=75, manda=75, descrizione=280, slogan=85)
 SCHEMA_LISTA = OGG(dict(idee=LST(OGG(dict(nome=S(60), tipo={'enum': TIPI}, problema=S(70), perche=S(160))), 10, 14)))
-SCHEMA_GIUDIZIO = OGG(dict(voti=LST(OGG(dict(n=INT(1, 20), utile=INT(1, 10), chiara=INT(1, 10), nuova=INT(1, 10), adatta=INT(1, 10))), 1, 20)))
+SCHEMA_GIUDIZIO = OGG(dict(voti=LST(OGG(dict(n=INT(1, 20), utile=INT(1, 10), chiara=INT(1, 10), nuova=INT(1, 10), adatta=INT(1, 10), tipo=INT(1, 10))), 1, 20)))
 
 
 def schema_idea():
@@ -279,6 +279,13 @@ REGOLE = """Regole fisse della serie:
 - niente prese in giro di nessuno."""
 
 
+MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre']
+
+
+def quando():
+    m = int(time.strftime('%m')); return f"{MESI[m - 1]} e {MESI[m % 12]}"
+
+
 def prompt_lista(gia, quante):
     return f"""{SERIE}
 
@@ -286,33 +293,38 @@ def prompt_lista(gia, quante):
 
 {REGOLE}
 
-Idee già fatte o già in lista (NON ripeterle e non fare varianti di queste):
+Idee già fatte o già in lista (NON ripeterle e non fare varianti di queste, neanche con un altro tipo di app):
 {gia}
 
 Scrivi {quante} idee NUOVE e diverse tra loro, usando almeno 6 tipi di app diversi. Ogni idea risolve un fastidio vero che capita quasi a tutti
-(in casa, in macchina, a scuola, al lavoro, con i parenti, con gli amici, al mare, a Natale). Evita idee vaghe, romantiche, strane o inutili
-(come «la lista dei baci» o «il giorno del rito»).
-Per ogni idea: «nome» corto e chiaro (massimo 5 parole, maiuscola solo all'inizio, come «Cosa scade nel frigo»), «tipo», «problema» (il fastidio
-in poche parole, minuscolo, come «il latte scaduto») e «perche» (perché serve, in una frase). Rispondi solo col JSON."""
+(in casa, in macchina, a scuola, al lavoro, con i parenti, con gli amici). Le idee si useranno in {quando()}: niente idee legate a stagioni o feste
+lontane (niente mare d'inverno, niente Natale d'estate). Ogni idea deve stare bene nel suo tipo di app (per esempio: un ricettario non è un «registro»).
+Evita idee vaghe, romantiche, strane o inutili (come «la lista dei baci» o «il giorno del rito»).
+Per ogni idea: «nome» in italiano naturale, come si dice a voce, con articoli e preposizioni (massimo 5 parole, maiuscola solo all'inizio,
+come «Cosa scade nel frigo» o «Timer della lavatrice», MAI «Timer lavatrice»), «tipo», «problema» (il fastidio in poche parole, minuscolo,
+come «il latte scaduto») e «perche» (perché serve, in una frase). Rispondi solo col JSON."""
 
 
 def prompt_giudizio(cand, gia):
     righe = '\n'.join(f"{n}. {c['nome']} ({c['tipo']}): {c['problema']} — {c['perche']}" for n, c in enumerate(cand, 1))
     return f"""{SERIE}
 
+{TIPI_SPIEGATI}
+
 {REGOLE}
 
-Idee già fatte (un'idea che le somiglia NON è nuova):
+Idee già fatte (un'idea che le somiglia, anche con un altro nome o un altro tipo di app, NON è nuova):
 {gia}
 
-Giudica queste idee come farebbe un pubblico napoletano su TikTok. Sii severo: 8 o più solo se l'idea è davvero buona.
+Giudica queste idee come farebbe un pubblico napoletano su TikTok, in {quando()}. Sii severo: 8 o più solo se l'idea è davvero buona.
 {righe}
 
 Per ogni idea (n = il suo numero) dai un voto da 1 a 10:
-- «utile»: quanto serve davvero a tanta gente, ogni settimana;
-- «chiara»: quanto si capisce in tre secondi cosa fa l'app;
+- «utile»: quanto serve davvero a tanta gente, in queste settimane;
+- «chiara»: quanto si capisce in tre secondi cosa fa l'app, e se il nome è italiano corretto e naturale;
 - «nuova»: quanto è diversa dalle idee già fatte;
-- «adatta»: quanto rispetta le regole della serie e va bene per tutta la famiglia.
+- «adatta»: quanto rispetta le regole della serie e va bene per tutta la famiglia;
+- «tipo»: quanto il tipo di app scelto è quello giusto per l'idea (guarda l'elenco dei tipi).
 Rispondi solo col JSON."""
 
 
@@ -349,7 +361,7 @@ def prompt_idea(c, esempi):
 Esempi di idee complete già fatte (segui lo stesso stile, la stessa lunghezza e le stesse forme):
 {chr(10).join(esempio_idea(e) for e in esempi)}
 
-Scrivi l'idea completa per: «{c['nome']}» (app di tipo «{c['tipo']}»; fastidio: {c['problema']}; {c['perche']})."""
+Scrivi l'idea completa per: «{c['nome']}» (app di tipo «{c['tipo']}»; fastidio: {c['problema']}; {c['perche']}). Il campo «nome» resta «{c['nome']}»."""
 
 
 SCHEMA_CORTO = lambda n: OGG(dict(frase=S(int(n * 1.3))))
@@ -390,8 +402,9 @@ def ripara(srv, i, gia):
 def prompt_opzioni(idea, tipo, esempio):
     return f"""Scrivi i testi dell'app «{idea['nome']}» ({idea['cosa']} {' '.join(idea['righe'])}), un'app di tipo «{tipo}».
 I testi sono in italiano semplice, corti e chiari, col «tu» (sono i bottoni e le scritte dell'app); gli esempi devono essere realistici e utili
-per una famiglia napoletana. I segnaposto tra graffe come {{ora}}, {{min}}, {{cosa}}, {{quando}}, {{nome}}, {{x}} e {{chi}} vanno lasciati così,
-dove servono. Ecco, come modello, i testi di un'altra app dello stesso tipo:
+per una famiglia napoletana, ma generici e sicuri: niente nomi di posti, di negozi o di persone vere. I numeri «giorni», «ogni» e «min» sono sempre in giorni
+o in minuti (6 mesi = 180 giorni). Ogni scritta deve essere una frase finita, corta. I segnaposto tra graffe come {{ora}}, {{min}}, {{cosa}}, {{quando}}, {{nome}}, {{x}} e {{chi}} vanno lasciati così,
+solo dove ci sono nel modello. Ecco, come modello, i testi di un'altra app dello stesso tipo:
 {json.dumps(esempio, ensure_ascii=False)}
 Rispondi solo col JSON, coi testi per «{idea['nome']}»."""
 
@@ -428,6 +441,36 @@ def simile(a, b):
     if norm(a).strip() == norm(b).strip(): return True
     if A and B and (A <= B or B <= A): return True
     return difflib.SequenceMatcher(None, norm(a), norm(b)).ratio() >= 0.85
+
+
+def doppione(c, cat):
+    """Un'idea è un doppione se somiglia a una già fatta, o se ha lo stesso tipo di app e una parola importante in comune
+    (nome o fastidio): «Contatore bicchiere acqua» e «Quanta acqua ho bevuto» sono la stessa app."""
+    mie = parole(c['nome']) | parole(c.get('problema', ''))
+    for i in cat:
+        if simile(c['nome'], i['nome']): return i['nome']
+        if c.get('tipo') == i['app']['tipo'] and mie & (parole(i['nome']) | parole(i.get('problema', ''))): return i['nome']
+    return None
+
+
+def telegrafico(nome):
+    """«Timer pizza croccante», «Contatore bicchiere acqua»: tre parole o più senza articoli né preposizioni non sono italiano naturale."""
+    w = re.findall(r"[a-zà-ù']+", nome.lower())
+    return len(w) >= 3 and not any(x.strip("'") in DEBOLI or x.endswith("'") or x in ('quanto', 'quanta', 'quanti', 'quante', 'chi', 'cosa') for x in w)
+
+
+# idee di stagione: si tengono, ma si usano solo nel loro periodo (campo «periodo», come nel catalogo)
+STAGIONI = [(re.compile(r'\b(mare|spiagg\w*|ombrellon\w*|estat\w*|abbronz\w*|piscin\w*|condizionator\w*|ventilator\w*|zanzar\w*|barbecue|grigliat\w*|bbq)\b', re.I), ['06-01', '09-10']),
+            (re.compile(r'\b(natal\w*|presep\w*|panetton\w*|tombol\w*|befana|capodanno|vigilia|cenone|albero)\b', re.I), ['11-25', '01-06']),
+            (re.compile(r'\b(pasqu\w*|colomba|pasquetta)\b', re.I), ['03-15', '04-25']),
+            (re.compile(r'\b(carneval\w*|chiacchier\w*|coriandol\w*)\b', re.I), ['01-20', '02-28']),
+            (re.compile(r'\b(riscaldament\w*|stufa|termosifon\w*|neve|cappotto)\b', re.I), ['11-01', '02-28'])]
+
+
+def stagione(testo):
+    for r, p in STAGIONI:
+        if r.search(testo): return p
+    return None
 
 
 def minuscola(t): return t[:1].lower() + t[1:] if len(t) > 1 and not t[1:2].isupper() else t
@@ -486,6 +529,65 @@ def errori_idea(i, gia):
     return e
 
 
+def largo(sch, k=2.0):
+    """Lo stesso schema con le stringhe lunghe il doppio: così il modello finisce le frasi, e la lunghezza vera si controlla dopo."""
+    if not isinstance(sch, dict): return sch
+    x = dict(sch)
+    if x.get('type') == 'string' and 'maxLength' in x and 'pattern' not in x: x['maxLength'] = int(x['maxLength'] * k)
+    if 'items' in x: x['items'] = largo(x['items'], k)
+    if 'properties' in x: x['properties'] = {kk: largo(v, k) for kk, v in x['properties'].items()}
+    return x
+
+
+def testo_buono(t, n, segni_ok=()):
+    """Una scritta dell'app va bene se non è troppo lunga, non è tagliata a metà, ha le parentesi chiuse e usa solo i segnaposto previsti."""
+    if not isinstance(t, str) or not t.strip(): return False
+    if len(t) > n or t.count('(') != t.count(')'): return False
+    if len(t.split()) >= 3 and tagliata(t): return False          # le etichette corte come «A chi» o «Per» vanno bene
+    if any(x not in segni_ok for x in re.findall(r'\{\w*\}', t)): return False
+    if EMOJI_RE.search(t) or VIETATE_TEMI.search(t): return False
+    return True
+
+
+def ripulisci_opzioni(tipo, o):
+    """Toglie le scritte venute male (se ne occupa il testo di base dell'app) e gli esempi sbagliati; ritorna le opzioni e quello che manca."""
+    sch, segni = OPZ[tipo], SEGNAPOSTO.get(tipo, {})
+    out = {}
+    for k, v in o.items():
+        sk = sch.get(k)
+        if sk is None: continue
+        t = sk.get('type')
+        if t == 'string':
+            if (testo_buono(v, sk.get('maxLength', 80), segni.get(k, ())) or (k == 'domenica' and v == '') or
+                    ('pattern' in sk and isinstance(v, str) and re.match(sk['pattern'], v))):
+                out[k] = pulisci(v) if isinstance(v, str) else v
+        elif t == 'array':
+            it = sk['items']; buoni = []
+            for x in v:
+                if it.get('type') == 'string':
+                    if testo_buono(x, it.get('maxLength', 40)): buoni.append(pulisci(x))
+                elif it.get('type') == 'object':
+                    y, ok = {}, True
+                    for kk, vv in x.items():
+                        si = it['properties'].get(kk, {})
+                        if si.get('type') == 'string':
+                            if kk == 'emoji': y[kk] = vv; continue
+                            ok = ok and testo_buono(vv, si.get('maxLength', 40))
+                            y[kk] = pulisci(vv) if isinstance(vv, str) else vv
+                        elif si.get('type') == 'array' and si['items'].get('type') == 'string':
+                            y[kk] = [pulisci(z) for z in vv if testo_buono(z, si['items'].get('maxLength', 30))]
+                            ok = ok and len(y[kk]) >= si.get('minItems', 0)
+                        else:
+                            y[kk] = vv
+                    if ok: buoni.append(y)
+                else:
+                    buoni.append(x)
+            if len(buoni) >= sk.get('minItems', 0): out[k] = buoni[:sk.get('maxItems', len(buoni))]
+        else:
+            out[k] = v
+    return out, [f'manca o è venuto male: {k}' for k in NECESSARIE[tipo] if k not in out or out[k] in ('', [], None)]
+
+
 def errori_opzioni(tipo, o):
     e = [f'manca {k}' for k in NECESSARIE[tipo] if k not in o or o[k] in ('', [], None)]
     for k, v in o.items():
@@ -535,8 +637,11 @@ def scrivi_idee(n, salva=True, prova_app=True):
             for c in lista:
                 c = {k: pulisci(v) for k, v in c.items()}
                 c['nome'] = frase(c['nome']).rstrip('?!.')
+                d = doppione(c, cat + nuove + [{'nome': x['nome'], 'problema': x['problema'], 'app': {'tipo': x['tipo']}} for x in cand])
                 motivo = ('nome lungo' if len(c['nome']) > LIMITI['nome'] or len(c['nome'].split()) > 6 else
-                          'già fatta' if any(simile(c['nome'], g) for g in gia_nomi + [x['nome'] for x in nuove + cand]) else
+                          'nome telegrafico' if telegrafico(c['nome']) else
+                          f'come «{d}»' if d else
+                          'già fatta' if any(simile(c['nome'], g) for g in gia_nomi) else
                           'tema vietato' if VIETATE.search(c['nome'] + ' ' + c['problema'] + ' ' + c['perche']) else '')
                 print(f"  {'scarto' if motivo else 'ok    '} {c['nome']} · {c['tipo']} · {c['problema']} {('(' + motivo + ')') if motivo else ''}", flush=True)
                 if not motivo: cand.append(c)
@@ -549,9 +654,10 @@ def scrivi_idee(n, salva=True, prova_app=True):
             for k, c in enumerate(cand, 1):
                 v = voti.get(k)
                 if not v: continue
-                c['voto'] = round((v['utile'] * 2 + v['chiara'] + v['nuova'] + v['adatta']) / 5, 1)
-                ok = min(v['utile'], v['chiara'], v['adatta']) >= 7 and v['nuova'] >= 6
-                print(f"  giudizio {c['nome']}: utile {v['utile']} chiara {v['chiara']} nuova {v['nuova']} adatta {v['adatta']} → {c['voto']}{'' if ok else ' (scartata)'}", flush=True)
+                v = {k: v.get(k, 0) for k in ('utile', 'chiara', 'nuova', 'adatta', 'tipo')}
+                c['voto'] = round((v['utile'] * 2 + v['chiara'] + v['nuova'] + v['adatta'] + v['tipo']) / 6, 1)
+                ok = min(v['utile'], v['adatta']) >= 7 and min(v['chiara'], v['tipo']) >= 8 and v['nuova'] >= 7
+                print(f"  giudizio {c['nome']}: utile {v['utile']} chiara {v['chiara']} nuova {v['nuova']} adatta {v['adatta']} tipo {v['tipo']} → {c['voto']}{'' if ok else ' (scartata)'}", flush=True)
                 if ok: buone.append(c)
             buone.sort(key=lambda c: -c['voto'])
             tipi_presi = [x['app']['tipo'] for x in nuove]
@@ -567,7 +673,9 @@ def scrivi_idee(n, salva=True, prova_app=True):
                 idea, nota = None, ''
                 for tent in range(2):
                     try:
-                        i = sistema_idea(srv.json(prompt_idea(c, es) + nota, schema_idea(), temp=0.7, max_tokens=1200))
+                        i = srv.json(prompt_idea(c, es) + nota, schema_idea(), temp=0.7, max_tokens=1200)
+                        i['nome'] = c['nome']                                  # il nome resta quello che è stato giudicato
+                        i = sistema_idea(i)
                     except Exception as ex:
                         print('  errore', ex, flush=True); continue
                     err = errori_idea(i, gia_nomi + [x['nome'] for x in nuove])
@@ -584,10 +692,11 @@ def scrivi_idee(n, salva=True, prova_app=True):
                 opz, nota = None, ''
                 for tent in range(2):
                     try:
-                        o = srv.json(prompt_opzioni(idea, tipo, esempio) + nota, OGG(OPZ[tipo]), temp=0.4, max_tokens=1600)
+                        o = srv.json(prompt_opzioni(idea, tipo, esempio) + nota, largo(OGG(OPZ[tipo])), temp=0.4, max_tokens=1800)
                     except Exception as ex:
                         print('  errore', ex, flush=True); continue
-                    err = errori_opzioni(tipo, o)
+                    o, err = ripulisci_opzioni(tipo, o)
+                    err += errori_opzioni(tipo, o)
                     if not err: opz = opzioni_per_app(tipo, o); break
                     nota = '\nAttenzione: la versione di prima aveva questi problemi, correggili: ' + '; '.join(err) + '.'
                     print('  testi dell\'app da rifare:', '; '.join(err), flush=True)
@@ -604,6 +713,8 @@ def scrivi_idee(n, salva=True, prova_app=True):
                     if not ok: scartate.append(c['nome']); continue
                 x = {k: idea[k] for k in ('nome', 'emoji', 'telefono', 'problema', 'storia', 'domandaE', 'vince', 'cosa', 'domanda', 'regalo', 'righe', 'manda', 'descrizione')}
                 x.update(id=iid, fatto_da='ai', modello=srv.repo, voto_ai=c['voto'], scritta=time.strftime('%Y-%m-%d'), app=app)
+                per = stagione(' '.join([x['nome'], x['problema'], x['storia'], x['cosa'], x['descrizione']]))
+                if per: x['periodo'] = per; print(f'  idea di stagione: si usa dal {per[0]} al {per[1]}', flush=True)
                 nuove.append(x)
                 print(f"  TENUTA: {x['nome']} · {tipo} · voto {c['voto']}", flush=True)
     print(f'\nidee tenute: {len(nuove)} su {n} · scartate dopo la scrittura: {len(scartate)} · {(time.time() - t0) / 60:.0f} minuti', flush=True)
