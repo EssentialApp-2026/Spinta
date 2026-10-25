@@ -443,13 +443,16 @@ def simile(a, b):
     return difflib.SequenceMatcher(None, norm(a), norm(b)).ratio() >= 0.85
 
 
-def doppione(c, cat):
+def doppione(c, cat, passate=()):
     """Un'idea è un doppione se somiglia a una già fatta, o se ha lo stesso tipo di app e una parola importante in comune
-    (nome o fastidio): «Contatore bicchiere acqua» e «Quanta acqua ho bevuto» sono la stessa app."""
+    (nome o fastidio): «Contatore bicchiere acqua» e «Quanta acqua ho bevuto» sono la stessa app. Con le idee delle settimane
+    fatte a mano prima del catalogo («passate», solo il nome) basta una parola importante in comune nel nome."""
     mie = parole(c['nome']) | parole(c.get('problema', ''))
     for i in cat:
         if simile(c['nome'], i['nome']): return i['nome']
         if c.get('tipo') == i['app']['tipo'] and mie & (parole(i['nome']) | parole(i.get('problema', ''))): return i['nome']
+    for n in passate:
+        if simile(c['nome'], n) or parole(c['nome']) & parole(n): return n
     return None
 
 
@@ -637,7 +640,7 @@ def scrivi_idee(n, salva=True, prova_app=True):
             for c in lista:
                 c = {k: pulisci(v) for k, v in c.items()}
                 c['nome'] = frase(c['nome']).rstrip('?!.')
-                d = doppione(c, cat + nuove + [{'nome': x['nome'], 'problema': x['problema'], 'app': {'tipo': x['tipo']}} for x in cand])
+                d = doppione(c, cat + nuove + [{'nome': x['nome'], 'problema': x['problema'], 'app': {'tipo': x['tipo']}} for x in cand], altre)
                 motivo = ('nome lungo' if len(c['nome']) > LIMITI['nome'] or len(c['nome'].split()) > 6 else
                           'nome telegrafico' if telegrafico(c['nome']) else
                           f'come «{d}»' if d else
@@ -738,7 +741,9 @@ if __name__ == '__main__':
         if cmd == 'serve': print('si' if len(resta) < n else 'no'); sys.exit(0)
         if len(resta) >= n: print('la scorta basta: niente da scrivere'); sys.exit(0)
         r = scrivi_idee(max(6, 12 - len(resta)), salva=True)
-        if not r: raise SystemExit('il modello non ha scritto nessuna idea buona')
+        # nessuna idea abbastanza buona non è un guasto: i controlli sono severi apposta, si riprova lunedì prossimo
+        # (e intanto la serie va avanti col catalogo e con le idee che avevano perso)
+        if not r: print('questa volta nessuna idea abbastanza buona: si riprova la settimana prossima')
     else:
         r = scrivi_idee(n, salva=(cmd == 'nuove'))
         print(json.dumps(r, ensure_ascii=False, indent=1))
