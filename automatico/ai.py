@@ -118,7 +118,9 @@ class Server:
         r = json.loads(http(f'http://127.0.0.1:{PORTA}/v1/chat/completions', {
             'messages': [{'role': 'user', 'content': testo}], 'temperature': temp, 'top_p': 0.95, 'top_k': 64, 'max_tokens': max_tokens,
             'response_format': {'type': 'json_object', 'schema': schema}}, timeout=2400))
-        u = r.get('usage', {}); print(f"  ({time.time() - t0:.0f}s, {u.get('prompt_tokens', '?')}+{u.get('completion_tokens', '?')} token)", flush=True)
+        u, tm = r.get('usage', {}), r.get('timings', {}) or {}
+        print(f"  ({time.time() - t0:.0f}s, {u.get('prompt_tokens', '?')}+{u.get('completion_tokens', '?')} token, "
+              f"lettura {tm.get('prompt_per_second', 0):.1f} t/s, scrittura {tm.get('predicted_per_second', 0):.1f} t/s)", flush=True)
         return json.loads(r['choices'][0]['message']['content'])
 
 

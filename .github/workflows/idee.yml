@@ -12,6 +12,14 @@ on:
         description: 'scorta 9 (scrive solo se servono), nuove 6 (ne scrive 6 comunque) o prova 3 (prova senza salvare)'
         required: false
         default: 'scorta 9'
+      modello:
+        description: 'Facoltativo: modello GGUF da provare per primo, come repo:quantizzazione (es. unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_M)'
+        required: false
+        default: ''
+      minuti:
+        description: 'Tempo massimo per scrivere le idee, in minuti'
+        required: false
+        default: '270'
   push:
     branches: [main]
     paths: ['automatico/prova-ai.txt']
@@ -19,7 +27,7 @@ permissions:
   contents: write
   issues: write
 concurrency:
-  group: spinta-idee
+  group: spinta-idee-${{ github.event.inputs.modello || 'base' }}
   cancel-in-progress: false
 jobs:
   idee:
@@ -29,6 +37,8 @@ jobs:
       SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
       SPINTA_GGUF: /home/runner/gguf
       SPINTA_FOTO: /home/runner/foto-app
+      SPINTA_MODELLO: ${{ github.event.inputs.modello || '' }}
+      SPINTA_MINUTI: ${{ github.event.inputs.minuti || (github.event_name == 'push' && '45') || '270' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -78,10 +88,10 @@ jobs:
           git config user.name "Spinta automatica"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add automatico/ai-ultimo-lavoro.txt
-          [ -f automatico/idee-ai.json ] && git add automatico/idee-ai.json
+          if [ -f automatico/idee-ai.json ]; then git add automatico/idee-ai.json; fi
           git commit -q -m "Spinta in automatico: idee dal modello AI (${{ steps.cosa.outputs.comando }}, $(date -u +%F))" || exit 0
-          git pull -q --rebase
-          git push -q
+          for i in 1 2 3 4 5; do git pull -q --rebase -X theirs && git push -q && exit 0; sleep $((i * 7)); done
+          exit 1
       - name: Avvisa se qualcosa è andato storto
         if: failure()
         env:
