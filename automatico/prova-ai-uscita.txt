@@ -1,0 +1,15 @@
+modello unsloth/Qwen3-4B-Instruct-2507-GGUF Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+Traceback (most recent call last):
+  File "/home/runner/work/Spinta/Spinta/automatico/ai.py", line 182, in <module>
+    r = scrivi_idee(n, salva=(cmd == 'nuove'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Spinta/Spinta/automatico/ai.py", line 146, in scrivi_idee
+    with Server() as srv:
+         ^^^^^^^^
+  File "/home/runner/work/Spinta/Spinta/automatico/ai.py", line 65, in __enter__
+    m = modello(); s = llama_server()
+                       ^^^^^^^^^^^^^^
+  File "/home/runner/work/Spinta/Spinta/automatico/ai.py", line 53, in llama_server
+    a = next(x for x in rel['assets'] if re.search(r'bin-ubuntu-x64\.(zip|tar\.gz)$', x['name']))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
