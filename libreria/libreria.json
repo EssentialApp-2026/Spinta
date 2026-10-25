@@ -766,15 +766,6 @@
    "descrizione": "Volo in avanti su Piazza Bellini (foto vera, Public domain: «NapoliPiazzaBellini.jpg», nessun credito da citare; le persone vere sono state tolte da automatico/persone.py) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."
   },
   {
-   "file": "piazza-2026-W46.mp4",
-   "poster": "piazza-2026-W46.jpg",
-   "settimana": "2026-W46",
-   "piazza": "Piazza Garibaldi",
-   "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg",
-   "licenza": "CC0",
-   "descrizione": "Volo in avanti su Piazza Garibaldi (foto vera, CC0: «Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg», nessun credito da citare; le persone vere sono state tolte da automatico/persone.py) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."
-  },
-  {
    "file": "piazza-2026-W45.mp4",
    "poster": "piazza-2026-W45.jpg",
    "settimana": "2026-W45",
@@ -782,6 +773,15 @@
    "foto": "File:Napoli - Piazza Carità.jpg",
    "licenza": "Public domain",
    "descrizione": "Volo in avanti su Piazza Carità (foto vera, Public domain: «Napoli - Piazza Carità.jpg», nessun credito da citare; le persone vere sono state tolte da automatico/persone.py) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."
+  },
+  {
+   "file": "piazza-2026-W46.mp4",
+   "poster": "piazza-2026-W46.jpg",
+   "settimana": "2026-W46",
+   "piazza": "Piazza Garibaldi",
+   "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg",
+   "licenza": "CC0",
+   "descrizione": "Volo in avanti su Piazza Garibaldi (foto vera, CC0: «Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg», nessun credito da citare; le persone vere sono state tolte da automatico/persone.py) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."
   }
  ]
 }
