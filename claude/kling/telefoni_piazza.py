@@ -7,13 +7,17 @@ Va fatto solo se la clip è quella del banco con i telefoni nelle stesse posizio
 import sys, subprocess, cv2, numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
+import json, os
 src, out, poster = sys.argv[1:4]
 specs = [a.split(':') + ['altro'] for a in sys.argv[4:7]]
+# per una clip nuova: TELEFONI_BOX='[[x,y,w,h],[...],[...]]' e TELEFONI_REG='[x,y,w,h]' misurati sul primo fotogramma
 COL = [(47, 158, 110), (59, 111, 216), (224, 138, 46)]
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 BOX = [(322, 918, 34, 50), (362, 916, 33, 49), (398, 914, 34, 49)]   # nel primo fotogramma, compreso il pallino della lettera
 REG = (250, 905, 205, 135)   # davanti del banco da seguire (x, y, w, h) nel primo fotogramma
 SC = 6
+if os.environ.get('TELEFONI_BOX'): BOX = [tuple(b) for b in json.loads(os.environ['TELEFONI_BOX'])]
+if os.environ.get('TELEFONI_REG'): REG = tuple(json.loads(os.environ['TELEFONI_REG']))
 
 def icon(d, kind, cx, cy, r, col):
     if kind == 'auto':

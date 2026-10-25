@@ -11,7 +11,7 @@
     "B": "Sveglia per le strisce blu",
     "C": "Turni di casa"
   },
-  "nota": "Settimana 25 ottobre-1 novembre col programma di Sam: domenica piazza nuova e tre idee (la piazza e la panoramica non sono ancora scelte: va aggiunto il campo «apertura» alla puntata piazza-nuova quando c'è la clip), lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è la puntata «Niente voti, niente app».",
+  "nota": "Settimana 25 ottobre-1 novembre col programma di Sam: domenica piazza nuova (Piazza Bellini, panoramica piazza-2026-W44.mp4) e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è la puntata «Niente voti, niente app».",
   "puntate": [
     {
       "id": "piazza-nuova",
@@ -27,7 +27,9 @@
         "C: Turni di casa.",
         "Scrivete la lettera nei commenti, fino a mercoledì sera.",
         "Venerdì la più votata è sul banco, gratis."
-      ]
+      ],
+      "apertura": "piazza-2026-W44.mp4",
+      "aperturaFrasi": 2
     },
     {
       "id": "promemoria-lunedi",
