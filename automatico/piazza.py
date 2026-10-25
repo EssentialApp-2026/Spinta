@@ -51,7 +51,7 @@ def libera(meta):
 
 
 # foto da non usare per la panoramica: interni, dettagli, quadri e stampe antiche, notturne
-SCARTA = re.compile(r'(intern|interior|inside|dettagl|detail|particolar|lapide|targa|plaque|busto|bust\b|affresc|fresco|dipint|painting|quadro|mappa|map\b|'
+SCARTA = re.compile(r'(intern|interior|inside|dettagl|detail|particolar|lapide|targa|plaque|busto|bust\b|affresc|fresco|dipint|painting|quadro|mappa|map\b|view of|veduta|'
                     r'pianta di|stampa|print|incision|engraving|disegno|drawing|cartolina|postcard|notte|night|notturn|museo|museum|soffitto|ceiling|altare|altar|'
                     r'cripta|crypt|statua|statue|scultura|sculpture|stemma|coat of arms|insegna|sign\b|logo)', re.I)
 
@@ -89,7 +89,7 @@ def cerca_su_commons(nome, spiega=None):
             anno = int(m.group(0)) if (m := re.search(r'(19|20)\d\d', dt)) else 0
             tit = pg['title'].lower(); senza_nome = tit
             for w in parole: senza_nome = senza_nome.replace(w, ' ')
-            if not ok or (anno and anno < 2000) or ii['width'] < 1600 or ii['height'] < 1000 or ii['width'] / ii['height'] < 1.2: continue
+            if not ok or anno < 2000 or ii['width'] < 1600 or ii['height'] < 1000 or ii['width'] / ii['height'] < 1.2: continue   # niente foto antiche o senza data
             if SCARTA.search(senza_nome) or (not in_cat and not all(w in tit for w in parole)): continue
             punti = min(ii['width'] * ii['height'], 24e6) / 1e6 + (8 if in_cat else 0) + (4 if 'piazza' in tit else 0) + (max(anno, 2005) - 2000) / 5
             cand.append((punti, pg['title'], lic, ii.get('descriptionurl', ''))); tenute += 1

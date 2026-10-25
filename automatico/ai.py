@@ -130,7 +130,7 @@ def OGG(props, req=None): return {'type': 'object', 'additionalProperties': Fals
 
 
 # lunghezze vere (in caratteri) di ogni battuta; nello schema si lascia più spazio, così il modello non taglia a metà frase
-LIMITI = dict(nome=40, telefono=9, problema=45, storia=85, domandaE=85, vince=60, cosa=85, domanda=90, regalo=60, riga=70, manda=70, descrizione=260, slogan=75)
+LIMITI = dict(nome=40, telefono=9, problema=32, storia=85, domandaE=85, vince=60, cosa=85, domanda=90, regalo=60, riga=70, manda=70, descrizione=260, slogan=75)
 SCHEMA_LISTA = OGG(dict(idee=LST(OGG(dict(nome=S(60), tipo={'enum': TIPI}, problema=S(70), perche=S(160))), 10, 14)))
 SCHEMA_GIUDIZIO = OGG(dict(voti=LST(OGG(dict(n=INT(1, 20), utile=INT(1, 10), chiara=INT(1, 10), nuova=INT(1, 10), adatta=INT(1, 10))), 1, 20)))
 

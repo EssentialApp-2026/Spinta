@@ -142,8 +142,10 @@ def piano(sett, dom, piazza, idee, apertura):
                            f'Uè guagliù, il bancariello si è spostato in {piazza}!', *abc,
                            'Scrivete la lettera nei commenti, fino a mercoledì sera.', 'Venerdì la più votata è sul banco, gratis.']))
     if apertura: P[0].update(apertura=apertura, aperturaFrasi=2)
+    gancio = f'{maiuscola(A["problema"])}, {B["problema"]} o {C["problema"]}: chi vi frega di più?'
+    if len(gancio) > 100: gancio = 'Tre fastidi, tre idee: quale vi frega di più?'
     P.append(dict(id='promemoria-lunedi', tipo='idee', giorno='lunedì', titolo='Avete già votato?',
-                  copione=[f'{maiuscola(A["problema"])}, {B["problema"]} o {C["problema"]}: chi vi frega di più?', 'Uè guagliù, il voto è aperto da ieri.', *abc,
+                  copione=[gancio, 'Uè guagliù, il voto è aperto da ieri.', *abc,
                            'Basta una lettera nei commenti per decidere.', 'Chi non ha ancora votato, ha tempo fino a mercoledì sera!']))
     P.append(dict(id='cosa-dimenticate', tipo='libera', giorno='martedì', titolo='Cosa vi frega ogni giorno?',
                   copione=[A['storia'], 'Uè guagliù, a me succede sempre!', B['domandaE'], C['domandaE'], 'Per questo ho pensato a queste tre idee.',

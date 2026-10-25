@@ -5,7 +5,7 @@ così si possono controllare a occhio e mettere le migliori in automatico/piazze
 
 Gira su GitHub (.github/workflows/cerca-piazze.yml), perché da lì Commons si raggiunge.
 """
-import os, sys, json, io
+import os, sys, json, io, re
 from PIL import Image, ImageDraw, ImageFont
 
 QUI = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, QUI)
@@ -23,12 +23,48 @@ def miniatura(titolo):
     return fondo
 
 
+def tutte_le_piazze(gia):
+    """Tutte le foto CC0 o di pubblico dominio nelle categorie delle piazze di Napoli (anche sottocategorie), divise per piazza."""
+    per = {}
+    for lib in P.LIBERE:
+        cont = {}
+        for _ in range(6):
+            j = P.commons(dict(action='query', generator='search', gsrnamespace=6, gsrlimit=50, gsrsearch=f'deepcat:"Squares in Naples" {lib} filetype:bitmap',
+                               prop='imageinfo|categories', clshow='!hidden', cllimit=50, iiprop='url|size|extmetadata',
+                               iiextmetadatafilter='LicenseShortName|AttributionRequired|DateTimeOriginal', **cont))
+            for pg in (j.get('query', {}).get('pages', {}) or {}).values():
+                if not pg.get('imageinfo'): continue
+                ii = pg['imageinfo'][0]; ok, licenza = P.libera(ii.get('extmetadata', {}))
+                dt = re.sub('<[^>]+>', '', (ii.get('extmetadata', {}).get('DateTimeOriginal', {}) or {}).get('value', ''))
+                anno = int(m.group(0)) if (m := re.search(r'(19|20)\d\d', dt)) else 0
+                if not ok or anno < 2000 or ii['width'] < 1600 or ii['height'] < 1000 or ii['width'] / ii['height'] < 1.2: continue
+                cats = [c['title'].replace('Category:', '') for c in pg.get('categories', [])]
+                piazza = next((re.sub(r'\s*\((Naples|Napoli)\)$', '', c) for c in cats if re.match(r'^(Piazza|Largo|Piazzetta) ', c)), None)
+                if not piazza or piazza.lower() in gia: continue
+                tit = pg['title'].lower(); senza = tit
+                for w in re.findall(r'[a-zà-ù0-9]+', piazza.lower()): senza = senza.replace(w, ' ')
+                if P.SCARTA.search(senza): continue
+                punti = min(ii['width'] * ii['height'], 24e6) / 1e6 + (4 if 'piazza' in tit else 0) + (anno - 2000) / 5
+                per.setdefault(piazza, []).append((punti, pg['title'], licenza, ii.get('descriptionurl', '')))
+            if 'continue' not in j: break
+            cont = j['continue']
+    return {k: sorted(v, reverse=True) for k, v in per.items()}
+
+
 def main():
     out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(P.ROOT, 'claude', 'piazze-candidate')
     os.makedirs(out, exist_ok=True)
     pz = json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8'))
     tutte = {}
+    gia = {p['nome'].lower() for p in pz['piazze'] + pz.get('trovate', [])} | P.piazze_usate()
+    try:
+        for nome, cand in tutte_le_piazze(gia).items():
+            tutte[nome] = [{'n': k + 1, 'file': c[1], 'licenza': c[2], 'pagina': c[3], 'punti': round(c[0], 1)} for k, c in enumerate(cand[:3])]
+            print('(categorie)', nome, len(cand), [c['file'] for c in tutte[nome]], flush=True)
+    except Exception as e:
+        print('errore nella ricerca per categorie', e, flush=True)
     for nome in pz.get('da_cercare', []):
+        if any(nome.lower() == k.lower() for k in tutte): continue
         spiega = []
         try: cand = P.cerca_su_commons(nome, spiega)[:3]
         except Exception as e: print('errore', nome, e, flush=True); cand = []
