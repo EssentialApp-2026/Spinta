@@ -403,13 +403,20 @@ def sistema(sett):
     return cambiate
 
 
-def prova():
-    """Il sabato W43 (stesse frasi del video di Sam) e la domenica W46, nelle due vivacità, per sentirle."""
-    os.makedirs(PROVE, exist_ok=True)
+def prova(poche=False):
+    """Prove da sentire: il sabato W43 (stesse frasi del video di Sam) e la domenica W46 nelle due vivacità; con «poche» solo
+    tre frasi con la voce di adesso (controllo veloce che tutto funzioni) -> claude/voci/prove/prova-rapida/."""
     w43 = json.load(open(os.path.join(ROOT, 'claude', 'settimana-2026-W43.json'), encoding='utf-8'))
     sab = next(p for p in w43['puntate'] if p['id'] == 'smontaggio')['copione']
     dom = json.load(open(os.path.join(ROOT, 'claude', 'settimana-2026-W46.json'), encoding='utf-8'))['puntate'][0]['copione']
     g = Giudice()
+    if poche:
+        dest = os.path.join(PROVE, 'prova-rapida'); os.makedirs(dest, exist_ok=True); c = Clona(); tmp = tempfile.mkdtemp(); files = []
+        for t in dom[2:5]:
+            f, capito, som, h, seme = migliore(c, g, t, tmp); files.append(f)
+            print(f'PROVA {len(carica(f)) / SR:.2f}s capito {capito:.2f} somiglia {som:.3f} | {t} -> {h}', flush=True)
+        unisci(files, os.path.join(dest, 'prova-rapida.mp3')); print('prova rapida in', dest, flush=True); return
+    os.makedirs(PROVE, exist_ok=True)
     for viv, cfg, nome in ((0.6, 0.5, 'vivace'), (0.85, 0.35, 'molto-vivace')):
         c = Clona(viv, cfg)
         for righe, cosa in ((sab, 'sabato-W43'), (dom, 'domenica-8-novembre')):
@@ -429,5 +436,5 @@ if __name__ == '__main__':
         if not all(esiti): sys.exit(1)       # una settimana non installata: chi chiama (settimana.py) usa la voce di riserva
     elif a[:1] == ['sistema'] and len(a) > 1:
         for s in a[1:]: sistema(s)
-    elif a[:1] == ['prova']: prova()
+    elif a[:1] == ['prova']: prova(poche='--poche' in a)
     else: raise SystemExit(__doc__)

@@ -1,15 +1,24 @@
-# Prova della voce «Mako» rifatta gratis (Chatterbox Multilingual, MIT) dalle battute Mako originali: salva le prove in claude/voci/prove/.
+# Prova veloce della voce «Mako» rifatta gratis (Chatterbox Multilingual, MIT): tre frasi -> claude/voci/prove/prova-rapida/.
+# Con «tutte: si» rifà le prove lunghe (sabato W43 e domenica W46 nelle due vivacità) in claude/voci/prove/.
 name: Prova voce Mako
 on:
   workflow_dispatch:
+    inputs:
+      tutte:
+        description: 'si = le prove lunghe nelle due vivacità'
+        required: false
+        default: 'no'
   push:
     branches: [main]
     paths: ['automatico/prova-voce.txt']
 permissions:
   contents: write
 concurrency:
-  group: spinta-voce
+  group: spinta-voce-prova
   cancel-in-progress: false
+env:
+  SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
+  TQDM_DISABLE: '1'
 jobs:
   prova:
     runs-on: ubuntu-latest
@@ -19,25 +28,29 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Modelli (dalla cache)
+        uses: actions/cache/restore@v4
+        with:
+          path: /home/runner/.cache/spinta-modelli
+          key: spinta-modelli-v2
       - name: Programmi
+        timeout-minutes: 30
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg > /dev/null
-          pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
-          pip install -q chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          for i in 1 2 3; do
+            timeout 480 pip install -q --default-timeout=60 torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu &&
+            timeout 480 pip install -q --default-timeout=60 chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa && break
+            echo "installazione non riuscita (tentativo $i), riprovo"; sleep 10
+          done
       - name: Prova
         shell: bash
         run: |
           set -o pipefail
-          mkdir -p claude/voci/prove
-          python3 automatico/voce_mako.py prova 2>&1 | grep -v "Warn\|warn" | tee claude/voci/prove/log.txt
+          mkdir -p claude/voci/prove/prova-rapida
+          opz="--poche"; [ "${{ github.event.inputs.tutte }}" = "si" ] && opz=""
+          python3 automatico/voce_mako.py prova $opz 2>&1 | grep -v "Warn\|warn" | tee claude/voci/prove/prova-rapida/log.txt
+          grep "^PROVA" claude/voci/prove/prova-rapida/log.txt | sed 's/^/::notice title=Prova voce::/' || true
       - name: Salva
         if: always()
-        shell: bash
         run: |
-          git config user.name "Spinta automatica"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add claude/voci/prove
-          git commit -q -m "Prova voce Mako gratis ($(date -u +%F))" || exit 0
-          for i in 1 2 3 4 5; do git pull -q --rebase -X theirs && git push -q && exit 0; sleep $((i * 7)); done
-          exit 1
+          automatico/salva-git.sh "Prova voce Mako" claude/voci/prove
