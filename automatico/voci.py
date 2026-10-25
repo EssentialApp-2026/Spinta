@@ -7,8 +7,8 @@
 
 Per ogni frase:
   1. due voci italiane open source la leggono in più versioni: Kokoro-82M «if_sara» (Apache-2.0) e Piper «paola» (MIT),
-     con l'inflessione napoletana messa sui fonemi (napoletano(): «sc» davanti a consonante, «nd»/«mb» dopo n e m,
-     vocali finali smorzate, cantilena a fine frase; livello in SPINTA_ACCENTO, predefinito 2);
+     con l'inflessione napoletana messa sui fonemi (napoletano(): «sc» davanti a consonante e cantilena a fine frase;
+     livelli in LIVELLI, scelto con SPINTA_ACCENTO);
   2. kNN-VC (MIT, WavLM-Large + HiFi-GAN) dà a ogni versione il timbro di Gennarino, preso dalle battute Mako
      grezze di claude/voci/grezze (W42-W43, circa 6 minuti);
   3. Whisper small (MIT, sherpa-onnx) riascolta ogni versione e si tiene quella che si capisce meglio;
@@ -54,22 +54,26 @@ def da_leggere(t):
 
 
 # ---- inflessione napoletana (richiesta di Sam, 25 ottobre): si cambia la pronuncia, non le parole del copione ----
-# livello 0 = italiano neutro; 1 = leggera (solo s davanti a consonante e fine frase); 2 = media; 3 = forte
+# Tratti, dal più tipico di Napoli al più «terrone da film» (Sam: troppi tratti fanno Abatantuono, non un napoletano):
+#   sc     «s» davanti a consonante → «sc»: ʃtasera, aʃpettate, ʃkrivete; davanti a sonora ʒ (ʒmonta)
+#   canto  la vocale accentata dell'ultima parola della frase si allunga, se la sillaba è aperta: la cantilena (sˈeːra)
+#   fine   l'ultima vocale della frase, senza accento, si smorza in «ə» (sˈeːrə)
+#   schwa  tutte le vocali finali senza accento (tranne la «a») si smorzano in «ə»
+#   sonore dopo n e m le consonanti sorde diventano sonore (tando, cambo, bangariello)
+LIVELLI = {0: set(), 1: {'sc'}, 2: {'sc', 'canto'}, 3: {'sc', 'canto', 'fine'}, 4: {'sc', 'canto', 'schwa', 'sonore'}}
 ACCENTO = int(os.environ.get('SPINTA_ACCENTO', '2'))
 VOCALI = 'aeiouɛɔəɪʊ'
 
 
 def napoletano(ipa, livello=ACCENTO):
-    """Pronuncia con l'inflessione napoletana, sui fonemi IPA che le voci leggono:
-    - «s» davanti a consonante sorda → «sc» (ʃtasera, aʃpettate, ʃkrivete), davanti a sonora → ʒ (ʒmonta);
-    - dopo n e m le consonanti sorde diventano sonore (tando, cambo, bangariello);
-    - dal livello 2 le vocali finali senza accento si smorzano in «ə» (tranne la «a»; al livello 3 anche la «a»);
-    - l'ultima vocale accentata della frase si allunga, come nella cantilena napoletana.
-    Il livello 1 (solo «sc» e cantilena) si usa per i nomi delle idee, che devono capirsi bene."""
-    if livello <= 0: return ipa
-    t = re.sub(r's(?=[ˈˌ]?[tpkf])', 'ʃ', ipa)
-    t = re.sub(r'z(?=[ˈˌ]?[bdɡgmnlrvɾ])', 'ʒ', t)
-    if livello >= 2:
+    """Pronuncia con l'inflessione napoletana, sui fonemi IPA che le voci leggono (vedi LIVELLI)."""
+    tratti = LIVELLI.get(livello, set()) if isinstance(livello, int) else set(livello)
+    if not tratti: return ipa
+    t = ipa
+    if 'sc' in tratti:
+        t = re.sub(r's(?=[ˈˌ]?[tpkf])', 'ʃ', t)
+        t = re.sub(r'z(?=[ˈˌ]?[bdɡgmnlrvɾ])', 'ʒ', t)
+    if 'sonore' in tratti:
         t = re.sub(r'n([ˈˌ]?)tʃ', r'n\1dʒ', t)
         t = re.sub(r'n([ˈˌ]?)ts', r'n\1dz', t)
         t = re.sub(r'n([ˈˌ]?)t', r'n\1d', t)
@@ -80,21 +84,19 @@ def napoletano(ipa, livello=ACCENTO):
     for n, k in enumerate(parole_i):
         w = pezzi[k]; m = re.match(r'^(.*?)([,.;:!?…»"]*)$', w); corpo, punt = m.group(1), m.group(2)
         fine_frase = bool(punt) or n == len(parole_i) - 1
-        if not corpo or 'ˈ' not in corpo: pezzi[k] = w; continue                  # parole senza accento (articoli, «di», «la»): restano
+        if not corpo or 'ˈ' not in corpo: continue                               # parole senza accento (articoli, «di», «la»): restano
         accento = corpo.rfind('ˈ'); coda = corpo[accento + 1:]
         if not any(c in VOCALI for c in coda[1:]) and len([c for c in coda if c in VOCALI]) <= 1:
-            pezzi[k] = w; continue                                               # tronche come «mercoledì», «guagliù», «blu»
-        ultima = corpo[-1]
-        dopo_vocale = len(corpo) > 1 and corpo[-2] in VOCALI                     # «nei», «mia»: dittonghi e iati restano
-        riduci = livello >= 2 and not dopo_vocale and ultima in 'eioɪʊ' + ('a' if livello >= 3 else '')   # livello 1: niente vocali smorzate
-        if riduci: corpo = corpo[:-1] + 'ə'
-        if fine_frase:   # la vocale accentata dell'ultima parola si allunga, se la sillaba è aperta (sˈeːrə, ma ɡaribˈaldə)
+            continue                                                             # tronche come «mercoledì», «guagliù», «blu»
+        ultima = corpo[-1]; dopo_vocale = len(corpo) > 1 and corpo[-2] in VOCALI    # «nei», «mia»: dittonghi e iati restano
+        if not dopo_vocale and ultima in 'eioɪʊ' and ('schwa' in tratti or ('fine' in tratti and fine_frase)):
+            corpo = corpo[:-1] + 'ə'
+        if fine_frase and 'canto' in tratti:
             i = accento + 1
             while i < len(corpo) and corpo[i] not in VOCALI: i += 1
             j = i + 1; cons = 0
             while j < len(corpo) and corpo[j] not in VOCALI:
-                if corpo[j] == 'ː': cons += 1
-                elif corpo[j] not in 'ˈˌ': cons += 1
+                if corpo[j] not in 'ˈˌ': cons += 1
                 j += 1
             if i < len(corpo) and cons <= 1 and (i + 1 >= len(corpo) or corpo[i + 1] != 'ː'): corpo = corpo[:i + 1] + 'ː' + corpo[i + 1:]
         pezzi[k] = corpo + punt
@@ -204,7 +206,7 @@ class Motore:
         I nomi delle idee («A: Cosa scade nel frigo.», «Ecco Innaffia le piante.») si devono capire bene: lì l'accento è leggero.
         Se una frase con l'accento pieno si capisce poco (Whisper sotto 0,6), si prova anche con l'accento più leggero e si tiene
         quella più chiara, ma l'accento pieno vince se si capisce quasi uguale."""
-        acc = min(ACCENTO, 1) if (re.match(r'^[ABC]\s*:', testo) or any(vkey(n) in vkey(testo) for n in nomi if n)) else ACCENTO
+        acc = min(ACCENTO, 1) if (re.match(r'^[ABC]\s*:', testo) or any(vkey(n) in vkey(testo) for n in nomi if n)) else ACCENTO   # nomi: solo la «sc»
         def prova(livello):
             m = None
             for v in VERSIONI:
