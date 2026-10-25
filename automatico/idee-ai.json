@@ -1,0 +1,370 @@
+{
+ "nota": "Idee scritte dal modello AI locale (automatico/ai.py), controllate e con l'app provata nel browser. Si usano dopo quelle del catalogo.",
+ "idee": [
+  {
+   "nome": "Ricetta della nonna",
+   "emoji": "👵",
+   "telefono": "Ricette",
+   "problema": "ha perso la ricetta della nonna",
+   "storia": "Mamma mia, voglio fare la pastiera come la nonna, ma non ricordo più come si fa!",
+   "domandaE": "E le ricette della nonna: le sapete ancora tutte a memoria?",
+   "vince": "la pastiera è garantita dalla nonna!",
+   "cosa": "Scrivete le ricette di famiglia, ingredienti e preparazione. Condividetele con le persone care.",
+   "domanda": "Qual è la ricetta della nonna che vi manca di più? Ditemelo nei commenti!",
+   "regalo": "la pastiera è pronta!",
+   "righe": [
+    "Scrivete gli ingredienti e i passaggi.",
+    "Potete anche fare una foto al piatto finito."
+   ],
+   "manda": "Mandatela a chi cucina come una regina!",
+   "descrizione": "Scrivi le ricette della nonna, gli ingredienti e i passaggi, fai una foto al piatto finito: le salvi e le condividi con chi vuoi. Tutto resta sul tuo telefono.",
+   "id": "ricetta-della-nonna",
+   "fatto_da": "ai",
+   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
+   "voto_ai": 7.8,
+   "scritta": "2026-10-25",
+   "app": {
+    "nome": "Ricetta della nonna",
+    "breve": "Ricette",
+    "emoji": "👵",
+    "tipo": "registro",
+    "slogan": "Il sapore della tradizione, sempre con te. Un regalo di Gennarino.",
+    "descrizione": "Scrivi le ricette della nonna, gli ingredienti e i passaggi, fai una foto al piatto finito: le salvi e le condividi con chi vuoi. Tutto resta sul tuo telefono.",
+    "chiave": "ricetta-della-nonna-v1",
+    "opzioni": {
+     "versi": [
+      [
+       "Aggiungi Ricetta",
+       "Per la sezione"
+      ]
+     ],
+     "soldi": false,
+     "etichetta": "Nome della ricetta",
+     "placeholder": "Es: Pasta e Patate della Nonna",
+     "etichettaData": "Data di creazione (opzionale)",
+     "bottone": "Salva Ricetta",
+     "titoloForm": "Crea una nuova ricetta",
+     "titoloLista": "Le mie ricette",
+     "filtroAperti": "Tutte",
+     "filtroChiusi": "Preferite",
+     "chiudi": "Ricetta salvata!",
+     "chiusoIl": "Creato il",
+     "scritto": "Ricetta aggiunta con successo.",
+     "vuoto": "Nessuna ricetta ancora. Aggiungine una!",
+     "erroreCosa": "Dai un nome alla tua ricetta.",
+     "whatsapp": false
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "nome": "Turni BBQ",
+   "emoji": "🍖",
+   "telefono": "Bbq",
+   "problema": "chi porta cosa al barbecue",
+   "storia": "Mamma mia, al barbecue si litiga sempre: chi porta il pane, chi la carne, chi le patatine!",
+   "domandaE": "E al barbecue: chi porta il limone?",
+   "vince": "al barbecue tutti sono contenti!",
+   "cosa": "Scrivete chi c’è e cosa porta e vi dico chi porta cosa.",
+   "domanda": "Qual è il vostro piatto preferito al barbecue? Ditemelo nei commenti!",
+   "regalo": "al barbecue si sa chi porta cosa!",
+   "righe": [
+    "Scrivete chi c’è al barbecue e cosa porta.",
+    "L'app vi dice a chi tocca portare cosa."
+   ],
+   "manda": "Mandatela a chi al barbecue porta sempre solo la forchetta!",
+   "descrizione": "Scrivi chi viene al barbecue e cosa porta: l’app ti dice a chi tocca portare cosa, così non ci sono discussioni e tutti mangiano contenti. I turni li condividi col gruppo.",
+   "id": "turni-bbq",
+   "fatto_da": "ai",
+   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
+   "voto_ai": 8.4,
+   "scritta": "2026-10-25",
+   "app": {
+    "nome": "Turni BBQ",
+    "breve": "Bbq",
+    "emoji": "🍖",
+    "tipo": "turni",
+    "slogan": "BBQ senza stress. Un regalo di Gennarino.",
+    "descrizione": "Scrivi chi viene al barbecue e cosa porta: l’app ti dice a chi tocca portare cosa, così non ci sono discussioni e tutti mangiano contenti. I turni li condividi col gruppo.",
+    "chiave": "turni-bbq-v1",
+    "opzioni": {
+     "persone": [
+      "Mamma",
+      "Papà",
+      "Ciro",
+      "Sofia",
+      "Zia Maria"
+     ],
+     "compiti": [
+      "Carne alla brace",
+      "Contorno",
+      "Pane e bevande",
+      "Dolce",
+      "Tavolo e stoviglie"
+     ],
+     "giro": "settimana",
+     "messaggio": "Turni BBQ",
+     "titoloOggi": "Oggi tocca a…",
+     "titoloPersone": "Chi c'è al BBQ",
+     "titoloCompiti": "Cosa porta chi",
+     "placeholderPersona": "Nome",
+     "placeholderCompito": "Descrizione del piatto/cosa da portare…"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "nome": "Ricorda il tagliando",
+   "emoji": "🚗",
+   "telefono": "Tagliando",
+   "problema": "dimenticare il tagliando",
+   "storia": "Mamma mia, mi hanno fermato per il tagliando scaduto!",
+   "domandaE": "E il tagliando della macchina: chi lo ricorda mai?",
+   "vince": "il tagliando non vi frega più!",
+   "cosa": "Segnate quando fare il tagliando e vi ricordo io.",
+   "domanda": "Cosa vi è capitato per il tagliando dimenticato? Ditemelo nei commenti!",
+   "regalo": "il tagliando adesso è sempre in regola!",
+   "righe": [
+    "Segnate quando fare il tagliando.",
+    "Vi avviso prima che scada, così andate tranquilli."
+   ],
+   "manda": "Mandatela a chi ha sempre la macchina a posto!",
+   "descrizione": "Segni quando fare il tagliando della macchina: in cima quello da fare per primo, e ti metto il promemoria nel calendario. Tutto resta sul tuo telefono e funziona anche senza internet.",
+   "id": "ricorda-il-tagliando",
+   "fatto_da": "ai",
+   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
+   "voto_ai": 7.8,
+   "scritta": "2026-10-25",
+   "app": {
+    "nome": "Ricorda il tagliando",
+    "breve": "Tagliando",
+    "emoji": "🚗",
+    "tipo": "scadenze",
+    "slogan": "Tagliando sempre in regola. Un regalo di Gennarino.",
+    "descrizione": "Segni quando fare il tagliando della macchina: in cima quello da fare per primo, e ti metto il promemoria nel calendario. Tutto resta sul tuo telefono e funziona anche senza internet.",
+    "chiave": "ricorda-il-tagliando-v1",
+    "opzioni": {
+     "etichetta": "Cosa devo controllare?",
+     "placeholder": "Cambio olio, filtri, candele…",
+     "etichettaData": "Tagliando previsto il",
+     "giorniBase": 30,
+     "rapidi": [
+      1,
+      7,
+      14,
+      30
+     ],
+     "avviso": 7,
+     "notaEsempi": "Scrivi cosa devi fare e quando (controlla sempre il libretto):",
+     "bottone": "Aggiungi tagliando",
+     "titoloForm": "Aggiungi tagliando",
+     "titoloLista": "I miei tagliandi",
+     "filtroAperti": "Da fare",
+     "filtroChiusi": "Fatto",
+     "fatto": "Fatto",
+     "fattoIl": "Fatto il",
+     "scritto": "Aggiunto tagliando.",
+     "vuoto": "Niente tagliandi in scadenza: tutto a posto!",
+     "contaTutti": "tagliandi",
+     "contaPresto": "da fare presto",
+     "contaScaduti": "scaduti",
+     "promemoria": "Tagliando: {cosa} previsto per il {quando}.",
+     "erroreVuoto": "Scrivi cosa devi controllare e quando, guagliò! Al",
+     "durate": {
+      "Cambio olio e filtri": 6,
+      "Tagliando completo": 12,
+      "Controllo freni": 3,
+      "Sostituzione pneumatici": 180,
+      "Controllo batteria": 60
+     }
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "nome": "Lista mare perfetto",
+   "emoji": "🏖️",
+   "telefono": "Mare",
+   "problema": "il telo dimenticato in spiaggia",
+   "storia": "Mamma mia, al mare senza telo e senza crema, che disastro!",
+   "domandaE": "E al mare: cosa vi serve per essere felici?",
+   "vince": "al mare non manca niente!",
+   "cosa": "Spuntate le cose mentre le prendete e siete pronti per il mare.",
+   "domanda": "Cosa non vi dimenticate mai al mare? Ditemelo nei commenti!",
+   "regalo": "al mare si parte subito!",
+   "righe": [
+    "Create la vostra lista con le cose che servono.",
+    "Spuntatele e partite tranquilli."
+   ],
+   "manda": "Mandatela a chi dimentica sempre il telo!",
+   "descrizione": "La lista per la giornata al mare: teli, crema, occhiali, ombrellone e tutto il necessario per godervi il sole. Spuntate le cose mentre le prendete e partite senza pensieri. Funziona anche senza internet.",
+   "id": "lista-mare-perfetto",
+   "fatto_da": "ai",
+   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
+   "voto_ai": 8.2,
+   "scritta": "2026-10-25",
+   "app": {
+    "nome": "Lista mare perfetto",
+    "breve": "Mare",
+    "emoji": "🏖️",
+    "tipo": "lista",
+    "slogan": "Pronti per un tuffo. Un regalo di Gennarino.",
+    "descrizione": "La lista per la giornata al mare: teli, crema, occhiali, ombrellone e tutto il necessario per godervi il sole. Spuntate le cose mentre le prendete e partite senza pensieri. Funziona anche senza internet.",
+    "chiave": "lista-mare-perfetto-v1",
+    "opzioni": {
+     "esempi": [
+      "Costume da bagno",
+      "Asciugamano mare",
+      "Crema solare",
+      "Cappellino/Bandana",
+      "Occhiali da sole",
+      "Ciabatte",
+      "Giochi da spiaggia (palla, sec"
+     ],
+     "placeholder": "Cosa ti serve per il mare?",
+     "titoloLista": "Lista Mare Perfetto",
+     "presi": "Spuntato!",
+     "togli": "Deseleziona",
+     "notaEsempi": "Cose essenziali per la tua giornata al mare:",
+     "vuoto": "La tua lista è vuota. Aggiungi le cose che ti servono per il"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "nome": "Gite a sorta",
+   "emoji": "🏞️",
+   "telefono": "Sorteggio",
+   "problema": "litigare su dove andare in gita",
+   "storia": "Mamma mia, ogni volta si litiga su dove fare la gita!",
+   "domandaE": "E la gita: chi decide dove andare?",
+   "vince": "la sorte decide, e basta!",
+   "cosa": "Scrivete i posti e fate girare la ruota: il destino vi guiderà.",
+   "domanda": "Qual è il posto che sognate di visitare? Ditemelo nei commenti!",
+   "regalo": "la gita è gratis!",
+   "righe": [
+    "Scrivete i posti che vi piacciono.",
+    "Girate e scoprite la vostra prossima destinazione."
+   ],
+   "manda": "Mandatela a chi non vuole mai fare la stessa gita!",
+   "descrizione": "Scrivi i posti che ti interessano, fai girare la ruota e scopri la prossima gita con gli amici. Senza litigare, solo divertimento. Funziona anche senza internet.",
+   "id": "gite-a-sorta",
+   "fatto_da": "ai",
+   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
+   "voto_ai": 7.8,
+   "scritta": "2026-10-25",
+   "app": {
+    "nome": "Gite a sorta",
+    "breve": "Sorteggio",
+    "emoji": "🏞️",
+    "tipo": "sorteggio",
+    "slogan": "La destinazione è scritta nel destino. Un regalo di Gennarino.",
+    "descrizione": "Scrivi i posti che ti interessano, fai girare la ruota e scopri la prossima gita con gli amici. Senza litigare, solo divertimento. Funziona anche senza internet.",
+    "chiave": "gite-a-sorta-v1",
+    "opzioni": {
+     "liste": [
+      {
+       "nome": "Dove andiamo?",
+       "voci": [
+        "Pompei e il Vesuvio",
+        "Ischia (spiaggia e castel",
+        "Napoli Sotterranea e Spcc",
+        "Reggia di Caserta",
+        "Costiera Amalfitana (Posl",
+        "Ercolano (altro sito)",
+        "Parco di Grignano",
+        "Procida (colori e relax)",
+        "Capri (Blue Grotto)",
+        "Casandino (festa e cibo)"
+       ]
+      },
+      {
+       "nome": "Cosa facciamo?",
+       "voci": [
+        "Pranzo al mare",
+        "Gita in barca",
+        "Visita guidata",
+        "Gelato e passeggiata",
+        "Picnic in campagna",
+        "Museo e storia",
+        "Shopping",
+        "Gelato e parco giochi",
+        "Escursione in montagna",
+        "Assaggiamo la pizza fritt"
+       ]
+      },
+      {
+       "nome": "Chi porta {cosa}?",
+       "voci": [
+        "Mamma",
+        "Papà",
+        "Ciro",
+        "Sofia",
+        "Nonna",
+        "Zio {nome}"
+       ]
+      }
+     ],
+     "gira": "Gira la ruota!",
+     "risultato": "La prossima gita sarà a: {x}! {quando} a",
+     "placeholder": "Aggiungi un posto o un'attività"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "nome": "Contatore bicchiere acqua",
+   "emoji": "💧",
+   "telefono": "Acqua",
+   "problema": "l'acqua che non beviamo",
+   "storia": "Mamma mia, mi scordo sempre di bere l'acqua!",
+   "domandaE": "E l'acqua: quanti bicchieri dovremmo bere al giorno?",
+   "vince": "l'acqua è importante, ricordatelo!",
+   "cosa": "Toccate ogni bicchiere e vi faccio vedere come state andando.",
+   "domanda": "Quanti bicchieri bevete voi? Ditemelo nei commenti!",
+   "regalo": "l'acqua si conta da sola!",
+   "righe": [
+    "Toccate ogni bicchiere che bevete.",
+    "Vi faccio vedere come va la settimana."
+   ],
+   "manda": "Mandatela a chi si dimentica di bere!",
+   "descrizione": "Un tocco per ogni bicchiere d'acqua: raggiungete il vostro obiettivo giornaliero e vedete come state andando. Funziona anche senza internet.",
+   "id": "contatore-bicchiere-acqua",
+   "fatto_da": "ai",
+   "modello": "lmstudio-community/gemma-3-12b-it-GGUF",
+   "voto_ai": 7.6,
+   "scritta": "2026-10-25",
+   "app": {
+    "nome": "Contatore bicchiere acqua",
+    "breve": "Acqua",
+    "emoji": "💧",
+    "tipo": "contatore",
+    "slogan": "Un bicchiere alla volta, più sani. Un regalo di Gennarino.",
+    "descrizione": "Un tocco per ogni bicchiere d'acqua: raggiungete il vostro obiettivo giornaliero e vedete come state andando. Funziona anche senza internet.",
+    "chiave": "contatore-bicchiere-acqua-v1",
+    "opzioni": {
+     "voci": [
+      {
+       "nome": "Bicchieri d'acqua",
+       "emoji": "💧",
+       "obiettivo": 8
+      },
+      {
+       "nome": "Bicchieri di tè",
+       "emoji": "🍵",
+       "obiettivo": 2
+      },
+      {
+       "nome": "Bicchieri di succo",
+       "emoji": "🍹",
+       "obiettivo": 1
+      }
+     ],
+     "titolo": "Oggi",
+     "brav": "Ua', bravo! Hai raggiunto l'obiettivo dei bicchier"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  }
+ ]
+}
