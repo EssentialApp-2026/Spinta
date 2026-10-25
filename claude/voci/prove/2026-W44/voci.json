@@ -50,14 +50,23 @@
    "seme": 1
   },
   {
-   "file": "m06.mp3",
+   "file": "m08.mp3",
    "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
-   "fonte": "mako-originale"
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.639,
+   "sentito": "Scrivete la lettera nei commenti fino a mercoledì sera.",
+   "seme": 0
   },
   {
-   "file": "m07.mp3",
+   "file": "m09.mp3",
    "testo": "Venerdì la più votata è sul banco, gratis.",
-   "fonte": "mako-originale"
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.612,
+   "sentito": "Venevi la più votata e sul banco gratis!",
+   "seme": 0
   }
- ]
+ ],
+ "ultimo": 9
 }

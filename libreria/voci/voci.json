@@ -1,6 +1,6 @@
 {
  "versione": 1,
- "voce": "Gennarino: la voce «Mako» (W42-W43 Gemini TTS, effetto robot). Dalla W44 le frasi già dette da Mako sono gli originali, le altre sono la copia gratis di automatico/voce_mako.py (Chatterbox Multilingual dai 10 secondi di claude/voci/mako-riferimento.wav, scelta della versione più chiara e più somigliante con Whisper e le impronte della voce); «motore»: come è fatta ogni settimana",
+ "voce": "Gennarino: la voce «Mako» (W42-W43 Gemini TTS, effetto robot). Dalla W44 tutte le frasi sono la copia gratis di automatico/voce_mako.py (una voce sola, scelta di Sam; Chatterbox Multilingual dai 10 secondi di claude/voci/mako-riferimento.wav, scelta della versione più chiara e più somigliante con Whisper e le impronte della voce); «motore»: come è fatta ogni settimana",
  "nota": "Battute già pronte: Spinta le usa al posto di Piper quando il testo della frase è uguale. Se cambi una frase, quella frase torna alla voce di Piper.",
  "settimane": {
   "2026-W42": [
@@ -840,11 +840,11 @@
    },
    {
     "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
-    "file": "voci/2026-W44/m06.mp3"
+    "file": "voci/2026-W44/m08.mp3"
    },
    {
     "testo": "Venerdì la più votata è sul banco, gratis.",
-    "file": "voci/2026-W44/m07.mp3"
+    "file": "voci/2026-W44/m09.mp3"
    }
   ],
   "2026-W45": [
