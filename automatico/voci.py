@@ -63,8 +63,9 @@ def napoletano(ipa, livello=ACCENTO):
     """Pronuncia con l'inflessione napoletana, sui fonemi IPA che le voci leggono:
     - «s» davanti a consonante sorda → «sc» (ʃtasera, aʃpettate, ʃkrivete), davanti a sonora → ʒ (ʒmonta);
     - dopo n e m le consonanti sorde diventano sonore (tando, cambo, bangariello);
-    - le vocali finali senza accento si smorzano in «ə» (a fine frase sempre; dal livello 2 anche dentro la frase, tranne la «a»;
-      al livello 3 anche la «a»), e l'ultima vocale accentata della frase si allunga, come nella cantilena napoletana."""
+    - dal livello 2 le vocali finali senza accento si smorzano in «ə» (tranne la «a»; al livello 3 anche la «a»);
+    - l'ultima vocale accentata della frase si allunga, come nella cantilena napoletana.
+    Il livello 1 (solo «sc» e cantilena) si usa per i nomi delle idee, che devono capirsi bene."""
     if livello <= 0: return ipa
     t = re.sub(r's(?=[ˈˌ]?[tpkf])', 'ʃ', ipa)
     t = re.sub(r'z(?=[ˈˌ]?[bdɡgmnlrvɾ])', 'ʒ', t)
@@ -85,7 +86,7 @@ def napoletano(ipa, livello=ACCENTO):
             pezzi[k] = w; continue                                               # tronche come «mercoledì», «guagliù», «blu»
         ultima = corpo[-1]
         dopo_vocale = len(corpo) > 1 and corpo[-2] in VOCALI                     # «nei», «mia»: dittonghi e iati restano
-        riduci = not dopo_vocale and ultima in 'eioɪʊ' + ('a' if livello >= 3 else '') and (fine_frase or livello >= 2)
+        riduci = livello >= 2 and not dopo_vocale and ultima in 'eioɪʊ' + ('a' if livello >= 3 else '')   # livello 1: niente vocali smorzate
         if riduci: corpo = corpo[:-1] + 'ə'
         if fine_frase:   # la vocale accentata dell'ultima parola si allunga, se la sillaba è aperta (sˈeːrə, ma ɡaribˈaldə)
             i = accento + 1
@@ -198,16 +199,24 @@ class Motore:
         s = self.asr.create_stream(); s.accept_waveform(SR, x); self.asr.decode_stream(s)
         return s.result.text.strip()
 
-    def battuta(self, testo):
-        """Prova le VERSIONI e restituisce (audio 16 kHz, punteggio 0-1, trascrizione, versione)."""
-        migliore = None
-        # i nomi delle idee da votare («A: Cosa scade nel frigo.») si devono capire bene: lì l'accento è solo leggero
-        acc = min(ACCENTO, 1) if re.match(r'^[ABC]\s*:', testo) else ACCENTO
-        for v in VERSIONI:
-            y = self.gennarino(self.sorgente(v[0], testo, v[1], acc), v[2])
-            h = self.ascolta(y); s = somiglianza(testo, h)
-            if migliore is None or s > migliore[1] + 1e-9: migliore = (y, s, h, v)
-            if s >= (0.999 if ACCENTO <= 0 else 0.9): break     # con l'accento Whisper (italiano neutro) capisce un po' meno: basta così
+    def battuta(self, testo, nomi=()):
+        """Prova le VERSIONI e restituisce (audio 16 kHz, punteggio 0-1, trascrizione, versione).
+        I nomi delle idee («A: Cosa scade nel frigo.», «Ecco Innaffia le piante.») si devono capire bene: lì l'accento è leggero.
+        Se una frase con l'accento pieno si capisce poco (Whisper sotto 0,6), si prova anche con l'accento più leggero e si tiene
+        quella più chiara, ma l'accento pieno vince se si capisce quasi uguale."""
+        acc = min(ACCENTO, 1) if (re.match(r'^[ABC]\s*:', testo) or any(vkey(n) in vkey(testo) for n in nomi if n)) else ACCENTO
+        def prova(livello):
+            m = None
+            for v in VERSIONI:
+                y = self.gennarino(self.sorgente(v[0], testo, v[1], livello), v[2])
+                h = self.ascolta(y); s = somiglianza(testo, h)
+                if m is None or s > m[1] + 1e-9: m = (y, s, h, v + (livello,))
+                if s >= (0.999 if livello <= 0 else 0.9): break     # con l'accento Whisper (italiano neutro) capisce un po' meno: basta così
+            return m
+        migliore = prova(acc)
+        if migliore[1] < 0.6 and acc > 1:
+            altra = prova(acc - 1)
+            if altra[1] > migliore[1] + 0.15: migliore = altra
         return migliore
 
 
@@ -246,13 +255,14 @@ def registra(piano_path, prova=False, rifai=False):
     usati = [int(os.path.basename(v['file'])[:2]) for v in lista if re.match(r'\d\d\.mp3$', os.path.basename(v['file']))]
     n = max(usati, default=0) + 1
     tmp = tempfile.mkdtemp(); rapporto = []
+    nomi = list((piano.get('idee') or {}).values())
     for testo in frasi:
-        t0 = time.time(); y, s, h, v = m.battuta(testo)
+        t0 = time.time(); y, s, h, v = m.battuta(testo, nomi)
         w = os.path.join(tmp, 'v.wav'); sf.write(w, y, SR)
         nome = f'{n:02d}.mp3'; n += 1
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', w, '-af', EFFETTO, '-ar', '24000', '-ac', '1',
                         '-c:a', 'libmp3lame', '-b:a', '64k', os.path.join(out_dir, nome)], check=True)
-        print(f'{nome} {len(y) / SR:.2f}s capito {s:.2f} {v[0]}{v[1]}k{v[2]} ({time.time() - t0:.0f}s) | {testo} | {h}', flush=True)
+        print(f'{nome} {len(y) / SR:.2f}s capito {s:.2f} {v[0]}{v[1]}k{v[2]} accento {v[3]} ({time.time() - t0:.0f}s) | {testo} | {h}', flush=True)
         rapporto.append({'file': nome, 'testo': testo, 'capito': round(s, 2), 'sentito': h})
         if not prova:
             f = f'voci/{sett}/{nome}'
