@@ -1,0 +1,21 @@
+Downloading: "https://github.com/explosion/spacy-pkuseg/releases/download/v0.0.26/spacy_ontonotes.zip" to /home/runner/.pkuseg/spacy_ontonotes.zip
+  0%|          | 0/34567143 [00:00<?, ?it/s]  6%|▌         | 1949696/34567143 [00:00<00:01, 19300262.52it/s] 73%|███████▎  | 25108480/34567143 [00:00<00:00, 143646521.59it/s]100%|██████████| 34567143/34567143 [00:00<00:00, 153806688.79it/s]
+loaded PerthNet (Implicit) at step 250,000
+modello pronto in 33 s; vivacità 0.6 cfg 0.5
+The following generation flags are not valid and may be ignored: ['output_attentions']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+WARNING:transformers.generation.configuration_utils:The following generation flags are not valid and may be ignored: ['output_attentions']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
+   seme 0: capito 0.89 somiglia 0.440 (30s) | Quanta acqua ho bevuto.
+   seme 1: capito 1.00 somiglia 0.467 (22s) | A. Quanta acqua ho bevuto?
+PROVA 1.71s capito 1.00 somiglia 0.467 | A: Quanta acqua ho bevuto. -> A. Quanta acqua ho bevuto?
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:🚨 Detected 2x repetition of token 4219
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(False), alignment_repetition=tensor(False), token_repetition=True
+   seme 0: capito 0.57 somiglia 0.723 (24s) | B. Garanzie scontrimi
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
+   seme 1: capito 1.00 somiglia 0.595 (29s) | B. Garanzie e scontrini
+PROVA 1.93s capito 1.00 somiglia 0.595 | B: Garanzie e scontrini. -> B. Garanzie e scontrini
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
+   seme 0: capito 0.89 somiglia 0.478 (31s) | L'uovo sodo perfetto.
+   seme 1: capito 0.80 somiglia 0.629 (23s) | C - L'uovo solo perfetto.
+PROVA 1.86s capito 0.80 somiglia 0.629 | C: L'uovo sodo perfetto. -> C - L'uovo solo perfetto.
+prova rapida in /home/runner/work/Spinta/Spinta/claude/voci/prove/prova-rapida
