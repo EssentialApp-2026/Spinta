@@ -94,6 +94,14 @@ jobs:
           git commit -q -m "Spinta in automatico: settimana preparata ($(date -u +%F))" || exit 0
           git pull -q --rebase
           git push -q
+      - name: Avvisa se si è usata la voce di riserva
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          grep -q "uso la voce di riserva" automatico/ultimo-lavoro.txt || exit 0
+          t="Spinta: questa settimana le battute non hanno la voce Mako (c'è la voce di riserva)"
+          gh issue list --repo ${{ github.repository }} --state open --json title --jq '.[].title' | grep -Fxq "$t" && exit 0
+          gh issue create --repo ${{ github.repository }} --title "$t" --body "La settimana è pronta, ma le battute di Gennarino sono con la voce di riserva (automatico/voci.py), non con la voce Mako. Per rifarle con la voce Mako: Actions → «Voce Mako» → settimane = quella settimana, installa si. Log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
       - name: Aggiorna il sito
         if: always()
         env:
