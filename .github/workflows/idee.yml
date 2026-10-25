@@ -79,6 +79,15 @@ jobs:
         run: |
           set -o pipefail
           python3 automatico/ai.py ${{ steps.cosa.outputs.comando }} 2>&1 | tee automatico/ai-ultimo-lavoro.txt
+      - name: Riassunto nel registro di GitHub
+        if: always() && steps.cosa.outputs.serve == 'si'
+        shell: bash
+        run: |
+          # le righe importanti del lavoro (senza la compilazione di llama.cpp) diventano una nota del lavoro, leggibile anche dall'API
+          f=automatico/ai-ultimo-lavoro.txt
+          [ -f "$f" ] || exit 0
+          t=$(grep -vE '^(-- |\[ *[0-9]+%\]|CMAKE|cmake|Building|Linking|Built target|Scanning|Consolidate|Generating|In file|/home/runner)' "$f" | tail -c 12000 | sed 's/%/%25/g' | sed ':a;N;$!ba;s/\n/%0A/g')
+          echo "::notice title=Idee AI::$t"
       - name: Le app scritte dal modello (foto)
         if: always() && steps.cosa.outputs.serve == 'si'
         uses: actions/upload-artifact@v4
@@ -89,13 +98,22 @@ jobs:
           retention-days: 30
       - name: Salva
         if: always() && steps.cosa.outputs.serve == 'si'
+        shell: bash
         run: |
+          set +e
           git config user.name "Spinta automatica"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add automatico/ai-ultimo-lavoro.txt
-          if [ -f automatico/idee-ai.json ]; then git add automatico/idee-ai.json; fi
-          git commit -q -m "Spinta in automatico: idee dal modello AI (${{ steps.cosa.outputs.comando }}, $(date -u +%F))" || exit 0
-          for i in 1 2 3 4 5; do git pull -q --rebase -X theirs && git push -q && exit 0; sleep $((i * 7)); done
+          {
+            git status --short | head -20
+            git add automatico/ai-ultimo-lavoro.txt
+            if [ -f automatico/idee-ai.json ]; then git add automatico/idee-ai.json; fi
+            git commit -q -m "Spinta in automatico: idee dal modello AI (${{ steps.cosa.outputs.comando }}, $(date -u +%F))"
+          } > /tmp/salva.log 2>&1
+          for i in 1 2 3 4 5; do
+            if git pull -q --rebase -X theirs >> /tmp/salva.log 2>&1 && git push -q >> /tmp/salva.log 2>&1; then exit 0; fi
+            sleep $((i * 7))
+          done
+          echo "::error title=Salva::$(tail -c 3000 /tmp/salva.log | sed 's/%/%25/g' | sed ':a;N;$!ba;s/\n/%0A/g')"
           exit 1
       - name: Avvisa se qualcosa è andato storto
         if: failure()
