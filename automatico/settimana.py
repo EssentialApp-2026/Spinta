@@ -11,11 +11,12 @@ Passi (ognuno salta da solo se è già fatto):
      se proprio non ce ne sono, torna un'idea che aveva perso il voto (mai una già regalata);
   2. la piazza nuova e la panoramica col volo in avanti (automatico/piazza.py);
   3. il piano claude/settimana-<W>.json con tutte le puntate (stesse regole di sempre, controllato da claude/controlla.py);
-  4. le battute di Gennarino che mancano (automatico/voci.py);
+  4. le battute di Gennarino con la voce Mako (automatico/voce_mako.py: copia gratis con Chatterbox, gli originali dove ci sono),
+     se c'è il suo Python a parte (SPINTA_PYTHON_MAKO); se non va, la voce di riserva (automatico/voci.py), sempre una sola per settimana;
   5. le tre app regalo pronte in regali/<W>/<idea>/ (automatico/regali.py), una sola uscirà sul banco;
   6. il banco della serie (automatico/banco.json, letto dalla pagina 'O Bancariello) e claude/storico.json.
 """
-import os, sys, json, datetime, subprocess, re
+import os, sys, json, datetime, subprocess, re, shutil
 from zoneinfo import ZoneInfo
 
 QUI = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(QUI)
@@ -217,6 +218,25 @@ def esegui(cmd):
     print(r.stdout[-3000:], r.stderr[-3000:], flush=True); r.check_returncode(); return r.stdout
 
 
+def voci_settimana(pp, sett, rifai=False):
+    """Le battute di Gennarino: la voce Mako (scelta di Sam, 25 ottobre) col Python a parte di Chatterbox (SPINTA_PYTHON_MAKO);
+    se manca o qualcosa va storto, la voce di riserva di automatico/voci.py. voce_mako.py installa la settimana solo quando
+    tutte le frasi sono pronte, quindi in un video non si sentono mai due voci diverse."""
+    py = os.environ.get('SPINTA_PYTHON_MAKO')
+    if py and os.path.exists(py):
+        try:
+            if rifai: shutil.rmtree(os.path.join(ROOT, 'claude', 'voci', 'prove', sett), ignore_errors=True)
+            esegui([py, 'automatico/voce_mako.py', 'settimana', pp])
+            esegui([py, 'automatico/voce_mako.py', 'installa', sett])
+            return 'mako'
+        except Exception as e:
+            print('voce Mako non riuscita, uso la voce di riserva:', e, flush=True)
+    else:
+        print('manca il Python della voce Mako (SPINTA_PYTHON_MAKO): uso la voce di riserva', flush=True)
+    esegui([sys.executable, 'automatico/voci.py', pp] + (['--rifai'] if rifai else []))
+    return 'riserva'
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     sett = args[0] if args else prossima_settimana()
@@ -236,10 +256,10 @@ def main():
         esegui([sys.executable, 'claude/controlla.py', pp])
     if j is None: raise SystemExit('manca il piano ' + pp)
     if '--rifai-voci' in sys.argv:
-        # registra di nuovo tutte le battute della settimana (per esempio con un accento diverso)
-        esegui([sys.executable, 'automatico/voci.py', pp, '--rifai'])
+        # registra di nuovo tutte le battute della settimana
+        voce = voci_settimana(pp, sett, rifai=True)
         esegui([sys.executable, 'claude/controlla.py', pp])
-        print('voci rifatte', sett, flush=True)
+        print('voci rifatte', sett, '(voce', voce + ')', flush=True)
         return
     if '--rifai-piazza' in sys.argv:
         # rifà solo la panoramica della domenica (stessa piazza, stessi telefoni): per esempio per togliere le persone da una già fatta
@@ -248,7 +268,7 @@ def main():
         print('panoramica rifatta', out['file'], out['piazza'], flush=True)
         return
     if '--senza-voci' not in sys.argv and '--solo-regali' not in sys.argv:
-        esegui([sys.executable, 'automatico/voci.py', pp])
+        print('voce:', voci_settimana(pp, sett), flush=True)
         esegui([sys.executable, 'claude/controlla.py', pp])
     regali = costruisci_regali(sett, j)
     aggiorna_banco(sett, dom, j, regali)

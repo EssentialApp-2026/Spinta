@@ -310,7 +310,7 @@ if __name__ == '__main__':
     elif a[:1] == ['settimana'] and len(a) > 1:
         settimana(a[1], solo=tuple(a[a.index('--solo') + 1].split(',')) if '--solo' in a else ())
     elif a[:1] == ['installa'] and len(a) > 1:
-        for s in a[1:]:
-            if not s.startswith('--'): installa(s, parziale='--parziale' in a)
+        esiti = [installa(s, parziale='--parziale' in a) for s in a[1:] if not s.startswith('--')]
+        if not all(esiti): sys.exit(1)       # una settimana non installata: chi chiama (settimana.py) usa la voce di riserva
     elif a[:1] == ['prova']: prova()
     else: raise SystemExit(__doc__)

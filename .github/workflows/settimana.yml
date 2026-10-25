@@ -15,11 +15,11 @@ on:
         required: false
         default: 'no'
       solo_voci:
-        description: 'si = rifà tutte le battute di Gennarino delle settimane indicate (es. dopo aver cambiato accento)'
+        description: 'si = rifà tutte le battute di Gennarino delle settimane indicate (voce Mako)'
         required: false
         default: 'no'
       accento:
-        description: 'Inflessione napoletana della voce: 0 come adesso (scelta di Sam), 1 solo «sc», 2 «sc» e cantilena, 3 anche la vocale finale'
+        description: 'Solo per la voce di riserva (voci.py): inflessione napoletana 0 come adesso (scelta di Sam), 1 solo «sc», 2 «sc» e cantilena, 3 anche la vocale finale'
         required: false
         default: '0'
   push:
@@ -35,12 +35,16 @@ concurrency:
 jobs:
   prepara:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 240
     env:
       SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
       SPINTA_ACCENTO: ${{ github.event.inputs.accento || '0' }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        id: py311
+        with:
+          python-version: '3.11'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -57,6 +61,14 @@ jobs:
         run: |
           pip install -q torch torchaudio --index-url https://download.pytorch.org/whl/cpu
           pip install -q kokoro-onnx piper-tts sherpa-onnx soundfile librosa numpy pillow onnxruntime
+      - name: Voce Mako (Python a parte per Chatterbox; se non si installa, settimana.py usa la voce di riserva)
+        continue-on-error: true
+        run: |
+          ${{ steps.py311.outputs.python-path }} -m venv /home/runner/mako
+          /home/runner/mako/bin/pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+          /home/runner/mako/bin/pip install -q chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
+          /home/runner/mako/bin/python -c "import chatterbox.mtl_tts, sherpa_onnx, soundfile, librosa"
+          echo "SPINTA_PYTHON_MAKO=/home/runner/mako/bin/python" >> "$GITHUB_ENV"
       - name: Prepara la settimana
         shell: bash
         run: |
