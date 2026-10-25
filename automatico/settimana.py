@@ -4,6 +4,7 @@
     python3 automatico/settimana.py 2026-W45        # una settimana precisa
     python3 automatico/settimana.py 2026-W44 --solo-regali   # rifà solo le app regalo e il banco
     python3 automatico/settimana.py 2026-W45 --rifai-piazza  # rifà solo la panoramica della domenica (stessa piazza)
+    python3 automatico/settimana.py 2026-W45 --rifai-voci    # rifà tutte le battute di Gennarino della settimana
 
 Passi (ognuno salta da solo se è già fatto):
   1. tre idee nuove dal catalogo (automatico/catalogo.json, poi automatico/idee-ai.json scritte dal modello AI locale, automatico/ai.py);
@@ -234,6 +235,12 @@ def main():
         scrivi(os.path.join(ROOT, 'claude', 'settimana.json'), j, indent=2)   # copia di riserva: l'ultima settimana preparata
         esegui([sys.executable, 'claude/controlla.py', pp])
     if j is None: raise SystemExit('manca il piano ' + pp)
+    if '--rifai-voci' in sys.argv:
+        # registra di nuovo tutte le battute della settimana (per esempio con un accento diverso)
+        esegui([sys.executable, 'automatico/voci.py', pp, '--rifai'])
+        esegui([sys.executable, 'claude/controlla.py', pp])
+        print('voci rifatte', sett, flush=True)
+        return
     if '--rifai-piazza' in sys.argv:
         # rifà solo la panoramica della domenica (stessa piazza, stessi telefoni): per esempio per togliere le persone da una già fatta
         tel = [f"{j['telefoni'][k]['nome']}:{j['telefoni'][k]['emoji']}" for k in 'ABC']

@@ -3,8 +3,12 @@
     python3 automatico/voci.py claude/settimana-2026-W45.json          # tutte le frasi senza voce
     python3 automatico/voci.py claude/settimana-2026-W45.json --prova  # 3 frasi in una cartella temporanea
 
+    python3 automatico/voci.py claude/settimana-2026-W45.json --rifai  # rifà TUTTE le frasi della settimana (es. dopo aver cambiato accento)
+
 Per ogni frase:
-  1. due voci italiane open source la leggono in più versioni: Kokoro-82M «if_sara» (Apache-2.0) e Piper «paola» (MIT);
+  1. due voci italiane open source la leggono in più versioni: Kokoro-82M «if_sara» (Apache-2.0) e Piper «paola» (MIT),
+     con l'inflessione napoletana messa sui fonemi (napoletano(): «sc» davanti a consonante, «nd»/«mb» dopo n e m,
+     vocali finali smorzate, cantilena a fine frase; livello in SPINTA_ACCENTO, predefinito 2);
   2. kNN-VC (MIT, WavLM-Large + HiFi-GAN) dà a ogni versione il timbro di Gennarino, preso dalle battute Mako
      grezze di claude/voci/grezze (W42-W43, circa 6 minuti);
   3. Whisper small (MIT, sherpa-onnx) riascolta ogni versione e si tiene quella che si capisce meglio;
@@ -47,6 +51,53 @@ def da_leggere(t):
     """Il testo del piano resta quello; qui si aggiusta solo la lettura (lettere A/B/C, «Uè»)."""
     t = re.sub(r'\b([ABC])\b', lambda m: LETTERE[m.group(1)], t)
     return t.replace('Uè ', 'Uè, ').replace(',,', ',')
+
+
+# ---- inflessione napoletana (richiesta di Sam, 25 ottobre): si cambia la pronuncia, non le parole del copione ----
+# livello 0 = italiano neutro; 1 = leggera (solo s davanti a consonante e fine frase); 2 = media; 3 = forte
+ACCENTO = int(os.environ.get('SPINTA_ACCENTO', '2'))
+VOCALI = 'aeiouɛɔəɪʊ'
+
+
+def napoletano(ipa, livello=ACCENTO):
+    """Pronuncia con l'inflessione napoletana, sui fonemi IPA che le voci leggono:
+    - «s» davanti a consonante sorda → «sc» (ʃtasera, aʃpettate, ʃkrivete), davanti a sonora → ʒ (ʒmonta);
+    - dopo n e m le consonanti sorde diventano sonore (tando, cambo, bangariello);
+    - le vocali finali senza accento si smorzano in «ə» (a fine frase sempre; dal livello 2 anche dentro la frase, tranne la «a»;
+      al livello 3 anche la «a»), e l'ultima vocale accentata della frase si allunga, come nella cantilena napoletana."""
+    if livello <= 0: return ipa
+    t = re.sub(r's(?=[ˈˌ]?[tpkf])', 'ʃ', ipa)
+    t = re.sub(r'z(?=[ˈˌ]?[bdɡgmnlrvɾ])', 'ʒ', t)
+    if livello >= 2:
+        t = re.sub(r'n([ˈˌ]?)tʃ', r'n\1dʒ', t)
+        t = re.sub(r'n([ˈˌ]?)ts', r'n\1dz', t)
+        t = re.sub(r'n([ˈˌ]?)t', r'n\1d', t)
+        t = re.sub(r'm([ˈˌ]?)p', r'm\1b', t)
+        t = re.sub(r'[nŋ]([ˈˌ]?)k', r'ŋ\1ɡ', t)
+    pezzi = re.split(r'(\s+)', t)
+    parole_i = [k for k, w in enumerate(pezzi) if w.strip()]
+    for n, k in enumerate(parole_i):
+        w = pezzi[k]; m = re.match(r'^(.*?)([,.;:!?…»"]*)$', w); corpo, punt = m.group(1), m.group(2)
+        fine_frase = bool(punt) or n == len(parole_i) - 1
+        if not corpo or 'ˈ' not in corpo: pezzi[k] = w; continue                  # parole senza accento (articoli, «di», «la»): restano
+        accento = corpo.rfind('ˈ'); coda = corpo[accento + 1:]
+        if not any(c in VOCALI for c in coda[1:]) and len([c for c in coda if c in VOCALI]) <= 1:
+            pezzi[k] = w; continue                                               # tronche come «mercoledì», «guagliù», «blu»
+        ultima = corpo[-1]
+        dopo_vocale = len(corpo) > 1 and corpo[-2] in VOCALI                     # «nei», «mia»: dittonghi e iati restano
+        riduci = not dopo_vocale and ultima in 'eioɪʊ' + ('a' if livello >= 3 else '') and (fine_frase or livello >= 2)
+        if riduci: corpo = corpo[:-1] + 'ə'
+        if fine_frase:   # la vocale accentata dell'ultima parola si allunga, se la sillaba è aperta (sˈeːrə, ma ɡaribˈaldə)
+            i = accento + 1
+            while i < len(corpo) and corpo[i] not in VOCALI: i += 1
+            j = i + 1; cons = 0
+            while j < len(corpo) and corpo[j] not in VOCALI:
+                if corpo[j] == 'ː': cons += 1
+                elif corpo[j] not in 'ˈˌ': cons += 1
+                j += 1
+            if i < len(corpo) and cons <= 1 and (i + 1 >= len(corpo) or corpo[i + 1] != 'ː'): corpo = corpo[:i + 1] + 'ː' + corpo[i + 1:]
+        pezzi[k] = corpo + punt
+    return ''.join(pezzi)
 
 
 def parole(t):
@@ -119,13 +170,18 @@ class Motore:
         self.asr = sherpa_onnx.OfflineRecognizer.from_whisper(encoder=os.path.join(W, 'small-encoder.int8.onnx'), decoder=os.path.join(W, 'small-decoder.int8.onnx'),
                                                               tokens=os.path.join(W, 'small-tokens.txt'), language='it', task='transcribe', num_threads=max(1, os.cpu_count() or 1))
 
-    def sorgente(self, voce, testo, vel):
+    def sorgente(self, voce, testo, vel, accento=None):
+        accento = ACCENTO if accento is None else accento
         if voce == 'sara':
-            s, sr = self.kokoro.create(da_leggere(testo), voice='if_sara', speed=vel, lang='it')
+            fon = napoletano(self.kokoro.tokenizer.phonemize(da_leggere(testo), 'it'), accento)
+            s, sr = self.kokoro.create(fon, voice='if_sara', speed=vel, lang='it', is_phonemes=True)
         else:
             from piper import SynthesisConfig
-            ch = list(self.piper.synthesize(da_leggere(testo), syn_config=SynthesisConfig(length_scale=1 / vel)))
-            s = np.concatenate([c.audio_float_array for c in ch]); sr = ch[0].sample_rate
+            cfg = SynthesisConfig(length_scale=1 / vel); parti = []
+            for frase in self.piper.phonemize(da_leggere(testo)):
+                fon = [c for c in napoletano(''.join(frase), accento) if c in self.piper.config.phoneme_id_map]
+                parti.append(np.asarray(self.piper.phoneme_ids_to_audio(self.piper.phonemes_to_ids(fon), cfg), np.float32))
+            s = np.concatenate(parti); sr = self.piper.config.sample_rate
         x = self.librosa.resample(np.asarray(s, np.float32), orig_sr=sr, target_sr=SR)
         return np.concatenate([np.zeros(800, np.float32), x, np.zeros(800, np.float32)])
 
@@ -145,11 +201,13 @@ class Motore:
     def battuta(self, testo):
         """Prova le VERSIONI e restituisce (audio 16 kHz, punteggio 0-1, trascrizione, versione)."""
         migliore = None
+        # i nomi delle idee da votare («A: Cosa scade nel frigo.») si devono capire bene: lì l'accento è solo leggero
+        acc = min(ACCENTO, 1) if re.match(r'^[ABC]\s*:', testo) else ACCENTO
         for v in VERSIONI:
-            y = self.gennarino(self.sorgente(v[0], testo, v[1]), v[2])
+            y = self.gennarino(self.sorgente(v[0], testo, v[1], acc), v[2])
             h = self.ascolta(y); s = somiglianza(testo, h)
             if migliore is None or s > migliore[1] + 1e-9: migliore = (y, s, h, v)
-            if s >= 0.999: break
+            if s >= (0.999 if ACCENTO <= 0 else 0.9): break     # con l'accento Whisper (italiano neutro) capisce un po' meno: basta così
         return migliore
 
 
@@ -164,18 +222,27 @@ def frasi_mancanti(piano, vj):
     return out
 
 
-def registra(piano_path, prova=False):
+def registra(piano_path, prova=False, rifai=False):
+    """rifai=True: registra di nuovo TUTTE le frasi della settimana (per esempio dopo aver cambiato l'accento); i file nuovi
+    prendono il posto dei vecchi solo alla fine, così se qualcosa va storto la settimana resta com'era."""
     import soundfile as sf
     piano = json.load(open(piano_path, encoding='utf-8')); sett = piano['settimana']
     vj_path = os.path.join(ROOT, 'libreria', 'voci', 'voci.json'); vj = json.load(open(vj_path, encoding='utf-8'))
-    frasi = frasi_mancanti(piano, vj)
+    if rifai:
+        frasi = []
+        for p in piano.get('puntate', []):
+            for r in p.get('copione', []):
+                if vkey(r) not in {vkey(f) for f in frasi}: frasi.append(r)
+    else:
+        frasi = frasi_mancanti(piano, vj)
     if prova: frasi = frasi[:3]
     if not frasi: print('tutte le frasi hanno già la voce'); return []
-    print(len(frasi), 'frasi da registrare per', sett, flush=True)
+    print(len(frasi), 'frasi da registrare per', sett, '(accento napoletano livello', ACCENTO, ')', flush=True)
     m = Motore()
-    out_dir = tempfile.mkdtemp() if prova else os.path.join(ROOT, 'libreria', 'voci', sett)
+    finale = os.path.join(ROOT, 'libreria', 'voci', sett)
+    out_dir = tempfile.mkdtemp() if (prova or rifai) else finale
     os.makedirs(out_dir, exist_ok=True)
-    lista = vj['settimane'].setdefault(sett, [])
+    lista = [] if rifai else vj['settimane'].setdefault(sett, [])
     usati = [int(os.path.basename(v['file'])[:2]) for v in lista if re.match(r'\d\d\.mp3$', os.path.basename(v['file']))]
     n = max(usati, default=0) + 1
     tmp = tempfile.mkdtemp(); rapporto = []
@@ -193,12 +260,18 @@ def registra(piano_path, prova=False):
             lista.append({'testo': testo, 'file': f})
     shutil.rmtree(tmp, ignore_errors=True)
     if prova: print('prova in', out_dir); return rapporto
+    if rifai:   # tutto registrato: la cartella nuova prende il posto della vecchia
+        shutil.rmtree(finale, ignore_errors=True); shutil.move(out_dir, finale)
+        vj['settimane'][sett] = lista
+    vj.setdefault('accento', {})[sett] = ACCENTO
     lista.sort(key=lambda x: x['file'])
-    vj['voce'] = "Gennarino nuovo: W42-W43 Gemini TTS «Mako» con effetto robot; dalla W44 lo stesso timbro rifatto gratis da automatico/voci.py (Kokoro/Piper italiano + kNN-VC dalle battute Mako grezze, scelta della versione più chiara con Whisper)"
+    vj['voce'] = ("Gennarino nuovo: W42-W43 Gemini TTS «Mako» con effetto robot; dalla W44 lo stesso timbro rifatto gratis da automatico/voci.py "
+                  "(Kokoro/Piper italiano con la pronuncia napoletana sui fonemi + kNN-VC dalle battute Mako grezze, scelta della versione più chiara con Whisper); "
+                  "«accento»: livello di inflessione napoletana di ogni settimana (0 neutro, 2 napoletana, 3 forte)")
     json.dump(vj, open(vj_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('media capito', round(float(np.mean([r['capito'] for r in rapporto])), 2))
     return rapporto
 
 
 if __name__ == '__main__':
-    registra(sys.argv[1], prova='--prova' in sys.argv)
+    registra(sys.argv[1], prova='--prova' in sys.argv, rifai='--rifai' in sys.argv)

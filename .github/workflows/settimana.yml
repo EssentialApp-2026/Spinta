@@ -14,6 +14,14 @@ on:
         description: 'si = rifà solo la panoramica della domenica delle settimane indicate (stessa piazza)'
         required: false
         default: 'no'
+      solo_voci:
+        description: 'si = rifà tutte le battute di Gennarino delle settimane indicate (es. dopo aver cambiato accento)'
+        required: false
+        default: 'no'
+      accento:
+        description: 'Inflessione napoletana della voce: 0 neutra, 1 leggera, 2 napoletana, 3 forte'
+        required: false
+        default: '2'
   push:
     branches: [main]
     paths: ['automatico/prova-settimana.txt']
@@ -30,6 +38,7 @@ jobs:
     timeout-minutes: 180
     env:
       SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
+      SPINTA_ACCENTO: ${{ github.event.inputs.accento || '2' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -53,6 +62,7 @@ jobs:
         run: |
           set -o pipefail
           opz=""; [ "${{ github.event.inputs.solo_piazza }}" = "si" ] && opz="--rifai-piazza"
+          [ "${{ github.event.inputs.solo_voci }}" = "si" ] && opz="--rifai-voci"
           sett="${{ github.event.inputs.settimana }}"
           : > automatico/ultimo-lavoro.txt
           for w in ${sett:-prossima}; do
