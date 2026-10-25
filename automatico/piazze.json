@@ -1,5 +1,5 @@
 {
- "nota": "Piazze vere di Napoli per la panoramica della domenica, in ordine. Foto controllate a mano: solo CC0 o pubblico dominio (nessun credito da citare). Usate: si saltano da sole (libreria.json, aperture). Finite queste, automatico/piazza.py cerca su Commons quelle di «da_cercare».",
+ "nota": "Piazze vere di Napoli per la panoramica della domenica, in ordine. Foto controllate a mano: solo CC0 o pubblico dominio (nessun credito da citare). Usate: si saltano da sole (libreria.json, aperture). Finite queste, automatico/piazza.py cerca su Commons quelle di «da_cercare». Quando sono finite tutte (anche quelle trovate in automatico, in «trovate»), si torna nella piazza dove Gennarino manca da più tempo.",
  "piazze": [
   {
    "nome": "Piazza Carità",
@@ -34,6 +34,21 @@
   {
    "nome": "Piazza Mercato",
    "file": "File:Piazza Masaniello.jpg",
+   "licenza": "Public domain"
+  },
+  {
+   "nome": "Piazza del Plebiscito",
+   "file": "File:San Francesco di Paola, Naples, 18 Feb 2018.jpg",
+   "licenza": "CC0"
+  },
+  {
+   "nome": "Piazza del Gesù Nuovo",
+   "file": "File:Gesùnuovo.JPG",
+   "licenza": "CC0"
+  },
+  {
+   "nome": "Piazza Bellini",
+   "file": "File:NapoliPiazzaBellini.jpg",
    "licenza": "Public domain"
   }
  ],

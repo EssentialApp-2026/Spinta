@@ -23,31 +23,40 @@ def miniatura(titolo):
     return fondo
 
 
+def membri(cat, tipo, pagine=10, **extra):
+    cont, out = {}, []
+    for _ in range(pagine):
+        j = P.commons(dict(action='query', generator='categorymembers', gcmtitle=cat, gcmtype=tipo, gcmlimit=50, **extra, **cont))
+        out += list((j.get('query', {}).get('pages', {}) or {}).values())
+        if 'continue' not in j: break
+        cont = j['continue']
+    return out
+
+
 def tutte_le_piazze(gia):
-    """Tutte le foto CC0 o di pubblico dominio nelle categorie delle piazze di Napoli (anche sottocategorie), divise per piazza."""
+    """Tutte le foto CC0 o di pubblico dominio nelle categorie delle piazze di Napoli (e nelle loro sottocategorie), divise per piazza."""
     per = {}
-    for lib in P.LIBERE:
-        cont = {}
-        for _ in range(6):
-            j = P.commons(dict(action='query', generator='search', gsrnamespace=6, gsrlimit=50, gsrsearch=f'deepcat:"Squares in Naples" {lib} filetype:bitmap',
-                               prop='imageinfo|categories', clshow='!hidden', cllimit=50, iiprop='url|size|extmetadata',
-                               iiextmetadatafilter='LicenseShortName|AttributionRequired|DateTimeOriginal', **cont))
-            for pg in (j.get('query', {}).get('pages', {}) or {}).values():
+    piazze = [pg['title'] for pg in membri('Category:Squares in Naples', 'subcat', pagine=4)]
+    print('categorie di piazze:', len(piazze), flush=True)
+    for cat in piazze:
+        nome = re.sub(r'\s*\((Naples|Napoli)\)$', '', cat.replace('Category:', ''))
+        if nome.lower() in gia or not re.match(r'^(Piazza|Largo|Piazzetta) ', nome): continue
+        cats = [cat] + [pg['title'] for pg in membri(cat, 'subcat', pagine=1) if not re.search(r'(interior|church|chiesa|night|notte|museum|statue|monument|fountain|fontana|metro|station)', pg['title'], re.I)][:8]
+        n = 0
+        for c in cats:
+            for pg in membri(c, 'file', pagine=6, prop='imageinfo', iiprop='url|size|extmetadata', iiextmetadatafilter='LicenseShortName|AttributionRequired|DateTimeOriginal'):
                 if not pg.get('imageinfo'): continue
+                n += 1
                 ii = pg['imageinfo'][0]; ok, licenza = P.libera(ii.get('extmetadata', {}))
                 dt = re.sub('<[^>]+>', '', (ii.get('extmetadata', {}).get('DateTimeOriginal', {}) or {}).get('value', ''))
                 anno = int(m.group(0)) if (m := re.search(r'(19|20)\d\d', dt)) else 0
                 if not ok or anno < 2000 or ii['width'] < 1600 or ii['height'] < 1000 or ii['width'] / ii['height'] < 1.2: continue
-                cats = [c['title'].replace('Category:', '') for c in pg.get('categories', [])]
-                piazza = next((re.sub(r'\s*\((Naples|Napoli)\)$', '', c) for c in cats if re.match(r'^(Piazza|Largo|Piazzetta) ', c)), None)
-                if not piazza or piazza.lower() in gia: continue
                 tit = pg['title'].lower(); senza = tit
-                for w in re.findall(r'[a-zà-ù0-9]+', piazza.lower()): senza = senza.replace(w, ' ')
+                for w in re.findall(r'[a-zà-ù0-9]+', nome.lower()): senza = senza.replace(w, ' ')
                 if P.SCARTA.search(senza): continue
-                punti = min(ii['width'] * ii['height'], 24e6) / 1e6 + (4 if 'piazza' in tit else 0) + (anno - 2000) / 5
-                per.setdefault(piazza, []).append((punti, pg['title'], licenza, ii.get('descriptionurl', '')))
-            if 'continue' not in j: break
-            cont = j['continue']
+                punti = min(ii['width'] * ii['height'], 24e6) / 1e6 + (4 if 'piazza' in tit else 0) + (anno - 2000) / 5 + (3 if c == cat else 0)
+                if not any(x[1] == pg['title'] for x in per.get(nome, [])): per.setdefault(nome, []).append((punti, pg['title'], licenza, ii.get('descriptionurl', '')))
+        print(f'  {nome}: {n} foto guardate, {len(per.get(nome, []))} libere e adatte', flush=True)
     return {k: sorted(v, reverse=True) for k, v in per.items()}
 
 
