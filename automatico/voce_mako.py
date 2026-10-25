@@ -12,7 +12,8 @@ Come lavora (tutto gratis; gira su GitHub, perché il modello si scarica da Hugg
      «scegli» prova i pezzi di Mako grezza e tiene quello con cui la copia somiglia di più;
   2. per ogni frase fa più versioni: Whisper small (MIT) controlla che si capisca, due «impronte della voce» (CAM++ di WeSpeaker
      e ERes2Net di 3D-Speaker, Apache-2.0) misurano quanto somiglia alla Mako vera; si tiene la migliore;
-  3. le frasi che Mako aveva già detto (W42-W43) si prendono così come sono, dagli originali;
+  3. TUTTE le frasi con la copia, anche quelle che Mako aveva già detto: una voce sola (Sam, 25 ottobre: «il mix vecchio nuovo
+     non mi piace»); con SPINTA_ORIGINALI=si quelle frasi si prenderebbero invece dagli originali W42-W43;
   4. lo stesso effetto robot delle W43 (voci.EFFETTO), MP3 24 kHz mono 64k.
 Vivacità e cfg: SPINTA_VIVACITA e SPINTA_CFG (0,6 e 0,5 = «vivace»; 0,85 e 0,35 = «molto vivace»).
 Pacchetti: torch==2.6.0 torchaudio==2.6.0 (CPU) chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
@@ -31,6 +32,7 @@ RIF_INFO = os.path.join(ROOT, 'claude', 'voci', 'mako-riferimento.json')
 PROVE = os.path.join(ROOT, 'claude', 'voci', 'prove')
 LIB = os.path.join(ROOT, 'libreria', 'voci')
 SETTIMANE_MAKO = ('2026-W42', '2026-W43')       # le battute dette dalla Mako vera
+ORIGINALI = os.environ.get('SPINTA_ORIGINALI', 'no') == 'si'   # no: una voce sola, la copia anche dove c'è l'originale (scelta di Sam)
 SR, SR_OUT = V.SR, 24000
 VIVACITA = float(os.environ.get('SPINTA_VIVACITA') or 0.6)
 CFG = float(os.environ.get('SPINTA_CFG') or 0.5)
@@ -227,6 +229,15 @@ def settimana(piano_path, solo=(), k=2):
         for f in glob.glob(os.path.join(dest, 'm*.mp3')): os.remove(f)
         stato = {}
     stato.update(settimana=sett, **impostazioni); stato.setdefault('battute', [])
+    # i numeri dei file non si riusano mai (un telefono potrebbe avere in memoria la voce vecchia con lo stesso nome)
+    numero = lambda f: int(m.group(1)) if (m := re.match(r'm(\d+)\.mp3$', os.path.basename(f))) else 0
+    gia = os.listdir(os.path.join(LIB, sett)) if os.path.isdir(os.path.join(LIB, sett)) else []
+    n = max([numero(b['file']) for b in stato['battute']] + [numero(f) for f in gia] + [stato.get('ultimo', 0)]) + 1
+    if not ORIGINALI:     # una voce sola: le battute prese dagli originali si rifanno con la copia
+        for b in [b for b in stato['battute'] if b['fonte'] != 'copia']:
+            try: os.remove(os.path.join(dest, b['file']))
+            except FileNotFoundError: pass
+        stato['battute'] = [b for b in stato['battute'] if b['fonte'] == 'copia']
     fatte = {V.vkey(b['testo']) for b in stato['battute']}
     righe = []
     for p in piano.get('puntate', []):
@@ -234,10 +245,9 @@ def settimana(piano_path, solo=(), k=2):
         for r in p.get('copione', []):
             if V.vkey(r) not in fatte and V.vkey(r) not in {V.vkey(x) for x in righe}: righe.append(r)
     print(sett, len(righe), 'battute da fare', f'(riferimento {rif_nome()}, vivacità {VIVACITA}, cfg {CFG})', flush=True)
-    mako = battute_mako(); c = g = None; tmp = tempfile.mkdtemp()
-    n = max([int(b['file'][1:3]) for b in stato['battute']], default=0) + 1
+    mako = battute_mako() if ORIGINALI else {}; c = g = None; tmp = tempfile.mkdtemp()
     for testo in righe:
-        nome = f'm{n:02d}.mp3'; n += 1
+        nome = f'm{n:02d}.mp3'; stato['ultimo'] = n; n += 1
         if V.vkey(testo) in mako:
             shutil.copy(mako[V.vkey(testo)], os.path.join(dest, nome))
             b = {'file': nome, 'testo': testo, 'fonte': 'mako-originale'}
@@ -280,8 +290,8 @@ def installa(sett, parziale=False):
     vj['settimane'][sett] = sorted(lista, key=lambda x: x['file'])
     vj.setdefault('accento', {})[sett] = 0
     vj.setdefault('motore', {})[sett] = f'mako-copia (Chatterbox, vivacità {stato["vivacita"]}, cfg {stato["cfg"]})' if len(nuove) == len(lista) else 'misto'
-    vj['voce'] = ("Gennarino: la voce «Mako» (W42-W43 Gemini TTS, effetto robot). Dalla W44 le frasi già dette da Mako sono gli originali, "
-                  "le altre sono la copia gratis di automatico/voce_mako.py (Chatterbox Multilingual dai 10 secondi di claude/voci/mako-riferimento.wav, "
+    vj['voce'] = ("Gennarino: la voce «Mako» (W42-W43 Gemini TTS, effetto robot). Dalla W44 tutte le frasi sono la copia gratis di automatico/voce_mako.py "
+                  "(una voce sola, scelta di Sam; Chatterbox Multilingual dai 10 secondi di claude/voci/mako-riferimento.wav, "
                   "scelta della versione più chiara e più somigliante con Whisper e le impronte della voce); «motore»: come è fatta ogni settimana")
     json.dump(vj, open(vj_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print(sett, 'installata:', len(nuove), 'battute nuove,', len(lista), 'in tutto', flush=True)
