@@ -275,7 +275,8 @@ REGOLE = """Regole fisse della serie:
 - italiano semplice e corto, da dire a voce; al massimo una parola napoletana ogni tanto;
 - niente richieste di like o di «mi piace», niente batteria o ricarica;
 - niente salute, diete, medicine, soldi da investire, scommesse, lotto, politica, amore, religione, alcol, fumo;
-- niente marche, niente nomi di persone famose, niente prese in giro di nessuno."""
+- niente marche e niente persone vere (né famose né private): negli esempi solo nomi inventati e comuni (Mamma, Papà, Ciro, Sofia, Nonna);
+- niente prese in giro di nessuno."""
 
 
 def prompt_lista(gia, quante):
