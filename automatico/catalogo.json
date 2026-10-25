@@ -384,8 +384,8 @@
    "nome": "La valigia senza scordare niente",
    "emoji": "🧳",
    "telefono": "Valigia",
-   "problema": "il caricabatterie scordato",
-   "storia": "Mamma mia, in vacanza senza caricabatterie!",
+   "problema": "lo spazzolino scordato",
+   "storia": "Mamma mia, in vacanza senza spazzolino e senza pigiama!",
    "domandaE": "E la valigia: ogni volta vi scordate qualcosa?",
    "vince": "in valigia non manca più niente!",
    "cosa": "Spuntate le cose mentre le mettete in valigia.",
@@ -396,19 +396,19 @@
     "Spuntate mentre la chiudete."
    ],
    "manda": "Mandatela a chi si scorda sempre il pigiama!",
-   "descrizione": "La lista per la valigia, già divisa tra vestiti, bagno, documenti e caricabatterie: spunti mentre la riempi e non scordi niente. Funziona anche senza internet.",
+   "descrizione": "La lista per la valigia, già divisa tra vestiti, bagno, documenti e telefono: spunti mentre la riempi e non scordi niente. Funziona anche senza internet.",
    "app": {
     "nome": "La valigia senza scordare niente",
     "breve": "Valigia",
     "emoji": "🧳",
     "tipo": "lista",
     "slogan": "In valigia non manca più niente. Un regalo di Gennarino.",
-    "descrizione": "La lista per la valigia, già divisa tra vestiti, bagno, documenti e caricabatterie: spunti mentre la riempi e non scordi niente. Funziona anche senza internet.",
+    "descrizione": "La lista per la valigia, già divisa tra vestiti, bagno, documenti e telefono: spunti mentre la riempi e non scordi niente. Funziona anche senza internet.",
     "chiave": "valigia-v1",
     "opzioni": {
      "esempi": [
       "Documenti",
-      "Caricabatterie",
+      "Caricatore del telefono",
       "Spazzolino",
       "Pigiama",
       "Mutande",
@@ -440,7 +440,7 @@
        "medicin"
       ],
       "Elettronica": [
-       "caricabatter",
+       "caricator",
        "cuffie",
        "telefono",
        "power",
@@ -467,7 +467,11 @@
      "notaEsempi": "Le cose che servono sempre:"
     },
     "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
-   }
+   },
+   "periodo": [
+    "06-15",
+    "09-10"
+   ]
   },
   {
    "id": "acqua-bicchieri",

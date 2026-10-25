@@ -1,0 +1,92 @@
+# Spinta scrive da sola idee nuove per la bancarella col modello AI locale, gratis (llama.cpp + un modello aperto, niente account né chiavi).
+# Ogni lunedì controlla la scorta: se restano meno di 9 idee nuove, ne scrive altre (battute di Gennarino, testi dell'app e app provata
+# in un browser vero) e le aggiunge ad automatico/idee-ai.json; la settimana di Spinta le usa quando finisce il catalogo scritto a mano.
+# A mano: Actions → «Idee nuove col modello AI» → Run workflow (comando «scorta 9», «nuove 6» oppure «prova 3», che non salva niente).
+name: Idee nuove col modello AI
+on:
+  schedule:
+    - cron: '17 2 * * 1'          # lunedì 02:17 UTC, di notte: non dà fastidio agli altri lavori
+  workflow_dispatch:
+    inputs:
+      comando:
+        description: 'scorta 9 (scrive solo se servono), nuove 6 (ne scrive 6 comunque) o prova 3 (prova senza salvare)'
+        required: false
+        default: 'scorta 9'
+  push:
+    branches: [main]
+    paths: ['automatico/prova-ai.txt']
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: spinta-idee
+  cancel-in-progress: false
+jobs:
+  idee:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    env:
+      SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
+      SPINTA_GGUF: /home/runner/gguf
+      SPINTA_FOTO: /home/runner/foto-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Cosa fare
+        id: cosa
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then c="prova 3"; else c="${{ github.event.inputs.comando }}"; fi
+          [ -z "$c" ] && c="scorta 9"
+          case "$c" in scorta\ *|nuove\ *|prova\ *) ;; *) echo "comando sconosciuto: $c"; exit 1;; esac
+          set -- $c
+          if [ "$1" = "scorta" ]; then s=$(python3 automatico/ai.py serve "${2:-9}"); else s=si; fi
+          echo "comando=$c" >> "$GITHUB_OUTPUT"; echo "serve=$s" >> "$GITHUB_OUTPUT"
+          echo "comando: $c · serve scrivere idee: $s"
+      - name: Programmi
+        if: steps.cosa.outputs.serve == 'si'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-color-emoji fonts-dejavu-core > /dev/null
+          pip install -q pillow playwright
+          python -m playwright install --with-deps chromium > /dev/null
+      - name: llama.cpp (dalla cache)
+        if: steps.cosa.outputs.serve == 'si'
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/spinta-modelli/llama
+          key: llama-cpp-v1
+      - name: Scrivi le idee
+        if: steps.cosa.outputs.serve == 'si'
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 automatico/ai.py ${{ steps.cosa.outputs.comando }} 2>&1 | tee automatico/ai-ultimo-lavoro.txt
+      - name: Le app scritte dal modello (foto)
+        if: always() && steps.cosa.outputs.serve == 'si'
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-del-modello-ai
+          path: /home/runner/foto-app
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Salva
+        if: always() && steps.cosa.outputs.serve == 'si'
+        run: |
+          git config user.name "Spinta automatica"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add automatico/ai-ultimo-lavoro.txt
+          [ -f automatico/idee-ai.json ] && git add automatico/idee-ai.json
+          git commit -q -m "Spinta in automatico: idee dal modello AI (${{ steps.cosa.outputs.comando }}, $(date -u +%F))" || exit 0
+          git pull -q --rebase
+          git push -q
+      - name: Avvisa se qualcosa è andato storto
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          t="Spinta: il modello AI non è riuscito a scrivere idee nuove"
+          gh issue list --repo ${{ github.repository }} --state open --json title --jq '.[].title' | grep -Fxq "$t" && exit 0
+          gh issue create --repo ${{ github.repository }} --title "$t" --body "Il lavoro automatico non è finito: guarda il log qui ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Non è urgente: finché ci sono idee nel catalogo la serie va avanti da sola (e se finiscono torna un'idea che aveva perso il voto). Si può rilanciare da Actions → «Idee nuove col modello AI» → Run workflow." || true

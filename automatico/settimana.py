@@ -5,7 +5,8 @@
     python3 automatico/settimana.py 2026-W44 --solo-regali   # rifà solo le app regalo e il banco
 
 Passi (ognuno salta da solo se è già fatto):
-  1. tre idee nuove dal catalogo (automatico/catalogo.json); se finiscono, le scrive il modello AI locale (automatico/ai.py);
+  1. tre idee nuove dal catalogo (automatico/catalogo.json, poi automatico/idee-ai.json scritte dal modello AI locale, automatico/ai.py);
+     se proprio non ce ne sono, torna un'idea che aveva perso il voto (mai una già regalata);
   2. la piazza nuova e la panoramica col volo in avanti (automatico/piazza.py);
   3. il piano claude/settimana-<W>.json con tutte le puntate (stesse regole di sempre, controllato da claude/controlla.py);
   4. le battute di Gennarino che mancano (automatico/voci.py);
@@ -83,20 +84,50 @@ def di_stagione(i, dom):
     return dentro(dom) or dentro(dom + datetime.timedelta(days=5))
 
 
-def scegli_idee(dom):
-    usate = idee_usate()
-    libere = [i for i in catalogo() if i['nome'].lower() not in usate and di_stagione(i, dom) is not False]
-    # al massimo un'idea di stagione (va per prima), poi le altre nell'ordine del catalogo, con tre tipi di app diversi
-    stagione = [i for i in libere if di_stagione(i, dom)][:1]
+def uso_idee():
+    """{nome minuscolo: ultima settimana in cui è stato proposto} e i nomi delle idee che hanno vinto (già regalate)."""
+    ultima = {}
+    for f in os.listdir(os.path.join(ROOT, 'claude')):
+        if re.match(r'settimana-\d{4}-W\d\d\.json$', f):
+            j = leggi(os.path.join(ROOT, 'claude', f), {})
+            for v in (j.get('idee') or {}).values(): ultima[str(v).lower()] = max(ultima.get(str(v).lower(), ''), j.get('settimana', ''))
+    vinte = set()
+    for s in leggi(os.path.join(QUI, 'banco.json'), {'settimane': []})['settimane']:
+        k = s.get('vince')
+        if k in ('A', 'B', 'C'):
+            r = (s.get('regali') or {}).get(k) or {}
+            vinte.add((r.get('nome') or next((o['idea'] for o in s.get('opzioni', []) if o['lettera'] == k), '')).lower())
+    return ultima, vinte
+
+
+def scegli_idee(dom, sett=None):
+    from ai import simile
+    usate = idee_usate(); tutte = catalogo()
+    libere = [i for i in tutte if i['nome'].lower() not in usate and di_stagione(i, dom) is not False]
+    # al massimo un'idea di stagione (va per prima), poi le altre nell'ordine del catalogo (prima quelle scritte a mano, poi quelle AI),
+    # con tre tipi di app diversi, tre telefoni con nomi diversi e tre idee che non si somigliano
+    scelte = [i for i in libere if di_stagione(i, dom)][:1]
     altre = [i for i in libere if not i.get('periodo')]
-    scelte, tipi = list(stagione), {i['app']['tipo'] for i in stagione}
-    for i in altre:
-        if len(scelte) == 3: break
-        if TIPI_DIVERSI and i['app']['tipo'] in tipi: continue
-        scelte.append(i); tipi.add(i['app']['tipo'])
-    for i in altre:
-        if len(scelte) == 3: break
-        if i not in scelte: scelte.append(i)
+
+    def va(i, anche_stesso_tipo):
+        if any(i['id'] == x['id'] or i['telefono'].lower() == x['telefono'].lower() or simile(i['nome'], x['nome']) for x in scelte): return False
+        return anche_stesso_tipo or not TIPI_DIVERSI or i['app']['tipo'] not in {x['app']['tipo'] for x in scelte}
+
+    def riempi(lista, **extra):
+        for stesso in (False, True):
+            for i in lista:
+                if len(scelte) == 3: return
+                if va(i, stesso): scelte.append(dict(i, **extra))
+    riempi(altre)
+    if len(scelte) < 3:
+        # finite le idee nuove: torna un'idea che ha perso (mai una già regalata), quella proposta più tempo fa (se si può, almeno 6 settimane prima)
+        ultima, vinte = uso_idee()
+        for settimane in (6, 3, 1):
+            y, w, _ = (dom - datetime.timedelta(weeks=settimane) + datetime.timedelta(days=1)).isocalendar(); limite = f'{y}-W{w:02d}'
+            vecchie = [i for i in tutte if i['nome'].lower() in usate and i['nome'].lower() not in vinte and ultima.get(i['nome'].lower(), '') <= limite
+                       and di_stagione(i, dom) is not False]
+            vecchie.sort(key=lambda i: ultima.get(i['nome'].lower(), ''))
+            riempi(vecchie, riproposta=True)
     return scelte
 
 
@@ -105,8 +136,10 @@ def piano(sett, dom, piazza, idee, apertura):
     A, B, C = idee; L = dict(zip('ABC', idee))
     abc = [f'A: {A["nome"]}.', f'B: {B["nome"]}.', f'C: {C["nome"]}.']
     P = []
-    P.append(dict(id='piazza-nuova', tipo='idee', giorno='domenica', titolo='Piazza nuova, tre idee nuove', data=dom.isoformat(),
-                  copione=['Piazza nuova, tre idee nuove: quale costruisco?', f'Uè guagliù, il bancariello si è spostato in {piazza}!', *abc,
+    nuove = not any(i.get('riproposta') for i in idee)
+    P.append(dict(id='piazza-nuova', tipo='idee', giorno='domenica', titolo='Piazza nuova, tre idee nuove' if nuove else 'Piazza nuova, tre idee da votare', data=dom.isoformat(),
+                  copione=['Piazza nuova, tre idee nuove: quale costruisco?' if nuove else 'Piazza nuova, tre idee da votare: quale costruisco?',
+                           f'Uè guagliù, il bancariello si è spostato in {piazza}!', *abc,
                            'Scrivete la lettera nei commenti, fino a mercoledì sera.', 'Venerdì la più votata è sul banco, gratis.']))
     if apertura: P[0].update(apertura=apertura, aperturaFrasi=2)
     P.append(dict(id='promemoria-lunedi', tipo='idee', giorno='lunedì', titolo='Avete già votato?',
@@ -137,6 +170,7 @@ def piano(sett, dom, piazza, idee, apertura):
             'voto_fino_a': d(3), 'regalo': d(5), 'idee': {k: i['nome'] for k, i in L.items()}, 'idee_id': {k: i['id'] for k, i in L.items()},
             'nota': f'Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica {piazza} e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, '
                     'giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c\'è «Niente voti, niente app».',
+            'telefoni': {k: {'nome': i['telefono'], 'emoji': i['emoji']} for k, i in L.items()},
             'puntate': P, 'piazza': piazza}
 
 
@@ -187,17 +221,14 @@ def main():
     print('settimana', sett, 'dal', dom, flush=True)
     j = leggi(pp)
     if j is None and '--solo-regali' not in sys.argv:
-        idee = scegli_idee(dom)
-        if len(idee) < 3:
-            import ai
-            ai.nuove_idee(6)                      # il modello AI locale scrive idee nuove nel catalogo
-            idee = scegli_idee(dom)
-        if len(idee) < 3: raise SystemExit('non ci sono tre idee nuove')
-        print('idee:', [i['nome'] for i in idee], flush=True)
+        idee = scegli_idee(dom, sett)       # le idee AI le scrive prima, con calma, .github/workflows/idee.yml (ogni lunedì)
+        if len(idee) < 3: raise SystemExit('non ci sono tre idee da proporre: lancia «Idee nuove col modello AI» da Actions')
+        print('idee:', [i['nome'] + (' (riproposta)' if i.get('riproposta') else '') for i in idee], flush=True)
         telefoni = [f"{i['telefono']}:{i['emoji']}" for i in idee]
         out = json.loads(esegui([sys.executable, 'automatico/piazza.py', sett, *telefoni]).strip().splitlines()[-1])
         j = piano(sett, dom, out['piazza'], idee, out['file'])
         scrivi(pp, j, indent=2)
+        scrivi(os.path.join(ROOT, 'claude', 'settimana.json'), j, indent=2)   # copia di riserva: l'ultima settimana preparata
         esegui([sys.executable, 'claude/controlla.py', pp])
     if j is None: raise SystemExit('manca il piano ' + pp)
     if '--senza-voci' not in sys.argv and '--solo-regali' not in sys.argv:

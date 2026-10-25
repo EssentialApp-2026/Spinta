@@ -4,7 +4,8 @@
     python3 automatico/piazza.py 2026-W45 ... --foto carita.jpg --nome "Piazza Carità"  # con una foto già scaricata
 
 1. Prende la prossima piazza vera di Napoli da automatico/piazze.json (foto CC0 o pubblico dominio già controllate),
-   oppure ne cerca una nuova su Wikimedia Commons con le stesse regole (solo CC0/pubblico dominio, foto recenti a colori).
+   oppure ne cerca una nuova su Wikimedia Commons con le stesse regole (solo CC0/pubblico dominio, foto recenti, orizzontali,
+   niente interni, dettagli o stampe antiche); se sono finite tutte, torna nella piazza dove manca da più tempo.
 2. Ritaglia la foto in verticale 9:16 e ci mette la bancarella con Gennarino (automatico/bancarella.png) sul selciato,
    con l'ombra e i tre telefoni delle idee della settimana (A, B, C) sul banco.
 3. Fa il volo in avanti (la piazza si avvicina piano, la bancarella di più: sembra un drone) e scrive
@@ -34,9 +35,13 @@ def commons(params):
     return json.loads(get('https://commons.wikimedia.org/w/api.php?' + q))
 
 
-def piazze_usate():
+def aperture():
     l = json.load(open(os.path.join(LIB, 'libreria.json'), encoding='utf-8'))
-    return {a.get('piazza', '').lower() for a in l.get('aperture', [])}
+    return l.get('aperture', [])
+
+
+def piazze_usate():
+    return {a.get('piazza', '').lower() for a in aperture()}
 
 
 def libera(meta):
@@ -45,26 +50,53 @@ def libera(meta):
     return bool(re.match(r'^(cc0|public domain|pd)', lic, re.I)) and att != 'true', lic
 
 
+# foto da non usare per la panoramica: interni, dettagli, quadri e stampe antiche, notturne
+SCARTA = re.compile(r'(intern|interior|inside|dettagl|detail|particolar|lapide|targa|plaque|busto|bust\b|affresc|fresco|dipint|painting|quadro|mappa|map\b|'
+                    r'pianta di|stampa|print|incision|engraving|disegno|drawing|cartolina|postcard|notte|night|notturn|museo|museum|soffitto|ceiling|altare|altar|'
+                    r'cripta|crypt|statua|statue|scultura|sculpture|stemma|coat of arms|insegna|sign\b|logo)', re.I)
+
+
+def cerca_su_commons(nome):
+    """Le foto libere (CC0 o pubblico dominio) di una piazza, dalla migliore: orizzontali, grandi, recenti, col nome della piazza nel titolo."""
+    parole = [w for w in re.findall(r"[a-zà-ù]+", nome.lower()) if w not in ('piazza', 'dei', 'degli', 'delle', 'del', 'della', 'di', 'e')]
+    j = commons(dict(action='query', generator='search', gsrnamespace=6, gsrlimit=50, gsrsearch=f'"{nome}" Napoli filetype:bitmap',
+                     prop='imageinfo', iiprop='url|size|extmetadata', iiextmetadatafilter='LicenseShortName|AttributionRequired|DateTimeOriginal'))
+    cand = []
+    for pg in (j.get('query', {}).get('pages', {}) or {}).values():
+        ii = pg['imageinfo'][0]; ok, lic = libera(ii.get('extmetadata', {}))
+        dt = re.sub('<[^>]+>', '', (ii.get('extmetadata', {}).get('DateTimeOriginal', {}) or {}).get('value', ''))
+        anno = int(m.group(0)) if (m := re.search(r'(19|20)\d\d', dt)) else 0
+        tit = pg['title'].lower()
+        if not ok or anno < 2000 or ii['width'] < 1600 or ii['height'] < 1100 or ii['width'] / ii['height'] < 1.25: continue
+        senza_nome = tit
+        for w in parole: senza_nome = senza_nome.replace(w, ' ')
+        if SCARTA.search(senza_nome) or not all(w in tit for w in parole): continue
+        punti = min(ii['width'] * ii['height'], 24e6) / 1e6 + (8 if 'piazza' in tit else 0) + (3 if 'napoli' in tit or 'naples' in tit else 0) + (anno - 2000) / 5
+        cand.append((punti, pg['title'], lic, ii.get('descriptionurl', '')))
+    return sorted(cand, reverse=True)
+
+
 def scegli_piazza():
     usate = piazze_usate()
-    lista = json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8'))['piazze']
-    for p in lista:
+    pz = json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8'))
+    for p in pz['piazze'] + pz.get('trovate', []):
         if p['nome'].lower() not in usate: return p
-    # finite quelle controllate: se ne cerca una nuova su Commons
-    for nome in json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8')).get('da_cercare', []):
-        if nome.lower() in usate: continue
-        j = commons(dict(action='query', generator='search', gsrnamespace=6, gsrlimit=50, gsrsearch=f'"{nome}" Napoli filetype:bitmap',
-                         prop='imageinfo', iiprop='url|size|extmetadata', iiextmetadatafilter='LicenseShortName|AttributionRequired|DateTimeOriginal'))
-        cand = []
-        for pg in (j.get('query', {}).get('pages', {}) or {}).values():
-            ii = pg['imageinfo'][0]; ok, lic = libera(ii.get('extmetadata', {}))
-            dt = re.sub('<[^>]+>', '', (ii.get('extmetadata', {}).get('DateTimeOriginal', {}) or {}).get('value', ''))
-            anno = int(m.group(0)) if (m := re.search(r'(19|20)\d\d', dt)) else 0
-            if ok and anno >= 2000 and ii['width'] >= 1600 and ii['height'] >= 1100 and 'napoli' in (pg['title'] + ' Napoli').lower():
-                cand.append((ii['width'] * ii['height'], pg['title'], lic))
+    # finite quelle controllate: se ne cerca una nuova su Commons (e si segna in «trovate», così la prossima volta c'è già)
+    for nome in pz.get('da_cercare', []):
+        if nome.lower() in usate or any(nome.lower() == t['nome'].lower() for t in pz.get('trovate', [])): continue
+        try: cand = cerca_su_commons(nome)
+        except Exception as e: print('ricerca non riuscita per', nome, e, file=sys.stderr); continue
         if cand:
-            cand.sort(reverse=True); return {'nome': nome, 'file': cand[0][1], 'licenza': cand[0][2], 'trovata': 'automatica'}
-    raise SystemExit('nessuna piazza nuova con foto libera')
+            p = {'nome': nome, 'file': cand[0][1], 'licenza': cand[0][2], 'trovata': 'automatica'}
+            pz.setdefault('trovate', []).append(p)
+            json.dump(pz, open(os.path.join(QUI, 'piazze.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+            return p
+    # proprio finite tutte: si torna nella piazza dove Gennarino manca da più tempo (la foto è già controllata)
+    ultima = {}
+    for a in aperture(): ultima[a.get('piazza', '').lower()] = max(ultima.get(a.get('piazza', '').lower(), ''), a.get('settimana', ''))
+    note = sorted(pz['piazze'] + pz.get('trovate', []), key=lambda p: ultima.get(p['nome'].lower(), ''))
+    if note: return dict(note[0], torna=True)
+    raise SystemExit('nessuna piazza con foto libera')
 
 
 def scarica_foto(p):
@@ -188,10 +220,10 @@ def main():
     video(foto, telefoni, os.path.join(LIB, mp4), os.path.join(LIB, jpg))
     lp = os.path.join(LIB, 'libreria.json'); l = json.load(open(lp, encoding='utf-8'))
     l['aperture'] = [x for x in l.get('aperture', []) if x.get('file') != mp4] + [{
-        'file': mp4, 'poster': jpg, 'settimana': sett, 'piazza': p['nome'],
+        'file': mp4, 'poster': jpg, 'settimana': sett, 'piazza': p['nome'], 'foto': p['file'], 'licenza': lic,
         'descrizione': f"Volo in avanti su {p['nome']} (foto vera, {lic}: «{p['file'].replace('File:', '')}», nessun credito da citare) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."}]
     json.dump(l, open(lp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    print(json.dumps({'piazza': p['nome'], 'file': mp4, 'poster': jpg, 'foto': p['file'], 'licenza': lic, 'pagina': url}, ensure_ascii=False))
+    print(json.dumps({'piazza': p['nome'], 'file': mp4, 'poster': jpg, 'foto': p['file'], 'licenza': lic, 'pagina': url, 'torna': bool(p.get('torna'))}, ensure_ascii=False))
 
 
 if __name__ == '__main__':

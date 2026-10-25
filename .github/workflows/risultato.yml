@@ -10,6 +10,7 @@ on:
 permissions:
   contents: write
   pages: write
+  issues: write
 concurrency:
   group: spinta-automatico
   cancel-in-progress: false
@@ -32,3 +33,11 @@ jobs:
           git pull -q --rebase
           git push -q
           gh api -X POST repos/${{ github.repository }}/pages/builds > /dev/null || true
+      - name: Avvisa se qualcosa è andato storto
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          t="Spinta: il risultato del voto non è arrivato al sito"
+          gh issue list --repo ${{ github.repository }} --state open --json title --jq '.[].title' | grep -Fxq "$t" && exit 0
+          gh issue create --repo ${{ github.repository }} --title "$t" --body "Il lavoro automatico non è finito: guarda il log qui ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} e rilancialo da Actions → Run workflow." || true
