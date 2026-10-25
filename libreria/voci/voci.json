@@ -675,10 +675,6 @@
     "file": "voci/2026-W44/m35.mp3"
    },
    {
-    "testo": "Ha vinto la C: a casa i turni sono chiari!",
-    "file": "voci/2026-W44/m36.mp3"
-   },
-   {
     "testo": "Ha vinto la C: Turni di casa.",
     "file": "voci/2026-W44/m37.mp3"
    },
@@ -845,6 +841,10 @@
    {
     "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
     "file": "voci/2026-W44/m91.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: a casa i turni sono chiari!",
+    "file": "voci/2026-W44/m92.mp3"
    }
   ],
   "2026-W45": [

@@ -311,13 +311,14 @@
    "seme": 0
   },
   {
-   "file": "m36.mp3",
+   "file": "m92.mp3",
    "testo": "Ha vinto la C: a casa i turni sono chiari!",
    "fonte": "copia",
    "capito": 0.84,
    "somiglia": 0.64,
    "sentito": "Avvinto la C, a casa i turni sono chiari.",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m37.mp3",
@@ -630,5 +631,5 @@
    "ripulita": true
   }
  ],
- "ultimo": 91
+ "ultimo": 92
 }
