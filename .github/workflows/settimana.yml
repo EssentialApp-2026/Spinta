@@ -38,6 +38,7 @@ jobs:
     timeout-minutes: 240
     env:
       SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
+      TQDM_DISABLE: '1'
       SPINTA_ACCENTO: ${{ github.event.inputs.accento || '0' }}
     steps:
       - uses: actions/checkout@v4

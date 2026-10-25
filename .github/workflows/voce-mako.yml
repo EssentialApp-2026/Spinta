@@ -37,6 +37,7 @@ concurrency:
   cancel-in-progress: false
 env:
   SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
+  TQDM_DISABLE: '1'          # niente barre di avanzamento nel log
   SPINTA_VIVACITA: ${{ github.event.inputs.vivacita }}
   SPINTA_CFG: ${{ github.event.inputs.cfg }}
 jobs:
