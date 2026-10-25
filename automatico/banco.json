@@ -1,0 +1,54 @@
+{
+ "versione": 1,
+ "settimane": [
+  {
+   "settimana": "2026-W44",
+   "dal": "2026-10-25T00:00:00+02:00",
+   "chiude": "2026-10-28T23:59:00+01:00",
+   "uscita": "2026-10-30T19:00:00+01:00",
+   "piazza": "Piazza Bellini",
+   "regali": {
+    "A": {
+     "id": "frigo-scadenze",
+     "nome": "Cosa scade nel frigo",
+     "emoji": "🧊",
+     "descrizione": "Segni cosa metti in frigo e quando scade: in cima trovi quello da mangiare per primo, e se vuoi ti metto il promemoria nel calendario. Tutto resta sul tuo telefono e funziona anche senza internet.",
+     "link": "../Spinta/regali/2026-W44/frigo-scadenze/"
+    },
+    "B": {
+     "id": "strisce-blu",
+     "nome": "Sveglia per le strisce blu",
+     "emoji": "🅿️",
+     "descrizione": "Parcheggi, scegli quanto paghi e la sveglia suona dieci minuti prima che scada la sosta. Col promemoria nel calendario suona anche ad app chiusa. Funziona anche senza internet.",
+     "link": "../Spinta/regali/2026-W44/strisce-blu/"
+    },
+    "C": {
+     "id": "turni-casa",
+     "nome": "Turni di casa",
+     "emoji": "🧹",
+     "descrizione": "Scrivi chi c'è in casa e i lavori da fare: ogni giorno ti dico a chi tocca cosa, e i turni di oggi li mandi su WhatsApp. Tutto resta sul tuo telefono.",
+     "link": "../Spinta/regali/2026-W44/turni-casa/"
+    }
+   },
+   "opzioni": [
+    {
+     "lettera": "A",
+     "idea": "Cosa scade nel frigo",
+     "voti": 0
+    },
+    {
+     "lettera": "B",
+     "idea": "Sveglia per le strisce blu",
+     "voti": 0
+    },
+    {
+     "lettera": "C",
+     "idea": "Turni di casa",
+     "voti": 0
+    }
+   ],
+   "conteggio": "",
+   "vince": ""
+  }
+ ]
+}

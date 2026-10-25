@@ -1,0 +1,23 @@
+{
+ "telefoni": [
+  [
+   246,
+   730,
+   333,
+   871
+  ],
+  [
+   381,
+   742,
+   468,
+   880
+  ],
+  [
+   516,
+   751,
+   606,
+   892
+  ]
+ ],
+ "nota": "Bancarella con Gennarino scontornata (dalla Kling W44); telefoni = rettangoli x0,y0,x1,y1 nella stessa immagine"
+}

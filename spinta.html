@@ -428,7 +428,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.13.1 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.14.0 · indicazioni aggiornate al <span id="set-rules"></span></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -2367,7 +2367,7 @@ function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>Stri
   DB.posts.push({id:uid(),title:(DB.nextHook||(x.hooks[0]||{}).s||'Prossimo video'),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
 
 /* ---------- creatore video con Gennarino (crea.js, caricato solo quando serve) ---------- */
-function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.13.1')}
+function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.14.0')}
 function crea(fromPlan){if(window.crOpen)return window.crOpen(fromPlan);toast('Apro il creatore…');
   creaApri().then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 function creaCon(o){if(!window.crOpenWith)toast('Apro il creatore…');creaApri().then(()=>window.crOpenWith(o)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
@@ -2412,7 +2412,9 @@ function oggiPromemoria(){const slot=personalSlot().when;if(!slot){toast('Nessun
 
 /* ---------- avvio ---------- */
 try{history.scrollRestoration='manual'}catch(_){}
-fitPhone();load();normDB();fillNiches();$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();renderReady();renderOggi();scheduleNotifs();updateRules(false);
+fitPhone();load();normDB();fillNiches();
+// un risultato del voto rimasto senza rete si manda al sito appena si riapre Spinta
+if(DB.votiDaInviare)fetch('https://ntfy.sh/spinta-bancariello-voti-k7q2m9x4',{method:'POST',body:DB.votiDaInviare}).then(r=>{if(r.ok){DB.votiDaInviare=null;DB.votiInviati=Date.now();save()}}).catch(()=>{});$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();renderReady();renderOggi();scheduleNotifs();updateRules(false);
 document.querySelectorAll('.stp-h').forEach(h=>{h.setAttribute('role','button');h.tabIndex=0;h.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();h.click()}})});
 if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>

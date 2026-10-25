@@ -1,0 +1,1695 @@
+{
+ "nota": "Idee pronte per le prossime settimane: le usa automatico/settimana.py (vedi crea_catalogo.py per lo schema).",
+ "idee": [
+  {
+   "id": "frigo-scadenze",
+   "nome": "Cosa scade nel frigo",
+   "emoji": "🧊",
+   "telefono": "Frigo",
+   "problema": "latte scaduto",
+   "storia": "Mamma mia, quel formaggio era scaduto da una settimana!",
+   "domandaE": "E il latte in frigo: chi lo controlla mai?",
+   "vince": "il frigo non vi frega più!",
+   "cosa": "Segnate cosa mettete in frigo e vi dico quando scade.",
+   "domanda": "Cosa vi si butta sempre? Ditemelo nei commenti!",
+   "regalo": "il frigo adesso parla da solo!",
+   "righe": [
+    "Segnate cosa mettete in frigo e quando scade.",
+    "Vi dico io cosa mangiare per primo."
+   ],
+   "manda": "Mandatela a chi butta sempre il latte!",
+   "descrizione": "Segni cosa metti in frigo e quando scade: in cima trovi quello da mangiare per primo, e se vuoi ti metto il promemoria nel calendario. Tutto resta sul tuo telefono e funziona anche senza internet.",
+   "app": {
+    "nome": "Cosa scade nel frigo",
+    "breve": "Frigo",
+    "emoji": "🧊",
+    "tipo": "scadenze",
+    "slogan": "Prima si mangia quello che scade. Un regalo di Gennarino.",
+    "descrizione": "Segni cosa metti in frigo e quando scade: in cima trovi quello da mangiare per primo, e se vuoi ti metto il promemoria nel calendario. Tutto resta sul tuo telefono e funziona anche senza internet.",
+    "chiave": "frigo-scadenze-v1",
+    "opzioni": {
+     "etichetta": "Cosa hai messo in frigo",
+     "placeholder": "Latte, mozzarella, sugo…",
+     "etichettaData": "Scade il",
+     "giorniBase": 3,
+     "rapidi": [
+      1,
+      3,
+      7,
+      14
+     ],
+     "avviso": 2,
+     "durate": {
+      "Latte fresco": 4,
+      "Mozzarella": 3,
+      "Ricotta": 4,
+      "Yogurt": 10,
+      "Prosciutto aperto": 3,
+      "Sugo aperto": 4,
+      "Insalata in busta": 3,
+      "Avanzi di ieri": 2,
+      "Pesce fresco": 1,
+      "Uova": 21
+     },
+     "notaEsempi": "Tocca una cosa e metto la scadenza di solito (controlla sempre l'etichetta):",
+     "bottone": "Metti in frigo",
+     "titoloForm": "Metti in frigo",
+     "titoloLista": "Il frigo",
+     "filtroAperti": "Nel frigo",
+     "filtroChiusi": "Mangiati",
+     "fatto": "Mangiato",
+     "fattoIl": "Mangiato il",
+     "scritto": "Messo in frigo.",
+     "vuoto": "Il frigo è in ordine: niente in scadenza.",
+     "contaTutti": "nel frigo",
+     "contaPresto": "da mangiare presto",
+     "contaScaduti": "scaduti",
+     "promemoria": "Frigo: {cosa} scade il {quando}",
+     "erroreVuoto": "Scrivi cosa hai messo in frigo."
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "strisce-blu",
+   "nome": "Sveglia per le strisce blu",
+   "emoji": "🅿️",
+   "telefono": "Blu",
+   "problema": "strisce blu",
+   "storia": "Mamma mia, cinque minuti di ritardo e la multa sul vetro!",
+   "domandaE": "E il parcheggio a strisce blu: quante multe per cinque minuti?",
+   "vince": "le strisce blu non vi fregano più!",
+   "cosa": "Dite quando parcheggiate e vi suono prima che scada il tempo.",
+   "domanda": "Quante multe avete preso? Ditemelo nei commenti!",
+   "regalo": "le strisce blu non vi fregano più!",
+   "righe": [
+    "Dite a che ora avete parcheggiato.",
+    "Suona prima che scada il tempo."
+   ],
+   "manda": "Mandatela a chi prende sempre la multa!",
+   "descrizione": "Parcheggi, scegli quanto paghi e la sveglia suona dieci minuti prima che scada la sosta. Col promemoria nel calendario suona anche ad app chiusa. Funziona anche senza internet.",
+   "app": {
+    "nome": "Sveglia per le strisce blu",
+    "breve": "Strisce blu",
+    "emoji": "🅿️",
+    "tipo": "timer",
+    "slogan": "Ti suono prima che scada la sosta. Un regalo di Gennarino.",
+    "descrizione": "Parcheggi, scegli quanto paghi e la sveglia suona dieci minuti prima che scada la sosta. Col promemoria nel calendario suona anche ad app chiusa. Funziona anche senza internet.",
+    "chiave": "strisce-blu-v1",
+    "opzioni": {
+     "preset": [
+      {
+       "nome": "30 minuti",
+       "min": 30
+      },
+      {
+       "nome": "1 ora",
+       "min": 60
+      },
+      {
+       "nome": "1 ora e mezza",
+       "min": 90
+      },
+      {
+       "nome": "2 ore",
+       "min": 120
+      }
+     ],
+     "passo": 5,
+     "avvisaPrima": 10,
+     "etichetta": "Sosta",
+     "orario": true,
+     "etichettaOrario": "Oppure: la sosta pagata finisce alle",
+     "avvia": "Ho parcheggiato",
+     "ferma": "Ho ripreso la macchina",
+     "testoPrima": "Mancano {min} minuti alla fine della sosta!",
+     "testoFine": "La sosta è finita: corri alla macchina!",
+     "basta": "Ok, ci vado",
+     "partito": "Sosta partita: finisce alle {ora}.",
+     "promemoria": "Strisce blu: la sosta finisce alle {ora}",
+     "titoloScelta": "Quanto hai pagato?",
+     "consigli": [
+      "Il promemoria nel calendario suona anche se chiudi l'app.",
+      "Controlla sempre gli orari scritti sul cartello della zona."
+     ]
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "turni-casa",
+   "nome": "Turni di casa",
+   "emoji": "🧹",
+   "telefono": "Casa",
+   "problema": "piatti",
+   "storia": "Mamma mia, i piatti di ieri sono ancora nel lavandino!",
+   "domandaE": "E a casa: chi ha lavato i piatti ieri?",
+   "vince": "a casa i turni sono chiari!",
+   "cosa": "Scrivete chi fa cosa e vi dico a chi tocca oggi.",
+   "domanda": "Chi a casa non fa mai niente? Ditemelo nei commenti!",
+   "regalo": "a casa si sa a chi tocca!",
+   "righe": [
+    "Scrivete i lavori di casa e chi li fa.",
+    "Ogni giorno vi dice a chi tocca."
+   ],
+   "manda": "Mandatela a chi a casa non fa mai niente!",
+   "descrizione": "Scrivi chi c'è in casa e i lavori da fare: ogni giorno ti dico a chi tocca cosa, e i turni di oggi li mandi su WhatsApp. Tutto resta sul tuo telefono.",
+   "app": {
+    "nome": "Turni di casa",
+    "breve": "Casa",
+    "emoji": "🧹",
+    "tipo": "turni",
+    "slogan": "Ogni giorno si sa a chi tocca. Un regalo di Gennarino.",
+    "descrizione": "Scrivi chi c'è in casa e i lavori da fare: ogni giorno ti dico a chi tocca cosa, e i turni di oggi li mandi su WhatsApp. Tutto resta sul tuo telefono.",
+    "chiave": "turni-casa-v1",
+    "opzioni": {
+     "persone": [
+      "Mamma",
+      "Papà",
+      "Ciro",
+      "Sofia"
+     ],
+     "compiti": [
+      "Lavare i piatti",
+      "Buttare la spazzatura",
+      "Apparecchiare",
+      "Pulire il bagno"
+     ],
+     "giro": "giorno",
+     "messaggio": "Turni di casa",
+     "titoloPersone": "Chi c'è in casa",
+     "titoloCompiti": "I lavori di casa",
+     "placeholderCompito": "Stendere i panni…"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "piante-acqua",
+   "nome": "Innaffia le piante",
+   "emoji": "🪴",
+   "telefono": "Piante",
+   "problema": "piante secche",
+   "storia": "Mamma mia, il basilico sul balcone è tutto secco!",
+   "domandaE": "E le piante sul balcone: quando le avete innaffiate l'ultima volta?",
+   "vince": "le piante non si seccano più!",
+   "cosa": "Dite ogni quanto vanno innaffiate e vi avviso io.",
+   "domanda": "Che piante tenete sul balcone? Ditemelo nei commenti!",
+   "regalo": "le piante bevono al momento giusto!",
+   "righe": [
+    "Per ogni pianta dite ogni quanti giorni vuole l'acqua.",
+    "Vi dico io quale innaffiare oggi."
+   ],
+   "manda": "Mandatela a chi ha il balcone pieno di piante secche!",
+   "descrizione": "Per ogni pianta segni ogni quanti giorni vuole l'acqua: ogni giorno ti dico quale innaffiare, e il promemoria va nel calendario del telefono. Funziona anche senza internet.",
+   "app": {
+    "nome": "Innaffia le piante",
+    "breve": "Piante",
+    "emoji": "🪴",
+    "tipo": "ricorrenze",
+    "slogan": "Ogni pianta beve al momento giusto. Un regalo di Gennarino.",
+    "descrizione": "Per ogni pianta segni ogni quanti giorni vuole l'acqua: ogni giorno ti dico quale innaffiare, e il promemoria va nel calendario del telefono. Funziona anche senza internet.",
+    "chiave": "piante-acqua-v1",
+    "opzioni": {
+     "esempi": [
+      {
+       "nome": "Basilico",
+       "ogni": 1
+      },
+      {
+       "nome": "Gerani",
+       "ogni": 2
+      },
+      {
+       "nome": "Limone",
+       "ogni": 3
+      },
+      {
+       "nome": "Piantina grassa",
+       "ogni": 14
+      }
+     ],
+     "etichetta": "Che pianta",
+     "placeholder": "Rosmarino, ficus…",
+     "ogniBase": 3,
+     "titoloLista": "Oggi da innaffiare",
+     "titoloForm": "Aggiungi una pianta",
+     "fatto": "Innaffiata oggi",
+     "ultimaVolta": "Ultima acqua",
+     "oggiTesto": "Oggi vuole l'acqua",
+     "ritardo": "Ha sete da",
+     "promemoria": "Innaffia {nome}",
+     "bottone": "Aggiungi la pianta"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "segnapunti-scopa",
+   "nome": "Segnapunti della scopa",
+   "emoji": "🃏",
+   "telefono": "Scopa",
+   "problema": "i conti a carte",
+   "storia": "Mamma mia, a scopa con lo zio si litiga sempre sui punti!",
+   "domandaE": "E a carte: chi segna i punti senza imbrogliare?",
+   "vince": "a carte non si litiga più!",
+   "cosa": "Toccate i punti di ogni mano e vi dico chi vince.",
+   "domanda": "Scopa, briscola o tressette: voi a cosa giocate? Ditemelo nei commenti!",
+   "regalo": "a carte i punti li segno io!",
+   "righe": [
+    "Toccate i punti di ogni mano.",
+    "Vi dico io chi arriva prima."
+   ],
+   "manda": "Mandatela a chi imbroglia sempre a carte!",
+   "descrizione": "Il segnapunti per scopa, tressette e briscola: tocchi i punti di ogni mano, si vede chi arriva prima e si tengono le partite vinte. Funziona anche senza internet.",
+   "app": {
+    "nome": "Segnapunti della scopa",
+    "breve": "Scopa",
+    "emoji": "🃏",
+    "tipo": "segnapunti",
+    "slogan": "A carte i conti li faccio io. Un regalo di Gennarino.",
+    "descrizione": "Il segnapunti per scopa, tressette e briscola: tocchi i punti di ogni mano, si vede chi arriva prima e si tengono le partite vinte. Funziona anche senza internet.",
+    "chiave": "segnapunti-scopa-v1",
+    "opzioni": {
+     "giochi": [
+      {
+       "nome": "Scopa",
+       "fino": 11,
+       "bottoni": [
+        1,
+        2,
+        3
+       ]
+      },
+      {
+       "nome": "Scopa",
+       "fino": 21,
+       "bottoni": [
+        1,
+        2,
+        3
+       ]
+      },
+      {
+       "nome": "Tressette",
+       "fino": 31,
+       "bottoni": [
+        1,
+        2,
+        3
+       ]
+      },
+      {
+       "nome": "Briscola (partite)",
+       "fino": 0,
+       "bottoni": [
+        1
+       ]
+      }
+     ],
+     "squadre": [
+      "Noi",
+      "Voi"
+     ],
+     "vince": "Ha vinto {nome}!",
+     "etichettaGioco": "Che si gioca?"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "chi-scende",
+   "nome": "Chi scende la munnezza",
+   "emoji": "🎲",
+   "telefono": "Sorte",
+   "problema": "chi scende",
+   "storia": "Mamma mia, ogni sera si litiga su chi scende la spazzatura!",
+   "domandaE": "E la sera: chi scende la munnezza?",
+   "vince": "decide la sorte, non si litiga più!",
+   "cosa": "Scrivete i nomi e la ruota decide chi tocca.",
+   "domanda": "A casa vostra chi scende sempre? Ditemelo nei commenti!",
+   "regalo": "decide la ruota!",
+   "righe": [
+    "Scrivete i nomi di casa.",
+    "Girate e la sorte sceglie chi tocca."
+   ],
+   "manda": "Mandatela a chi fa sempre il furbo!",
+   "descrizione": "Scrivi i nomi, giri e la sorte sceglie chi scende la spazzatura, chi lava i piatti o dove si mangia stasera. Senza ripetere finché non sono usciti tutti.",
+   "app": {
+    "nome": "Chi scende la munnezza",
+    "breve": "Sorte",
+    "emoji": "🎲",
+    "tipo": "sorteggio",
+    "slogan": "Quando non si decide, decide la sorte. Un regalo di Gennarino.",
+    "descrizione": "Scrivi i nomi, giri e la sorte sceglie chi scende la spazzatura, chi lava i piatti o dove si mangia stasera. Senza ripetere finché non sono usciti tutti.",
+    "chiave": "chi-scende-v1",
+    "opzioni": {
+     "liste": [
+      {
+       "nome": "Chi scende la munnezza",
+       "voci": [
+        "Mamma",
+        "Papà",
+        "Ciro",
+        "Sofia"
+       ]
+      },
+      {
+       "nome": "Chi lava i piatti",
+       "voci": [
+        "Mamma",
+        "Papà",
+        "Ciro",
+        "Sofia"
+       ]
+      },
+      {
+       "nome": "Stasera si mangia",
+       "voci": [
+        "Pizza",
+        "Panino",
+        "Pasta e patate",
+        "Frittata"
+       ]
+      }
+     ],
+     "gira": "Gira la ruota!",
+     "risultato": "Tocca a: {x}!"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "valigia",
+   "nome": "La valigia senza scordare niente",
+   "emoji": "🧳",
+   "telefono": "Valigia",
+   "problema": "il caricabatterie scordato",
+   "storia": "Mamma mia, in vacanza senza caricabatterie!",
+   "domandaE": "E la valigia: ogni volta vi scordate qualcosa?",
+   "vince": "in valigia non manca più niente!",
+   "cosa": "Spuntate le cose mentre le mettete in valigia.",
+   "domanda": "Cosa vi scordate sempre in vacanza? Ditemelo nei commenti!",
+   "regalo": "la valigia si fa da sola!",
+   "righe": [
+    "Ci sono già le cose che servono sempre.",
+    "Spuntate mentre la chiudete."
+   ],
+   "manda": "Mandatela a chi si scorda sempre il pigiama!",
+   "descrizione": "La lista per la valigia, già divisa tra vestiti, bagno, documenti e caricabatterie: spunti mentre la riempi e non scordi niente. Funziona anche senza internet.",
+   "app": {
+    "nome": "La valigia senza scordare niente",
+    "breve": "Valigia",
+    "emoji": "🧳",
+    "tipo": "lista",
+    "slogan": "In valigia non manca più niente. Un regalo di Gennarino.",
+    "descrizione": "La lista per la valigia, già divisa tra vestiti, bagno, documenti e caricabatterie: spunti mentre la riempi e non scordi niente. Funziona anche senza internet.",
+    "chiave": "valigia-v1",
+    "opzioni": {
+     "esempi": [
+      "Documenti",
+      "Caricabatterie",
+      "Spazzolino",
+      "Pigiama",
+      "Mutande",
+      "Calzini",
+      "Medicine",
+      "Occhiali da sole",
+      "Costume",
+      "Ombrello"
+     ],
+     "reparti": {
+      "Documenti e soldi": [
+       "document",
+       "carta",
+       "patente",
+       "biglietti",
+       "soldi",
+       "portafoglio",
+       "passaporto"
+      ],
+      "Bagno": [
+       "spazzolino",
+       "dentifricio",
+       "shampoo",
+       "bagnoschiuma",
+       "deodorante",
+       "rasoio",
+       "crema",
+       "pettine",
+       "medicin"
+      ],
+      "Elettronica": [
+       "caricabatter",
+       "cuffie",
+       "telefono",
+       "power",
+       "cavo",
+       "adattatore"
+      ],
+      "Vestiti": [
+       "pigiama",
+       "mutande",
+       "calzini",
+       "maglia",
+       "pantalon",
+       "giacca",
+       "costume",
+       "scarpe",
+       "felpa",
+       "occhiali"
+      ]
+     },
+     "placeholder": "Cosa porti",
+     "titoloLista": "La valigia",
+     "presi": "in valigia",
+     "togli": "Togli le spuntate",
+     "notaEsempi": "Le cose che servono sempre:"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "acqua-bicchieri",
+   "nome": "Quanta acqua ho bevuto",
+   "emoji": "💧",
+   "telefono": "Acqua",
+   "problema": "l'acqua che non beviamo",
+   "storia": "Mamma mia, a fine giornata ho bevuto solo un caffè!",
+   "domandaE": "E l'acqua: quanti bicchieri bevete al giorno?",
+   "vince": "l'acqua non ve la scordate più!",
+   "cosa": "Toccate ogni bicchiere e vi dico quanto manca.",
+   "domanda": "Quanti bicchieri bevete voi? Ditemelo nei commenti!",
+   "regalo": "l'acqua si conta da sola!",
+   "righe": [
+    "Toccate più ogni volta che bevete.",
+    "Vi faccio vedere come va la settimana."
+   ],
+   "manda": "Mandatela a chi beve solo caffè!",
+   "descrizione": "Un tocco per ogni bicchiere d'acqua: vedi quanti ne mancano per arrivare a otto e come è andata la settimana. Funziona anche senza internet.",
+   "app": {
+    "nome": "Quanta acqua ho bevuto",
+    "breve": "Acqua",
+    "emoji": "💧",
+    "tipo": "contatore",
+    "slogan": "Un bicchiere alla volta. Un regalo di Gennarino.",
+    "descrizione": "Un tocco per ogni bicchiere d'acqua: vedi quanti ne mancano per arrivare a otto e come è andata la settimana. Funziona anche senza internet.",
+    "chiave": "acqua-bicchieri-v1",
+    "opzioni": {
+     "voci": [
+      {
+       "nome": "Bicchieri d'acqua",
+       "emoji": "💧",
+       "obiettivo": 8
+      }
+     ],
+     "titolo": "Oggi",
+     "brav": "Otto bicchieri: grande!"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "garanzie",
+   "nome": "Garanzie e scontrini",
+   "emoji": "🧾",
+   "telefono": "Garanzie",
+   "problema": "la garanzia scaduta",
+   "storia": "Mamma mia, il frullatore si è rotto e lo scontrino non si trova!",
+   "domandaE": "E le garanzie: sapete quando scadono?",
+   "vince": "le garanzie non scadono più di nascosto!",
+   "cosa": "Segnate cosa avete comprato e vi dico fino a quando c'è la garanzia.",
+   "domanda": "Cosa vi si è rotto appena finita la garanzia? Ditemelo nei commenti!",
+   "regalo": "le garanzie le tengo io!",
+   "righe": [
+    "Segnate cosa comprate e quando.",
+    "Vi avviso prima che scada la garanzia."
+   ],
+   "manda": "Mandatela a chi perde sempre gli scontrini!",
+   "descrizione": "Segni cosa hai comprato e fino a quando c'è la garanzia: in cima quelle che scadono prima, e il promemoria va nel calendario. Tutto resta sul tuo telefono.",
+   "app": {
+    "nome": "Garanzie e scontrini",
+    "breve": "Garanzie",
+    "emoji": "🧾",
+    "tipo": "scadenze",
+    "slogan": "Fino a quando c'è la garanzia? Te lo dico io. Un regalo di Gennarino.",
+    "descrizione": "Segni cosa hai comprato e fino a quando c'è la garanzia: in cima quelle che scadono prima, e il promemoria va nel calendario. Tutto resta sul tuo telefono.",
+    "chiave": "garanzie-v1",
+    "opzioni": {
+     "etichetta": "Cosa hai comprato",
+     "placeholder": "Lavatrice, telefono, frullatore…",
+     "etichettaData": "Garanzia fino al",
+     "unita": "mesi",
+     "rapidi": [
+      12,
+      24,
+      36
+     ],
+     "giorniBase": 730,
+     "avviso": 30,
+     "bottone": "Segna la garanzia",
+     "titoloForm": "Segna un acquisto",
+     "titoloLista": "Le garanzie",
+     "filtroAperti": "In garanzia",
+     "filtroChiusi": "Archiviate",
+     "fatto": "Archivia",
+     "fattoIl": "Archiviata il",
+     "scritto": "Garanzia segnata.",
+     "vuoto": "Nessuna garanzia segnata.",
+     "contaTutti": "in garanzia",
+     "contaPresto": "scadono entro un mese",
+     "contaScaduti": "scadute",
+     "parola": "scade",
+     "promemoria": "Garanzia: {cosa} scade il {quando}",
+     "erroreVuoto": "Scrivi cosa hai comprato.",
+     "notaEsempi": ""
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "uovo-perfetto",
+   "nome": "L'uovo sodo perfetto",
+   "emoji": "🥚",
+   "telefono": "Uovo",
+   "problema": "l'uovo troppo duro",
+   "storia": "Mamma mia, volevo l'uovo alla coque ed è uscito di gomma!",
+   "domandaE": "E l'uovo sodo: vi viene sempre come volete?",
+   "vince": "l'uovo viene sempre giusto!",
+   "cosa": "Scegliete come lo volete e vi suono al momento giusto.",
+   "domanda": "Voi l'uovo come lo volete? Ditemelo nei commenti!",
+   "regalo": "l'uovo viene come lo volete voi!",
+   "righe": [
+    "Scegliete: alla coque, barzotto o sodo.",
+    "Vi suono quando è pronto."
+   ],
+   "manda": "Mandatela a chi fa le uova di gomma!",
+   "descrizione": "Scegli alla coque, barzotto o sodo e ti suono quando è pronto: si calcola da quando l'acqua bolle. Funziona anche senza internet.",
+   "app": {
+    "nome": "L'uovo sodo perfetto",
+    "breve": "Uovo",
+    "emoji": "🥚",
+    "tipo": "timer",
+    "slogan": "Alla coque, barzotto o sodo. Un regalo di Gennarino.",
+    "descrizione": "Scegli alla coque, barzotto o sodo e ti suono quando è pronto: si calcola da quando l'acqua bolle. Funziona anche senza internet.",
+    "chiave": "uovo-perfetto-v1",
+    "opzioni": {
+     "preset": [
+      {
+       "nome": "Alla coque · 3 min",
+       "min": 3
+      },
+      {
+       "nome": "Barzotto · 6 min",
+       "min": 6
+      },
+      {
+       "nome": "Sodo · 9 min",
+       "min": 9
+      },
+      {
+       "nome": "Sodo sodo · 11 min",
+       "min": 11
+      }
+     ],
+     "passo": 1,
+     "avvisaPrima": 0,
+     "etichetta": "Uovo",
+     "avvia": "L'acqua bolle: via!",
+     "ferma": "Ferma",
+     "testoFine": "L'uovo è pronto: subito sotto l'acqua fredda!",
+     "basta": "Fatto!",
+     "partito": "Via! È pronto alle {ora}.",
+     "titoloScelta": "Come lo vuoi?",
+     "consigli": [
+      "Il tempo parte quando l'acqua bolle e ci metti l'uovo.",
+      "Appena suona, mettilo sotto l'acqua fredda: così si sguscia meglio."
+     ]
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "turni-cane",
+   "nome": "Turni del cane",
+   "emoji": "🐕",
+   "telefono": "Cane",
+   "problema": "il cane da portare fuori",
+   "storia": "Mamma mia, il cane mi guarda dalla porta e nessuno lo porta fuori!",
+   "domandaE": "E il cane: chi lo porta fuori stasera?",
+   "vince": "il cane esce sempre all'ora giusta!",
+   "cosa": "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
+   "domanda": "Come si chiama il vostro cane? Ditemelo nei commenti!",
+   "regalo": "il cane ha i suoi turni!",
+   "righe": [
+    "Scrivete chi c'è in casa.",
+    "Ogni giorno si sa chi lo porta fuori."
+   ],
+   "manda": "Mandatela a chi fa finta di non sentire il cane!",
+   "descrizione": "Scrivi chi c'è in casa: ogni giorno ti dico chi porta fuori il cane la mattina e la sera e chi gli dà la pappa. I turni li mandi su WhatsApp.",
+   "app": {
+    "nome": "Turni del cane",
+    "breve": "Cane",
+    "emoji": "🐕",
+    "tipo": "turni",
+    "slogan": "Il cane ringrazia. Un regalo di Gennarino.",
+    "descrizione": "Scrivi chi c'è in casa: ogni giorno ti dico chi porta fuori il cane la mattina e la sera e chi gli dà la pappa. I turni li mandi su WhatsApp.",
+    "chiave": "turni-cane-v1",
+    "opzioni": {
+     "persone": [
+      "Mamma",
+      "Papà",
+      "Ciro"
+     ],
+     "compiti": [
+      "Passeggiata del mattino",
+      "Pappa",
+      "Passeggiata della sera"
+     ],
+     "giro": "giorno",
+     "messaggio": "Turni del cane",
+     "titoloPersone": "Chi c'è in casa",
+     "titoloCompiti": "Le cose del cane",
+     "placeholderCompito": "Spazzolarlo…"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "bollette",
+   "nome": "Bollette da pagare",
+   "emoji": "💡",
+   "telefono": "Bollette",
+   "problema": "la bolletta dimenticata",
+   "storia": "Mamma mia, la bolletta della luce scaduta da due settimane!",
+   "domandaE": "E le bollette: le pagate sempre in tempo?",
+   "vince": "le bollette non vi sorprendono più!",
+   "cosa": "Segnate le bollette e vi dico quando vanno pagate.",
+   "domanda": "Qual è la bolletta che vi spaventa di più? Ditemelo nei commenti!",
+   "regalo": "le bollette le ricordo io!",
+   "righe": [
+    "Segnate la bolletta e la scadenza.",
+    "Vi avviso qualche giorno prima."
+   ],
+   "manda": "Mandatela a chi paga sempre in ritardo!",
+   "descrizione": "Segni le bollette con la scadenza: in cima quelle da pagare prima, e il promemoria entra nel calendario del telefono qualche giorno prima. Tutto resta sul tuo telefono.",
+   "app": {
+    "nome": "Bollette da pagare",
+    "breve": "Bollette",
+    "emoji": "💡",
+    "tipo": "scadenze",
+    "slogan": "Ogni bolletta pagata in tempo. Un regalo di Gennarino.",
+    "descrizione": "Segni le bollette con la scadenza: in cima quelle da pagare prima, e il promemoria entra nel calendario del telefono qualche giorno prima. Tutto resta sul tuo telefono.",
+    "chiave": "bollette-v1",
+    "opzioni": {
+     "etichetta": "Che bolletta",
+     "placeholder": "Luce, gas, acqua, telefono…",
+     "etichettaData": "Da pagare entro",
+     "giorniBase": 15,
+     "rapidi": [
+      7,
+      15,
+      30
+     ],
+     "avviso": 5,
+     "durate": {
+      "Luce": 20,
+      "Gas": 20,
+      "Acqua": 30,
+      "Telefono": 15,
+      "Internet": 15,
+      "Rifiuti": 30
+     },
+     "notaEsempi": "Tocca la bolletta e scegli la data:",
+     "bottone": "Segna la bolletta",
+     "titoloForm": "Segna una bolletta",
+     "titoloLista": "Da pagare",
+     "filtroAperti": "Da pagare",
+     "filtroChiusi": "Pagate",
+     "fatto": "Pagata",
+     "fattoIl": "Pagata il",
+     "scritto": "Bolletta segnata.",
+     "vuoto": "Niente da pagare: tutto in ordine.",
+     "contaTutti": "da pagare",
+     "contaPresto": "in scadenza",
+     "contaScaduti": "scadute",
+     "promemoria": "Bolletta {cosa} da pagare entro il {quando}",
+     "erroreVuoto": "Scrivi che bolletta è."
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "compiti-pomodoro",
+   "nome": "Timer per i compiti",
+   "emoji": "📚",
+   "telefono": "Compiti",
+   "problema": "i compiti che non finiscono mai",
+   "storia": "Mamma mia, tre ore sul libro e una pagina sola!",
+   "domandaE": "E i compiti: quanto ci mettono i vostri figli?",
+   "vince": "i compiti si fanno senza perdere tempo!",
+   "cosa": "Venticinque minuti di studio e cinque di pausa: vi suono io.",
+   "domanda": "Qual era la materia che odiavate? Ditemelo nei commenti!",
+   "regalo": "i compiti hanno il loro timer!",
+   "righe": [
+    "Venticinque minuti di studio, poi la pausa.",
+    "Vi suono io quando si cambia."
+   ],
+   "manda": "Mandatela a chi studia col telefono in mano!",
+   "descrizione": "Il metodo del pomodoro: venticinque minuti di studio, cinque di pausa, e ogni quattro giri una pausa lunga. Ti suono io quando si cambia. Funziona anche senza internet.",
+   "app": {
+    "nome": "Timer per i compiti",
+    "breve": "Compiti",
+    "emoji": "📚",
+    "tipo": "timer",
+    "slogan": "Studio, pausa, studio. Un regalo di Gennarino.",
+    "descrizione": "Il metodo del pomodoro: venticinque minuti di studio, cinque di pausa, e ogni quattro giri una pausa lunga. Ti suono io quando si cambia. Funziona anche senza internet.",
+    "chiave": "compiti-pomodoro-v1",
+    "opzioni": {
+     "preset": [
+      {
+       "nome": "Studio · 25 min",
+       "min": 25
+      },
+      {
+       "nome": "Pausa · 5 min",
+       "min": 5
+      },
+      {
+       "nome": "Pausa lunga · 15 min",
+       "min": 15
+      },
+      {
+       "nome": "Studio · 50 min",
+       "min": 50
+      }
+     ],
+     "passo": 5,
+     "avvisaPrima": 2,
+     "etichetta": "Compiti",
+     "avvia": "Si comincia",
+     "testoPrima": "Ancora {min} minuti!",
+     "testoFine": "Tempo finito: si cambia!",
+     "basta": "Ok",
+     "partito": "Via! Si cambia alle {ora}.",
+     "titoloScelta": "Studio o pausa?",
+     "consigli": [
+      "Durante lo studio il telefono va lontano.",
+      "Ogni quattro giri di studio, una pausa lunga."
+     ]
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "documenti",
+   "nome": "Documenti in scadenza",
+   "emoji": "🪪",
+   "telefono": "Documenti",
+   "problema": "la carta d'identità scaduta",
+   "storia": "Mamma mia, all'aeroporto con la carta d'identità scaduta!",
+   "domandaE": "E i documenti: sapete quando scade la patente?",
+   "vince": "i documenti non scadono più a sorpresa!",
+   "cosa": "Segnate i documenti e vi avviso prima che scadano.",
+   "domanda": "Quale documento vi è scaduto nel momento peggiore? Ditemelo nei commenti!",
+   "regalo": "i documenti li controllo io!",
+   "righe": [
+    "Segnate carta d'identità, patente e passaporto.",
+    "Vi avviso un mese prima."
+   ],
+   "manda": "Mandatela a chi parte sempre col documento scaduto!",
+   "descrizione": "Segni carta d'identità, patente, passaporto e tessera sanitaria con la scadenza: ti avviso un mese prima, anche col promemoria nel calendario. Tutto resta sul tuo telefono.",
+   "app": {
+    "nome": "Documenti in scadenza",
+    "breve": "Documenti",
+    "emoji": "🪪",
+    "tipo": "scadenze",
+    "slogan": "Nessun documento scade a sorpresa. Un regalo di Gennarino.",
+    "descrizione": "Segni carta d'identità, patente, passaporto e tessera sanitaria con la scadenza: ti avviso un mese prima, anche col promemoria nel calendario. Tutto resta sul tuo telefono.",
+    "chiave": "documenti-v1",
+    "opzioni": {
+     "etichetta": "Che documento",
+     "placeholder": "Carta d'identità, patente…",
+     "etichettaData": "Scade il",
+     "unita": "mesi",
+     "rapidi": [
+      6,
+      12,
+      60,
+      120
+     ],
+     "giorniBase": 365,
+     "avviso": 30,
+     "suggerimenti": [
+      "Carta d'identità",
+      "Patente",
+      "Passaporto",
+      "Tessera sanitaria",
+      "Permesso di soggiorno"
+     ],
+     "bottone": "Segna il documento",
+     "titoloForm": "Segna un documento",
+     "titoloLista": "I documenti",
+     "filtroAperti": "Da tenere d'occhio",
+     "filtroChiusi": "Rinnovati",
+     "fatto": "Rinnovato",
+     "fattoIl": "Rinnovato il",
+     "scritto": "Documento segnato.",
+     "vuoto": "Nessun documento segnato.",
+     "contaTutti": "documenti",
+     "contaPresto": "scadono entro un mese",
+     "contaScaduti": "scaduti",
+     "promemoria": "{cosa} scade il {quando}",
+     "erroreVuoto": "Scrivi che documento è.",
+     "notaEsempi": ""
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "caffe-turno",
+   "nome": "Chi paga il caffè",
+   "emoji": "☕",
+   "telefono": "Caffè",
+   "problema": "il caffè da pagare",
+   "storia": "Mamma mia, al bar si litiga sempre su chi paga il caffè!",
+   "domandaE": "E al bar coi colleghi: chi paga il caffè oggi?",
+   "vince": "al bar si sa chi paga!",
+   "cosa": "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
+   "domanda": "Il caffè come lo prendete? Ditemelo nei commenti!",
+   "regalo": "il caffè ha i suoi turni!",
+   "righe": [
+    "Scrivete chi prende il caffè con voi.",
+    "Ogni giorno vi dico chi offre."
+   ],
+   "manda": "Mandatela al collega che non paga mai!",
+   "descrizione": "Scrivi chi prende il caffè con te: ogni giorno ti dico a chi tocca offrire, a giro, senza litigare. Il turno di oggi lo mandi nel gruppo.",
+   "app": {
+    "nome": "Chi paga il caffè",
+    "breve": "Caffè",
+    "emoji": "☕",
+    "tipo": "turni",
+    "slogan": "Oggi offre lui. Un regalo di Gennarino.",
+    "descrizione": "Scrivi chi prende il caffè con te: ogni giorno ti dico a chi tocca offrire, a giro, senza litigare. Il turno di oggi lo mandi nel gruppo.",
+    "chiave": "caffe-turno-v1",
+    "opzioni": {
+     "persone": [
+      "Io",
+      "Gennaro",
+      "Anna",
+      "Salvatore"
+     ],
+     "compiti": [
+      "Offre il caffè"
+     ],
+     "giro": "giorno",
+     "messaggio": "Caffè di oggi",
+     "titoloOggi": "Oggi offre…",
+     "titoloPersone": "Chi prende il caffè",
+     "titoloCompiti": "Il giro",
+     "placeholderPersona": "Nome del collega",
+     "placeholderCompito": "Offre i cornetti…"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "quanto-manca",
+   "nome": "Quanto manca a…",
+   "emoji": "⏳",
+   "telefono": "Manca",
+   "problema": "i giorni che non passano",
+   "storia": "Mamma mia, conto i giorni alle vacanze sulle dita!",
+   "domandaE": "E le vacanze: quanti giorni mancano?",
+   "vince": "sapete sempre quanto manca!",
+   "cosa": "Segnate il giorno che aspettate e vi dico quanto manca.",
+   "domanda": "Voi cosa state aspettando? Ditemelo nei commenti!",
+   "regalo": "si contano i giorni!",
+   "righe": [
+    "Segnate il giorno che aspettate.",
+    "Ogni mattina vi dico quanto manca."
+   ],
+   "manda": "Mandatela a chi conta i giorni alle vacanze!",
+   "descrizione": "Segni il giorno che aspetti, le vacanze, un compleanno, Natale, e ti dico quanti giorni mancano. In cima quello più vicino.",
+   "app": {
+    "nome": "Quanto manca a…",
+    "breve": "Quanto manca",
+    "emoji": "⏳",
+    "tipo": "scadenze",
+    "slogan": "Ogni giorno, un giorno in meno. Un regalo di Gennarino.",
+    "descrizione": "Segni il giorno che aspetti, le vacanze, un compleanno, Natale, e ti dico quanti giorni mancano. In cima quello più vicino.",
+    "chiave": "quanto-manca-v1",
+    "opzioni": {
+     "etichetta": "Cosa aspetti",
+     "placeholder": "Vacanze, compleanno, Natale…",
+     "etichettaData": "Il giorno",
+     "giorniBase": 30,
+     "rapidi": [
+      7,
+      30,
+      100
+     ],
+     "avviso": 3,
+     "parola": "arriva",
+     "presto": "Arriva",
+     "oggi": "È oggi!",
+     "scaduto": "Passato",
+     "bottone": "Conta i giorni",
+     "titoloForm": "Cosa aspetti?",
+     "titoloLista": "Quanto manca",
+     "filtroAperti": "In arrivo",
+     "filtroChiusi": "Arrivati",
+     "fatto": "Arrivato!",
+     "fattoIl": "Arrivato il",
+     "scritto": "Segnato: si contano i giorni.",
+     "vuoto": "Niente in arrivo: segna qualcosa!",
+     "contaTutti": "in arrivo",
+     "contaPresto": "questa settimana",
+     "contaScaduti": "passati",
+     "promemoria": "{cosa}: è il {quando}",
+     "erroreVuoto": "Scrivi cosa aspetti.",
+     "notaEsempi": ""
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "spazzolino-filtri",
+   "nome": "Cambia lo spazzolino",
+   "emoji": "🪥",
+   "telefono": "Cambio",
+   "problema": "lo spazzolino vecchio",
+   "storia": "Mamma mia, lo spazzolino ha le setole come una scopa!",
+   "domandaE": "E lo spazzolino: quand'è che l'avete cambiato?",
+   "vince": "le cose si cambiano al momento giusto!",
+   "cosa": "Segnate ogni quanto va cambiato e vi avviso io.",
+   "domanda": "Cosa vi scordate sempre di cambiare? Ditemelo nei commenti!",
+   "regalo": "le cose di casa si cambiano in tempo!",
+   "righe": [
+    "Spazzolino, filtri, lenzuola: dite ogni quanto.",
+    "Vi avviso quando tocca."
+   ],
+   "manda": "Mandatela a chi ha lo spazzolino di due anni fa!",
+   "descrizione": "Spazzolino, lenzuola, filtro della cappa, panno dei piatti: segni ogni quanto si cambiano e ti dico cosa tocca oggi, col promemoria nel calendario.",
+   "app": {
+    "nome": "Cambia lo spazzolino",
+    "breve": "Cambio",
+    "emoji": "🪥",
+    "tipo": "ricorrenze",
+    "slogan": "Ogni cosa cambiata al momento giusto. Un regalo di Gennarino.",
+    "descrizione": "Spazzolino, lenzuola, filtro della cappa, panno dei piatti: segni ogni quanto si cambiano e ti dico cosa tocca oggi, col promemoria nel calendario.",
+    "chiave": "spazzolino-filtri-v1",
+    "opzioni": {
+     "esempi": [
+      {
+       "nome": "Spazzolino",
+       "ogni": 90
+      },
+      {
+       "nome": "Lenzuola",
+       "ogni": 7
+      },
+      {
+       "nome": "Panno dei piatti",
+       "ogni": 3
+      },
+      {
+       "nome": "Filtro della cappa",
+       "ogni": 60
+      }
+     ],
+     "etichetta": "Cosa va cambiato",
+     "placeholder": "Asciugamani, filtro…",
+     "ogniBase": 30,
+     "titoloLista": "Da cambiare",
+     "titoloForm": "Aggiungi",
+     "fatto": "Cambiato oggi",
+     "ultimaVolta": "Ultimo cambio",
+     "oggiTesto": "Da cambiare oggi",
+     "ritardo": "In ritardo di",
+     "promemoria": "Da cambiare: {nome}",
+     "bottone": "Aggiungi"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "squadre-calcetto",
+   "nome": "Le squadre del calcetto",
+   "emoji": "⚽",
+   "telefono": "Calcetto",
+   "problema": "le squadre del calcetto",
+   "storia": "Mamma mia, mezz'ora per fare le squadre e dieci minuti di partita!",
+   "domandaE": "E il calcetto: chi fa le squadre?",
+   "vince": "le squadre si fanno in un secondo!",
+   "cosa": "Scrivete chi gioca e la sorte fa le squadre giuste.",
+   "domanda": "In che ruolo giocate? Ditemelo nei commenti!",
+   "regalo": "le squadre le fa la sorte!",
+   "righe": [
+    "Scrivete chi gioca stasera.",
+    "Toccate e la sorte fa le squadre."
+   ],
+   "manda": "Mandatela a chi vuole sempre i più forti!",
+   "descrizione": "Scrivi chi gioca e la sorte fa due squadre in un secondo, oppure sceglie chi va in porta. Senza ripetere finché non sono usciti tutti.",
+   "app": {
+    "nome": "Le squadre del calcetto",
+    "breve": "Calcetto",
+    "emoji": "⚽",
+    "tipo": "sorteggio",
+    "slogan": "Le squadre le fa la sorte. Un regalo di Gennarino.",
+    "descrizione": "Scrivi chi gioca e la sorte fa due squadre in un secondo, oppure sceglie chi va in porta. Senza ripetere finché non sono usciti tutti.",
+    "chiave": "squadre-calcetto-v1",
+    "opzioni": {
+     "liste": [
+      {
+       "nome": "Chi va in porta",
+       "voci": [
+        "Ciro",
+        "Gennaro",
+        "Salvatore",
+        "Antonio",
+        "Pasquale",
+        "Enzo"
+       ]
+      },
+      {
+       "nome": "Chi porta il pallone",
+       "voci": [
+        "Ciro",
+        "Gennaro",
+        "Salvatore",
+        "Antonio"
+       ]
+      }
+     ],
+     "squadre": true,
+     "gira": "Gira!",
+     "risultato": "Tocca a: {x}!"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "lavatrice",
+   "nome": "Timer della lavatrice",
+   "emoji": "🫧",
+   "telefono": "Lavatrice",
+   "problema": "i panni dimenticati in lavatrice",
+   "storia": "Mamma mia, i panni lasciati in lavatrice fino al giorno dopo!",
+   "domandaE": "E la lavatrice: quante volte i panni restano dentro?",
+   "vince": "i panni non puzzano più!",
+   "cosa": "Scegliete il lavaggio e vi suono quando è finito.",
+   "domanda": "Voi stendete fuori o dentro? Ditemelo nei commenti!",
+   "regalo": "la lavatrice vi chiama!",
+   "righe": [
+    "Scegliete quanto dura il lavaggio.",
+    "Vi suono quando è ora di stendere."
+   ],
+   "manda": "Mandatela a chi si scorda i panni in lavatrice!",
+   "descrizione": "Scegli quanto dura il lavaggio e ti suono quando è ora di stendere, anche col promemoria nel calendario. Funziona anche senza internet.",
+   "app": {
+    "nome": "Timer della lavatrice",
+    "breve": "Lavatrice",
+    "emoji": "🫧",
+    "tipo": "timer",
+    "slogan": "È ora di stendere. Un regalo di Gennarino.",
+    "descrizione": "Scegli quanto dura il lavaggio e ti suono quando è ora di stendere, anche col promemoria nel calendario. Funziona anche senza internet.",
+    "chiave": "lavatrice-v1",
+    "opzioni": {
+     "preset": [
+      {
+       "nome": "Rapido · 30 min",
+       "min": 30
+      },
+      {
+       "nome": "Cotone · 1 ora e 40",
+       "min": 100
+      },
+      {
+       "nome": "Sintetici · 1 ora",
+       "min": 60
+      },
+      {
+       "nome": "Delicati · 45 min",
+       "min": 45
+      }
+     ],
+     "passo": 5,
+     "avvisaPrima": 5,
+     "etichetta": "Lavatrice",
+     "orario": true,
+     "etichettaOrario": "Oppure: finisce alle",
+     "avvia": "Ho acceso la lavatrice",
+     "testoPrima": "Tra {min} minuti si stende!",
+     "testoFine": "La lavatrice ha finito: è ora di stendere!",
+     "basta": "Vado a stendere",
+     "partito": "Lavaggio partito: finisce alle {ora}.",
+     "titoloScelta": "Che lavaggio?"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "tombola",
+   "nome": "La tombola con la smorfia",
+   "emoji": "🎄",
+   "telefono": "Tombola",
+   "problema": "la tombola di Natale",
+   "storia": "Mamma mia, a Natale chi tiene il tabellone della tombola?",
+   "domandaE": "E la tombola: chi chiama i numeri a casa vostra?",
+   "vince": "la tombola si gioca anche senza tabellone!",
+   "cosa": "Toccate e vi chiamo i numeri con la smorfia napoletana.",
+   "domanda": "Qual è il vostro numero fortunato? Ditemelo nei commenti!",
+   "regalo": "la tombola è servita!",
+   "righe": [
+    "Toccate e vi chiamo i numeri.",
+    "Per ogni numero vi dico la smorfia."
+   ],
+   "manda": "Mandatela a chi a Natale vince sempre la tombola!",
+   "descrizione": "Il tabellone della tombola sul telefono: tocchi e ti chiamo i numeri da 1 a 90, senza ripetere, con la smorfia napoletana. Funziona anche senza internet.",
+   "app": {
+    "nome": "La tombola con la smorfia",
+    "breve": "Tombola",
+    "emoji": "🎄",
+    "tipo": "sorteggio",
+    "slogan": "Ambo, terno, tombola! Un regalo di Gennarino.",
+    "descrizione": "Il tabellone della tombola sul telefono: tocchi e ti chiamo i numeri da 1 a 90, senza ripetere, con la smorfia napoletana. Funziona anche senza internet.",
+    "chiave": "tombola-v1",
+    "opzioni": {
+     "liste": [
+      {
+       "nome": "Tombola",
+       "voci": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45",
+        "46",
+        "47",
+        "48",
+        "49",
+        "50",
+        "51",
+        "52",
+        "53",
+        "54",
+        "55",
+        "56",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "65",
+        "66",
+        "67",
+        "68",
+        "69",
+        "70",
+        "71",
+        "72",
+        "73",
+        "74",
+        "75",
+        "76",
+        "77",
+        "78",
+        "79",
+        "80",
+        "81",
+        "82",
+        "83",
+        "84",
+        "85",
+        "86",
+        "87",
+        "88",
+        "89",
+        "90"
+       ]
+      }
+     ],
+     "senzaRipetere": true,
+     "gira": "Chiama il numero!",
+     "risultato": "È uscito il {x}!",
+     "smorfia": {
+      "1": "L'Italia",
+      "2": "'A piccerella",
+      "3": "'A jatta",
+      "4": "'O puorco",
+      "5": "'A mano",
+      "6": "Chella che guarda 'nterra",
+      "7": "'O vasetto",
+      "8": "'A Maronna",
+      "9": "'A figliata",
+      "10": "'E fasule",
+      "11": "'E suricille",
+      "12": "'E surdate",
+      "13": "Sant'Antonio",
+      "14": "'O mbriaco",
+      "15": "'O guaglione",
+      "17": "'A disgrazzia",
+      "18": "'O sanghe",
+      "19": "'A resata",
+      "20": "'A festa",
+      "22": "'O pazzo",
+      "23": "'O scemo",
+      "24": "'E gguardie",
+      "25": "Natale",
+      "26": "Nanninella",
+      "27": "'O cantero",
+      "29": "'O pate d''e criature",
+      "31": "'O padrone 'e casa",
+      "32": "'O capitone",
+      "33": "Ll'anne 'e Cristo",
+      "34": "'A capa",
+      "35": "L'aucelluzzo",
+      "36": "'E castagnelle",
+      "37": "'O monaco",
+      "38": "'E mazzate",
+      "39": "'A funa 'nganna",
+      "40": "'A noia",
+      "41": "'O curtiello",
+      "42": "'O ccafè",
+      "43": "'Onna pereta fore 'o barcone",
+      "44": "'E ccancelle",
+      "45": "'O vino bbuono",
+      "46": "'E denare",
+      "47": "'O muorto",
+      "48": "'O muorto che parla",
+      "49": "'O piezzo 'e carne",
+      "50": "'O ppane",
+      "51": "'O ciardino",
+      "52": "'A mamma",
+      "53": "'O viecchio",
+      "54": "'O cappiello",
+      "55": "'A museca",
+      "56": "'A caruta",
+      "57": "'O scartellato",
+      "58": "'O paccotto",
+      "59": "'E pile",
+      "60": "Se lamenta",
+      "61": "'O cacciatore",
+      "62": "'O muorto acciso",
+      "63": "'A sposa",
+      "64": "'A sciammeria",
+      "65": "'O chianto",
+      "66": "'E ddoje zetelle",
+      "67": "'O totaro int''a chitarra",
+      "68": "'A zuppa cotta",
+      "69": "Sottosopra",
+      "70": "'O palazzo",
+      "72": "'A maraviglia",
+      "73": "'O spitale",
+      "74": "'A rotta",
+      "75": "Pullecenella",
+      "76": "'A funtana",
+      "77": "'E diavule",
+      "78": "'A bella figliola",
+      "79": "'O mariuolo",
+      "80": "'A vocca",
+      "81": "'E sciure",
+      "82": "'A tavula 'mbandita",
+      "83": "'O maletiempo",
+      "84": "'A chiesa",
+      "85": "Ll'aneme 'o priatorio",
+      "86": "'A puteca",
+      "87": "'E perucchie",
+      "88": "'E casecavalle",
+      "89": "'A vecchia",
+      "90": "'A paura"
+     }
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   },
+   "periodo": [
+    "12-01",
+    "01-06"
+   ]
+  },
+  {
+   "id": "regali-natale",
+   "nome": "La lista dei regali di Natale",
+   "emoji": "🎁",
+   "telefono": "Regali",
+   "problema": "i regali dell'ultimo minuto",
+   "storia": "Mamma mia, il ventitré dicembre e ancora nessun regalo!",
+   "domandaE": "E i regali di Natale: li comprate all'ultimo minuto?",
+   "vince": "i regali di Natale sono sotto controllo!",
+   "cosa": "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
+   "domanda": "Qual è il regalo più strano che avete ricevuto? Ditemelo nei commenti!",
+   "regalo": "Natale è sotto controllo!",
+   "righe": [
+    "Segnate a chi fare il regalo e cosa.",
+    "Vi dico quanto avete speso."
+   ],
+   "manda": "Mandatela a chi compra i regali la vigilia!",
+   "descrizione": "Segni a chi devi fare il regalo, cosa e quanto vuoi spendere: spunti quando l'hai comprato e vedi quanto hai speso in tutto. Tutto resta sul tuo telefono.",
+   "app": {
+    "nome": "La lista dei regali di Natale",
+    "breve": "Regali",
+    "emoji": "🎁",
+    "tipo": "registro",
+    "slogan": "Nessuno resta senza regalo. Un regalo di Gennarino.",
+    "descrizione": "Segni a chi devi fare il regalo, cosa e quanto vuoi spendere: spunti quando l'hai comprato e vedi quanto hai speso in tutto. Tutto resta sul tuo telefono.",
+    "chiave": "regali-natale-v1",
+    "opzioni": {
+     "versi": [
+      [
+       "Regalo",
+       "Per"
+      ]
+     ],
+     "soldi": true,
+     "etichetta": "Che regalo",
+     "placeholder": "Sciarpa, libro, profumo…",
+     "etichettaData": "Da comprare entro (se vuoi)",
+     "bottone": "Segna il regalo",
+     "titoloForm": "Segna un regalo",
+     "titoloLista": "I regali",
+     "filtroAperti": "Da comprare",
+     "filtroChiusi": "Comprati",
+     "chiudi": "Comprato!",
+     "chiusoIl": "Comprato il",
+     "scritto": "Regalo segnato.",
+     "vuoto": "Nessun regalo da comprare.",
+     "soldiDati": "da spendere",
+     "whatsapp": false,
+     "erroreCosa": "Scrivi che regalo."
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   },
+   "periodo": [
+    "11-20",
+    "12-24"
+   ]
+  },
+  {
+   "id": "caffe-conta",
+   "nome": "Quanti caffè oggi",
+   "emoji": "☕",
+   "telefono": "Caffè",
+   "problema": "i caffè che non si contano",
+   "storia": "Mamma mia, alle undici sono già al quarto caffè!",
+   "domandaE": "E il caffè: quanti ne prendete al giorno?",
+   "vince": "i caffè si contano da soli!",
+   "cosa": "Toccate ogni caffè e vi faccio vedere la settimana.",
+   "domanda": "Quanti caffè prendete voi? Ditemelo nei commenti!",
+   "regalo": "i caffè sono contati!",
+   "righe": [
+    "Toccate più a ogni caffè.",
+    "Vi faccio vedere come va la settimana."
+   ],
+   "manda": "Mandatela a chi vive di caffè!",
+   "descrizione": "Un tocco a ogni caffè, e anche per l'acqua: vedi quanti ne hai presi oggi e come va la settimana. Funziona anche senza internet.",
+   "app": {
+    "nome": "Quanti caffè oggi",
+    "breve": "Caffè",
+    "emoji": "☕",
+    "tipo": "contatore",
+    "slogan": "Caffè contati, giornata tranquilla. Un regalo di Gennarino.",
+    "descrizione": "Un tocco a ogni caffè, e anche per l'acqua: vedi quanti ne hai presi oggi e come va la settimana. Funziona anche senza internet.",
+    "chiave": "caffe-conta-v1",
+    "opzioni": {
+     "voci": [
+      {
+       "nome": "Caffè",
+       "emoji": "☕",
+       "obiettivo": 0
+      },
+      {
+       "nome": "Bicchieri d'acqua",
+       "emoji": "💧",
+       "obiettivo": 8
+      }
+     ],
+     "titolo": "Oggi"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "condominio",
+   "nome": "Turni delle scale",
+   "emoji": "🏢",
+   "telefono": "Scale",
+   "problema": "le scale del palazzo",
+   "storia": "Mamma mia, le scale del palazzo non le pulisce mai nessuno!",
+   "domandaE": "E le scale del palazzo: a chi tocca questa settimana?",
+   "vince": "nel palazzo si sa a chi tocca!",
+   "cosa": "Scrivete gli appartamenti e vi dico a chi tocca ogni settimana.",
+   "domanda": "Nel vostro palazzo chi si lamenta sempre? Ditemelo nei commenti!",
+   "regalo": "le scale hanno i loro turni!",
+   "righe": [
+    "Scrivete gli appartamenti del palazzo.",
+    "Ogni settimana si sa a chi tocca."
+   ],
+   "manda": "Mandatela nel gruppo del palazzo!",
+   "descrizione": "Scrivi gli appartamenti o le famiglie: ogni settimana ti dico a chi tocca pulire le scale e portare fuori i bidoni. Il turno lo mandi nel gruppo del palazzo.",
+   "app": {
+    "nome": "Turni delle scale",
+    "breve": "Scale",
+    "emoji": "🏢",
+    "tipo": "turni",
+    "slogan": "Ogni settimana, il suo turno. Un regalo di Gennarino.",
+    "descrizione": "Scrivi gli appartamenti o le famiglie: ogni settimana ti dico a chi tocca pulire le scale e portare fuori i bidoni. Il turno lo mandi nel gruppo del palazzo.",
+    "chiave": "condominio-v1",
+    "opzioni": {
+     "persone": [
+      "Primo piano",
+      "Secondo piano",
+      "Terzo piano",
+      "Quarto piano"
+     ],
+     "compiti": [
+      "Pulire le scale",
+      "Portare fuori i bidoni"
+     ],
+     "giro": "settimana",
+     "messaggio": "Turni del palazzo",
+     "titoloOggi": "Questa settimana tocca a…",
+     "titoloPersone": "Gli appartamenti",
+     "titoloCompiti": "I lavori del palazzo",
+     "placeholderPersona": "Interno, famiglia…",
+     "placeholderCompito": "Lavare l'androne…"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "pausa-telefono",
+   "nome": "Metti giù il telefono",
+   "emoji": "📵",
+   "telefono": "Pausa",
+   "problema": "il telefono sempre in mano",
+   "storia": "Mamma mia, tre ore a scorrere video senza accorgermene!",
+   "domandaE": "E il telefono: quante ore ci passate?",
+   "vince": "il telefono si mette giù!",
+   "cosa": "Scegliete quanto staccate e vi suono io quando potete riprenderlo.",
+   "domanda": "Quante ore state sul telefono? Ditemelo nei commenti!",
+   "regalo": "il telefono si riposa!",
+   "righe": [
+    "Scegliete quanto volete staccare.",
+    "Vi suono quando potete riprenderlo."
+   ],
+   "manda": "Mandatela a chi sta sempre al telefono!",
+   "descrizione": "Scegli quanto vuoi staccare dal telefono, lo metti giù e ti suono quando puoi riprenderlo. Funziona anche senza internet.",
+   "app": {
+    "nome": "Metti giù il telefono",
+    "breve": "Pausa",
+    "emoji": "📵",
+    "tipo": "timer",
+    "slogan": "Giù il telefono, su la testa. Un regalo di Gennarino.",
+    "descrizione": "Scegli quanto vuoi staccare dal telefono, lo metti giù e ti suono quando puoi riprenderlo. Funziona anche senza internet.",
+    "chiave": "pausa-telefono-v1",
+    "opzioni": {
+     "preset": [
+      {
+       "nome": "15 minuti",
+       "min": 15
+      },
+      {
+       "nome": "30 minuti",
+       "min": 30
+      },
+      {
+       "nome": "1 ora",
+       "min": 60
+      },
+      {
+       "nome": "2 ore",
+       "min": 120
+      }
+     ],
+     "passo": 5,
+     "avvisaPrima": 0,
+     "etichetta": "Pausa",
+     "avvia": "Metto giù il telefono",
+     "testoFine": "Pausa finita: bentornato!",
+     "basta": "Ok",
+     "partito": "Bravo! Ci rivediamo alle {ora}.",
+     "titoloScelta": "Quanto stacchi?",
+     "consigli": [
+      "Metti il telefono a faccia in giù, lontano da te.",
+      "Fatti una passeggiata: Napoli è bella dal vivo."
+     ]
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "cure-animali",
+   "nome": "Le cure del cane e del gatto",
+   "emoji": "🐾",
+   "telefono": "Cure",
+   "problema": "l'antipulci scordato",
+   "storia": "Mamma mia, il gatto si gratta: l'antipulci l'ho scordato!",
+   "domandaE": "E il cane o il gatto: vi ricordate l'antipulci?",
+   "vince": "le cure degli animali non si scordano più!",
+   "cosa": "Segnate ogni quanto serve e vi avviso io.",
+   "domanda": "Avete un cane o un gatto? Ditemelo nei commenti!",
+   "regalo": "gli animali di casa sono in ordine!",
+   "righe": [
+    "Antipulci, vermifugo, bagnetto: dite ogni quanto.",
+    "Vi avviso quando tocca."
+   ],
+   "manda": "Mandatela a chi ha un cane o un gatto!",
+   "descrizione": "Antipulci, vermifugo, bagnetto, unghie: segni ogni quanto si fanno e ti dico cosa tocca, col promemoria nel calendario. Chiedi sempre al veterinario i tempi giusti.",
+   "app": {
+    "nome": "Le cure del cane e del gatto",
+    "breve": "Cure",
+    "emoji": "🐾",
+    "tipo": "ricorrenze",
+    "slogan": "Cane e gatto ringraziano. Un regalo di Gennarino.",
+    "descrizione": "Antipulci, vermifugo, bagnetto, unghie: segni ogni quanto si fanno e ti dico cosa tocca, col promemoria nel calendario. Chiedi sempre al veterinario i tempi giusti.",
+    "chiave": "cure-animali-v1",
+    "opzioni": {
+     "esempi": [
+      {
+       "nome": "Antipulci",
+       "ogni": 30
+      },
+      {
+       "nome": "Vermifugo",
+       "ogni": 90
+      },
+      {
+       "nome": "Bagnetto",
+       "ogni": 30
+      },
+      {
+       "nome": "Unghie",
+       "ogni": 21
+      }
+     ],
+     "etichetta": "Cosa",
+     "placeholder": "Spazzolata, vaccino…",
+     "ogniBase": 30,
+     "titoloLista": "Le cure",
+     "titoloForm": "Aggiungi",
+     "fatto": "Fatto oggi",
+     "ultimaVolta": "Ultima volta",
+     "oggiTesto": "Tocca oggi",
+     "ritardo": "In ritardo di",
+     "promemoria": "Cure: {nome}",
+     "bottone": "Aggiungi"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  },
+  {
+   "id": "piegamenti",
+   "nome": "Piegamenti ogni giorno",
+   "emoji": "💪",
+   "telefono": "Sport",
+   "problema": "la palestra che non si fa",
+   "storia": "Mamma mia, l'abbonamento in palestra e ci sono andato due volte!",
+   "domandaE": "E la palestra: ci andate davvero?",
+   "vince": "l'allenamento si fa anche a casa!",
+   "cosa": "Toccate ogni piegamento e vi faccio vedere i progressi.",
+   "domanda": "Quanti piegamenti riuscite a fare? Ditemelo nei commenti!",
+   "regalo": "l'allenamento si conta da solo!",
+   "righe": [
+    "Toccate più a ogni serie.",
+    "Vi faccio vedere la settimana."
+   ],
+   "manda": "Mandatela a chi paga la palestra e non ci va!",
+   "descrizione": "Piegamenti, addominali, squat: tocchi a ogni serie e vedi quanti ne hai fatti oggi e come va la settimana. Funziona anche senza internet.",
+   "app": {
+    "nome": "Piegamenti ogni giorno",
+    "breve": "Sport",
+    "emoji": "💪",
+    "tipo": "contatore",
+    "slogan": "Una serie alla volta. Un regalo di Gennarino.",
+    "descrizione": "Piegamenti, addominali, squat: tocchi a ogni serie e vedi quanti ne hai fatti oggi e come va la settimana. Funziona anche senza internet.",
+    "chiave": "piegamenti-v1",
+    "opzioni": {
+     "voci": [
+      {
+       "nome": "Piegamenti",
+       "emoji": "💪",
+       "obiettivo": 30
+      },
+      {
+       "nome": "Addominali",
+       "emoji": "🔥",
+       "obiettivo": 30
+      },
+      {
+       "nome": "Squat",
+       "emoji": "🦵",
+       "obiettivo": 30
+      }
+     ],
+     "titolo": "Oggi",
+     "brav": "Obiettivo fatto: grande!"
+    },
+    "piede": "Gratis, senza registrazione e senza pubblicità. Tutto resta solo sul tuo telefono e funziona anche senza internet."
+   }
+  }
+ ]
+}

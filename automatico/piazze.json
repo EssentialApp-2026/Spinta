@@ -1,0 +1,60 @@
+{
+ "nota": "Piazze vere di Napoli per la panoramica della domenica, in ordine. Foto controllate a mano: solo CC0 o pubblico dominio (nessun credito da citare). Usate: si saltano da sole (libreria.json, aperture). Finite queste, automatico/piazza.py cerca su Commons quelle di «da_cercare».",
+ "piazze": [
+  {
+   "nome": "Piazza Carità",
+   "file": "File:Napoli - Piazza Carità.jpg",
+   "licenza": "Public domain"
+  },
+  {
+   "nome": "Piazza Garibaldi",
+   "file": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg",
+   "licenza": "CC0"
+  },
+  {
+   "nome": "Piazza Quattro Giornate",
+   "file": "File:Piazza Quattro Giornate - Vomero 100 0379.jpg",
+   "licenza": "Public domain"
+  },
+  {
+   "nome": "Piazza Medaglie d'Oro",
+   "file": "File:Piazza Medaglie d'oro -2- Naples.jpg",
+   "licenza": "CC0"
+  },
+  {
+   "nome": "Piazza San Domenico Maggiore",
+   "file": "File:Napoli - piazza San Domenico Maggiore e guglia 1030736.JPG",
+   "licenza": "Public domain"
+  },
+  {
+   "nome": "Piazza Cavour",
+   "file": "File:Napoli stazione Piazza Cavour fabbricato.jpg",
+   "licenza": "Public domain"
+  },
+  {
+   "nome": "Piazza Mercato",
+   "file": "File:Piazza Masaniello.jpg",
+   "licenza": "Public domain"
+  }
+ ],
+ "da_cercare": [
+  "Piazza Dante",
+  "Piazza Municipio",
+  "Piazza Vanvitelli",
+  "Piazza dei Martiri",
+  "Piazza Trieste e Trento",
+  "Piazza Sannazaro",
+  "Piazza Amedeo",
+  "Piazza Vittoria",
+  "Piazza Museo",
+  "Piazza Sanità",
+  "Piazza Montesanto",
+  "Piazza Leonardo",
+  "Piazza degli Artisti",
+  "Piazza Immacolata",
+  "Piazza San Gaetano",
+  "Piazza Nicola Amore",
+  "Piazza Carlo III",
+  "Piazza Bovio"
+ ]
+}

@@ -372,21 +372,28 @@ function crVotiShow(){const el=$('#v-ris');if(!el)return;const V=CR.vv,{n,tot,wi
       <b style="width:34px;text-align:right">${n[k]}</b><button class="btn sm alt" style="margin:0;padding:6px 10px" onclick="crVotiAdj('${k}',-1)">−</button><button class="btn sm alt" style="margin:0;padding:6px 10px" onclick="crVotiAdj('${k}',1)">+</button></div>`).join('')}
     <div style="margin-top:6px;font-size:14px">${tot?(win.length===1?`🏆 Ha vinto la <b>${win[0]}</b> · ${tot} voti`:`🤝 Pareggio tra ${win.join(' e ')}: scegli tu chi vince <select id="v-par">${win.map(k=>`<option>${k}</option>`).join('')}</select>`):'Ancora nessun voto: scegli gli screenshot o usa + e −.'}</div>
     ${V.list.length?`<details style="margin-top:10px"><summary>Voti letti (${V.list.filter(x=>x.on).length} su ${V.list.length}): togli quelli sbagliati</summary>${V.list.map((x,i)=>`<label class="opt"><input type="checkbox" ${x.on?'checked':''} onchange="CR.vv.list[${i}].on=this.checked;crVotiShow()"><span><b>${x.k}</b> · ${esc(x.u?'@'+x.u+': ':'')}${esc(x.txt)}${x.dup?'<small>stessa persona: contato una volta</small>':''}</span></label>`).join('')}</details>`:''}
-    ${tot?`<div class="acts"><button class="btn sm" onclick="crVotiUsa()">✅ Usa questo risultato</button><button class="btn sm alt" onclick="crVotiCopia()">📋 Copia per Claude</button></div>
-    <small class="n">«Usa questo risultato» lo mette nella puntata del risultato (con i numeri). «Copia per Claude»: incollalo nella chat con Claude, che aggiorna la pagina della serie e prepara il regalo del venerdì.</small>`
-    :`<div class="acts"><button class="btn sm alt" onclick="crVotiNessuno()">🙁 Nessuno ha votato</button><button class="btn sm alt" onclick="crVotiCopia()">📋 Copia per Claude</button></div>
+    ${tot?`<div class="acts"><button class="btn sm" onclick="crVotiUsa()">✅ Usa questo risultato</button><button class="btn sm alt" onclick="crVotiCopia()">📋 Copia</button></div>
+    <small class="n">«Usa questo risultato» lo mette nella puntata del risultato e lo manda al sito della serie: l'app vincente è già pronta ed esce da sola venerdì alle 19.</small>`
+    :`<div class="acts"><button class="btn sm alt" onclick="crVotiNessuno()">🙁 Nessuno ha votato</button><button class="btn sm alt" onclick="crVotiCopia()">📋 Copia</button></div>
     <small class="n">A voto chiuso, se nei commenti non c'è nessuna lettera, questa settimana non esce nessuna app: tocca «Nessuno ha votato» e giovedì Gennarino lo dice in una puntata.</small>`}</div>`}
 function crVotiAdj(k,d){CR.vv.adj[k]+=d;crVotiShow()}
 function crVotiWin(){const {win}=crVotiTot();return win.length===1?win[0]:(($('#v-par')||{}).value||win[0])}
+// il risultato va anche al sito della serie: GitHub lo legge ogni mezz'ora (automatico/risultato.py) e il regalo esce da solo venerdì alle 19
+const CR_NTFY='https://ntfy.sh/spinta-bancariello-voti-k7q2m9x4';
+window.crVotiInvia=async function(v){if(v)DB.votiDaInviare=JSON.stringify(v);if(!DB.votiDaInviare)return;save();
+  try{const r=await fetch(CR_NTFY,{method:'POST',body:DB.votiDaInviare});if(!r.ok)throw 0;DB.votiDaInviare=null;DB.votiInviati=Date.now();save();if(v)toast('Mandato al sito: venerdì alle 19 il regalo esce da solo')}
+  catch(_){if(v)toast('Niente rete: lo mando appena torna')}};
 function crVotiUsa(){const {n}=crVotiTot(),win=crVotiWin();DB.voti={w:CR.vv.w,A:n.A,B:n.B,C:n.C,win,at:Date.now()};DB.creator=Object.assign(crSet(),{vince:win});save();
+  crVotiInvia({settimana:CR.vv.w,A:n.A,B:n.B,C:n.C,vince:win,at:new Date().toISOString()});
   if($('#cr-vince')){$('#cr-vince').value=win;if($('#cr-tipo').value==='risultato'||$('#cr-tipo').value==='regalo')crChanged(true)}
   closeModal('m-voti');toast(`Ha vinto la ${win}: lo trovi nella puntata del risultato`);if(window.renderOggi)renderOggi()}
 // nessuna lettera nei commenti: questa settimana niente app (Gennarino lo dice nella puntata del giovedì)
 function crVotiNessuno(){DB.voti={w:CR.vv.w,A:0,B:0,C:0,win:null,nessuno:true,at:Date.now()};save();closeModal('m-voti');
+  crVotiInvia({settimana:CR.vv.w,A:0,B:0,C:0,vince:'nessuno',at:new Date().toISOString()});
   toast('Segnato: questa settimana niente app');if(window.renderOggi)renderOggi()}
 function crVotiCopia(){const {n,tot}=crVotiTot(),win=crVotiWin(),s=crSet();
-  if(!tot){copy(`Voti di 'O Bancariello (settimana ${CR.vv.w}): nessun voto nei commenti. Questa settimana niente app.`);toast('Copiato: incollalo nella chat con Claude');return}
-  copy(`Voti di 'O Bancariello (settimana ${CR.vv.w}): A ${n.A} · B ${n.B} · C ${n.C}, totale ${tot}. Ha vinto la ${win}${crIdea(s,win)?': '+crIdea(s,win):''}.`);toast('Copiato: incollalo nella chat con Claude')}
+  if(!tot){copy(`Voti di 'O Bancariello (settimana ${CR.vv.w}): nessun voto nei commenti. Questa settimana niente app.`);toast('Copiato');return}
+  copy(`Voti di 'O Bancariello (settimana ${CR.vv.w}): A ${n.A} · B ${n.B} · C ${n.C}, totale ${tot}. Ha vinto la ${win}${crIdea(s,win)?': '+crIdea(s,win):''}.`);toast('Copiato')}
 
 /* ---------- regia: tempi, espressioni, scene ---------- */
 function crExpr(t,i,n){const s=t.toLowerCase();if(i===n-1)return'wave';
