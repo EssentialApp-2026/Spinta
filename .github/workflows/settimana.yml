@@ -63,10 +63,14 @@ jobs:
           pip install -q kokoro-onnx piper-tts sherpa-onnx soundfile librosa numpy pillow onnxruntime
       - name: Voce Mako (Python a parte per Chatterbox; se non si installa, settimana.py usa la voce di riserva)
         continue-on-error: true
+        timeout-minutes: 30
         run: |
           ${{ steps.py311.outputs.python-path }} -m venv /home/runner/mako
-          /home/runner/mako/bin/pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
-          /home/runner/mako/bin/pip install -q chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
+          for i in 1 2 3; do
+            timeout 480 /home/runner/mako/bin/pip install -q --default-timeout=60 torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu &&
+            timeout 480 /home/runner/mako/bin/pip install -q --default-timeout=60 chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa && break
+            echo "installazione non riuscita (tentativo $i), riprovo"; sleep 10
+          done
           /home/runner/mako/bin/python -c "import chatterbox.mtl_tts, sherpa_onnx, soundfile, librosa"
           echo "SPINTA_PYTHON_MAKO=/home/runner/mako/bin/python" >> "$GITHUB_ENV"
       - name: Prepara la settimana

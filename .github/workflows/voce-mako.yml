@@ -63,10 +63,16 @@ jobs:
           path: /home/runner/.cache/spinta-modelli
           key: spinta-modelli-v2
       - name: Programmi
+        timeout-minutes: 30
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
-          pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
-          pip install -q chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
+          # a volte un download si pianta: ogni tentativo ha un tempo massimo e si riprova
+          for i in 1 2 3; do
+            timeout 480 pip install -q --default-timeout=60 torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu &&
+            timeout 480 pip install -q --default-timeout=60 chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa && break
+            echo "installazione non riuscita (tentativo $i), riprovo"; sleep 10
+          done
+          python3 -c "import chatterbox.mtl_tts, sherpa_onnx, soundfile, librosa"
       - name: Sceglie il riferimento
         shell: bash
         run: |
@@ -98,10 +104,16 @@ jobs:
           path: /home/runner/.cache/spinta-modelli
           key: spinta-modelli-v2
       - name: Programmi
+        timeout-minutes: 30
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
-          pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
-          pip install -q chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
+          # a volte un download si pianta: ogni tentativo ha un tempo massimo e si riprova
+          for i in 1 2 3; do
+            timeout 480 pip install -q --default-timeout=60 torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu &&
+            timeout 480 pip install -q --default-timeout=60 chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa && break
+            echo "installazione non riuscita (tentativo $i), riprovo"; sleep 10
+          done
+          python3 -c "import chatterbox.mtl_tts, sherpa_onnx, soundfile, librosa"
       - name: Prima la domenica
         shell: bash
         run: |
