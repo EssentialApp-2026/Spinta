@@ -36,7 +36,15 @@ def membri(cat, tipo, pagine=10, **extra):
 def tutte_le_piazze(gia):
     """Tutte le foto CC0 o di pubblico dominio nelle categorie delle piazze di Napoli (e nelle loro sottocategorie), divise per piazza."""
     per = {}
-    piazze = [pg['title'] for pg in membri('Category:Squares in Naples', 'subcat', pagine=4)]
+    piazze = []
+    for madre in ('Category:Squares in Naples', 'Category:Piazzas in Naples', 'Category:Squares of Naples', 'Category:Piazze di Napoli', 'Category:Streets and squares in Naples'):
+        figlie = [pg['title'] for pg in membri(madre, 'subcat', pagine=4)]
+        print('categoria', madre, len(figlie), flush=True)
+        piazze += [x for x in figlie if x not in piazze]
+    if not piazze:   # ultima strada: le categorie che si chiamano «Piazza … (Naples)»
+        for q in ('intitle:Piazza Naples', 'intitle:Largo Naples'):
+            j = P.commons(dict(action='query', list='search', srnamespace=14, srlimit=200, srsearch=q))
+            piazze += [r['title'] for r in j.get('query', {}).get('search', []) if re.search(r'\((Naples|Napoli)\)$', r['title'])]
     print('categorie di piazze:', len(piazze), flush=True)
     for cat in piazze:
         nome = re.sub(r'\s*\((Naples|Napoli)\)$', '', cat.replace('Category:', ''))
