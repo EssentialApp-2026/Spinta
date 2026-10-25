@@ -428,7 +428,10 @@ def scrivi_idee(n, salva=True, prova_app=True):
         while len(nuove) < n and giri < 4 and time.time() < fine:
             giri += 1
             print(f'\n== giro {giri}: penso a idee nuove', flush=True)
-            lista = srv.json(prompt_lista(gia + ''.join(f"\n- {x['nome']} ({x['app']['tipo']}): {x['problema']}" for x in nuove), 12), SCHEMA_LISTA, temp=1.0, max_tokens=1600)['idee']
+            try:
+                lista = srv.json(prompt_lista(gia + ''.join(f"\n- {x['nome']} ({x['app']['tipo']}): {x['problema']}" for x in nuove), 12), SCHEMA_LISTA, temp=1.0, max_tokens=1600)['idee']
+            except Exception as ex:
+                print('  errore', ex, flush=True); continue
             cand = []
             for c in lista:
                 c = {k: pulisci(v) for k, v in c.items()}
@@ -439,7 +442,10 @@ def scrivi_idee(n, salva=True, prova_app=True):
                 print(f"  {'scarto' if motivo else 'ok    '} {c['nome']} · {c['tipo']} · {c['problema']} {('(' + motivo + ')') if motivo else ''}", flush=True)
                 if not motivo: cand.append(c)
             if not cand: continue
-            voti = {v['n']: v for v in srv.json(prompt_giudizio(cand, gia), SCHEMA_GIUDIZIO, temp=0.1, max_tokens=900)['voti']}
+            try:
+                voti = {v['n']: v for v in srv.json(prompt_giudizio(cand, gia), SCHEMA_GIUDIZIO, temp=0.1, max_tokens=900)['voti']}
+            except Exception as ex:
+                print('  errore', ex, flush=True); continue
             buone = []
             for k, c in enumerate(cand, 1):
                 v = voti.get(k)
@@ -459,26 +465,29 @@ def scrivi_idee(n, salva=True, prova_app=True):
                 for e in per_tipo.get(c['tipo'], []) + random.sample(cat, len(cat)):
                     if e['id'] not in [x['id'] for x in es]: es.append(e)
                 es = es[:3]
-                idea = None
+                idea, nota = None, ''
                 for tent in range(2):
                     try:
-                        i = sistema_idea(srv.json(prompt_idea(c, es), schema_idea(), temp=0.7, max_tokens=1200))
+                        i = sistema_idea(srv.json(prompt_idea(c, es) + nota, schema_idea(), temp=0.7, max_tokens=1200))
                     except Exception as ex:
                         print('  errore', ex, flush=True); continue
                     err = errori_idea(i, gia_nomi + [x['nome'] for x in nuove])
                     if not err: idea = i; break
+                    nota = ('\nAttenzione: la versione di prima aveva questi problemi, correggili: ' + '; '.join(err) +
+                            '.\nVersione di prima (da correggere): ' + json.dumps(i, ensure_ascii=False))
                     print('  da rifare:', '; '.join(err), flush=True)
                 if not idea:
                     scartate.append(c['nome']); continue
                 tipo = c['tipo']; esempio = opzioni_per_ai(tipo, per_tipo[tipo][0]['app']['opzioni']) if per_tipo.get(tipo) else opzioni_per_ai(tipo, {})
-                opz = None
+                opz, nota = None, ''
                 for tent in range(2):
                     try:
-                        o = srv.json(prompt_opzioni(idea, tipo, esempio), OGG(OPZ[tipo]), temp=0.4, max_tokens=1600)
+                        o = srv.json(prompt_opzioni(idea, tipo, esempio) + nota, OGG(OPZ[tipo]), temp=0.4, max_tokens=1600)
                     except Exception as ex:
                         print('  errore', ex, flush=True); continue
                     err = errori_opzioni(tipo, o)
                     if not err: opz = opzioni_per_app(tipo, o); break
+                    nota = '\nAttenzione: la versione di prima aveva questi problemi, correggili: ' + '; '.join(err) + '.'
                     print('  testi dell\'app da rifare:', '; '.join(err), flush=True)
                 if not opz:
                     scartate.append(c['nome']); continue
