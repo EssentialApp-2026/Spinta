@@ -1,0 +1,63 @@
+{
+ "settimana": "2026-W44",
+ "vivacita": 0.6,
+ "cfg": 0.5,
+ "riferimento": "mako-w43s-1 (prova «vivace» scelta da Sam, 25 ottobre)",
+ "battute": [
+  {
+   "file": "m01.mp3",
+   "testo": "Piazza nuova, tre idee nuove: quale costruisco?",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.621,
+   "sentito": "Piazza Nuova, tre idee nuove quale costruisco?",
+   "seme": 0
+  },
+  {
+   "file": "m02.mp3",
+   "testo": "Uè guagliù, il bancariello si è spostato in Piazza Bellini!",
+   "fonte": "copia",
+   "capito": 0.8,
+   "somiglia": 0.78,
+   "sentito": "Qua, Guayu, il bancariello, si è spostato in Piazza Bellini.",
+   "seme": 1
+  },
+  {
+   "file": "m03.mp3",
+   "testo": "A: Cosa scade nel frigo.",
+   "fonte": "copia",
+   "capito": 0.8,
+   "somiglia": 0.534,
+   "sentito": "Ah, cosa scade nel frigo?",
+   "seme": 1
+  },
+  {
+   "file": "m04.mp3",
+   "testo": "B: Sveglia per le strisce blu.",
+   "fonte": "copia",
+   "capito": 0.67,
+   "somiglia": 0.573,
+   "sentito": "di sveglia per le strisce sblu",
+   "seme": 1
+  },
+  {
+   "file": "m05.mp3",
+   "testo": "C: Turni di casa.",
+   "fonte": "copia",
+   "capito": 0.75,
+   "somiglia": 0.492,
+   "sentito": "Ci, tourni di casa.",
+   "seme": 1
+  },
+  {
+   "file": "m06.mp3",
+   "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+   "fonte": "mako-originale"
+  },
+  {
+   "file": "m07.mp3",
+   "testo": "Venerdì la più votata è sul banco, gratis.",
+   "fonte": "mako-originale"
+  }
+ ]
+}

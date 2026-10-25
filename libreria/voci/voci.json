@@ -1,6 +1,6 @@
 {
  "versione": 1,
- "voce": "Gennarino nuovo: W42-W43 Gemini TTS «Mako» con effetto robot; dalla W44 lo stesso timbro rifatto gratis da automatico/voci.py (Kokoro/Piper italiano + kNN-VC dalle battute Mako grezze, scelta della versione più chiara con Whisper)",
+ "voce": "Gennarino: la voce «Mako» (W42-W43 Gemini TTS, effetto robot). Dalla W44 le frasi già dette da Mako sono gli originali, le altre sono la copia gratis di automatico/voce_mako.py (Chatterbox Multilingual dai 10 secondi di claude/voci/mako-riferimento.wav, scelta della versione più chiara e più somigliante con Whisper e le impronte della voce); «motore»: come è fatta ogni settimana",
  "nota": "Battute già pronte: Spinta le usa al posto di Piper quando il testo della frase è uguale. Se cambi una frase, quella frase torna alla voce di Piper.",
  "settimane": {
   "2026-W42": [
@@ -579,26 +579,6 @@
   ],
   "2026-W44": [
    {
-    "testo": "Piazza nuova, tre idee nuove: quale costruisco?",
-    "file": "voci/2026-W44/01.mp3"
-   },
-   {
-    "testo": "Uè guagliù, il bancariello si è spostato in Piazza Bellini!",
-    "file": "voci/2026-W44/02.mp3"
-   },
-   {
-    "testo": "A: Cosa scade nel frigo.",
-    "file": "voci/2026-W44/03.mp3"
-   },
-   {
-    "testo": "B: Sveglia per le strisce blu.",
-    "file": "voci/2026-W44/04.mp3"
-   },
-   {
-    "testo": "C: Turni di casa.",
-    "file": "voci/2026-W44/05.mp3"
-   },
-   {
     "testo": "Latte scaduto, strisce blu o piatti: chi vi frega di più?",
     "file": "voci/2026-W44/06.mp3"
    },
@@ -747,14 +727,6 @@
     "file": "voci/2026-W44/42.mp3"
    },
    {
-    "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
-    "file": "voci/2026-W44/43.mp3"
-   },
-   {
-    "testo": "Venerdì la più votata è sul banco, gratis.",
-    "file": "voci/2026-W44/44.mp3"
-   },
-   {
     "testo": "Uè guagliù, il voto è aperto da ieri.",
     "file": "voci/2026-W44/45.mp3"
    },
@@ -845,6 +817,34 @@
    {
     "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
     "file": "voci/2026-W44/67.mp3"
+   },
+   {
+    "testo": "Piazza nuova, tre idee nuove: quale costruisco?",
+    "file": "voci/2026-W44/m01.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il bancariello si è spostato in Piazza Bellini!",
+    "file": "voci/2026-W44/m02.mp3"
+   },
+   {
+    "testo": "A: Cosa scade nel frigo.",
+    "file": "voci/2026-W44/m03.mp3"
+   },
+   {
+    "testo": "B: Sveglia per le strisce blu.",
+    "file": "voci/2026-W44/m04.mp3"
+   },
+   {
+    "testo": "C: Turni di casa.",
+    "file": "voci/2026-W44/m05.mp3"
+   },
+   {
+    "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+    "file": "voci/2026-W44/m06.mp3"
+   },
+   {
+    "testo": "Venerdì la più votata è sul banco, gratis.",
+    "file": "voci/2026-W44/m07.mp3"
    }
   ],
   "2026-W45": [
@@ -1387,5 +1387,11 @@
     "file": "voci/2026-W46/67.mp3"
    }
   ]
+ },
+ "accento": {
+  "2026-W44": 0
+ },
+ "motore": {
+  "2026-W44": "misto"
  }
 }
