@@ -1,10 +1,52 @@
-categorie di piazze: 0
-    incategory:"Piazza Dante (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    incategory:"Piazza Dante (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
-    "Piazza Dante" Napoli haswbstatement:P275=Q6938433: 4 trovate, 0 buone
-    "Piazza Dante" Napoli haswbstatement:P6216=Q19652: 8 trovate, 0 buone
-    "Piazza Dante" Napoli filetype:bitmap: 50 trovate, 0 buone
-Piazza Dante []
+categoria Category:Squares in Naples 0
+categoria Category:Piazzas in Naples 0
+categoria Category:Squares of Naples 0
+categoria Category:Piazze di Napoli 0
+categoria Category:Streets and squares in Naples 0
+categorie di piazze: 69
+  Piazza Vittoria: 91 foto guardate, 1 libere e adatte
+  Piazza Dante: 134 foto guardate, 2 libere e adatte
+  Piazza Giovanni Bovio: 43 foto guardate, 0 libere e adatte
+  Piazza Vanvitelli: 9 foto guardate, 0 libere e adatte
+  Piazza Matteotti: 27 foto guardate, 5 libere e adatte
+  Piazza del Municipio: 263 foto guardate, 12 libere e adatte
+  Piazza Nicola Amore: 24 foto guardate, 0 libere e adatte
+  Piazza Luigi Miraglia: 40 foto guardate, 0 libere e adatte
+  Piazza Scipione Ammirato: 3 foto guardate, 0 libere e adatte
+  Piazza della Repubblica: 59 foto guardate, 2 libere e adatte
+  Piazza Carlo III: 32 foto guardate, 2 libere e adatte
+  Piazza Grande: 2 foto guardate, 1 libere e adatte
+  Piazza dei Martiri: 90 foto guardate, 1 libere e adatte
+  Piazza San Gaetano: 82 foto guardate, 0 libere e adatte
+  Piazza Trieste e Trento: 262 foto guardate, 12 libere e adatte
+  Piazza Sannazaro: 8 foto guardate, 0 libere e adatte
+  Piazza Nolana: 1 foto guardate, 0 libere e adatte
+  Piazza Carlo Troya: 2 foto guardate, 0 libere e adatte
+  Piazza Principe Umberto: 5 foto guardate, 0 libere e adatte
+  Piazza Bernini: 1 foto guardate, 0 libere e adatte
+  Piazza Piedigrotta: 3 foto guardate, 0 libere e adatte
+  Piazza Amedeo: 27 foto guardate, 2 libere e adatte
+  Piazza Enrico De Nicola: 4 foto guardate, 0 libere e adatte
+  Piazza Plebiscito: 0 foto guardate, 0 libere e adatte
+  Piazza Borsa: 0 foto guardate, 0 libere e adatte
+  Piazza Municipio: 0 foto guardate, 0 libere e adatte
+  Piazza Medaglie dOro: 0 foto guardate, 0 libere e adatte
+  Piazza Monteoliveto: 18 foto guardate, 0 libere e adatte
+  Piazza Grande: 0 foto guardate, 1 libere e adatte
+  Largo della Carità: 31 foto guardate, 1 libere e adatte
+  Largo di Palazzo: 25 foto guardate, 0 libere e adatte
+  Largo di Castello: 0 foto guardate, 0 libere e adatte
+(categorie) Piazza Vittoria 1 ['File:Napolo, tunelo Della Vittoria de oriento, 3.jpeg']
+(categorie) Piazza Dante 2 ['File:SanNunzioSulprizioNapoli.jpg', 'File:Convento Soriano.jpg']
+(categorie) Piazza Matteotti 5 ['File:Napoli - Palazzo delle poste.jpg', 'File:Napoli - Palazzo della Provincia.jpg', 'File:Palazzo delle Poste (Napoli).jpg']
+(categorie) Piazza del Municipio 12 ['File:Palazzo in piazza del Municipio 4 - Napoli.jpg', 'File:Palazzo della Banca di Roma – facciata su piazza Municipio.jpg', 'File:B Gregoretti (CP 920).jpg']
+(categorie) Piazza della Repubblica 2 ['File:Nápoly (5).jpg', 'File:Palazzo Guevara di Bovino Napoli 2.jpeg']
+(categorie) Piazza Carlo III 2 ['File:"Albergo dei Poveri" (after 1751) - Architect Ferdinando Fuga (Florence 1699-Naples 1781) - Naples (23598555603).jpg', 'File:Albergo dei Poveri (Rueckseite).JPG']
+(categorie) Piazza Grande 1 ['File:Piazza Grande und Ponti Rossi.JPG']
+(categorie) Piazza dei Martiri 1 ['File:Palazzo Partanna 1.jpeg']
+(categorie) Piazza Trieste e Trento 12 ['File:Exhibition "Rossini. Neapolitan fury 1868-2018" at "MeMus"=Memory and Music Museum - Royal San Carlo Theatre in Naples (42740185960).jpg', 'File:Detail of the "Galatea\'s triumph" by Élie Honoré Montagny (Paris between 1805-1864) - Naples, Royal Palace (31089834828).jpg', 'File:"Le nozze di Figaro" by Wolfgang Amadeus Mozart - Royal San Carlo Theatre in Naples 06.jpg']
+(categorie) Piazza Amedeo 2 ['File:Piazza Amedeo 100 2776.JPG', 'File:Palazzo del Grand Hotel Eden100 3103.JPG']
+(categorie) Largo della Carità 1 ['File:Nápoly (2).jpg']
     incategory:"Piazza del Municipio (Naples)" haswbstatement:P275=Q6938433: 1 trovate, 1 buone
     incategory:"Piazza del Municipio (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
     "Piazza Municipio" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
@@ -17,36 +59,12 @@ Piazza Municipio ['File:Palazzo in piazza del Municipio 4 - Napoli.jpg']
     "Piazza Vanvitelli" Napoli haswbstatement:P6216=Q19652: 2 trovate, 0 buone
     "Piazza Vanvitelli" Napoli filetype:bitmap: 10 trovate, 0 buone
 Piazza Vanvitelli []
-    incategory:"Piazza dei Martiri (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    incategory:"Piazza dei Martiri (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
-    "Piazza dei Martiri" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
-    "Piazza dei Martiri" Napoli haswbstatement:P6216=Q19652: 4 trovate, 0 buone
-    "Piazza dei Martiri" Napoli filetype:bitmap: 48 trovate, 0 buone
-Piazza dei Martiri []
-    incategory:"Piazza Trieste e Trento (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    incategory:"Piazza Trieste e Trento (Naples)" haswbstatement:P6216=Q19652: 1 trovate, 0 buone
-    "Piazza Trieste e Trento" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
-    "Piazza Trieste e Trento" Napoli haswbstatement:P6216=Q19652: 4 trovate, 0 buone
-    "Piazza Trieste e Trento" Napoli filetype:bitmap: 50 trovate, 0 buone
-Piazza Trieste e Trento []
     incategory:"Piazza Sannazaro (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
     incategory:"Piazza Sannazaro (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
     "Piazza Sannazaro" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
     "Piazza Sannazaro" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
     "Piazza Sannazaro" Napoli filetype:bitmap: 8 trovate, 0 buone
 Piazza Sannazaro []
-    incategory:"Piazza Amedeo (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    incategory:"Piazza Amedeo (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
-    "Piazza Amedeo" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    "Piazza Amedeo" Napoli haswbstatement:P6216=Q19652: 1 trovate, 0 buone
-    "Piazza Amedeo" Napoli filetype:bitmap: 30 trovate, 1 buone
-Piazza Amedeo ['File:Piazza Amedeo 100 2776.JPG']
-    incategory:"Piazza Vittoria (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    incategory:"Piazza Vittoria (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
-    "Piazza Vittoria" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
-    "Piazza Vittoria" Napoli haswbstatement:P6216=Q19652: 24 trovate, 0 buone
-    "Piazza Vittoria" Napoli filetype:bitmap: 50 trovate, 0 buone
-Piazza Vittoria []
     "Piazza Museo" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
     "Piazza Museo" Napoli haswbstatement:P6216=Q19652: 1 trovate, 0 buone
     "Piazza Museo" Napoli filetype:bitmap: 10 trovate, 0 buone
@@ -83,12 +101,6 @@ Piazza San Gaetano []
     "Piazza Nicola Amore" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
     "Piazza Nicola Amore" Napoli filetype:bitmap: 26 trovate, 0 buone
 Piazza Nicola Amore []
-    incategory:"Piazza Carlo III (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    incategory:"Piazza Carlo III (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
-    "Piazza Carlo III" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
-    "Piazza Carlo III" Napoli haswbstatement:P6216=Q19652: 0 trovate, 0 buone
-    "Piazza Carlo III" Napoli filetype:bitmap: 12 trovate, 0 buone
-Piazza Carlo III []
     incategory:"Piazza Giovanni Bovio (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
     incategory:"Piazza Giovanni Bovio (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
     "Piazza Bovio" Napoli haswbstatement:P275=Q6938433: 0 trovate, 0 buone
