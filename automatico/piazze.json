@@ -42,7 +42,8 @@
   {
    "nome": "Piazza San Domenico Maggiore",
    "file": "File:Napoli - piazza San Domenico Maggiore e guglia 1030736.JPG",
-   "licenza": "Public domain"
+   "licenza": "Public domain",
+   "centro": 0.3
   },
   {
    "nome": "Piazza Carlo III",
@@ -58,7 +59,8 @@
   {
    "nome": "Piazza Mercato",
    "file": "File:Piazza Masaniello.jpg",
-   "licenza": "Public domain"
+   "licenza": "Public domain",
+   "scartata": "la foto è un cantiere: non sembra una piazza"
   },
   {
    "nome": "Piazza del Plebiscito",
