@@ -20,10 +20,13 @@ jobs:
         with:
           python-version: '3.12'
       - name: Cerca
+        shell: bash
         run: |
+          mkdir -p claude/piazze-candidate
+          set -o pipefail
           sudo apt-get install -y -qq fonts-dejavu-core > /dev/null
           pip install -q pillow numpy
-          python3 automatico/cerca_piazze.py claude/piazze-candidate
+          python3 automatico/cerca_piazze.py claude/piazze-candidate 2>&1 | tee claude/piazze-candidate/log.txt
       - name: Salva
         run: |
           git config user.name "Spinta automatica"

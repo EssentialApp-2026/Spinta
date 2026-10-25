@@ -56,23 +56,44 @@ SCARTA = re.compile(r'(intern|interior|inside|dettagl|detail|particolar|lapide|t
                     r'cripta|crypt|statua|statue|scultura|sculpture|stemma|coat of arms|insegna|sign\b|logo)', re.I)
 
 
-def cerca_su_commons(nome):
-    """Le foto libere (CC0 o pubblico dominio) di una piazza, dalla migliore: orizzontali, grandi, recenti, col nome della piazza nel titolo."""
-    parole = [w for w in re.findall(r"[a-zà-ù]+", nome.lower()) if w not in ('piazza', 'dei', 'degli', 'delle', 'del', 'della', 'di', 'e')]
-    j = commons(dict(action='query', generator='search', gsrnamespace=6, gsrlimit=50, gsrsearch=f'"{nome}" Napoli filetype:bitmap',
-                     prop='imageinfo', iiprop='url|size|extmetadata', iiextmetadatafilter='LicenseShortName|AttributionRequired|DateTimeOriginal'))
-    cand = []
-    for pg in (j.get('query', {}).get('pages', {}) or {}).values():
-        ii = pg['imageinfo'][0]; ok, lic = libera(ii.get('extmetadata', {}))
-        dt = re.sub('<[^>]+>', '', (ii.get('extmetadata', {}).get('DateTimeOriginal', {}) or {}).get('value', ''))
-        anno = int(m.group(0)) if (m := re.search(r'(19|20)\d\d', dt)) else 0
-        tit = pg['title'].lower()
-        if not ok or anno < 2000 or ii['width'] < 1600 or ii['height'] < 1100 or ii['width'] / ii['height'] < 1.25: continue
-        senza_nome = tit
-        for w in parole: senza_nome = senza_nome.replace(w, ' ')
-        if SCARTA.search(senza_nome) or not all(w in tit for w in parole): continue
-        punti = min(ii['width'] * ii['height'], 24e6) / 1e6 + (8 if 'piazza' in tit else 0) + (3 if 'napoli' in tit or 'naples' in tit else 0) + (anno - 2000) / 5
-        cand.append((punti, pg['title'], lic, ii.get('descriptionurl', '')))
+LIBERE = ('haswbstatement:P275=Q6938433', 'haswbstatement:P6216=Q19652')   # dati strutturati di Commons: licenza CC0 / pubblico dominio
+
+
+def categoria(nome):
+    """La categoria di Commons della piazza (es. «Category:Piazza Dante (Naples)»), se c'è."""
+    parole = [w for w in re.findall(r"[a-zà-ù0-9]+", nome.lower()) if w not in ('piazza', 'dei', 'degli', 'delle', 'del', 'della', 'di', 'e')]
+    j = commons(dict(action='query', list='search', srnamespace=14, srlimit=20, srsearch=f'{nome} Naples'))
+    for r in j.get('query', {}).get('search', []):
+        t = r['title'].lower()
+        if 'piazza' in t and all(w in t for w in parole) and ('naples' in t or 'napoli' in t) and not re.search(r'(interior|church|chiesa|station|stazione|metro|history|maps|paintings|people)', t):
+            return r['title']
+    return None
+
+
+def cerca_su_commons(nome, spiega=None):
+    """Le foto libere (CC0 o pubblico dominio) di una piazza, dalla migliore: orizzontali, grandi, recenti, della piazza giusta."""
+    parole = [w for w in re.findall(r"[a-zà-ù0-9]+", nome.lower()) if w not in ('piazza', 'dei', 'degli', 'delle', 'del', 'della', 'di', 'e')]
+    cat = categoria(nome)
+    ricerche = [(f'incategory:"{cat.replace("Category:", "")}" {lib}', True) for lib in LIBERE] if cat else []
+    ricerche += [(f'"{nome}" Napoli {lib}', False) for lib in LIBERE] + [(f'"{nome}" Napoli filetype:bitmap', False)]
+    visti, cand = set(), []
+    for q, in_cat in ricerche:
+        j = commons(dict(action='query', generator='search', gsrnamespace=6, gsrlimit=50, gsrsearch=q + ' filetype:bitmap' if 'filetype' not in q else q,
+                         prop='imageinfo', iiprop='url|size|extmetadata', iiextmetadatafilter='LicenseShortName|AttributionRequired|DateTimeOriginal'))
+        pagine = list((j.get('query', {}).get('pages', {}) or {}).values()); tenute = 0
+        for pg in pagine:
+            if pg['title'] in visti or not pg.get('imageinfo'): continue
+            visti.add(pg['title'])
+            ii = pg['imageinfo'][0]; ok, lic = libera(ii.get('extmetadata', {}))
+            dt = re.sub('<[^>]+>', '', (ii.get('extmetadata', {}).get('DateTimeOriginal', {}) or {}).get('value', ''))
+            anno = int(m.group(0)) if (m := re.search(r'(19|20)\d\d', dt)) else 0
+            tit = pg['title'].lower(); senza_nome = tit
+            for w in parole: senza_nome = senza_nome.replace(w, ' ')
+            if not ok or (anno and anno < 2000) or ii['width'] < 1600 or ii['height'] < 1000 or ii['width'] / ii['height'] < 1.2: continue
+            if SCARTA.search(senza_nome) or (not in_cat and not all(w in tit for w in parole)): continue
+            punti = min(ii['width'] * ii['height'], 24e6) / 1e6 + (8 if in_cat else 0) + (4 if 'piazza' in tit else 0) + (max(anno, 2005) - 2000) / 5
+            cand.append((punti, pg['title'], lic, ii.get('descriptionurl', ''))); tenute += 1
+        if spiega is not None: spiega.append(f'{q}: {len(pagine)} trovate, {tenute} buone')
     return sorted(cand, reverse=True)
 
 

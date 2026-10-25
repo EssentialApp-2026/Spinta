@@ -29,11 +29,15 @@ def main():
     pz = json.load(open(os.path.join(QUI, 'piazze.json'), encoding='utf-8'))
     tutte = {}
     for nome in pz.get('da_cercare', []):
-        try: cand = P.cerca_su_commons(nome)[:3]
+        spiega = []
+        try: cand = P.cerca_su_commons(nome, spiega)[:3]
         except Exception as e: print('errore', nome, e, flush=True); cand = []
+        for x in spiega: print('   ', x, flush=True)
         tutte[nome] = [{'n': k + 1, 'file': c[1], 'licenza': c[2], 'pagina': c[3], 'punti': round(c[0], 1)} for k, c in enumerate(cand)]
         print(nome, [c['file'] for c in tutte[nome]], flush=True)
     json.dump(tutte, open(os.path.join(out, 'candidate.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    for f in os.listdir(out):
+        if f.startswith('fogli-'): os.remove(os.path.join(out, f))
     f = ImageFont.truetype(FONT, 22) if FONT else ImageFont.load_default(); fp = ImageFont.truetype(FONT, 15) if FONT else ImageFont.load_default()
     nomi = [n for n in tutte if tutte[n]]
     for s in range(0, len(nomi), 5):
