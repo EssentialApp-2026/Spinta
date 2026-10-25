@@ -424,7 +424,8 @@ def scrivi_idee(n, salva=True, prova_app=True):
     t0 = time.time()
     with Server() as srv:
         print('modello pronto:', srv.repo, f'({time.time() - t0:.0f}s)', flush=True)
-        while len(nuove) < n and giri < 4:
+        fine = t0 + float(os.environ.get('SPINTA_MINUTI', '270')) * 60   # oltre, si salva quello che c'è (GitHub ferma il lavoro dopo 340 minuti)
+        while len(nuove) < n and giri < 4 and time.time() < fine:
             giri += 1
             print(f'\n== giro {giri}: penso a idee nuove', flush=True)
             lista = srv.json(prompt_lista(gia + ''.join(f"\n- {x['nome']} ({x['app']['tipo']}): {x['problema']}" for x in nuove), 12), SCHEMA_LISTA, temp=1.0, max_tokens=1600)['idee']
@@ -451,7 +452,7 @@ def scrivi_idee(n, salva=True, prova_app=True):
             tipi_presi = [x['app']['tipo'] for x in nuove]
             buone.sort(key=lambda c: tipi_presi.count(c['tipo']))     # prima i tipi che ancora mancano
             for c in buone:
-                if len(nuove) >= n: break
+                if len(nuove) >= n or time.time() > fine: break
                 if any(simile(c['nome'], x['nome']) for x in nuove) or c['nome'] in scartate: continue
                 print(f"\n-- scrivo «{c['nome']}» ({c['tipo']})", flush=True)
                 es = []
