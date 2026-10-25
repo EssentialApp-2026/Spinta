@@ -1,12 +1,7 @@
 settimana 2026-W45 dal 2026-11-01
 $ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W45 Piante:🪴 Scopa:🃏 Sorte:🎲 --piazza Piazza Carità
 {"piazza": "Piazza Carità", "file": "piazza-2026-W45.mp4", "poster": "piazza-2026-W45.jpg", "foto": "File:Napoli - Piazza Carità.jpg", "licenza": "Public domain", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_-_Piazza_Carit%C3%A0.jpg", "torna": false}
-persone tolte: 27 (giri 3), foto coperta 7.3%
+persone tolte: 27, foto rifatta per il 7.3%
+persone tolte: 3, foto rifatta per il 1.5%
 
 panoramica rifatta piazza-2026-W45.mp4 Piazza Carità
-settimana 2026-W46 dal 2026-11-08
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W46 Acqua:💧 Garanzie:🧾 Uovo:🥚 --piazza Piazza Garibaldi
-{"piazza": "Piazza Garibaldi", "file": "piazza-2026-W46.mp4", "poster": "piazza-2026-W46.jpg", "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg", "licenza": "CC0", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_Centrale_Station_-_Piazza_Garibaldi_Entrance_01.jpg", "torna": false}
-persone tolte: 24 (giri 2), foto coperta 8.0%
-
-panoramica rifatta piazza-2026-W46.mp4 Piazza Garibaldi
