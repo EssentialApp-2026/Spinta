@@ -1,9 +1,9 @@
     incategory:"Piazza Dante (Naples)" haswbstatement:P275=Q6938433: 0 trovate, 0 buone
     incategory:"Piazza Dante (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
-    "Piazza Dante" Napoli haswbstatement:P275=Q6938433: 4 trovate, 1 buone
-    "Piazza Dante" Napoli haswbstatement:P6216=Q19652: 8 trovate, 1 buone
-    "Piazza Dante" Napoli filetype:bitmap: 50 trovate, 1 buone
-Piazza Dante ['File:Piazza Dante, Napels No. 6150 Napoli (serietitel), RP-F-00-1207.jpg', 'File:View of the "Foro Carolino" Piazza Dante in Naples, with scenographic decorations for birth of the princess Maria Luisa of Bourbon.jpeg', 'File:Napoli Piazza e Monumento Dante.jpg']
+    "Piazza Dante" Napoli haswbstatement:P275=Q6938433: 4 trovate, 0 buone
+    "Piazza Dante" Napoli haswbstatement:P6216=Q19652: 8 trovate, 0 buone
+    "Piazza Dante" Napoli filetype:bitmap: 50 trovate, 0 buone
+Piazza Dante []
     incategory:"Piazza del Municipio (Naples)" haswbstatement:P275=Q6938433: 1 trovate, 1 buone
     incategory:"Piazza del Municipio (Naples)" haswbstatement:P6216=Q19652: 0 trovate, 0 buone
     "Piazza Municipio" Napoli haswbstatement:P275=Q6938433: 2 trovate, 0 buone
