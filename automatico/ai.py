@@ -173,7 +173,7 @@ def OGG(props, req=None): return {'type': 'object', 'additionalProperties': Fals
 
 
 # lunghezze vere (in caratteri) di ogni battuta; nello schema si lascia più spazio, così il modello non taglia a metà frase
-LIMITI = dict(nome=40, telefono=9, problema=32, storia=85, domandaE=85, vince=60, cosa=85, domanda=90, regalo=60, riga=70, manda=70, descrizione=260, slogan=75)
+LIMITI = dict(nome=40, telefono=10, problema=35, storia=100, domandaE=95, vince=65, cosa=95, domanda=100, regalo=65, riga=75, manda=75, descrizione=280, slogan=85)
 SCHEMA_LISTA = OGG(dict(idee=LST(OGG(dict(nome=S(60), tipo={'enum': TIPI}, problema=S(70), perche=S(160))), 10, 14)))
 SCHEMA_GIUDIZIO = OGG(dict(voti=LST(OGG(dict(n=INT(1, 20), utile=INT(1, 10), chiara=INT(1, 10), nuova=INT(1, 10), adatta=INT(1, 10))), 1, 20)))
 
@@ -321,22 +321,13 @@ def esempio_idea(i):
     return json.dumps({k: i[k] for k in campi} | {'slogan': i['app']['slogan']}, ensure_ascii=False)
 
 
-def prompt_idea(c, esempi):
-    return f"""{SERIE}
-
-{REGOLE}
-
-Esempi di idee complete già fatte (segui lo stesso stile, la stessa lunghezza e le stesse forme):
-{chr(10).join(esempio_idea(e) for e in esempi)}
-
-Scrivi l'idea completa per: «{c['nome']}» (app di tipo «{c['tipo']}»; fastidio: {c['problema']}; {c['perche']}).
-Campi, con le lunghezze massime in caratteri:
+ISTRUZIONI_IDEA = f"""Campi dell'idea, con le lunghezze massime in caratteri (contale: le frasi lunghe si buttano):
 - «nome» (max {LIMITI['nome']}): il nome dell'app, corto, maiuscola solo all'inizio;
 - «emoji»: una sola emoji che rappresenta l'app;
 - «telefono» (max {LIMITI['telefono']}): UNA parola sola, che si legge sullo schermo del telefono finto della bancarella;
-- «problema» (max {LIMITI['problema']}): il fastidio, minuscolo, senza punto finale (si dice: «il latte scaduto, le strisce blu o i piatti: chi vi frega di più?»);
-- «storia» (max {LIMITI['storia']}): comincia con «Mamma mia,» ed è una piccola scena comica in prima persona, finisce con «!»;
-- «domandaE» (max {LIMITI['domandaE']}): comincia con «E » ed è una domanda al pubblico, finisce con «?»;
+- «problema» (max {LIMITI['problema']}): il fastidio in poche parole, minuscolo, senza punto finale (si dice: «il latte scaduto, le strisce blu o i piatti: chi vi frega di più?»);
+- «storia» (max {LIMITI['storia']}): comincia con «Mamma mia,» ed è UNA frase comica corta in prima persona, finisce con «!»;
+- «domandaE» (max {LIMITI['domandaE']}): comincia con «E » ed è una domanda corta al pubblico, finisce con «?»;
 - «vince» (max {LIMITI['vince']}): si dice dopo «Ha vinto la A:», minuscolo, finisce con «!»;
 - «cosa» (max {LIMITI['cosa']}): cosa fa l'app, detto al pubblico col «voi», finisce con «.»;
 - «domanda» (max {LIMITI['domanda']}): domanda al pubblico che chiede di rispondere nei commenti, finisce con «!»;
@@ -346,6 +337,54 @@ Campi, con le lunghezze massime in caratteri:
 - «descrizione» (max {LIMITI['descrizione']}): la descrizione dell'app col «tu», due o tre frasi, finisce con «.»;
 - «slogan» (max {LIMITI['slogan']}): una frase corta e poi «Un regalo di Gennarino.».
 Niente emoji fuori dal campo «emoji». Rispondi solo col JSON."""
+
+
+def prompt_idea(c, esempi):
+    return f"""{SERIE}
+
+{REGOLE}
+
+{ISTRUZIONI_IDEA}
+
+Esempi di idee complete già fatte (segui lo stesso stile, la stessa lunghezza e le stesse forme):
+{chr(10).join(esempio_idea(e) for e in esempi)}
+
+Scrivi l'idea completa per: «{c['nome']}» (app di tipo «{c['tipo']}»; fastidio: {c['problema']}; {c['perche']})."""
+
+
+SCHEMA_CORTO = lambda n: OGG(dict(frase=S(int(n * 1.3))))
+REGOLE_CAMPO = dict(storia='deve cominciare con «Mamma mia,» e finire con «!»', domandaE='deve cominciare con «E » e finire con «?»',
+                    manda='deve cominciare con «Mandatela a» e finire con «!»', vince='minuscola all\'inizio, finisce con «!»',
+                    regalo='minuscola all\'inizio, finisce con «!»', problema='minuscola, senza punto finale', telefono='una parola sola',
+                    domanda='finisce con «!» o «?»', cosa='finisce con «.»', descrizione='finisce con «.»', riga1='finisce con «.»', riga2='finisce con «.»',
+                    slogan='finisce con «Un regalo di Gennarino.»', nome='maiuscola solo all\'inizio, senza punto')
+
+
+def accorcia(srv, campo, testo, n):
+    """Una frase troppo lunga si fa riscrivere più corta (richiesta piccola e veloce), con le stesse regole del campo."""
+    r = srv.json(f"Riscrivi questa frase in italiano più corta, al massimo {n} caratteri, con lo stesso senso e lo stesso tono "
+                 f"({REGOLE_CAMPO.get(campo, '')}). Frase: «{testo}». Rispondi solo col JSON.", SCHEMA_CORTO(n), temp=0.3, max_tokens=120)
+    return pulisci(r['frase'])
+
+
+RIPARABILI = ('troppo lungo', 'tagliato a metà', 'finisce male', 'senza «', 'non è una parola sola')
+
+
+def ripara(srv, i, gia):
+    """Fa riscrivere solo le battute sbagliate (troppo lunghe, tagliate, senza l'inizio o la fine giusti): poche parole, molto più veloce
+    che riscrivere tutta l'idea. Ritorna l'idea sistemata e gli errori che restano."""
+    for _ in range(2):
+        err = errori_idea(i, gia)
+        campi = sorted({e.split(' ')[0] for e in err if any(r in e for r in RIPARABILI)})
+        if not campi or any(not any(r in e for r in RIPARABILI) for e in err): break
+        for k in campi:
+            try:
+                if k in ('riga1', 'riga2'): j = int(k[-1]) - 1; i['righe'][j] = accorcia(srv, k, i['righe'][j], LIMITI['riga'])
+                elif k in LIMITI: i[k] = accorcia(srv, k, i[k], LIMITI[k])
+            except Exception as ex:
+                print('  errore', ex, flush=True)
+        i = sistema_idea(i)
+    return i, errori_idea(i, gia)
 
 
 def prompt_opzioni(idea, tipo, esempio):
@@ -394,14 +433,28 @@ def simile(a, b):
 def minuscola(t): return t[:1].lower() + t[1:] if len(t) > 1 and not t[1:2].isupper() else t
 
 
+PROPRI = {'natale', 'pasqua', 'carnevale', 'capodanno', 'ferragosto', 'epifania', 'befana', 'napoli', 'gennarino', 'italia', 'san', 'santa', 'whatsapp', 'tiktok'}
+
+
+def frase(t):
+    """«La Spesa per il Mare» → «La spesa per il mare» (restano maiuscoli i nomi propri come Natale o Napoli)."""
+    p = t.split(' ')
+    return ' '.join([p[0][:1].upper() + p[0][1:]] + [w if (w.lower().strip("'?!.,") in PROPRI or (len(w) > 1 and w.isupper())) else w.lower() for w in p[1:]])
+
+
 def sistema_idea(i):
     """Piccole correzioni sicure: maiuscole, spazi, chiusura dello slogan."""
     i = {k: ([pulisci(x) for x in v] if isinstance(v, list) else pulisci(v) if isinstance(v, str) else v) for k, v in i.items()}
     for k in ('problema', 'vince', 'regalo'): i[k] = minuscola(i[k]).rstrip('.')
     i['problema'] = i['problema'].rstrip('!?.,;: ')
-    i['nome'] = i['nome'][:1].upper() + i['nome'][1:]
-    i['nome'] = i['nome'].rstrip('.!')
-    i['telefono'] = i['telefono'][:1].upper() + i['telefono'][1:]
+    i['nome'] = frase(i['nome']).rstrip('.!')
+    i['telefono'] = i['telefono'].strip(" .!'«»")
+    i['telefono'] = i['telefono'][:1].upper() + i['telefono'][1:].lower()
+    # la punteggiatura finale che manca si mette (solo se la frase finisce con una parola intera)
+    fine = dict(storia='!', domandaE='?', cosa='.', domanda='!', descrizione='.')
+    for k, f in fine.items():
+        if i[k] and i[k][-1].isalnum() and not tagliata(i[k] + f): i[k] += f
+    i['righe'] = [r + '.' if r and r[-1].isalnum() and not tagliata(r + '.') else r for r in i['righe']]
     if not i['slogan'].endswith('Un regalo di Gennarino.'):
         t = i['slogan'].replace('Un regalo di Gennarino', '').rstrip(' .,;:')
         i['slogan'] = (t + ('' if t[-1:] in '!?' else '.') + ' Un regalo di Gennarino.') if t else 'Un regalo di Gennarino.'
@@ -481,7 +534,7 @@ def scrivi_idee(n, salva=True, prova_app=True):
             cand = []
             for c in lista:
                 c = {k: pulisci(v) for k, v in c.items()}
-                c['nome'] = c['nome'][:1].upper() + c['nome'][1:]
+                c['nome'] = frase(c['nome']).rstrip('?!.')
                 motivo = ('nome lungo' if len(c['nome']) > LIMITI['nome'] or len(c['nome'].split()) > 6 else
                           'già fatta' if any(simile(c['nome'], g) for g in gia_nomi + [x['nome'] for x in nuove + cand]) else
                           'tema vietato' if VIETATE.search(c['nome'] + ' ' + c['problema'] + ' ' + c['perche']) else '')
@@ -518,6 +571,9 @@ def scrivi_idee(n, salva=True, prova_app=True):
                     except Exception as ex:
                         print('  errore', ex, flush=True); continue
                     err = errori_idea(i, gia_nomi + [x['nome'] for x in nuove])
+                    if err and all(any(r in e for r in RIPARABILI) for e in err):
+                        print('  sistemo:', '; '.join(err), flush=True)
+                        i, err = ripara(srv, i, gia_nomi + [x['nome'] for x in nuove])
                     if not err: idea = i; break
                     nota = ('\nAttenzione: la versione di prima aveva questi problemi, correggili: ' + '; '.join(err) +
                             '.\nVersione di prima (da correggere): ' + json.dumps(i, ensure_ascii=False))
