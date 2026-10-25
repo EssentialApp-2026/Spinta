@@ -1,0 +1,146 @@
+# Voce «Mako» di Gennarino rifatta GRATIS (Chatterbox Multilingual, licenza MIT) per le settimane indicate:
+# prepara le battute in claude/voci/prove/<settimana>/ e, con installa=si, le mette in libreria/voci (le usa Spinta).
+# Le settimane girano in parallelo; la domenica della settimana «subito» va su Spinta appena è pronta.
+name: Voce Mako
+on:
+  workflow_dispatch:
+    inputs:
+      settimane:
+        description: 'Settimane da fare, separate da spazi (es. 2026-W44 2026-W45)'
+        required: true
+        default: ''
+      installa:
+        description: 'si = alla fine mette le battute in libreria/voci, così Spinta le usa'
+        required: false
+        default: 'si'
+      subito:
+        description: 'Settimana la cui domenica va su Spinta appena pronta (vuoto = nessuna)'
+        required: false
+        default: ''
+      scegli:
+        description: 'si = prima sceglie di nuovo i 10 secondi di Mako da copiare (claude/voci/mako-riferimento.wav)'
+        required: false
+        default: 'no'
+      vivacita:
+        description: 'Vivacità della voce (0.6 = «vivace», scelta di Sam; 0.85 = «molto vivace»)'
+        required: false
+        default: '0.6'
+      cfg:
+        description: 'Aderenza al ritmo del riferimento (0.5 con «vivace», 0.35 con «molto vivace»)'
+        required: false
+        default: '0.5'
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: spinta-voce
+  cancel-in-progress: false
+env:
+  SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
+  SPINTA_VIVACITA: ${{ github.event.inputs.vivacita }}
+  SPINTA_CFG: ${{ github.event.inputs.cfg }}
+jobs:
+  lista:
+    runs-on: ubuntu-latest
+    outputs:
+      settimane: ${{ steps.l.outputs.settimane }}
+    steps:
+      - id: l
+        run: echo "settimane=$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1:]))' ${{ github.event.inputs.settimane }})" >> "$GITHUB_OUTPUT"
+
+  riferimento:
+    if: github.event.inputs.scegli == 'si'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Modelli (dalla cache)
+        uses: actions/cache/restore@v4
+        with:
+          path: /home/runner/.cache/spinta-modelli
+          key: spinta-modelli-v2
+      - name: Programmi
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -q chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
+      - name: Sceglie il riferimento
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 automatico/voce_mako.py scegli 2>&1 | grep -v "Warn\|warn" | tee claude/voci/mako-riferimento.log
+      - name: Salva
+        run: |
+          automatico/salva-git.sh "Voce Mako: scelto il riferimento" claude/voci/mako-riferimento.wav claude/voci/mako-riferimento.json claude/voci/mako-riferimento.log
+
+  battute:
+    needs: [lista, riferimento]
+    if: always() && needs.lista.result == 'success' && needs.riferimento.result != 'failure' && needs.lista.outputs.settimane != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        settimana: ${{ fromJSON(needs.lista.outputs.settimane) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Modelli (dalla cache)
+        uses: actions/cache/restore@v4
+        with:
+          path: /home/runner/.cache/spinta-modelli
+          key: spinta-modelli-v2
+      - name: Programmi
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -q chatterbox-tts==0.1.7 sherpa-onnx soundfile librosa
+      - name: Prima la domenica
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p claude/voci/prove/${{ matrix.settimana }}
+          python3 automatico/voce_mako.py settimana claude/settimana-${{ matrix.settimana }}.json --solo piazza-nuova 2>&1 | grep -v "Warn\|warn" | tee -a claude/voci/prove/${{ matrix.settimana }}/log.txt
+      - name: La domenica su Spinta
+        if: github.event.inputs.subito == matrix.settimana
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          automatico/salva-git.sh "Voce Mako: domenica ${{ matrix.settimana }} su Spinta" --installa "${{ matrix.settimana }}" --parziale claude/voci/prove/${{ matrix.settimana }}
+          gh api -X POST repos/${{ github.repository }}/pages/builds > /dev/null || true
+      - name: Tutta la settimana
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 automatico/voce_mako.py settimana claude/settimana-${{ matrix.settimana }}.json 2>&1 | grep -v "Warn\|warn" | tee -a claude/voci/prove/${{ matrix.settimana }}/log.txt
+      - name: Salva
+        if: always()
+        run: |
+          automatico/salva-git.sh "Voce Mako: battute ${{ matrix.settimana }} preparate" claude/voci/prove/${{ matrix.settimana }}
+
+  installa:
+    needs: [lista, battute]
+    if: always() && github.event.inputs.installa == 'si' && needs.lista.result == 'success' && needs.lista.outputs.settimane != '[]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Mette le battute in libreria
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pip install -q numpy
+          automatico/salva-git.sh "Voce Mako su Spinta: ${{ github.event.inputs.settimane }}" --installa "${{ github.event.inputs.settimane }}"
+          python3 claude/controlla.py 2>&1 | grep -i "voci" || true
+          gh api -X POST repos/${{ github.repository }}/pages/builds > /dev/null || true
