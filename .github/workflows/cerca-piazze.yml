@@ -1,0 +1,34 @@
+# Cerca su Commons le foto libere delle piazze ancora da controllare e salva i fogli con le miniature in claude/piazze-candidate/.
+name: Cerca piazze nuove
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['automatico/cerca-piazze.txt']
+permissions:
+  contents: write
+concurrency:
+  group: spinta-piazze
+  cancel-in-progress: false
+jobs:
+  cerca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Cerca
+        run: |
+          sudo apt-get install -y -qq fonts-dejavu-core > /dev/null
+          pip install -q pillow numpy
+          python3 automatico/cerca_piazze.py claude/piazze-candidate
+      - name: Salva
+        run: |
+          git config user.name "Spinta automatica"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add claude/piazze-candidate
+          git commit -q -m "Piazze candidate da Commons ($(date -u +%F))" || exit 0
+          git pull -q --rebase
+          git push -q
