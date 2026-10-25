@@ -19,9 +19,9 @@ on:
         required: false
         default: 'no'
       accento:
-        description: 'Inflessione napoletana della voce: 0 neutra, 1 leggera, 2 napoletana, 3 forte'
+        description: 'Inflessione napoletana della voce: 0 come adesso (scelta di Sam), 1 solo «sc», 2 «sc» e cantilena, 3 anche la vocale finale'
         required: false
-        default: '2'
+        default: '0'
   push:
     branches: [main]
     paths: ['automatico/prova-settimana.txt']
@@ -38,7 +38,7 @@ jobs:
     timeout-minutes: 180
     env:
       SPINTA_MODELLI: /home/runner/.cache/spinta-modelli
-      SPINTA_ACCENTO: ${{ github.event.inputs.accento || '2' }}
+      SPINTA_ACCENTO: ${{ github.event.inputs.accento || '0' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

@@ -8,7 +8,7 @@
 Per ogni frase:
   1. due voci italiane open source la leggono in più versioni: Kokoro-82M «if_sara» (Apache-2.0) e Piper «paola» (MIT),
      con l'inflessione napoletana messa sui fonemi (napoletano(): «sc» davanti a consonante e cantilena a fine frase;
-     livelli in LIVELLI, scelto con SPINTA_ACCENTO);
+     livelli in LIVELLI, scelto con SPINTA_ACCENTO; predefinito 0, cioè la voce italiana senza accento aggiunto, che piace a Sam);
   2. kNN-VC (MIT, WavLM-Large + HiFi-GAN) dà a ogni versione il timbro di Gennarino, preso dalle battute Mako
      grezze di claude/voci/grezze (W42-W43, circa 6 minuti);
   3. Whisper small (MIT, sherpa-onnx) riascolta ogni versione e si tiene quella che si capisce meglio;
@@ -61,7 +61,7 @@ def da_leggere(t):
 #   schwa  tutte le vocali finali senza accento (tranne la «a») si smorzano in «ə»
 #   sonore dopo n e m le consonanti sorde diventano sonore (tando, cambo, bangariello)
 LIVELLI = {0: set(), 1: {'sc'}, 2: {'sc', 'canto'}, 3: {'sc', 'canto', 'fine'}, 4: {'sc', 'canto', 'schwa', 'sonore'}}
-ACCENTO = int(os.environ.get('SPINTA_ACCENTO', '2'))
+ACCENTO = int(os.environ.get('SPINTA_ACCENTO', '0'))   # Sam (25 ottobre): resta la voce di questa settimana, senza accento aggiunto
 VOCALI = 'aeiouɛɔəɪʊ'
 
 
