@@ -24,6 +24,10 @@ on:
         description: 'schema (il modello non può uscire dallo schema JSON) o leggera (più veloce: solo JSON valido, la forma si controlla dopo)'
         required: false
         default: ''
+      avvisa:
+        description: 'Apri una issue se il lavoro fallisce (no per le prove)'
+        required: false
+        default: 'si'
   push:
     branches: [main]
     paths: ['automatico/prova-ai.txt']
@@ -116,7 +120,7 @@ jobs:
           echo "::error title=Salva::$(tail -c 3000 /tmp/salva.log | sed 's/%/%25/g' | sed ':a;N;$!ba;s/\n/%0A/g')"
           exit 1
       - name: Avvisa se qualcosa è andato storto
-        if: failure()
+        if: failure() && github.event.inputs.avvisa != 'no' && github.event_name != 'push'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
