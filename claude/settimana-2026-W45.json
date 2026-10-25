@@ -207,5 +207,19 @@
       ]
     }
   ],
-  "piazza": "Piazza Carità"
+  "piazza": "Piazza Carità",
+  "telefoni": {
+    "A": {
+      "nome": "Piante",
+      "emoji": "🪴"
+    },
+    "B": {
+      "nome": "Scopa",
+      "emoji": "🃏"
+    },
+    "C": {
+      "nome": "Sorte",
+      "emoji": "🎲"
+    }
+  }
 }

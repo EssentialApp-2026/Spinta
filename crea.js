@@ -274,20 +274,24 @@ function crLibShow(items){const el=$('#cr-libin');if(!el)return;const sm=$('#cr-
    <small class="n">Le clip entrano come scene in più tra una battuta e l'altra di Gennarino, scelte in base alle parole della frase.</small>`
    :'<div style="font-size:13.5px">La libreria è vuota: Gennarino viene disegnato da Spinta. Se metti clip o immagini di Gennarino nella cartella <b>libreria</b> del repository (o le mandi a Claude), entrano come scene in più.</div>'}
 
-/* ---------- puntate scritte da Claude nel repository (claude/settimana.json, aggiornato ogni lunedì) ---------- */
+/* ---------- puntate della settimana nel repository (claude/settimana-<W>.json): le prepara GitHub da solo il sabato (automatico/settimana.py) ---------- */
+function crWeekAvviso(){return `<div class="card avviso-sett" style="border-color:#e2a400;margin:8px 0"><b>⚠️ La settimana ${esc(CR.weekManca)} non è ancora pronta.</b><br><small class="n">Di solito la prepara GitHub da solo il sabato. Apri github.com/EssentialApp-2026/Spinta → Actions → «Settimana di Spinta» → Run workflow, e tra mezz'ora è pronta.</small></div>`}
 // una sola lettura anche se la chiedono in due nello stesso momento (apertura del creatore e bottone di Oggi)
 function crWeekLoad(){const oggi=new Date(),dom=oggi.getDay()===0,wk=crWeekId(),wkDopo=crWeekId(new Date(oggi.getTime()+864e5));if(CR.weekP&&CR.weekW===wk&&Date.now()-CR.weekT<30*60e3)return CR.weekP;CR.weekT=Date.now();CR.weekW=wk;
   // prima il piano preparato per questa settimana (claude/settimana-<settimana>.json), se no claude/settimana.json;
   // la domenica la serie riparte (lancio delle idee nuove): prima il piano della settimana che comincia domani
   return CR.weekP=(async()=>{let w=null;for(const f of [...(dom?['claude/settimana-'+wkDopo+'.json']:[]),'claude/settimana-'+wk+'.json','claude/settimana.json']){try{const r=await fetch(f+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&Array.isArray(j.puntate)&&j.puntate.length){w=j;break}}}catch(_){}}
+    // la domenica serve il piano della settimana nuova (lo prepara GitHub il sabato): se manca, lo dico
+    CR.weekManca=dom&&!(w&&w.settimana===wkDopo)?wkDopo:'';
     return CR.week=w||CR.week||null})()}
-function crWeekShow(){const el=$('#cr-week'),w=CR.week;if(!el)return;if(!w){el.innerHTML='';return}
+function crWeekShow(){crWeekShow0();const el=$('#cr-week');if(el&&CR.weekManca&&CR.week&&!el.querySelector('.avviso-sett'))el.insertAdjacentHTML('afterbegin',crWeekAvviso())}
+function crWeekShow0(){const el=$('#cr-week'),w=CR.week;if(!el)return;if(!w){el.innerHTML=CR.weekManca?crWeekAvviso():'';return}
   const today=new Date(),iso=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`,old=!!(w.al&&w.al<iso);
   // le idee della settimana: se i campi sono vuoti, o se sono quelle di un'altra settimana, li riempio io
   if(!old&&w.idee&&(!['A','B','C'].some(k=>$('#cr-i'+k).value.trim())||crSet().ideeW!==w.settimana)){['A','B','C'].forEach(k=>{$('#cr-i'+k).value=w.idee[k]||''});const t=$('#cr-txt');crSaveSet();
     DB.creator.ideeW=w.settimana;save();if(!t.value.trim()||t.value===CR.auto)crFill(true)}
   const v=$('#cr-vince').value,zero=crNessuno(),list=w.puntate.map((p,i)=>({p,i})).filter(({p})=>p.tipo==='nessuno'?zero:zero?!p.vince:(!p.vince||p.vince===v));
-  el.innerHTML=`<div class="card" style="margin-top:10px;background:var(--card2)"><b>📬 Puntate scritte da Claude${old?' · settimana scorsa':''}</b>
+  el.innerHTML=`<div class="card" style="margin-top:10px;background:var(--card2)"><b>📬 Puntate della settimana${old?' · settimana scorsa':''}</b>
     <div style="color:var(--mut);font-size:12.5px;margin:4px 0 8px;line-height:1.45">${esc(w.nota||'')}${old?' Lunedì arrivano quelle nuove.':''}</div>
     ${list.map(({p,i})=>`<button class="btn sm alt" style="margin:3px 4px 3px 0" onclick="crWeekUse(${i})">${esc(p.titolo||CR_TIPI[p.tipo]||'Puntata')}${p.giorno?' · '+esc(p.giorno):''}</button>`).join('')}
     ${w.puntate.some(p=>p.vince)?`<small class="n">Risultato e regalo sono pronti per tutte e tre le idee: scegli chi ha vinto in «Ha vinto».</small>`:''}</div>`}
@@ -301,7 +305,7 @@ function crWeekUse(i){const w=CR.week,p=w&&w.puntate[i];if(!p)return;
   if(p.tipo==='risultato'&&V&&V[p.vince]&&!pronte)L=L.map(x=>x.replace(new RegExp('^Ha vinto la '+p.vince+'(?=:)'),`Ha vinto la ${p.vince} con ${V[p.vince]} voti`));
   // apertura della puntata (es. la panoramica della piazza nuova la domenica): clip fissa sulle prime frasi
   CR.apertura=p.apertura?{file:String(p.apertura),frasi:Math.max(1,+p.aperturaFrasi||2),testo:L[0]||''}:null;
-  const t=$('#cr-txt');t.value=L.join('\n');CR.auto=t.value;crPrevSoon();crWeekShow();toast('Copione di Claude caricato')}
+  const t=$('#cr-txt');t.value=L.join('\n');CR.auto=t.value;crPrevSoon();crWeekShow();toast('Copione della settimana caricato')}
 
 /* ---------- conta i voti dagli screenshot dei commenti (un voto per persona) ---------- */
 function crVotiInject(){if($('#m-voti'))return;
@@ -644,10 +648,12 @@ function crMedia(c,el,t,t0,zz,ov){const cv=el.tagName==='CANVAS'||(typeof Offscr
 const CR_PH_COL={A:'#2f9e6e',B:'#3b6fd8',C:'#e08a2e'},CR_PH_X={A:130,B:360,C:590};
 const CR_PH_EMO=[[/frigo|latte|alimenti|cibo/i,'🧊'],[/turni|piatti|pulizi|casa/i,'🧹'],[/strisce|sosta|blu/i,'🅿️'],[/macchin|auto|parcheg|bollo|revision|scadenz/i,'🚗'],[/pasta|timer|moka|cottur|minut|sveglia/i,'⏱️'],[/prestit|quadern|restitu|debit/i,'📒'],[/differenz|munnezz|rifiut|bidon/i,'♻️'],[/fontanell|acqua|sete|borracc/i,'💧'],[/spesa|lista/i,'🛒'],[/conto|pizz|dividi/i,'🍕'],[/scopa|carte|punti/i,'🃏'],[/farmac|medic|pillol/i,'💊'],[/bolletta|luce|gas|soldi|spes/i,'💶'],[/pianta|innaff/i,'🪴'],[/compleann|regal/i,'🎂']];
 function crPhLabel(idea){const w=crClean(idea).replace(/[.!?…]+$/,'').split(/\s+/).filter(Boolean);if(!w.length)return'';let l=w[w.length-1];if(l.length>12&&w.length>1)l=w[0];return l.charAt(0).toUpperCase()+l.slice(1)}
-function crPhones(c,st){['A','B','C'].forEach(k=>{const idea=st.idee&&st.idee[k];if(!idea)return;const cx=CR_PH_X[k],col=CR_PH_COL[k],x=cx-75,y=1040,w=150,h=228,emo=(CR_PH_EMO.find(e=>e[0].test(idea))||[0,'📱'])[1];
+// i telefoni del piano automatico (scritta ed emoji scelte con l'idea), se l'idea è ancora quella del piano
+function crPhPlan(k,idea){const w=CR.week;return w&&w.telefoni&&w.idee&&crClean(w.idee[k]||'')===crClean(idea)?w.telefoni[k]:null}
+function crPhones(c,st){['A','B','C'].forEach(k=>{const idea=st.idee&&st.idee[k];if(!idea)return;const pp=crPhPlan(k,idea),cx=CR_PH_X[k],col=CR_PH_COL[k],x=cx-75,y=1040,w=150,h=228,emo=pp&&pp.emoji||(CR_PH_EMO.find(e=>e[0].test(idea))||[0,'📱'])[1];
     c.save();c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=14;c.shadowOffsetY=6;crRR(c,x,y,w,h,24,'#15161d');c.restore();
     crRR(c,x+8,y+10,w-16,h-20,17,'#fbfbfd');crRR(c,cx-17,y+13,34,6,3,'#15161d');
-    crRR(c,x+16,y+34,w-32,30,9,col);c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.font=`800 ${crPhLabel(idea).length>9?15:18}px ${CR_FONT}`;c.fillText(crPhLabel(idea),cx,y+49,w-40);
+    const lab=pp&&pp.nome||crPhLabel(idea);crRR(c,x+16,y+34,w-32,30,9,col);c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.font=`800 ${lab.length>9?15:18}px ${CR_FONT}`;c.fillText(lab,cx,y+49,w-40);
     c.fillStyle=col+'22';crRR(c,x+16,y+74,w-32,92,12,col+'22');c.font='54px "Segoe UI Emoji","Noto Color Emoji","Apple Color Emoji",sans-serif';c.fillStyle='#000';c.fillText(emo,cx,y+122);
     crRR(c,x+16,y+176,w-32,28,9,'#e5484d');c.fillStyle='#fff';c.font=`800 14px ${CR_FONT}`;c.fillText('GRATIS',cx,y+191);
     crCirc(c,x-4,y+12,19,'#fff');crCirc(c,x-4,y+12,15.5,col);c.fillStyle='#fff';c.font=`900 20px ${CR_FONT}`;c.fillText(k,x-4,y+13)})}

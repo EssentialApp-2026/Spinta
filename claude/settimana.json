@@ -1,157 +1,225 @@
 {
- "versione": 1,
- "settimana": "2026-W41",
- "dal": "2026-10-05",
- "al": "2026-10-11",
- "scritto": "2026-10-05",
- "voto_fino_a": "2026-10-07",
- "regalo": "2026-10-09",
- "idee": {
-  "A": "Dividi il conto in pizzeria",
-  "B": "Timer per la moka",
-  "C": "Lista della spesa a voce"
- },
- "nota": "Settimana 5-11 ottobre: si vota fino a mercoledì 7 sera, il regalo esce venerdì 9. Risultato e regalo sono pronti per tutte e tre le idee. Sabato 10: la puntata del cambio look, già montata a parte da Claude (non si crea in Spinta).",
- "puntate": [
-  {
-   "id": "dietro-le-quinte",
-   "tipo": "libera",
-   "giorno": "martedì",
-   "titolo": "Come nasce un'app sul banco",
-   "copione": [
-    "Come nasce un'app su una bancarella? Ve lo dico io.",
-    "Uè guagliù, prima di tutto ascolto voi.",
-    "Leggo i commenti, uno per uno.",
-    "Poi scelgo tre idee che servono tutti i giorni.",
-    "Questa settimana: la pizzeria, la moka e la spesa.",
-    "Avete già votato? Basta una lettera nei commenti!"
-   ]
+  "versione": 1,
+  "settimana": "2026-W45",
+  "dal": "2026-11-01",
+  "al": "2026-11-08",
+  "scritto": "2026-10-25",
+  "voto_fino_a": "2026-11-04",
+  "regalo": "2026-11-06",
+  "idee": {
+    "A": "Innaffia le piante",
+    "B": "Segnapunti della scopa",
+    "C": "Chi scende la munnezza"
   },
-  {
-   "id": "ultime-ore",
-   "tipo": "idee",
-   "giorno": "mercoledì",
-   "titolo": "Ultime ore per votare",
-   "copione": [
-    "Stasera si chiude il voto: siete ancora in tempo!",
-    "Uè guagliù, è mercoledì e il banco aspetta voi.",
-    "A: Dividi il conto in pizzeria.",
-    "B: Timer per la moka.",
-    "C: Lista della spesa a voce.",
-    "Una lettera nei commenti e avete votato.",
-    "Venerdì la più votata è sul banco, gratis."
-   ]
+  "idee_id": {
+    "A": "piante-acqua",
+    "B": "segnapunti-scopa",
+    "C": "chi-scende"
   },
-  {
-   "id": "risultato-A",
-   "tipo": "risultato",
-   "vince": "A",
-   "giorno": "giovedì",
-   "titolo": "Risultato del voto",
-   "copione": [
-    "Ha vinto la A: basta litigare per il conto in pizzeria!",
-    "Uè guagliù, il voto è chiuso e avete scelto voi.",
-    "Ha vinto la A: Dividi il conto in pizzeria.",
-    "Scrivi il totale, quanti siete, e i conti li fa lei.",
-    "Da oggi ci lavoro, anche di notte.",
-    "Venerdì è sul banco, gratis per tutti.",
-    "Voi chi fate pagare sempre? Ditemelo nei commenti!"
-   ]
-  },
-  {
-   "id": "risultato-B",
-   "tipo": "risultato",
-   "vince": "B",
-   "giorno": "giovedì",
-   "titolo": "Risultato del voto",
-   "copione": [
-    "Ha vinto la B: il caffè non brucerà più!",
-    "Uè guagliù, il voto è chiuso e avete scelto voi.",
-    "Ha vinto la B: Timer per la moka.",
-    "Metti la moka sul fuoco, tocchi un tasto, e ti avvisa lei.",
-    "Da oggi ci lavoro, con un caffè accanto.",
-    "Venerdì è sul banco, gratis per tutti.",
-    "Voi come lo prendete il caffè? Scrivetelo nei commenti!"
-   ]
-  },
-  {
-   "id": "risultato-C",
-   "tipo": "risultato",
-   "vince": "C",
-   "giorno": "giovedì",
-   "titolo": "Risultato del voto",
-   "copione": [
-    "Ha vinto la C: la spesa si scrive con la voce!",
-    "Uè guagliù, il voto è chiuso e avete scelto voi.",
-    "Ha vinto la C: Lista della spesa a voce.",
-    "Dici latte, pane e pomodori, e la lista si scrive da sola.",
-    "Da oggi ci lavoro.",
-    "Venerdì è sul banco, gratis per tutti.",
-    "Cosa non manca mai nella vostra spesa? Ditemelo nei commenti!"
-   ]
-  },
-  {
-   "id": "nessun-voto",
-   "tipo": "nessuno",
-   "giorno": "giovedì",
-   "titolo": "Niente voti, niente app",
-   "copione": [
-    "Il banco questa settimana resta vuoto.",
-    "Uè guagliù, ho contato i voti nei commenti.",
-    "Nessuna lettera: né A, né B, né C.",
-    "Senza il vostro voto non scelgo io al posto vostro.",
-    "Mi dispiace: venerdì niente app.",
-    "Lunedì porto tre idee nuove.",
-    "Basta una lettera nei commenti e decidete voi!"
-   ]
-  },
-  {
-   "id": "regalo-A",
-   "tipo": "regalo",
-   "vince": "A",
-   "giorno": "venerdì",
-   "titolo": "Il regalo è sul banco",
-   "copione": [
-    "È venerdì: il conto in pizzeria non è più un problema!",
-    "Uè guagliù, il regalo è sul banco.",
-    "Ecco Dividi il conto in pizzeria.",
-    "Scrivi il totale e quanti siete: fa tutto lei.",
-    "Gratis, senza registrazione, dal telefono.",
-    "Link nel profilo, sul banco di Gennarino.",
-    "Provatela alla prossima pizza e ditemi com'è!"
-   ]
-  },
-  {
-   "id": "regalo-B",
-   "tipo": "regalo",
-   "vince": "B",
-   "giorno": "venerdì",
-   "titolo": "Il regalo è sul banco",
-   "copione": [
-    "È venerdì: la moka adesso ha il suo timer!",
-    "Uè guagliù, il regalo è sul banco.",
-    "Ecco Timer per la moka.",
-    "Un tocco quando la metti sul fuoco, e ti chiama lei.",
-    "Gratis, senza registrazione, dal telefono.",
-    "Link nel profilo, sul banco di Gennarino.",
-    "Provatelo domani mattina e ditemi com'è!"
-   ]
-  },
-  {
-   "id": "regalo-C",
-   "tipo": "regalo",
-   "vince": "C",
-   "giorno": "venerdì",
-   "titolo": "Il regalo è sul banco",
-   "copione": [
-    "È venerdì: la lista della spesa ve la scrivete parlando!",
-    "Uè guagliù, il regalo è sul banco.",
-    "Ecco Lista della spesa a voce.",
-    "Parli, lei scrive, e al supermercato spunti le cose.",
-    "Gratis, senza registrazione, dal telefono.",
-    "Link nel profilo, sul banco di Gennarino.",
-    "Provatela alla prossima spesa e ditemi com'è!"
-   ]
+  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Carità e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
+  "puntate": [
+    {
+      "id": "piazza-nuova",
+      "tipo": "idee",
+      "giorno": "domenica",
+      "titolo": "Piazza nuova, tre idee nuove",
+      "data": "2026-11-01",
+      "copione": [
+        "Piazza nuova, tre idee nuove: quale costruisco?",
+        "Uè guagliù, il bancariello si è spostato in Piazza Carità!",
+        "A: Innaffia le piante.",
+        "B: Segnapunti della scopa.",
+        "C: Chi scende la munnezza.",
+        "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+        "Venerdì la più votata è sul banco, gratis."
+      ],
+      "apertura": "piazza-2026-W45.mp4",
+      "aperturaFrasi": 2
+    },
+    {
+      "id": "promemoria-lunedi",
+      "tipo": "idee",
+      "giorno": "lunedì",
+      "titolo": "Avete già votato?",
+      "copione": [
+        "Piante secche, i conti a carte o chi scende: chi vi frega di più?",
+        "Uè guagliù, il voto è aperto da ieri.",
+        "A: Innaffia le piante.",
+        "B: Segnapunti della scopa.",
+        "C: Chi scende la munnezza.",
+        "Basta una lettera nei commenti per decidere.",
+        "Chi non ha ancora votato, ha tempo fino a mercoledì sera!"
+      ]
+    },
+    {
+      "id": "cosa-dimenticate",
+      "tipo": "libera",
+      "giorno": "martedì",
+      "titolo": "Cosa vi frega ogni giorno?",
+      "copione": [
+        "Mamma mia, il basilico sul balcone è tutto secco!",
+        "Uè guagliù, a me succede sempre!",
+        "E a carte: chi segna i punti senza imbrogliare?",
+        "E la sera: chi scende la munnezza?",
+        "Per questo ho pensato a queste tre idee.",
+        "Ditemi nei commenti cosa vi frega ogni giorno.",
+        "E chi non ha votato: A, B o C, fino a domani sera!"
+      ]
+    },
+    {
+      "id": "ultime-ore",
+      "tipo": "idee",
+      "giorno": "mercoledì",
+      "titolo": "Ultime ore per votare",
+      "copione": [
+        "Stasera chiudo le urne: manca poco!",
+        "Uè guagliù, l'ultima occasione per votare.",
+        "A: Innaffia le piante.",
+        "B: Segnapunti della scopa.",
+        "C: Chi scende la munnezza.",
+        "Una lettera nei commenti e avete deciso.",
+        "Domani vi dico chi ha vinto!"
+      ]
+    },
+    {
+      "id": "risultato-A",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "A",
+      "copione": [
+        "Ha vinto la A: le piante non si seccano più!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la A: Innaffia le piante.",
+        "Dite ogni quanto vanno innaffiate e vi avviso io.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Che piante tenete sul balcone? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "risultato-B",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "B",
+      "copione": [
+        "Ha vinto la B: a carte non si litiga più!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la B: Segnapunti della scopa.",
+        "Toccate i punti di ogni mano e vi dico chi vince.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Scopa, briscola o tressette: voi a cosa giocate? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "risultato-C",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "C",
+      "copione": [
+        "Ha vinto la C: decide la sorte, non si litiga più!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la C: Chi scende la munnezza.",
+        "Scrivete i nomi e la ruota decide chi tocca.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "A casa vostra chi scende sempre? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "nessun-voto",
+      "tipo": "nessuno",
+      "giorno": "giovedì",
+      "titolo": "Niente voti, niente app",
+      "copione": [
+        "Zero voti: questa volta niente app.",
+        "Uè guagliù, ho letto tutti i commenti.",
+        "Ma nessuno ha scritto A, B o C.",
+        "Mi dispiace: venerdì niente regalo.",
+        "Domenica torno con tre idee nuove.",
+        "Basta una lettera nei commenti e decidete voi!"
+      ]
+    },
+    {
+      "id": "regalo-A",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "A",
+      "copione": [
+        "È venerdì: le piante bevono al momento giusto!",
+        "Uè guagliù, il regalo è sul banco.",
+        "Ecco Innaffia le piante.",
+        "Per ogni pianta dite ogni quanti giorni vuole l'acqua.",
+        "Vi dico io quale innaffiare oggi.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi ha il balcone pieno di piante secche!"
+      ]
+    },
+    {
+      "id": "regalo-B",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "B",
+      "copione": [
+        "È venerdì: a carte i punti li segno io!",
+        "Uè guagliù, il regalo è sul banco.",
+        "Ecco Segnapunti della scopa.",
+        "Toccate i punti di ogni mano.",
+        "Vi dico io chi arriva prima.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi imbroglia sempre a carte!"
+      ]
+    },
+    {
+      "id": "regalo-C",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "C",
+      "copione": [
+        "È venerdì: decide la ruota!",
+        "Uè guagliù, il regalo è sul banco.",
+        "Ecco Chi scende la munnezza.",
+        "Scrivete i nomi di casa.",
+        "Girate e la sorte sceglie chi tocca.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi fa sempre il furbo!"
+      ]
+    },
+    {
+      "id": "smontaggio",
+      "tipo": "libera",
+      "giorno": "sabato",
+      "titolo": "Si smonta la bancarella",
+      "copione": [
+        "Sabato si smonta: domani cambio piazza!",
+        "Uè guagliù, chiudo la tenda e piego il banco.",
+        "Arrotolo le lampadine e metto tutto nel carretto.",
+        "Saluto Piazza Carità: grazie per questa settimana!",
+        "Dove vado domani? Non ve lo dico ancora.",
+        "Domani piazza nuova e tre idee nuove da votare.",
+        "Secondo voi dove mi sposto? Scrivetelo nei commenti!"
+      ]
+    }
+  ],
+  "piazza": "Piazza Carità",
+  "telefoni": {
+    "A": {
+      "nome": "Piante",
+      "emoji": "🪴"
+    },
+    "B": {
+      "nome": "Scopa",
+      "emoji": "🃏"
+    },
+    "C": {
+      "nome": "Sorte",
+      "emoji": "🎲"
+    }
   }
- ]
 }

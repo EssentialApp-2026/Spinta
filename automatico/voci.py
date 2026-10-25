@@ -154,7 +154,9 @@ class Motore:
 
 
 def frasi_mancanti(piano, vj):
-    pronte = {vkey(x['testo']) for a in vj['settimane'].values() for x in a}
+    """Le frasi del piano che non hanno ancora la voce IN QUESTA settimana: così ogni video usa una voce sola
+    (Spinta prende la settimana che copre tutte le frasi del video, vedi crVociPick in crea.js)."""
+    pronte = {vkey(x['testo']) for x in vj['settimane'].get(piano['settimana'], [])}
     out = []
     for p in piano.get('puntate', []):
         for r in p.get('copione', []):

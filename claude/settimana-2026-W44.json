@@ -202,5 +202,24 @@
       ]
     }
   ],
-  "piazza": "Piazza Bellini"
+  "piazza": "Piazza Bellini",
+  "idee_id": {
+    "A": "frigo-scadenze",
+    "B": "strisce-blu",
+    "C": "turni-casa"
+  },
+  "telefoni": {
+    "A": {
+      "nome": "Frigo",
+      "emoji": "🧊"
+    },
+    "B": {
+      "nome": "Blu",
+      "emoji": "🅿️"
+    },
+    "C": {
+      "nome": "Casa",
+      "emoji": "🧹"
+    }
+  }
 }

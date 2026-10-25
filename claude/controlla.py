@@ -51,6 +51,10 @@ if os.path.exists(VJ):
     manca = [r for p in j.get('puntate', []) for r in p.get('copione', []) if vkey(r) not in pronte]
     if manca: print(f'avviso: {len(manca)} frasi senza voce nuova (useranno Piper), es. «{manca[0]}»')
     else: print('voci: tutte le frasi hanno la voce nuova')
+    # una voce sola per video: Spinta usa la settimana che copre TUTTE le frasi della puntata (crVociPick)
+    sett = {w: {vkey(x['testo']) for x in a} for w, a in vj.get('settimane', {}).items()}
+    miste = [p.get('id', '?') for p in j.get('puntate', []) if p.get('copione') and not any(all(vkey(r) in v for r in p['copione']) for v in sett.values())]
+    if miste and not manca: print(f'avviso: in {len(miste)} puntate le voci vengono da settimane diverse (si sentirebbero due voci): {", ".join(miste[:4])}')
 else: print('avviso: nessuna voce pronta (libreria/voci/voci.json)')
 print('\n'.join(err) if err else f'ok: {j.get("settimana")} · {len(j.get("puntate", []))} puntate')
 sys.exit(1 if err else 0)
