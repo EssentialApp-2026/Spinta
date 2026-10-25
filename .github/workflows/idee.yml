@@ -20,6 +20,10 @@ on:
         description: 'Tempo massimo per scrivere le idee, in minuti'
         required: false
         default: '270'
+      grammatica:
+        description: 'schema (il modello non può uscire dallo schema JSON) o leggera (più veloce: solo JSON valido, la forma si controlla dopo)'
+        required: false
+        default: ''
   push:
     branches: [main]
     paths: ['automatico/prova-ai.txt']
@@ -27,7 +31,7 @@ permissions:
   contents: write
   issues: write
 concurrency:
-  group: spinta-idee-${{ github.event.inputs.modello || 'base' }}
+  group: spinta-idee-${{ github.event.inputs.modello || 'base' }}-${{ github.event.inputs.grammatica || 'g' }}
   cancel-in-progress: false
 jobs:
   idee:
@@ -39,6 +43,7 @@ jobs:
       SPINTA_FOTO: /home/runner/foto-app
       SPINTA_MODELLO: ${{ github.event.inputs.modello || '' }}
       SPINTA_MINUTI: ${{ github.event.inputs.minuti || (github.event_name == 'push' && '45') || '270' }}
+      SPINTA_GRAMMATICA: ${{ github.event.inputs.grammatica || 'schema' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

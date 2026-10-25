@@ -115,13 +115,54 @@ class Server:
 
     def json(self, testo, schema, temp=0.7, max_tokens=1500):
         t0 = time.time()
+        if GRAMMATICA == 'leggera':   # solo JSON valido (veloce); la forma la controlla conforme() qui sotto
+            testo += '\n\nRispondi solo con un oggetto JSON che rispetta questo schema (tutte le chiavi, nessuna in più): ' + json.dumps(schema, ensure_ascii=False)
+            fmt = {'type': 'json_object'}
+        else:
+            fmt = {'type': 'json_object', 'schema': schema}
         r = json.loads(http(f'http://127.0.0.1:{PORTA}/v1/chat/completions', {
             'messages': [{'role': 'user', 'content': testo}], 'temperature': temp, 'top_p': 0.95, 'top_k': 64, 'max_tokens': max_tokens,
-            'response_format': {'type': 'json_object', 'schema': schema}}, timeout=2400))
+            'response_format': fmt}, timeout=2400))
         u, tm = r.get('usage', {}), r.get('timings', {}) or {}
         print(f"  ({time.time() - t0:.0f}s, {u.get('prompt_tokens', '?')}+{u.get('completion_tokens', '?')} token, "
               f"lettura {tm.get('prompt_per_second', 0):.1f} t/s, scrittura {tm.get('predicted_per_second', 0):.1f} t/s)", flush=True)
-        return json.loads(r['choices'][0]['message']['content'])
+        x = json.loads(r['choices'][0]['message']['content'])
+        if GRAMMATICA == 'leggera':
+            p = conforme(x, schema)
+            if p: raise ValueError('risposta fuori schema: ' + '; '.join(p[:5]))
+        return x
+
+
+GRAMMATICA = os.environ.get('SPINTA_GRAMMATICA', 'schema')
+
+
+def conforme(x, s, dove='risposta'):
+    """Controlla una risposta contro il piccolo sottoinsieme di JSON Schema usato qui (per la grammatica leggera)."""
+    p = []
+    if 'enum' in s:
+        return [] if x in s['enum'] else [f'{dove}: valore {x!r} non previsto']
+    t = s.get('type')
+    if t == 'object':
+        if not isinstance(x, dict): return [f'{dove}: serve un oggetto']
+        for k in s.get('required', []):
+            if k not in x: p.append(f'{dove}: manca {k}')
+        for k, v in x.items():
+            if k in s.get('properties', {}): p += conforme(v, s['properties'][k], f'{dove}.{k}')
+            elif s.get('additionalProperties') is False: p.append(f'{dove}: chiave in più {k}')
+    elif t == 'array':
+        if not isinstance(x, list): return [f'{dove}: serve una lista']
+        if len(x) < s.get('minItems', 0) or len(x) > s.get('maxItems', 10 ** 6): p.append(f'{dove}: {len(x)} elementi')
+        for k, v in enumerate(x): p += conforme(v, s['items'], f'{dove}[{k}]')
+    elif t == 'string':
+        if not isinstance(x, str): return [f'{dove}: serve un testo']
+        if len(x) < s.get('minLength', 0) or len(x) > s.get('maxLength', 10 ** 6): p.append(f'{dove}: lunghezza {len(x)}')
+        if s.get('pattern') and not re.search(s['pattern'], x): p.append(f'{dove}: forma sbagliata')
+    elif t == 'integer':
+        if not isinstance(x, int) or isinstance(x, bool): return [f'{dove}: serve un numero intero']
+        if x < s.get('minimum', -10 ** 9) or x > s.get('maximum', 10 ** 9): p.append(f'{dove}: {x} fuori misura')
+    elif t == 'boolean':
+        if not isinstance(x, bool): p.append(f'{dove}: serve vero o falso')
+    return p
 
 
 # ---------------- gli schemi JSON (il modello non può uscire da qui) ----------------
@@ -188,7 +229,9 @@ def opzioni_per_ai(tipo, o):
     if tipo == 'registro':
         o['versi'] = [{'bottone': a, 'chi': b} for a, b in (o.get('versi') or [["Io a lui", "A chi"], ["Lui a me", "Da chi"]])]
         o.setdefault('whatsapp', True); o.setdefault('messaggio', 'Ciao {chi}, ti ricordi di {cosa}? Grazie!')
-    return {k: v for k, v in o.items() if k in OPZ[tipo] and v not in (None, [], {})}
+    base = {'turni': dict(titoloOggi='Oggi tocca a…', placeholderPersona='Nome'), 'lista': dict(vuoto='La lista è vuota.'),
+            'sorteggio': dict(placeholder='Aggiungi un nome o una cosa')}.get(tipo, {})
+    return {k: v for k, v in (base | o).items() if k in OPZ[tipo] and v not in (None, [], {})}
 
 
 def opzioni_per_app(tipo, o):
