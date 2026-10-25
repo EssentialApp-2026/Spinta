@@ -23,13 +23,14 @@
    "seme": 0
   },
   {
-   "file": "m03.mp3",
+   "file": "m68.mp3",
    "testo": "A: Quanta acqua ho bevuto.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.475,
+   "somiglia": 0.467,
    "sentito": "A. Quanta acqua ho bevuto?",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m04.mp3",
@@ -68,13 +69,14 @@
    "seme": 0
   },
   {
-   "file": "m08.mp3",
+   "file": "m69.mp3",
    "testo": "L'acqua che non beviamo, la garanzia scaduta o l'uovo troppo duro: chi vi frega di più?",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.752,
+   "somiglia": 0.732,
    "sentito": "L'acqua che non beviamo, la garanzia scaduta o l'uovo troppo duro, chi vi frega di più?",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m09.mp3",
@@ -158,13 +160,14 @@
    "seme": 1
   },
   {
-   "file": "m18.mp3",
+   "file": "m70.mp3",
    "testo": "E chi non ha votato: A, B o C, fino a domani sera!",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.665,
+   "somiglia": 0.636,
    "sentito": "E chi non ha votato? A, B o C, fino a domani sera.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m19.mp3",
@@ -185,13 +188,14 @@
    "seme": 1
   },
   {
-   "file": "m21.mp3",
+   "file": "m71.mp3",
    "testo": "Una lettera nei commenti e avete deciso.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.629,
+   "somiglia": 0.602,
    "sentito": "Una lettera nei commenti e avete deciso.",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m22.mp3",
@@ -203,31 +207,34 @@
    "seme": 0
   },
   {
-   "file": "m23.mp3",
+   "file": "m72.mp3",
    "testo": "Ha vinto la A: l'acqua non ve la scordate più!",
    "fonte": "copia",
    "capito": 0.8,
-   "somiglia": 0.585,
+   "somiglia": 0.542,
    "sentito": "Abbintola a l'acqua non ve la scordate più.",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
-   "file": "m24.mp3",
+   "file": "m73.mp3",
    "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
    "fonte": "copia",
    "capito": 0.84,
-   "somiglia": 0.728,
-   "sentito": "- Ué, Guayou, ho contato i voti, avete scelto voi!",
-   "seme": 0
+   "somiglia": 0.548,
+   "sentito": "\"Oeeh, Guagliu, ho contato i voti, avete scelto voi?\"",
+   "seme": 0,
+   "ripulita": true
   },
   {
-   "file": "m25.mp3",
+   "file": "m74.mp3",
    "testo": "Ha vinto la A: Quanta acqua ho bevuto.",
    "fonte": "copia",
    "capito": 0.71,
-   "somiglia": 0.679,
+   "somiglia": 0.652,
    "sentito": "ha vinto la A quanta cobevuto",
-   "seme": 3
+   "seme": 3,
+   "ripulita": true
   },
   {
    "file": "m26.mp3",
@@ -275,13 +282,14 @@
    "seme": 1
   },
   {
-   "file": "m31.mp3",
+   "file": "m75.mp3",
    "testo": "Ha vinto la B: Garanzie e scontrini.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.577,
+   "somiglia": 0.494,
    "sentito": "Ha vinto la B Garanzie e scontrini.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m32.mp3",
@@ -293,13 +301,14 @@
    "seme": 1
   },
   {
-   "file": "m33.mp3",
+   "file": "m76.mp3",
    "testo": "Cosa vi si è rotto appena finita la garanzia? Ditemelo nei commenti!",
    "fonte": "copia",
-   "capito": 0.85,
-   "somiglia": 0.65,
-   "sentito": "Cosa vi si è rotto appena finita la garanzia? Dite me lo nei commenti.",
-   "seme": 1
+   "capito": 0.77,
+   "somiglia": 0.678,
+   "sentito": "Cosa vi si è rupto appena finita la garanzia? Dite me lo nei commenti.",
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m34.mp3",
@@ -311,13 +320,14 @@
    "seme": 1
   },
   {
-   "file": "m35.mp3",
+   "file": "m77.mp3",
    "testo": "Ha vinto la C: L'uovo sodo perfetto.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.713,
+   "somiglia": 0.498,
    "sentito": "Ha vinto la C, l'uovo sodo perfetto.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m36.mp3",
@@ -329,22 +339,24 @@
    "seme": 1
   },
   {
-   "file": "m37.mp3",
+   "file": "m78.mp3",
    "testo": "Voi l'uovo come lo volete? Ditemelo nei commenti!",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.577,
+   "somiglia": 0.583,
    "sentito": "Voi, l'uovo come lo volete? Ditemelo nei commenti!",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
-   "file": "m38.mp3",
+   "file": "m79.mp3",
    "testo": "Zero voti: questa volta niente app.",
    "fonte": "copia",
    "capito": 0.83,
-   "somiglia": 0.582,
+   "somiglia": 0.486,
    "sentito": "Zero voti, questa volta niente appina.",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m39.mp3",
@@ -356,22 +368,24 @@
    "seme": 1
   },
   {
-   "file": "m40.mp3",
+   "file": "m80.mp3",
    "testo": "Ma nessuno ha scritto A, B o C.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.447,
+   "somiglia": 0.429,
    "sentito": "Ma nessuno ha scritto A, B o C.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
-   "file": "m41.mp3",
+   "file": "m81.mp3",
    "testo": "Mi dispiace: venerdì niente regalo.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.671,
+   "somiglia": 0.561,
    "sentito": "Mi dispiace venerdì niente regalo.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m42.mp3",
@@ -428,22 +442,24 @@
    "seme": 1
   },
   {
-   "file": "m48.mp3",
+   "file": "m82.mp3",
    "testo": "Vi faccio vedere come va la settimana.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.678,
+   "somiglia": 0.575,
    "sentito": "Vi faccio vedere come va la settimana.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
-   "file": "m49.mp3",
+   "file": "m83.mp3",
    "testo": "Gratis, senza registrazione: link nel profilo.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.807,
+   "somiglia": 0.677,
    "sentito": "Gratis, senza registrazione, link nel profilo.",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m50.mp3",
@@ -482,13 +498,14 @@
    "seme": 1
   },
   {
-   "file": "m54.mp3",
+   "file": "m84.mp3",
    "testo": "Vi avviso prima che scada la garanzia.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.601,
+   "somiglia": 0.498,
    "sentito": "Vi avviso prima che scada la garanzia.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m55.mp3",
@@ -500,22 +517,24 @@
    "seme": 1
   },
   {
-   "file": "m56.mp3",
+   "file": "m85.mp3",
    "testo": "È venerdì: l'uovo viene come lo volete voi!",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.551,
-   "sentito": "E' venerdì, l'uovo viene come lo volete voi!",
-   "seme": 1
+   "somiglia": 0.535,
+   "sentito": "E venerdì, l'uovo viene come lo volete voi!",
+   "seme": 1,
+   "ripulita": true
   },
   {
-   "file": "m57.mp3",
+   "file": "m86.mp3",
    "testo": "Ecco l'uovo sodo perfetto.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.466,
+   "somiglia": 0.603,
    "sentito": "Ecco l'uovo sodo perfetto.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m58.mp3",
@@ -536,13 +555,14 @@
    "seme": 1
   },
   {
-   "file": "m60.mp3",
+   "file": "m87.mp3",
    "testo": "Mandatela a chi fa le uova di gomma!",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.668,
+   "somiglia": 0.592,
    "sentito": "Mandatela a chi fa le uova di gomma.",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   },
   {
    "file": "m61.mp3",
@@ -554,22 +574,24 @@
    "seme": 0
   },
   {
-   "file": "m62.mp3",
+   "file": "m88.mp3",
    "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
    "fonte": "copia",
    "capito": 0.78,
-   "somiglia": 0.623,
-   "sentito": "Weh, Guayu, chiudo la tenda e piego il banco.",
-   "seme": 1
+   "somiglia": 0.569,
+   "sentito": "We, Guayou, chiudo la tenda e piego il banco.",
+   "seme": 1,
+   "ripulita": true
   },
   {
-   "file": "m63.mp3",
+   "file": "m89.mp3",
    "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
    "fonte": "copia",
    "capito": 0.88,
-   "somiglia": 0.652,
+   "somiglia": 0.607,
    "sentito": "Arrotolo le lampadine e metto tutto nel scarvetto.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m64.mp3",
@@ -581,13 +603,14 @@
    "seme": 1
   },
   {
-   "file": "m65.mp3",
+   "file": "m90.mp3",
    "testo": "Dove vado domani? Non ve lo dico ancora.",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.745,
+   "somiglia": 0.589,
    "sentito": "Dove vado domani? Non ve lo dico ancora.",
-   "seme": 0
+   "seme": 0,
+   "ripulita": true
   },
   {
    "file": "m66.mp3",
@@ -599,14 +622,15 @@
    "seme": 0
   },
   {
-   "file": "m67.mp3",
+   "file": "m91.mp3",
    "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
    "fonte": "copia",
    "capito": 1.0,
-   "somiglia": 0.694,
+   "somiglia": 0.555,
    "sentito": "Secondo voi dove mi sposto, scrivetelo nei commenti.",
-   "seme": 1
+   "seme": 1,
+   "ripulita": true
   }
  ],
- "ultimo": 67
+ "ultimo": 91
 }

@@ -61,7 +61,7 @@ def taglia(y, sr):
     return y[max(0, idx[0] - int(0.04 * sr)):min(len(y), idx[-1] + int(0.12 * sr))] if len(idx) else y
 
 
-def ripulisci(y, sr, soglia=0.02, pausa_max=0.35, coda_max=0.3, stacco=0.3, parola_vera=None):
+def ripulisci(y, sr, soglia=0.02, pausa_max=0.35, coda_max=0.3, stacco=0.3, parola_vera=None, chiesti=None):
     """Sistema la frase già con l'effetto (livello finale): via i rumorini staccati dopo la fine (o prima dell'inizio), che non
     lasciano a Spinta tagliare il silenzio e fanno sentire una pausa lunga tra una frase e l'altra (Sam, 25 ottobre: «tra la B e la C
     ci sta una pausa»), e nessuna pausa dentro la frase più lunga di pausa_max secondi. soglia = la stessa di crTrim in crea.js.
@@ -85,7 +85,10 @@ def ripulisci(y, sr, soglia=0.02, pausa_max=0.35, coda_max=0.3, stacco=0.3, paro
         if buco < stacco: return False
         if dur(corto) < coda_max: return True
         if dur(corto) >= 0.6: return False
-        if parola_vera is not None: return not parola_vera(y[corto[0] * fr:corto[1] * fr], dove)
+        if parola_vera is not None:
+            via = not parola_vera(y[corto[0] * fr:corto[1] * fr], dove)
+            if via and chiesti is not None: chiesti.append((dove, round(dur(corto), 2)))     # tolto un pezzo «lungo»: chi chiama ricontrolla
+            return via
         return dur(corto) < 0.5 and buco >= 0.6
     buco = lambda i: (pezzi[i + 1][0] - pezzi[i][1]) * 0.01          # silenzio tra il pezzo i e il pezzo i+1
     while len(pezzi) > 1:       # alla fine: il gruppetto dopo l'ultimo buco grande (anche fatto di più rumorini vicini)
@@ -383,11 +386,13 @@ def sistema(sett):
         if b.get('ripulita'): continue
         f = os.path.join(da, b['file'])
         out = subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-ac', '1', '-ar', str(SR_OUT), '-f', 'f32le', '-'], capture_output=True, check=True).stdout
-        z = np.frombuffer(out, np.float32).copy(); r = ripulisci(z, SR_OUT, parola_vera=g.parola_vera(b['testo']))
+        z = np.frombuffer(out, np.float32).copy(); chiesti = []; r = ripulisci(z, SR_OUT, parola_vera=g.parola_vera(b['testo']), chiesti=chiesti)
         if len(z) - len(r) < int(0.05 * SR_OUT): continue
         nuovo = f'm{n:02d}.mp3'; tmp = tempfile.mktemp(suffix='.mp3'); codifica(r, tmp, kbps=96)
         prima = V.somiglianza(b['testo'], g.ascolta(carica(f))); capito, som, h = g.voto(carica(tmp), b['testo'])
-        if capito < prima - 0.25:      # Whisper cambia idea anche per niente (±0,15): si scarta solo se capisce molto meno
+        # tolti solo silenzio e rumorini corti: va bene così; tolto un pezzo più lungo: si tiene solo se Whisper non capisce molto meno
+        # (Whisper cambia idea anche per niente, ±0,15)
+        if chiesti and capito < prima - 0.25:
             print(f'{sett} {b["file"]} lasciata com\'era (capito {prima:.2f} -> {capito:.2f}) | {b["testo"]}', flush=True); os.remove(tmp); continue
         shutil.move(tmp, os.path.join(da, nuovo)); os.remove(f)
         print(f'{sett} {b["file"]} -> {nuovo}: {len(z) / SR_OUT:.2f}s -> {len(r) / SR_OUT:.2f}s, capito {prima:.2f} -> {capito:.2f} | {b["testo"]}', flush=True)
