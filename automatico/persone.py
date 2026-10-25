@@ -149,25 +149,34 @@ def riempi(img, m):
     return Image.fromarray(np.where(mm, r, orig))
 
 
+def pulisci(img, max_coperto=MAX_COPERTO, giri_max=3, tieni=()):
+    """Immagine PIL senza persone (e la maschera di quello che è stato rifatto). Alza TroppaGente se non si può.
+    «tieni»: riquadri da non toccare (per esempio Gennarino stesso, quando si ricontrolla il fotogramma finale)."""
+    def fuori(r):
+        return [x for x in r if not any(min(x[2], t[2]) - max(x[0], t[0]) > 0.5 * (x[2] - x[0]) and min(x[3], t[3]) - max(x[1], t[1]) > 0.5 * (x[3] - x[1]) for t in tieni)]
+    tolte, tot = 0, Image.new('L', img.size, 0)
+    for giro in range(1, giri_max + 1):
+        r = fuori(trova(img))
+        if not r: break
+        m = maschera(img.size, r); tot = Image.fromarray(np.maximum(np.asarray(tot), np.asarray(m)))
+        coperto = (np.asarray(tot) > 127).mean()
+        if coperto > max_coperto: raise TroppaGente(f'le persone coprono il {coperto:.0%} della foto')
+        img = riempi(img, m); tolte += len(r)
+    else:
+        if fuori(trova(img)): raise TroppaGente(f'restano persone anche dopo {giri_max} giri')
+    if tolte: print(f'persone tolte: {tolte}, foto rifatta per il {(np.asarray(tot) > 127).mean():.1%}', file=sys.stderr, flush=True)
+    return img, tot
+
+
 def togli(foto, uscita=None, lato_max=1920):
     """Prende il percorso di una foto, scrive (e ritorna) il percorso di quella senza persone. Alza TroppaGente se non si può."""
     img = ImageOps.exif_transpose(Image.open(foto)).convert('RGB')
     if max(img.size) > lato_max:
         k = lato_max / max(img.size); img = img.resize((int(img.width * k), int(img.height * k)), Image.LANCZOS)
-    tolte, giri, tot = 0, 0, Image.new('L', img.size, 0)
-    for giri in range(1, 4):
-        r = trova(img)
-        if not r: break
-        m = maschera(img.size, r); tot = Image.fromarray(np.maximum(np.asarray(tot), np.asarray(m)))
-        coperto = (np.asarray(tot) > 127).mean()
-        if coperto > MAX_COPERTO: raise TroppaGente(f'le persone coprono il {coperto:.0%} della foto')
-        img = riempi(img, m); tolte += len(r)
-    else:
-        if trova(img): raise TroppaGente('restano persone anche dopo tre giri')
+    img, tot = pulisci(img)
     uscita = uscita or os.path.splitext(foto)[0] + '-senza-persone.jpg'
     img.save(uscita, quality=93)
     tot.save(os.path.splitext(uscita)[0] + '-maschera.png')
-    print(f'persone tolte: {tolte} (giri {giri}), foto coperta {(np.asarray(tot) > 127).mean():.1%}', file=sys.stderr, flush=True)
     return uscita
 
 

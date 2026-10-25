@@ -213,6 +213,8 @@ def armonizza(stall, bg):
 
 def video(foto, telefoni, uscita, poster, centro=0.5, solo_locandina=False):
     bg = ritaglia(foto, centro)
+    import persone
+    bg, _ = persone.pulisci(bg, max_coperto=0.4)    # secondo controllo sul ritaglio che si vede davvero: nessuna persona vera
     st = armonizza(bancarella(telefoni), bg)
     hb = int(H * 2 * 0.36); st = st.resize((int(st.width * hb / st.height), hb), Image.LANCZOS)
     cx, base = W, int(H * 2 * 0.955)                      # centro in basso (coordinate 2x)
