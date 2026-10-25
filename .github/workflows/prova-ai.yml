@@ -27,8 +27,10 @@ jobs:
           path: /home/runner/.cache/spinta-modelli
           key: spinta-modelli-ai-v1
       - name: Prova
+        shell: bash
         run: |
-          python3 automatico/ai.py prova 2 2>&1 | tee automatico/prova-ai-uscita.txt
+          set -o pipefail
+          python3 automatico/ai.py prova 2 2>&1 | grep -v device_discovery | tee automatico/prova-ai-uscita.txt
       - name: Salva
         if: always()
         run: |

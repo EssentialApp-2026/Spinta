@@ -49,14 +49,27 @@ def modello():
 def llama_server():
     trovati = glob.glob(os.path.join(CACHE, 'llama', '**', 'llama-server'), recursive=True)
     if trovati: return trovati[0]
-    rel = json.loads(http('https://api.github.com/repos/ggml-org/llama.cpp/releases/latest', timeout=60))
-    a = next(x for x in rel['assets'] if re.search(r'bin-ubuntu-x64\.(zip|tar\.gz)$', x['name']))
-    f = scarica(a['browser_download_url'], os.path.join(CACHE, 'llama', a['name']))
-    d = os.path.join(CACHE, 'llama', 'bin')
-    if f.endswith('.zip'): zipfile.ZipFile(f).extractall(d)
-    else: tarfile.open(f).extractall(d)
-    s = glob.glob(os.path.join(d, '**', 'llama-server'), recursive=True)[0]; os.chmod(s, 0o755)
-    for x in glob.glob(os.path.join(os.path.dirname(s), '*')): os.chmod(x, 0o755)
+    d = os.path.join(CACHE, 'llama', 'bin'); os.makedirs(d, exist_ok=True)
+    try:   # 1) il programma già pronto dall'ultima versione di llama.cpp (CPU, Linux x64)
+        rel = json.loads(http('https://api.github.com/repos/ggml-org/llama.cpp/releases/latest', timeout=60))
+        nomi = [x['name'] for x in rel['assets']]; print('llama.cpp', rel.get('tag_name'), nomi, flush=True)
+        buoni = [x for x in rel['assets'] if re.search(r'(ubuntu|linux)', x['name'], re.I) and re.search(r'(x64|x86_64|amd64)', x['name'], re.I)
+                 and re.search(r'\.(zip|tar\.gz)$', x['name']) and not re.search(r'(vulkan|cuda|rocm|hip|sycl|musa|openvino|arm|aarch64|s390|kompute|opencl)', x['name'], re.I)]
+        buoni.sort(key=lambda x: (0 if 'cpu' in x['name'].lower() else 1, len(x['name'])))
+        a = buoni[0]; f = scarica(a['browser_download_url'], os.path.join(CACHE, 'llama', a['name']))
+        if f.endswith('.zip'): zipfile.ZipFile(f).extractall(d)
+        else: tarfile.open(f).extractall(d)
+        s = glob.glob(os.path.join(d, '**', 'llama-server'), recursive=True)[0]
+    except Exception as e:   # 2) altrimenti si compila dai sorgenti (qualche minuto in più)
+        print('niente programma pronto, compilo llama.cpp:', e, flush=True)
+        src = os.path.join(CACHE, 'llama', 'src')
+        if not os.path.exists(src): subprocess.run(['git', 'clone', '-q', '--depth', '1', 'https://github.com/ggml-org/llama.cpp.git', src], check=True)
+        subprocess.run(['cmake', '-S', src, '-B', os.path.join(src, 'build'), '-DCMAKE_BUILD_TYPE=Release', '-DLLAMA_CURL=OFF', '-DGGML_NATIVE=ON'], check=True)
+        subprocess.run(['cmake', '--build', os.path.join(src, 'build'), '--target', 'llama-server', '-j', str(os.cpu_count() or 2)], check=True)
+        s = glob.glob(os.path.join(src, 'build', '**', 'llama-server'), recursive=True)[0]
+    for x in glob.glob(os.path.join(os.path.dirname(s), '*')):
+        try: os.chmod(x, 0o755)
+        except Exception: pass
     return s
 
 

@@ -44,8 +44,10 @@ jobs:
           pip install -q torch torchaudio --index-url https://download.pytorch.org/whl/cpu
           pip install -q kokoro-onnx piper-tts sherpa-onnx soundfile librosa numpy pillow
       - name: Prepara la settimana
+        shell: bash
         run: |
-          python3 automatico/settimana.py ${{ github.event.inputs.settimana }} 2>&1 | tee automatico/ultimo-lavoro.txt
+          set -o pipefail
+          python3 automatico/settimana.py ${{ github.event.inputs.settimana }} 2>&1 | grep -v device_discovery | tee automatico/ultimo-lavoro.txt
       - name: Pubblica
         run: |
           git config user.name "Spinta automatica"
