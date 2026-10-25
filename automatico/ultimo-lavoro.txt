@@ -1,42 +1,12 @@
-settimana 2026-W46 dal 2026-11-08
-idee: ['Quanta acqua ho bevuto', 'Garanzie e scontrini', "L'uovo sodo perfetto"]
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W46 Acqua:💧 Garanzie:🧾 Uovo:🥚
-{"piazza": "Piazza Garibaldi", "file": "piazza-2026-W46.mp4", "poster": "piazza-2026-W46.jpg", "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg", "licenza": "CC0", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_Centrale_Station_-_Piazza_Garibaldi_Entrance_01.jpg", "torna": false}
- 
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
-avviso: 42 frasi senza voce nuova (useranno Piper), es. «Uè guagliù, il bancariello si è spostato in Piazza Garibaldi!»
-ok: 2026-W46 · 12 puntate
- 
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/voci.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
- nei commenti e decidete voi.
-44.mp3 2.13s capito 1.00 sara1.02k4 (2s) | È venerdì: l'acqua si conta da sola! | e venerdì l'acqua si conta da sola.
-45.mp3 2.06s capito 0.71 sara1.02k4 (8s) | Uè guagliù, il regalo è sul banco. | Voi quaggiù il regalo e sul banco!
-46.mp3 1.82s capito 1.00 sara1.02k4 (2s) | Ecco Quanta acqua ho bevuto. | Ecco quanta acqua ho bevuto!
-47.mp3 2.14s capito 1.00 sara1.02k4 (2s) | Toccate più ogni volta che bevete. | Toccate più ogni volta che bevete.
-48.mp3 2.28s capito 1.00 sara1.02k4 (2s) | Vi faccio vedere come va la settimana. | Vi faccio vedere come va la settimana.
-49.mp3 2.87s capito 0.83 sara1.02k4 (10s) | Gratis, senza registrazione: link nel profilo. | Grati senza registrazione, link nel profilo.
-50.mp3 2.06s capito 1.00 sara1.02k4 (2s) | Mandatela a chi beve solo caffè! | Mandatela a chi beve solo caffè.
-51.mp3 2.17s capito 1.00 sara1.02k4 (2s) | È venerdì: le garanzie le tengo io! | e venerdì le garanzie le tengo io.
-52.mp3 1.77s capito 1.00 sara1.02k8 (5s) | Ecco Garanzie e scontrini. | Ecco Garanzie e Scontrini.
-53.mp3 2.19s capito 1.00 sara1.02k4 (2s) | Segnate cosa comprate e quando. | Segnate cosa comprate e quando.
-54.mp3 2.28s capito 1.00 sara1.02k4 (2s) | Vi avviso prima che scada la garanzia. | Vi avviso prima che scada la garanzia.
-55.mp3 2.46s capito 1.00 sara1.02k4 (2s) | Mandatela a chi perde sempre gli scontrini! | Mandatela a chi perde sempre gli scontrini.
-56.mp3 2.47s capito 1.00 sara1.02k4 (2s) | È venerdì: l'uovo viene come lo volete voi! | E venerdì l'uovo viene come lo volete voi.
-57.mp3 1.88s capito 1.00 sara0.95k4 (3s) | Ecco l'uovo sodo perfetto. | ecco l'uovo sodo perfetto
-58.mp3 2.43s capito 0.67 sara0.95k4 (9s) | Scegliete: alla coque, barzotto o sodo. | Scegliete alla coquie barzzotto o sodo.
-59.mp3 1.77s capito 1.00 sara1.02k4 (2s) | Vi suono quando è pronto. | Vi suono quando è pronto.
-60.mp3 2.16s capito 1.00 sara1.02k4 (2s) | Mandatela a chi fa le uova di gomma! | Mandatela a chi fa le uova di gomma.
-61.mp3 2.55s capito 1.00 sara1.02k4 (2s) | Sabato si smonta: domani cambio piazza! | Sabato si smonta, domani cambio piazza
-62.mp3 2.49s capito 0.84 sara1.02k4 (10s) | Uè guagliù, chiudo la tenda e piego il banco. | Ue guai jiu chiudo la tenda e piego il banco.
-63.mp3 2.86s capito 1.00 sara1.02k4 (2s) | Arrotolo le lampadine e metto tutto nel carretto. | arrotolo le lampadine e metto tutto nel carretto.
-64.mp3 3.20s capito 1.00 sara1.02k4 (3s) | Saluto Piazza Garibaldi: grazie per questa settimana! | Saluto Piazza Garibaldi, grazie per questa settimana.
-65.mp3 2.52s capito 1.00 sara0.95k4 (4s) | Dove vado domani? Non ve lo dico ancora. | Dove vado domani non ve lo dico ancora?
-66.mp3 2.83s capito 1.00 sara1.02k4 (2s) | Domani piazza nuova e tre idee nuove da votare. | Domani piazza nuova e tre idee nuove da votare.
-67.mp3 3.14s capito 1.00 sara0.95k4 (5s) | Secondo voi dove mi sposto? Scrivetelo nei commenti! | Secondo voi dove mi sposto, scrivetelo nei commenti.
-media capito 0.93
+settimana 2026-W45 dal 2026-11-01
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W45 Piante:🪴 Scopa:🃏 Sorte:🎲 --piazza Piazza Carità
+{"piazza": "Piazza Carità", "file": "piazza-2026-W45.mp4", "poster": "piazza-2026-W45.jpg", "foto": "File:Napoli - Piazza Carità.jpg", "licenza": "Public domain", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_-_Piazza_Carit%C3%A0.jpg", "torna": false}
+persone tolte: 27 (giri 3), foto coperta 7.3%
 
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
-voci: tutte le frasi hanno la voce nuova
-ok: 2026-W46 · 12 puntate
- 
-fatto 2026-W46
+panoramica rifatta piazza-2026-W45.mp4 Piazza Carità
+settimana 2026-W46 dal 2026-11-08
+$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 automatico/piazza.py 2026-W46 Acqua:💧 Garanzie:🧾 Uovo:🥚 --piazza Piazza Garibaldi
+{"piazza": "Piazza Garibaldi", "file": "piazza-2026-W46.mp4", "poster": "piazza-2026-W46.jpg", "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg", "licenza": "CC0", "pagina": "https://commons.wikimedia.org/wiki/File:Napoli_Centrale_Station_-_Piazza_Garibaldi_Entrance_01.jpg", "torna": false}
+persone tolte: 24 (giri 2), foto coperta 8.0%
+
+panoramica rifatta piazza-2026-W46.mp4 Piazza Garibaldi
