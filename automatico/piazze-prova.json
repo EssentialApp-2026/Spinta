@@ -1,0 +1,59 @@
+[
+ {
+  "nome": "Piazza Dante",
+  "file": "File:Convento Soriano.jpg",
+  "centri": [
+   0.35,
+   0.55,
+   0.75
+  ]
+ },
+ {
+  "nome": "Piazza Matteotti",
+  "file": "File:Napoli - Palazzo delle poste.jpg",
+  "centri": [
+   0.3,
+   0.5,
+   0.7
+  ]
+ },
+ {
+  "nome": "Piazza Matteotti bis",
+  "file": "File:Palazzo delle Poste (Napoli).jpg",
+  "centri": [
+   0.5
+  ]
+ },
+ {
+  "nome": "Piazza Amedeo",
+  "file": "File:Piazza Amedeo 100 2776.JPG",
+  "centri": [
+   0.3,
+   0.5,
+   0.7
+  ]
+ },
+ {
+  "nome": "Piazza dei Martiri",
+  "file": "File:Palazzo Partanna 1.jpeg",
+  "centri": [
+   0.35,
+   0.55
+  ]
+ },
+ {
+  "nome": "Piazza Carlo III",
+  "file": "File:\"Albergo dei Poveri\" (after 1751) - Architect Ferdinando Fuga (Florence 1699-Naples 1781) - Naples (23598555603).jpg",
+  "centri": [
+   0.3,
+   0.5
+  ]
+ },
+ {
+  "nome": "Piazza del Municipio",
+  "file": "File:Palazzo della Banca di Roma – facciata su piazza Municipio.jpg",
+  "centri": [
+   0.75
+  ]
+ }
+]

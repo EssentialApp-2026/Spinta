@@ -53,7 +53,7 @@ def libera(meta):
 # foto da non usare per la panoramica: interni, dettagli, quadri e stampe antiche, notturne
 SCARTA = re.compile(r'(intern|interior|inside|dettagl|detail|particolar|lapide|targa|plaque|busto|bust\b|affresc|fresco|dipint|painting|quadro|mappa|map\b|view of|veduta|'
                     r'pianta di|stampa|print|incision|engraving|disegno|drawing|cartolina|postcard|notte|night|notturn|museo|museum|soffitto|ceiling|altare|altar|'
-                    r'cripta|crypt|statua|statue|scultura|sculpture|stemma|coat of arms|insegna|sign\b|logo)', re.I)
+                    r'cripta|crypt|statua|statue|scultura|sculpture|stemma|coat of arms|insegna|sign\b|logo|exhibition|mostra|theat|teatro|opera\b|tunnel|tunelo|galleria)', re.I)
 
 
 LIBERE = ('haswbstatement:P275=Q6938433', 'haswbstatement:P6216=Q19652')   # dati strutturati di Commons: licenza CC0 / pubblico dominio
@@ -175,10 +175,12 @@ def bancarella(telefoni):
     return b
 
 
-def ritaglia(foto):
+def ritaglia(foto, centro=0.5):
+    """Ritaglio verticale 9:16; «centro» (da 0 a 1) dice dove sta, in orizzontale, la parte di foto da tenere."""
     im = ImageOps.exif_transpose(Image.open(foto)).convert('RGB')
     w, h = im.size; tw = int(h * 9 / 16)
-    if tw <= w: im = im.crop(((w - tw) // 2, 0, (w - tw) // 2 + tw, h))
+    if tw <= w:
+        x0 = min(max(0, int(w * centro - tw / 2)), w - tw); im = im.crop((x0, 0, x0 + tw, h))
     else:
         th = int(w * 16 / 9); im = im.crop((0, max(0, h - th), w, h))
     return im.resize((W * 2, H * 2), Image.LANCZOS)
@@ -197,8 +199,8 @@ def armonizza(stall, bg):
     return Image.fromarray(s.astype(np.uint8), 'RGBA')
 
 
-def video(foto, telefoni, uscita, poster):
-    bg = ritaglia(foto)
+def video(foto, telefoni, uscita, poster, centro=0.5):
+    bg = ritaglia(foto, centro)
     st = armonizza(bancarella(telefoni), bg)
     hb = int(H * 2 * 0.36); st = st.resize((int(st.width * hb / st.height), hb), Image.LANCZOS)
     cx, base = W, int(H * 2 * 0.955)                      # centro in basso (coordinate 2x)
@@ -238,7 +240,7 @@ def main():
     else:
         p = scegli_piazza(); foto, url, lic = scarica_foto(p)
     mp4 = f'piazza-{sett}.mp4'; jpg = f'piazza-{sett}.jpg'
-    video(foto, telefoni, os.path.join(LIB, mp4), os.path.join(LIB, jpg))
+    video(foto, telefoni, os.path.join(LIB, mp4), os.path.join(LIB, jpg), float(p.get('centro', 0.5)))
     lp = os.path.join(LIB, 'libreria.json'); l = json.load(open(lp, encoding='utf-8'))
     l['aperture'] = [x for x in l.get('aperture', []) if x.get('file') != mp4] + [{
         'file': mp4, 'poster': jpg, 'settimana': sett, 'piazza': p['nome'], 'foto': p['file'], 'licenza': lic,

@@ -107,5 +107,19 @@ def main():
     print('fatto', out, flush=True)
 
 
+def prova(out):
+    """Fa la locandina della panoramica (bancarella compresa) per le foto di automatico/piazze-prova.json, per sceglierle a occhio."""
+    import tempfile, subprocess
+    os.makedirs(out, exist_ok=True)
+    for x in json.load(open(os.path.join(QUI, 'piazze-prova.json'), encoding='utf-8')):
+        try: foto, url, lic = P.scarica_foto(x)
+        except BaseException as e: print('non scaricata', x['file'], e, flush=True); continue
+        for c in x.get('centri', [0.5]):
+            nome = re.sub(r'[^a-z0-9]+', '-', x['nome'].lower()).strip('-') + f'-{int(c * 100)}'
+            P.video(foto, [('Prova', '⭐'), ('Idea', '💡'), ('Gratis', '🎁')], tempfile.mktemp(suffix='.mp4'), os.path.join(out, f'prova-{nome}.jpg'), c)
+            print('fatta', nome, lic, flush=True)
+
+
 if __name__ == '__main__':
-    main()
+    if '--prova' in sys.argv: prova(sys.argv[1] if not sys.argv[1].startswith('--') else os.path.join(P.ROOT, 'claude', 'piazze-candidate'))
+    else: main()
