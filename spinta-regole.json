@@ -1,7 +1,7 @@
 {
-  "version": "2026.10.12",
-  "aggiornato": "12 ottobre 2026",
-  "prossimoAggiornamento": "lunedì 19 ottobre",
+  "version": "2026.10.26",
+  "aggiornato": "26 ottobre 2026",
+  "prossimoAggiornamento": "lunedì 2 novembre",
   "durata": {
     "min": 10,
     "ideale": [
@@ -68,114 +68,126 @@
   },
   "segnali": [
     "Tempo di visione e percentuale di visione completa (secondo le analisi i video che vanno meglio superano circa il 70%)",
-    "Rewatch: oltre il 15-20% è indicato come segnale forte",
-    "Condivisioni",
+    "Rewatch e condivisioni: secondo Hootsuite sono tra i segnali più forti insieme al tempo di visione",
     "Commenti (anche vocali e con foto) e nuovi follower dal video",
     "Salvataggi",
     "Testo a schermo, parole dette e caption: aiutano TikTok a capire l'argomento e a mostrarlo nella ricerca",
-    "Like (in media il segnale più debole)"
+    "Like e hashtag (in media segnali di peso medio-basso)"
   ],
   "novita": [
-    "Secondo Hootsuite (agg. ottobre 2026) i video lunghi (1-3 minuti) ricevono più distribuzione solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.",
+    "Secondo Hootsuite (agg. 14 ottobre 2026) i video da 1-3 minuti ricevono più distribuzione solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.",
     "La ricerca conta sempre di più: dì l'argomento a voce nei primi secondi, scrivilo a schermo e usa le stesse parole chiave nella caption.",
     "Secondo le analisi caption, voce e testo a schermo pesano quanto o più degli hashtag: usa da 1 a 5 hashtag specifici della tua nicchia, niente #fyp o #viral.",
-    "TikTok dice di evitare troppi contenuti ripetitivi di fila: alterna format e argomenti dentro la tua nicchia.",
-    "Nuovo nei commenti: puoi creare un sondaggio fino a 5 opzioni; usalo per far votare il pubblico e far crescere i commenti.",
-    "In arrivo per tutti i commenti vocali (fino a 60 s) e con foto: invita il pubblico a rispondere con la voce o con una foto.",
-    "L'audio originale (la tua voce) resta una scelta sicura; i suoni di tendenza aiutano soprattutto se li usi entro 24-48 ore, e molti non sono disponibili per gli account business.",
-    "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.",
-    "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.",
-    "Ottobre è il mese di Halloween: le serie numerate (es. «Giorno 12/31») fanno tornare il pubblico ogni giorno.",
-    "Costanza: secondo le analisi conta più pubblicare con regolarità che pubblicare tanto; meglio 3-5 video curati a settimana.",
-    "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."
+    "Le analisi indicano che TikTok limita i contenuti troppo ripetitivi di fila: alterna format e argomenti dentro la tua nicchia.",
+    "Nuovo su iOS: si può ripubblicare un singolo commento («Repost this comment»); scrivi commenti e risposte che valga la pena condividere.",
+    "Nei commenti puoi creare sondaggi e ricevere risposte vocali o con foto: invita il pubblico a votare o a rispondere con la voce.",
+    "Halloween è sabato 31: pubblica i contenuti a tema entro venerdì, poi passa ai temi di novembre.",
+    "Secondo TikTok (dati USA) i post #holidayshopping sono cresciuti del 263% a settembre: se vendi qualcosa, prepara già ora i contenuti per Black Friday e Natale.",
+    "TikTok dice di dare più visibilità alle LIVE in vista del Black Friday: se hai un negozio, programma una diretta per rispondere alle domande.",
+    "TikTok sta investendo nelle mini-serie verticali (accordo con Made By Us Studios del 14 ottobre): le storie a episodi con un forte aggancio iniziale sono un format da provare.",
+    "L'audio originale (la tua voce) resta una scelta sicura; i suoni di tendenza aiutano soprattutto se li usi presto, e molti non sono disponibili per gli account business.",
+    "Rispondi ai commenti per 30 minuti dopo la pubblicazione e pubblica con regolarità (3-5 video curati a settimana)."
   ],
   "tendenze": {
-    "settimana": "5 – 11 ottobre 2026",
+    "settimana": "19 – 25 ottobre 2026",
     "format": [
       {
-        "nome": "Serie «31 giorni di Halloween»",
-        "come": "Un video a tema al giorno per tutto ottobre, numerato (es. «Giorno 12/31»): chi ne vede uno torna per il successivo."
+        "nome": "Sfilata del costume (Ramalama)",
+        "come": "Inquadra i piedi dal basso, cammina verso la telecamera e svela il costume di Halloween alla fine, a tempo con la musica."
       },
       {
-        "nome": "Curiosità inquietante con colpo di scena",
-        "come": "Scrivi a schermo un fatto strano su una clip d'atmosfera e chiudi con una sorpresa che invita a riguardare il video."
+        "nome": "«I just wanna be ok»",
+        "come": "Balli sorridendo mentre il testo a schermo racconta un piccolo disastro o una frustrazione quotidiana: la battuta la fa il testo."
       },
       {
-        "nome": "Tour dell'ambiente decorato",
-        "come": "Mostra casa, negozio o locale stanza per stanza e tieni il pezzo migliore per la fine."
+        "nome": "«Orecchio attivato»",
+        "come": "Fai finta di non ascoltare; appena qualcuno nomina l'argomento della tua nicchia ti giri di scatto (spiega la situazione con il testo a schermo)."
       },
       {
-        "nome": "«Qualcuno deve mandare avanti la baracca»",
-        "come": "Una sola inquadratura semplice di chi lavora mentre gli altri sono via, con la frase scritta a schermo invece che detta."
+        "nome": "Curiosità inquietante",
+        "come": "Clip d'atmosfera con un fatto strano scritto a schermo: funziona per storia, musei, luoghi e racconti di Halloween."
       },
       {
-        "nome": "Panico → calma",
-        "come": "Una persona si dispera per un compito noioso, l'altra risponde tranquilla mostrando la soluzione (il tuo prodotto o trucco)."
+        "nome": "Prova della ricetta virale",
+        "come": "Prova in diretta una ricetta che gira sui social (in questi giorni lo «yogurt filante») e mostra il risultato vero, anche se va male."
       },
       {
-        "nome": "Video-domanda",
-        "come": "Apri o chiudi con una domanda diretta al pubblico, o lancia un sondaggio nei commenti."
+        "nome": "Mini-serie a episodi",
+        "come": "Racconta una storia in più video numerati, ognuno con un aggancio nei primi secondi e un finale che fa aspettare il prossimo."
       }
     ],
     "hashtag": [
       {
-        "tag": "#CityTasteTest",
-        "nicchia": "cibo",
-        "nota": "Sfida lanciata da TikTok (fonte internazionale, non verificata per l'Italia): recensione sincera di un locale con la posizione taggata."
+        "tag": "#pregapernoi",
+        "nicchia": "comicita",
+        "nota": "Trend nato nelle scuole italiane (Virgilio, 12 ottobre): la classe risponde «prega per noi» all'appello. Alcuni prof hanno dato note: usalo solo se pertinente e con rispetto."
+      },
+      {
+        "tag": "#holidayshopping",
+        "nicchia": "business",
+        "nota": "In forte crescita secondo TikTok (dati USA, +263% a settembre): utile per contenuti su regali e offerte di fine anno."
       }
     ],
     "suoni": [
       {
         "nome": "Ramalama (Bang Bang) – Róisín Murphy",
-        "nota": "Tendenza internazionale per il cambio d'abito di Halloween sul colpo di batteria; non verificata per l'Italia."
+        "nota": "Per la «sfilata del costume» di Halloween (Buffer, NewEngen); tendenza internazionale, non verificata per l'Italia."
       },
       {
-        "nome": "we fell in love in october – girl in red",
-        "nota": "Tra i suoni internazionali di questo periodo secondo SocialPilot; non verificato per l'Italia."
+        "nome": "Be OK – Ingrid Michaelson",
+        "nota": "Per il trend «I just wanna be ok» con testo a schermo (Buffer, Ramdam, NewEngen); internazionale."
       },
       {
-        "nome": "Ain't In LA – ADÉLA",
-        "nota": "Usato nel trend «Someone's gotta hold it down» (NapoleonCat); tendenza internazionale."
+        "nome": "Spooky, Scary Skeletons (House VIP Remix)",
+        "nota": "Usato per ricette e dolci di Halloween secondo Buffer; internazionale."
+      },
+      {
+        "nome": "Pray For Me – The Weeknd & Kendrick Lamar",
+        "nota": "Per il trend degli amici che entrano al rallentatore (NewEngen); internazionale."
       }
     ],
-    "nota": "Questa settimana non abbiamo trovato fonti pubbliche affidabili su hashtag e suoni di tendenza in Italia: quelli elencati sono internazionali. Per i dati italiani del momento apri il TikTok Creative Center dal tuo account e, se hai un account business, filtra i suoni «Approved for Business Use»."
+    "nota": "Questa settimana abbiamo trovato in fonti italiane solo il trend scolastico #pregapernoi e la ricetta dello yogurt filante: suoni e altri format sono internazionali. Per i dati italiani del momento apri il TikTok Creative Center dal tuo account e, se hai un account business, filtra i suoni «Approved for Business Use»."
   },
   "fonti": [
     {
-      "titolo": "Hootsuite – How the TikTok algorithm works in 2026 (agg. 2 ottobre 2026)",
+      "titolo": "Hootsuite – How the TikTok algorithm works in 2026 (agg. 14 ottobre 2026)",
       "url": "https://blog.hootsuite.com/tiktok-algorithm/"
     },
     {
-      "titolo": "Social Media Today – TikTok adds voice notes and image carousels in comments",
-      "url": "https://www.socialmediatoday.com/news/tiktok-adds-voice-notes-and-image-carousels-in-comments/829640/"
+      "titolo": "SocialBee – TikTok updates, news and features (ottobre 2026)",
+      "url": "https://socialbee.com/blog/tiktok-updates-news-features/"
     },
     {
-      "titolo": "DigiTech.News – TikTok rivoluziona gli annunci con agenti AI e automazione",
-      "url": "https://www.digitech.news/digital/12/10/2026/tiktok-nuovi-strumenti-ai-pubblicita/"
+      "titolo": "Social Media Today – TikTok shares Black Friday, Cyber Monday promotion tips (20 ottobre 2026)",
+      "url": "https://www.socialmediatoday.com/news/tiktok-shares-black-friday-cyber-monday-promotion-tips/833546/"
     },
     {
-      "titolo": "Releasebot – TikTok Release Notes ottobre 2026",
-      "url": "https://releasebot.io/updates/tiktok"
+      "titolo": "Social Media Today – TikTok inks microdrama partnership with Made By Us studios (14 ottobre 2026)",
+      "url": "https://www.socialmediatoday.com/news/tiktok-inks-microdrama-partnership-with-made-by-us-studios/833055/"
     },
     {
-      "titolo": "TikTok Newsroom",
-      "url": "https://newsroom.tiktok.com/?lang=en"
+      "titolo": "ANSA – Proteste e social, TikTok avvia una task force (21 ottobre 2026)",
+      "url": "https://www.ansa.it/sito/notizie/cronaca/2026/10/21/proteste-e-battage-social-tiktok-avvia-una-task-force_94c40d6a-2f99-4e8e-815f-590705e1adc5.html"
     },
     {
-      "titolo": "SocialPilot – TikTok Trends October 2026 (agg. 7 ottobre)",
-      "url": "https://www.socialpilot.co/blog/tiktok-trends"
+      "titolo": "Buffer – Trending songs on TikTok, ottobre 2026 (20 ottobre)",
+      "url": "https://buffer.com/resources/trending-songs-tiktok/"
     },
     {
-      "titolo": "NapoleonCat – Current TikTok Trends, October 2026 (agg. 6 ottobre)",
-      "url": "https://napoleoncat.com/blog/tiktok-trends/"
+      "titolo": "NewEngen – TikTok Trends: October 2026 (agg. 26 ottobre)",
+      "url": "https://newengen.com/insights/tiktok-trends/"
     },
     {
-      "titolo": "Ramdam – TikTok Trends October 2026 (agg. 5 ottobre)",
+      "titolo": "Ramdam – TikTok Trends October 2026 (agg. 19 ottobre)",
       "url": "https://www.ramd.am/blog/trends-tiktok"
     },
     {
-      "titolo": "Metricool – Canzoni virali TikTok del momento (agg. 5 ottobre)",
-      "url": "https://metricool.com/tiktok-songs/"
+      "titolo": "Virgilio Sapere – Nelle scuole italiane impazza il trend «Prega per noi» (12 ottobre 2026)",
+      "url": "https://sapere.virgilio.it/scuola/mondo-scuola/nelle-scuole-italiane-impazza-il-trend-prega-per-noi-cos-e"
+    },
+    {
+      "titolo": "Gustoblog – Lo yogurt filante che spopola sui social (23 ottobre 2026)",
+      "url": "https://www.gustoblog.it/2026/10/23/stretchy-yogurt-yogurt-filante-virale/"
     }
   ],
   "checklistExtra": [
@@ -183,6 +195,7 @@
     "Nessuna filigrana di altre app (CapCut, Instagram…)",
     "Hashtag specifici della nicchia, niente #fyp o #viral",
     "Argomento detto a voce e scritto a schermo nei primi secondi",
-    "Account business: controlla che il suono sia approvato per uso commerciale"
+    "Account business: controlla che il suono sia approvato per uso commerciale",
+    "Temi di cronaca o proteste: dal 21 ottobre TikTok Italia applica controlli più severi e limita la monetizzazione di queste LIVE"
   ]
 }
