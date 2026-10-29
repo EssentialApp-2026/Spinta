@@ -34,7 +34,7 @@
     {
      "lettera": "A",
      "idea": "Cosa scade nel frigo",
-     "voti": 0
+     "voti": 1
     },
     {
      "lettera": "B",
@@ -47,8 +47,8 @@
      "voti": 0
     }
    ],
-   "conteggio": "",
-   "vince": ""
+   "conteggio": "2026-10-28T22:56+01:00",
+   "vince": "A"
   },
   {
    "settimana": "2026-W45",
