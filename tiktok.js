@@ -252,7 +252,8 @@
   /* ---------- guida e chiavi dell'app ---------- */
   const VALORI = () => ({
     nome: 'Spinta',
-    descrizione: 'Spinta mostra al creatore le statistiche dei suoi video TikTok (view, like, commenti e condivisioni) per capire cosa funziona sul suo canale. I dati restano sul suo telefono.',
+    // TikTok accetta al massimo 120 caratteri
+    descrizione: 'Mostra al creatore le statistiche dei suoi video TikTok per capire cosa funziona. I dati restano sul suo telefono.',
     termini: SITO + 'termini.html', privacy: SITO + 'privacy.html', sito: SITO, ritorno: ritorno(), scope: SCOPES.join(', ')
   });
   function copia(v) { return `<button class="btn sm alt" type="button" onclick="copy(decodeURIComponent('${encodeURIComponent(v).replace(/'/g, '%27')}'))">Copia</button>` }
@@ -273,12 +274,13 @@
       <ol class="tt-passi">
         <li><b>Entra in TikTok for Developers</b><span>Apri <a href="https://developers.tiktok.com/" target="_blank" rel="noopener">developers.tiktok.com</a>, tocca «Log in» e registrati come sviluppatore (gratis).</span></li>
         <li><b>Crea l'app</b><span>In alto a destra apri il tuo profilo, poi «Manage apps» → «Connect an app». Come proprietario scegli te stesso e conferma.</span></li>
-        <li><b>Compila «App details»</b><span>Copia questi valori nei campi con lo stesso nome. Categoria: una qualsiasi, per esempio «Productivity».</span>
+        <li><b>Passa alla Sandbox</b><span>In alto passa da «Production» a «Sandbox» e crea una Sandbox. Lavora sempre lì: la Production chiede un video dimostrativo e la revisione di TikTok, la Sandbox no.</span></li>
+        <li><b>Compila i dettagli</b><span>Copia questi valori nei campi con lo stesso nome. Categoria: una qualsiasi, per esempio «Productivity».</span>
           ${riga('App name', V.nome)}${riga('Description', V.descrizione)}${riga('Terms of Service URL', V.termini)}${riga('Privacy Policy URL', V.privacy)}${riga('Platforms → Web → Website URL', V.sito)}
           <a class="btn sm alt" style="margin-top:8px" href="icon-1024.png" download="spinta-icona-1024.png">${ico('download')}Scarica l'icona (1024 × 1024)</a></li>
-        <li><b>Aggiungi Login Kit</b><span>In «Products» tocca «Add products» e aggiungi «Login Kit» (e «Display API», se compare). In Login Kit, nella parte Web, metti questo Redirect URI:</span>${riga('Redirect URI', V.ritorno)}</li>
-        <li><b>Aggiungi i permessi</b><span>In «Scopes» aggiungi questi quattro: servono per leggere profilo, numeri e video.</span>${riga('Scopes', V.scope)}</li>
-        <li><b>Prepara la Sandbox</b><span>In alto passa da «Production» a «Sandbox» e crea una Sandbox copiando la configurazione di Production. Nella Sandbox apri «Target users», aggiungi il tuo account TikTok e accetta. Così l'app funziona per te senza aspettare la revisione di TikTok.</span></li>
+        <li><b>Aggiungi Login Kit</b><span>In «Products» tocca «Add products» e aggiungi «Login Kit». Nella parte Web metti questo Redirect URI:</span>${riga('Redirect URI', V.ritorno)}</li>
+        <li><b>Aggiungi i permessi</b><span>In «Scopes» tocca «Add scopes» e aggiungi quelli che mancano tra questi quattro: servono per leggere profilo, numeri e video. Poi tocca «Apply changes».</span>${riga('Scopes', V.scope)}</li>
+        <li><b>Aggiungi il tuo account</b><span>In «Target users» tocca «Add account»: si apre una finestra di TikTok, entri con il tuo account e confermi. Così l'app funziona per te senza aspettare la revisione.</span></li>
         <li><b>Copia le chiavi</b><span>Nella Sandbox, sezione «Credentials», copia Client key e Client secret qui sotto.</span></li>
       </ol>
       <label for="tt-ck">Client key</label><input id="tt-ck" autocomplete="off" spellcheck="false" value="${e(t.ck || '')}" placeholder="es. sbaw1x2y3z…">
