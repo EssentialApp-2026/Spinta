@@ -922,12 +922,14 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
   const file=new File([out.blob],name,{type:out.type});CR.file=file;window._spintaFile=file;
   const tags=[ser?ser.tag:null,...tagsFor('',['gennarino','bancarella'],'tech').split(' ')].filter(Boolean);
   const tg=[...new Set(tags)].slice(0,RULES.hashtag.max).join(' '),pre=ser?`Parte ${ep} · `:'',app=st.app||'';
-  const CAP={idee:`${pre}Quale app regalo venerdì? Votate A, B o C nei commenti, fino a mercoledì 👇`,
+  // le tre idee nella caption: chi legge sa cosa votare, e sono le parole che la gente cerca (con «gratis», l'argomento della serie)
+  const opz=st.ballot&&st.ballot.rows&&st.ballot.rows.length?st.ballot.rows.map(r=>`${r.k}: ${r.txt}`):['A','B','C'].filter(k=>st.idee&&st.idee[k]).map(k=>`${k}: ${st.idee[k]}`);
+  const CAP={idee:`${pre}Quale app vi regalo venerdì, gratis?${opz.length?'\n'+opz.join(' · '):''}\nVotate A, B o C nei commenti, fino a mercoledì 👇`,
     risultato:`${pre}Ha vinto la ${st.X}${app?': '+app:''}! Venerdì la trovate sul banco, gratis 🎁 Come la volete? Ditemelo nei commenti`,
-    regalo:`${pre}${app?app+': ':''}è pronta, gratis e senza registrazione. Link nel profilo 🎁 Provatela e ditemi com'è!`,
+    regalo:`${pre}${app?app+': ':''}è pronta, gratis e senza registrazione. Link nel profilo 🎁 Provatela e ditemi nei commenti com'è!`,
     presentazione:`${pre}Ogni venerdì regalo un'app utile, gratis. Che app vi servirebbe? Scrivetelo nei commenti 👇`,
-    nessuno:`${pre}Questa settimana niente app: nei commenti non ha votato nessuno 😔 Lunedì tre idee nuove, basta una lettera nei commenti per decidere voi 👇`};
-  const cap=CAP[st.tipo]?`${CAP[st.tipo]}\n\n${tg}`:((window._nx&&window._nx.raw&&window._nx.cap&&ser&&window._nx.raw.ep===ep&&crNoBait(window._nx.cap))?window._nx.cap:`${pre}${st.hook} 👇\n\n${tg}`);window._spintaCap=cap;
+    nessuno:`${pre}Questa settimana niente app gratis: nei commenti non ha votato nessuno 😔 Lunedì tre idee nuove, basta una lettera nei commenti per decidere voi 👇`};
+  const cap=CAP[st.tipo]?`${CAP[st.tipo]}\n\n${tg}`:((window._nx&&window._nx.raw&&window._nx.cap&&ser&&window._nx.raw.ep===ep&&crNoBait(window._nx.cap))?window._nx.cap:`${pre}${st.hook}\nVoi che ne pensate? Ditemelo nei commenti 👇\n\n${tg}`);window._spintaCap=cap;
   const hookW=st.hook.split(/\s+/).filter(Boolean).length,shots=st.items.length+st.items.filter(x=>x.shot).length;
   const hk=(((window._nx&&window._nx.hooks)||[]).find(h=>crClean(h.s)===st.hook)||{k:'Personalizzato'}).k,mode=CR_STUDIO[s.studio]?s.studio:'auto';
   // per lo Studio: cosa c'è già nel video (così non lo scrive due volte), copione con i tempi delle frasi, caption e copertina

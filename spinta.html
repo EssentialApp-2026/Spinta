@@ -602,7 +602,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt danger" onclick="wipeData()"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 3.1.0 · indicazioni aggiornate al <span id="set-rules"></span> · <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a href="termini.html" target="_blank" rel="noopener">Termini</a></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 3.1.1 · indicazioni aggiornate al <span id="set-rules"></span> · <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a href="termini.html" target="_blank" rel="noopener">Termini</a></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -2286,8 +2286,12 @@ function creaPrefill(){const mk=VA.made;
   VA.transcript=String(mk.testo||'').replace(/\s+/g,' ').trim();
   VA.subs=(Array.isArray(mk.righe)?mk.righe:[]).filter(x=>x&&x.t&&+x.e>+x.s).map(x=>({s:+x.s,e:+x.e,t:String(x.t)}));
   // parole della serie che non sono l'argomento (saluti, nomi): non contano per ricerca e caption
-  const kw=keywords(VA.transcript),no=new Set(['guagliù','guagliu','gennarino','bancariello','bancarella','ciao','salve']),top=kw.top.filter(w=>!no.has(w));
-  const topic=String(mk.topic||kw.bi.find(b=>!b.split(' ').some(w=>no.has(w)))||top[0]||'').trim();
+  const no=new Set(['guagliù','guagliu','gennarino','bancariello','bancarella','ciao','salve','mamma','ecco','oggi','domani','stasera','sempre','tutto','tutti','proprio','guardate',
+    'lunedì','martedì','mercoledì','giovedì','venerdì','sabato','domenica']);
+  const kw=keywords(VA.transcript),top=kw.top.filter(w=>!no.has(w));
+  // senza argomento dal creatore: la parola più lunga dell'hook (è la frase detta subito e quella della caption), se no la più frequente del copione
+  const hw=wordsOf(mk.hook||'').filter(w=>w.length>=5&&!STOP.has(w)&&!no.has(w)).sort((a,b)=>b.length-a.length);
+  const topic=String(mk.topic||hw[0]||kw.bi.find(b=>!b.split(' ').some(w=>no.has(w)))||top[0]||'').trim();
   VA.pkg={topic,topicOk:!!topic,kw:top.slice(0,4),kwSure:top.filter(w=>kw.cnt[w]>=2).slice(0,3),niche:NICHES[mk.niche]?mk.niche:'tech'};
   $('#a-topic').value=topic;$('#a-niche').value=VA.pkg.niche;$('#a-ok').style.display=topic?'none':'';
   $('#a-tnote').textContent=topic?'Dal copione del creatore ✓':'Scrivilo e conferma.';
@@ -2321,8 +2325,10 @@ function autoRun(){const me=VA,mk=me.made;me.auto={p:AUTO_P.map(()=>({state:'wai
   const o=readOpts(),fatte=[o.vol&&'volume normalizzato',o.subs&&'sottotitoli',o.bar&&'barra di avanzamento',o.end&&'testo finale',o.part&&o.series&&'PARTE '+o.series.ep].filter(Boolean);
   autoPasso(3,'ok',fatte.length?'Aggiunto: '+fatte.join(', '):'Niente da correggere: il video resta com\'è, senza ricodificarlo');
   // passo 2: punteggio, e cosa resta da migliorare (si cambia nel creatore)
-  const S=me.score,resta=S.items.filter(i=>i.pts<i.max*0.8).sort((a,b)=>(b.max-b.pts)-(a.max-a.pts)).slice(0,2).map(i=>i.k.toLowerCase());
-  autoPasso(1,'ok',`${me.scoreBefore} → ${S.total} su 100${resta.length?` · da migliorare nel creatore: ${resta.join(', ')}`:' · niente da migliorare'}`);
+  // solo quello che si può fare davvero: hook, movimento e ritmo vengono dal piano e dal creatore (cambiarli farebbe perdere la voce pronta)
+  const FARE={'Serie a puntate':'imposta la serie (passo 1)','Caption con parole chiave':'nomina l\'argomento nella caption (passo 3)','Domanda nella caption':'una domanda nella caption (passo 3)','Hashtag':'controlla gli hashtag (passo 3)'};
+  const S=me.score,resta=S.items.filter(i=>i.pts<i.max*0.8&&FARE[i.k]).map(i=>FARE[i.k]);
+  autoPasso(1,'ok',`${me.scoreBefore} → ${S.total} su 100${resta.length?` · resta da fare: ${resta.join(', ')}`:''}`);
   // passo 5
   autoPasso(4,'run',fatte.length?'Creo il video finale: tieni l\'app aperta, ci vuole circa quanto dura il video':'Preparo il video finale…');
   goStep(5);
@@ -2334,8 +2340,10 @@ function autoFine(done,plan,blob){const me=VA;if(!me||!me.auto)return;me.auto.fi
 // caption del creatore: tengo il suo testo; aggiungo l'invito a commentare se manca e tengo gli hashtag entro il massimo
 function capSistema(cap){let c=String(cap||'').trim();if(!c)return c;const mx=RULES.hashtag.max;
   let k=0;c=c.replace(/(^|\s)#[^\s#]+/g,m=>++k>mx?'':m).replace(/[ \t]+\n/g,'\n').replace(/[ \t]{2,}/g,' ').trim();
-  if(!/\?|comment|scrivete|ditemelo|dimmi/i.test(c)){const cta=pick(CTA[($('#a-goal')||{}).value]||CTA.commenti),m=c.match(/\n\s*\n(?=#)/);
-    c=m?c.slice(0,m.index)+'\n'+cta+c.slice(m.index):c+'\n'+cta}
+  if(!/\?|comment|scrivete|ditemelo|dimmi/i.test(c)){
+    // video del creatore: l'invito con la voce di Gennarino; una freccia sola
+    const cta=VA&&VA.made?'Voi che ne pensate? Ditemelo nei commenti 👇':pick(CTA[($('#a-goal')||{}).value]||CTA.commenti),m=c.match(/\n\s*\n(?=#)/);
+    let testa=m?c.slice(0,m.index):c;const coda=m?c.slice(m.index):'';testa=testa.replace(/\s*👇\s*$/,'');c=testa+'\n'+cta+coda}
   if(!/#[^\s#]+/.test(c)){const ser=curSeries(),tg=[...new Set([ser?ser.tag:null,...tagsFor('',VA&&VA.pkg?curPkg().kws:[],($('#a-niche')||{}).value||'tech').split(' ')].filter(Boolean))].slice(0,mx);
     if(tg.length)c+='\n\n'+tg.join(' ')}
   return c}
@@ -2386,7 +2394,7 @@ function scoreModel(o,pk){
   add('hook','Avvio immediato',10,lead<=0.5?10:lead<=1?5:0,lead<=0.5?'Voce o azione partono subito':`${lead.toFixed(1)} s di silenzio all'inizio`,'Chi scorre se ne va prima che succeda qualcosa.',lead>0.5?'o-trim':null);
   const ht=o.hook&&o.hookTxt?hookAnalysis(o.hookTxt.replace(/\n/g,' ')).sc:0;
   const mk=VA.made||{},hm=!ht&&mk.hook?hookAnalysis(mk.hook).sc:0;
-  if(hm)add('hook','Hook a schermo',12,6+6*hm/100,`"${mk.hook.slice(0,60)}" · ${hm}/100 · già nel video`,'Per un hook più forte cambialo nel creatore e rifai il video.',null);
+  if(hm)add('hook','Hook a schermo',12,6+6*hm/100,`"${mk.hook.slice(0,60)}" · ${hm}/100 · già nel video`,'Viene dal piano della settimana con la voce di Gennarino già pronta: se lo cambi nel creatore, quella frase non ha la voce pronta e il video esce con la voce di riserva.',null);
   else if(ht)add('hook','Hook a schermo',12,6+6*ht/100,`"${o.hookTxt.replace(/\n/g,' ').slice(0,60)}" · ${ht}/100`,'Rendilo più forte nel passo 3: numeri, posta in gioco, parla al "tu".',null);
   else if(VA.topText)add('hook','Hook a schermo',12,8,'C\'è già un testo in alto all\'inizio','Puoi sostituirlo con un hook più forte nel passo 3.','o-hook');
   else add('hook','Hook a schermo',12,0,'Nessun testo nei primi secondi','È il primo motivo per cui ci si ferma: aggiungilo nel passo 3.','o-hook');
@@ -2693,7 +2701,7 @@ function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>Stri
   DB.posts.push({id:uid(),title:(DB.nextHook||(x.hooks[0]||{}).s||'Prossimo video'),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
 
 /* ---------- creatore video con Gennarino (crea.js, caricato solo quando serve) ---------- */
-function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.15.0')}
+function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.15.1')}
 function crea(fromPlan){if(window.crOpen)return window.crOpen(fromPlan);toast('Apro il creatore…');
   creaApri().then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 function creaCon(o){if(!window.crOpenWith)toast('Apro il creatore…');creaApri().then(()=>window.crOpenWith(o)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
