@@ -37,6 +37,19 @@
   const https = u => (/^https:\/\/[^\s"'<>]+$/.test(String(u || '')) ? String(u) : '');   // solo indirizzi https veri
   const ico = (n, c) => `<svg class="ic${c ? ' ' + c : ''}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
+  /* ---------- forma delle chiavi ----------
+     Sandbox: «sbaw» + 14 lettere minuscole e cifre (18 in tutto). Production: «aw» + 14, ma senza la revisione di TikTok non funziona.
+     Se Chrome traduce la pagina di TikTok for Developers, traduce anche le chiavi (es. «sbaw…» diventa «skaw…» con un carattere in più)
+     e TikTok risponde «Qualcosa è andato storto … client_key»: meglio fermarsi prima e dirlo. */
+  const pulisci = s => String(s || '').replace(/[​-‍⁠﻿]/g, '').trim();   // caratteri invisibili che arrivano col copia-incolla
+  const TRADUZIONE = 'Se Chrome ha tradotto la pagina di TikTok, la traduzione cambia anche le chiavi: rimetti la pagina in inglese (menu ⋮ → Traduci… → Inglese) e ricopiale.';
+  function controllaChiavi(ck, cs) {
+    if (/^aw[a-z0-9]{14}$/.test(ck)) return 'Questa è la Client key della Production (comincia con «aw») e senza la revisione di TikTok non funziona: in alto passa a «Sandbox» e copia la Client key che comincia con «sbaw».';
+    if (!/^sbaw[a-z0-9]{14}$/.test(ck)) return `La Client key non è giusta: quella della Sandbox comincia con «sbaw» ed è lunga 18 caratteri (questa ${/^sbaw/.test(ck) ? '' : 'comincia con «' + ck.slice(0, 4) + '» e '}ne ha ${[...ck].length}). ${TRADUZIONE}`;
+    if (!/^[A-Za-z0-9_-]{16,128}$/.test(cs)) return `Il Client secret non sembra giusto: sono solo lettere e numeri, senza spazi. ${TRADUZIONE}`;
+    return '';
+  }
+
   class Errore extends Error { constructor(codice, testo) { super(testo || codice); this.codice = codice; this.testo = testo || codice } }
 
   /* ---------- stato ---------- */
@@ -54,6 +67,7 @@
   function ttCollega() {
     const t = leggi();
     if (!t.ck || !t.cs) { ttGuida(); return }
+    if (!t.forza && controllaChiavi(t.ck, t.cs)) { ttGuida(); return }   // chiavi storte: la guida dice cosa non va, invece della pagina d'errore di TikTok
     const stato = 'sp1.' + Date.now().toString(36) + '.' + casuale(12);
     aggiorna(x => { x.state = stato; x.err = null });
     const q = new URLSearchParams({ client_key: t.ck, scope: SCOPES.join(','), response_type: 'code', redirect_uri: ritorno(), state: stato });
@@ -79,7 +93,7 @@
 
   function erroreToken(j) {
     const c = j.error || (j.data && j.data.error_code) || '', d = j.error_description || (j.data && j.data.description) || '';
-    if (/invalid_client|client_key|client_secret/i.test(c + ' ' + d)) return 'TikTok non riconosce Client key o Client secret: ricopiali dalla Sandbox della tua app (sezione Credentials).';
+    if (/invalid_client|client_key|client_secret/i.test(c + ' ' + d)) return 'TikTok non riconosce Client key o Client secret: ricopiali dalla Sandbox della tua app (sezione Credentials). ' + TRADUZIONE;
     if (/redirect/i.test(c + ' ' + d)) return `L'indirizzo di ritorno non corrisponde: nella tua app su TikTok, in Login Kit, metti esattamente ${ritorno()}`;
     if (/invalid_grant|expired|code/i.test(c + ' ' + d)) return 'Il codice di TikTok è scaduto o è già stato usato: tocca di nuovo «Collega TikTok».';
     return 'TikTok ha rifiutato il collegamento' + (d || c ? ` (${d || c})` : '') + '. Riprova; se succede ancora, ricontrolla la guida.';
@@ -267,6 +281,8 @@
       document.body.appendChild(m);
     }
     const V = VALORI(), t = leggi();
+    insiste = '';
+    const dubbio = t.ck && t.cs && !t.forza ? controllaChiavi(t.ck, t.cs) : '';   // chiavi salvate ma storte: lo dice subito
     m.innerHTML = `<div class="sheet" role="dialog" aria-labelledby="tt-g-t">
       <div class="sheet-h"><h2 id="tt-g-t">Collega TikTok</h2><button class="iconbtn" type="button" aria-label="Chiudi" onclick="closeModal('m-tt')">${ico('x')}</button></div>
       <p class="sub">Una volta sola, circa 15 minuti dal computer: crei su TikTok for Developers una piccola app tua, con il tuo account TikTok. Poi Spinta legge da sola i numeri del tuo canale.</p>
@@ -281,24 +297,37 @@
         <li><b>Aggiungi Login Kit</b><span>In «Products» tocca «Add products» e aggiungi «Login Kit». Nella parte Web metti questo Redirect URI:</span>${riga('Redirect URI', V.ritorno)}</li>
         <li><b>Aggiungi i permessi</b><span>In «Scopes» tocca «Add scopes» e aggiungi quelli che mancano tra questi quattro: servono per leggere profilo, numeri e video. Poi tocca «Apply changes».</span>${riga('Scopes', V.scope)}</li>
         <li><b>Aggiungi il tuo account</b><span>In «Target users» tocca «Add account»: si apre una finestra di TikTok, entri con il tuo account e confermi. Così l'app funziona per te senza aspettare la revisione.</span></li>
-        <li><b>Copia le chiavi</b><span>Nella Sandbox, sezione «Credentials», copia Client key e Client secret qui sotto.</span></li>
+        <li><b>Copia le chiavi</b><span>Nella Sandbox, sezione «Credentials», tocca l'occhio accanto a Client key e Client secret e copiali qui sotto. Prima togli la traduzione di Chrome (menu ⋮ → Traduci… → Inglese): tradotte, le chiavi cambiano e TikTok non le riconosce.</span></li>
       </ol>
-      <label for="tt-ck">Client key</label><input id="tt-ck" autocomplete="off" spellcheck="false" value="${e(t.ck || '')}" placeholder="es. sbaw1x2y3z…">
+      <div class="tt-note warn" id="tt-avviso" role="alert"${dubbio ? '' : ' hidden'}>${ico('alert')}<div>${e(dubbio ? dubbio + ANCORA : '')}</div></div>
+      <label for="tt-ck">Client key</label><input id="tt-ck" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" translate="no" value="${e(t.ck || '')}" placeholder="comincia con sbaw…">
       <label for="tt-cs">Client secret</label>
-      <div class="tt-segreto"><input id="tt-cs" type="password" autocomplete="off" spellcheck="false" value="${e(t.cs || '')}" placeholder="Incolla qui il Client secret"><button class="btn sm alt" type="button" onclick="const i=document.getElementById('tt-cs');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'Mostra':'Nascondi'">Mostra</button></div>
+      <div class="tt-segreto"><input id="tt-cs" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" translate="no" value="${e(t.cs || '')}" placeholder="Incolla qui il Client secret"><button class="btn sm alt" type="button" onclick="const i=document.getElementById('tt-cs');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'Mostra':'Nascondi'">Mostra</button></div>
       <button class="btn" type="button" onclick="ttSalvaChiavi(true)">${ico('tiktok-link')}Salva e collega TikTok</button>
       ${t.ck ? `<button class="btn alt" type="button" onclick="ttSalvaChiavi(false)">Salva solo le chiavi</button>` : ''}
       <small class="n">Si collega solo il tuo account (quello aggiunto tra i «Target users»). Per scollegare: Impostazioni di Spinta, oppure su TikTok → Impostazioni → Sicurezza → App e servizi.</small>
     </div>`;
     openModal('m-tt');
+    if (dubbio) setTimeout(() => { const a = document.getElementById('tt-avviso'); if (a) a.scrollIntoView({ block: 'center' }) }, 60);
   }
 
+  // chiavi dette «non giuste» e toccate di nuovo uguali: Sam è sicuro, si usano lo stesso (se un giorno TikTok cambia la forma delle chiavi)
+  let insiste = '';
+  const ANCORA = ' Se sei sicuro che sono giuste, tocca di nuovo il pulsante.';
   function ttSalvaChiavi(eCollega) {
-    const ck = (document.getElementById('tt-ck').value || '').trim(), cs = (document.getElementById('tt-cs').value || '').trim();
+    const ck = pulisci(document.getElementById('tt-ck').value).toLowerCase(), cs = pulisci(document.getElementById('tt-cs').value);
     if (!ck || !cs) { toast('Servono Client key e Client secret'); return }
-    if (/\s/.test(ck) || /\s/.test(cs) || ck.length < 8 || cs.length < 16) { toast('Le chiavi non sembrano giuste: ricopiale dalla Sandbox'); return }
+    const dubbio = controllaChiavi(ck, cs), firma = ck + '\n' + cs;
+    if (dubbio && insiste !== firma) {
+      insiste = firma;
+      const a = document.getElementById('tt-avviso');
+      if (a) { a.querySelector('div').textContent = dubbio + ANCORA; a.hidden = false; a.scrollIntoView({ block: 'center', behavior: 'smooth' }) }
+      else toast(dubbio);
+      return;
+    }
+    insiste = '';
     const t = leggi(), cambiate = t.ck !== ck || t.cs !== cs;
-    aggiorna(x => { x.ck = ck; x.cs = cs; x.err = null; if (cambiate) { delete x.tok; x.sync = 0 } });
+    aggiorna(x => { x.ck = ck; x.cs = cs; x.forza = !!dubbio; x.err = null; if (cambiate) { delete x.tok; x.sync = 0 } });
     closeModal('m-tt'); ttMostraTutto();
     if (eCollega) ttCollega(); else toast('Chiavi salvate ✓');
   }
@@ -323,11 +352,12 @@
   function ttScheda() {
     const s = ttStato(), u = s.utente;
     if (!s.collegato) {
-      const scaduto = s.chiavi && leggi().tok;
+      const t = leggi(), scaduto = s.chiavi && t.tok;
+      const storte = s.chiavi && !t.forza && controllaChiavi(t.ck, t.cs) ? 'Le chiavi salvate non sono giuste (succede se Chrome traduce la pagina di TikTok): tocca «Guida e chiavi» e ricopiale dalla Sandbox.' : '';
       return `<div class="card tt-card">
         <div class="tt-head">${ico('tiktok-link', 'big')}<div><h3>${scaduto ? 'Ricollega TikTok' : 'Collega il tuo account TikTok'}</h3>
         <p>${scaduto ? 'Il collegamento non è più valido: ricollegalo e Spinta riprende ad aggiornare i numeri da sola.' : 'Spinta legge da sola follower, like e i numeri di ogni video: niente più dati da copiare. Salvataggi e visione media restano da inserire, perché TikTok non li dà alle app.'}</p></div></div>
-        ${s.err ? `<div class="tt-err">${ico('alert')}<span>${e(s.err)}</span></div>` : ''}
+        ${storte || s.err ? `<div class="tt-err">${ico('alert')}<span>${e(storte || s.err)}</span></div>` : ''}
         <div class="acts"><button class="btn sm" type="button" onclick="${s.chiavi ? 'ttCollega()' : 'ttGuida()'}">${s.chiavi ? 'Collega TikTok' : 'Inizia'}</button>${s.chiavi ? '<button class="btn sm alt" type="button" onclick="ttGuida()">Guida e chiavi</button>' : ''}</div>
       </div>`;
     }

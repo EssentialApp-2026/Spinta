@@ -5,7 +5,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const OUT = process.argv[2], BASE = 'http://127.0.0.1:8765/spinta.html';
-const CK = 'sbawprova12345', CS = 'segreto-di-prova-1234567890abcdef';
+const CK = 'sbawprova123456789', CS = 'segreto-di-prova-1234567890abcdef';
 const ora = Math.floor(Date.now() / 1000);
 let rnd = 7; const r = () => { rnd = (rnd * 16807) % 2147483647; return rnd / 2147483647 };
 const VIDEO = [];
@@ -74,7 +74,18 @@ const attendi = ms => new Promise(r => setTimeout(r, ms));
   await p.screenshot({ path: OUT + '/2b-guida-intera.png', fullPage: false });
   await p.evaluate(() => document.querySelector('#m-tt .sheet').scrollTo(0, 99999)); await attendi(200);
   await p.screenshot({ path: OUT + '/2c-guida-fondo.png' });
-  await p.fill('#tt-ck', CK); await p.fill('#tt-cs', CS);
+  // chiave «tradotta da Chrome» (sbaw→skaw e un carattere in più): Spinta si ferma e lo spiega, niente pagina d'errore di TikTok
+  await p.fill('#tt-ck', 'skaw' + CK.slice(4) + 'x'); await p.fill('#tt-cs', CS);
+  await p.click('#m-tt button.btn:not(.alt)'); await attendi(400);
+  const av1 = await p.evaluate(() => ({ vis: !document.getElementById('tt-avviso').hidden, txt: document.getElementById('tt-avviso').innerText, url: location.href, ck: (JSON.parse(localStorage.getItem('spinta_tiktok')) || {}).ck || null }));
+  console.log('chiave tradotta → avviso:', av1.vis, '| resta su Spinta:', /spinta\.html$/.test(av1.url), '| salvata?', !!av1.ck, '|', av1.txt.slice(0, 110));
+  await p.locator('#tt-avviso').screenshot({ path: OUT + '/2d-avviso-chiave.png' });
+  await p.screenshot({ path: OUT + '/2e-guida-avviso.png' });
+  // chiave della Production
+  await p.fill('#tt-ck', 'aw' + CK.slice(4)); await p.click('#m-tt button.btn:not(.alt)'); await attendi(300);
+  console.log('chiave Production →', (await p.evaluate(() => document.getElementById('tt-avviso').innerText)).slice(0, 80));
+  // chiave giusta ma con caratteri invisibili e spazi intorno (copia-incolla dal telefono): va bene lo stesso
+  await p.fill('#tt-ck', ' \u200b' + CK.slice(0, 9) + '\u200b' + CK.slice(9) + '\u200b '); await p.fill('#tt-cs', CS + ' ');
   await Promise.all([p.waitForURL(/spinta\.html/), p.click('#m-tt button.btn:not(.alt)')]);
   await p.waitForFunction(() => window.ttStato && ttStato().collegato && ttStato().sync > 0, null, { timeout: 15000 });
   await attendi(800);
@@ -128,6 +139,21 @@ const attendi = ms => new Promise(r => setTimeout(r, ms));
   await p.evaluate(() => { const t = JSON.parse(localStorage.getItem('spinta_tiktok')); t.cs = 'segreto-sbagliato-0000000000'; localStorage.setItem('spinta_tiktok', JSON.stringify(t)) });
   await Promise.all([p.waitForURL(/spinta\.html/), p.evaluate(() => ttCollega())]); await attendi(900);
   console.log('chiavi sbagliate:', await p.evaluate(() => ttStato().err));
+  // chiave salvata storta (vecchia, tradotta): «Collega TikTok» apre la guida con l'avviso invece di andare su TikTok
+  await p.evaluate(() => { const t = JSON.parse(localStorage.getItem('spinta_tiktok')); t.ck = 'skawprova1234567890'; delete t.forza; delete t.tok; t.err = null; localStorage.setItem('spinta_tiktok', JSON.stringify(t)) });
+  await p.reload(); await attendi(500); await p.evaluate(() => goTab('grow')); await attendi(300);
+  const carta = await p.evaluate(() => document.querySelector('#tt-card').innerText);
+  const prima2 = log.length;
+  await p.evaluate(() => ttCollega()); await attendi(400);
+  const g = await p.evaluate(() => ({ aperta: document.getElementById('m-tt').classList.contains('on'), avviso: !document.getElementById('tt-avviso').hidden }));
+  console.log('chiave storta salvata → scheda:', /non sono giuste/.test(carta), '| guida aperta:', g.aperta, '| avviso:', g.avviso, '| niente TikTok:', log.length === prima2);
+  await p.screenshot({ path: OUT + '/9-guida-chiave-storta.png' });
+  // stessa chiave toccata due volte: Spinta la usa lo stesso (se un giorno TikTok cambia la forma delle chiavi)
+  await p.click('#m-tt button.btn:not(.alt)'); await attendi(200);
+  const ancoraSu = await p.evaluate(() => document.getElementById('m-tt').classList.contains('on'));
+  await Promise.all([p.waitForURL(/spinta\.html/), p.click('#m-tt button.btn:not(.alt)')]); await attendi(900);
+  const f = await p.evaluate(() => ({ forza: JSON.parse(localStorage.getItem('spinta_tiktok')).forza, err: ttStato().err }));
+  console.log('primo tocco ferma:', ancoraSu, '| secondo tocco usa la chiave: forza =', f.forza, '| TikTok chiamato:', log.length > prima2, '| errore:', (f.err || '').slice(0, 70));
   console.log('log TikTok:', JSON.stringify(log.slice(0, 3)));
   console.log('chiamate:', JSON.stringify(chiamate));
   console.log('ERRORI PAGINA:', errori.length ? errori.join(' | ') : 'nessuno');
