@@ -275,7 +275,7 @@ async function crListen(){if(CR.busy)return;const l=crLines()[0];if(!l){toast('S
 
 /* ---------- libreria del repository ---------- */
 async function crLibLoad(){if(CR.lib)return CR.lib;let items=[];
-  try{const r=await fetch('libreria/libreria.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();items=(j.elementi||[]).filter(x=>x&&x.file);CR.libTutto=!!j.tutteLeFrasi;CR.libEsclusi=[...(j.elementi_disegnati||[]),...(j.aperture||[])].flatMap(x=>[x.file,x.poster].filter(Boolean))}}catch(_){}
+  try{const r=await fetch('libreria/libreria.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();items=(j.elementi||[]).filter(x=>x&&x.file);CR.libTutto=!!j.tutteLeFrasi;CR.aperture=(j.aperture||[]).filter(x=>x&&x.file);CR.libEsclusi=[...(j.elementi_disegnati||[]),...(j.aperture||[])].flatMap(x=>[x.file,x.poster].filter(Boolean))}}catch(_){}
   try{const known=new Set(items.flatMap(x=>[x.file,x.poster].filter(Boolean)).concat(CR.libEsclusi||[])),r=await fetch(CR_BASE.api);if(r.ok){const j=await r.json();
     (Array.isArray(j)?j:[]).filter(f=>f.type==='file'&&/\.(mp4|webm|mov|m4v|jpe?g|png|webp)$/i.test(f.name)&&!known.has(f.name)&&!/poster|^_/i.test(f.name)).forEach(f=>items.push({file:f.name,tipo:/\.(jpe?g|png|webp)$/i.test(f.name)?'immagine':'video',tag:f.name.toLowerCase().replace(/\.[^.]+$/,'').split(/[^a-zàèéìòù0-9]+/).filter(w=>w.length>2)}))}}catch(_){}
   items.forEach(x=>{x.tipo=x.tipo||(/\.(jpe?g|png|webp)$/i.test(x.file)?'immagine':'video');x.tag=(x.tag||[]).map(t=>String(t).toLowerCase())});
@@ -469,13 +469,15 @@ function crState(lines,vt,s,lib){const ser=curSeries(),ep=ser?ser.ep:null,n=line
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+CR_HOLD)})}
   // apertura scelta da Claude nel piano della settimana (solo se il copione comincia ancora con la stessa frase):
   // la clip copre le prime frasi di fila, senza ricominciare, e nessun'altra frase vicina la ripete
-  const ap=CR.apertura;if(ap&&ap.file&&items.length&&crClean(lines[0]).toLowerCase()===crClean(ap.testo).toLowerCase()){const x={file:ap.file,tipo:/\.(jpe?g|png|webp)$/i.test(ap.file)?'immagine':'video',tag:[]},k=Math.min(ap.frasi,n);
+  // con il suo poster: se la clip non è ancora pronta (primi fotogrammi, copertina) si vede la piazza, non il Gennarino disegnato
+  const ap=CR.apertura;if(ap&&ap.file&&items.length&&crClean(lines[0]).toLowerCase()===crClean(ap.testo).toLowerCase()){const apx=(CR.aperture||[]).find(a=>a.file===ap.file),x={file:ap.file,tipo:/\.(jpe?g|png|webp)$/i.test(ap.file)?'immagine':'video',tag:[],poster:apx&&apx.poster||null,apertura:true},k=Math.min(ap.frasi,n);
     for(let i=0;i<k;i++){items[i].shot=x;items[i].shotCont=i>0}if(items[k]&&items[k].shot&&items[k].shot.file===ap.file)items[k].shot=null;
     const off=new Map();items.forEach(it=>{if(!it.shot)return;it.shotOff=off.get(it.shot)||0;off.set(it.shot,it.shotOff+(it.e-it.s)+CR_HOLD)})}
   // stile «Spiegone»: grafiche animate sopra e Gennarino in una finestra sotto, con la parola che sta dicendo; ogni tanto stacco a tutto schermo.
   // A tutto schermo: hook, finale, tre frasi e le frasi con riquadri/timbri/bolla (che hanno già la loro grafica). La scheda di voto A/B/C sta nelle schede sopra.
   const SP=s.stile==='spiegone';
-  if(SP){let sc=0;items.forEach(it=>{it.fs=it.i===0||it.i===n-1||it.e>vt.total-2.8||!it.shot||it.pop==='idea'||(!!it.stamp&&it.pop!=='cal')||bub(it)||(it.i%3===0&&!inBallot(it));
+  // l'apertura (la piazza nuova vista dall'alto fino alla bancarella) resta a tutto schermo per tutte le sue frasi
+  if(SP){let sc=0;items.forEach(it=>{it.fs=it.i===0||it.i===n-1||it.e>vt.total-2.8||!it.shot||!!it.shot.apertura||it.pop==='idea'||(!!it.stamp&&it.pop!=='cal')||bub(it)||(it.i%3===0&&!inBallot(it));
     if(it.fs)sc++;it.sc=sc});
     items.forEach(it=>{if(!it.fs){const f=items.find(x=>x.sc===it.sc&&!x.fs);it.scS=f.s}})}
   const hook=crClean(lines[0]);
@@ -616,7 +618,9 @@ function crTick(c,x,y,sz){crCirc(c,x+sz/2,y+sz/2,sz/2,'#17a95a');c.save();c.stro
   c.moveTo(x+sz*0.28,y+sz*0.52);c.lineTo(x+sz*0.44,y+sz*0.68);c.lineTo(x+sz*0.74,y+sz*0.34);c.stroke();c.restore()}
 // in alto: GENNARINO · Pn a sinistra, a destra a che punto è la settimana
 function crBadges(c,st){c.save();c.font=`900 42px ${CR_FONT}`;c.textAlign='left';c.textBaseline='middle';c.shadowColor='rgba(79,240,208,.6)';c.shadowBlur=14;c.fillStyle='#4ff0d0';
-  c.fillText(st.ser?`GENNARINO · P${st.ep}`:'GENNARINO',64,142);c.restore();
+  // bordo scuro sotto la scritta: si legge anche sopra il cielo chiaro delle clip (es. la piazza della domenica)
+  const tt=st.ser?`GENNARINO · P${st.ep}`:'GENNARINO';c.save();c.shadowColor='transparent';c.lineJoin='round';c.lineWidth=10;c.strokeStyle='rgba(6,14,28,.55)';c.strokeText(tt,64,142);c.restore();
+  c.fillText(tt,64,142);c.restore();
   const dm=d=>`${d.getDate()}/${d.getMonth()+1}`;
   const P={idee:['VOTO APERTO',`FINO A MER ${dm(st.mer)}`],risultato:[`HA VINTO LA ${st.X}`,`SUL BANCO VEN ${dm(st.ven)}`],regalo:['GRATIS SUL BANCO','SENZA REGISTRAZIONE'],presentazione:["UN'APP GRATIS",'OGNI VENERDÌ'],nessuno:['NESSUN VOTO','IDEE NUOVE LUNEDÌ']}[st.tipo];
   if(!P)return;c.save();c.font=`900 38px ${CR_FONT}`;const tw=c.measureText(P[0]).width,w=tw+92,x=1030-w;
