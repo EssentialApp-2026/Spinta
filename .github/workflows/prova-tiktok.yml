@@ -1,0 +1,20 @@
+# Prova tecnica (una volta): le API di TikTok accettano chiamate dirette dal browser (CORS)? Il risultato va nelle note del lavoro.
+name: Prova TikTok CORS
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prova:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prova
+        run: |
+          for u in https://open.tiktokapis.com/v2/oauth/token/ https://open.tiktokapis.com/v2/user/info/ https://open.tiktokapis.com/v2/video/list/; do
+            for m in OPTIONS POST GET; do
+              h=$(curl -s -m 20 -o /tmp/corpo -D - -X $m "$u" -H "Origin: https://essentialapp-2026.github.io" \
+                   -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: content-type,authorization" | tr -d '\r' \
+                   | grep -iE "^(HTTP/|access-control|vary)" | tr '\n' ' ')
+              echo "::notice title=$m $u::$h | $(head -c 160 /tmp/corpo | tr -d '\n\r')"
+            done
+          done
