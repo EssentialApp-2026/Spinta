@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#08080d">
+<meta name="theme-color" content="#0d1524">
 <meta name="description" content="Spinta: analizza e migliora i tuoi video TikTok prima di pubblicarli, e impara dai risultati del tuo canale.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -14,150 +14,302 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Spinta · Studio video</title>
 <style>
+/* Spinta 3 · stile. Notte blu, un solo accento acqua per le azioni e la serie principale dei dati; carattere Manrope (OFL, in lib/fonts). */
+@font-face{font-family:Manrope;src:url(lib/fonts/manrope-latin.woff2) format('woff2');font-weight:200 800;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Manrope;src:url(lib/fonts/manrope-latin-ext.woff2) format('woff2');font-weight:200 800;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 :root{
-  --bg:#08080d;--card:#13131c;--card2:#1b1b27;--line:#262636;--line2:#34344a;
-  --txt:#f5f5fa;--mut:#9a9ab2;--pink:#ff2d6f;--cyan:#25f4ee;--ok:#2fd67b;--warn:#ffb020;--r:18px;
+  --bg:#0d1524;--s1:#131d30;--s2:#1a263d;--s3:#22314d;--line:#24334e;--line2:#31456a;
+  --txt:#ecf1f8;--mut:#8f9cb6;--mut2:#69779a;
+  --acc:#2fe3dc;--acc-ink:#03292c;--acc-soft:rgba(47,227,220,.11);--acc-line:rgba(47,227,220,.38);
+  --rose:#ff5682;--rose-soft:rgba(255,86,130,.13);--ok:#3fd68f;--warn:#f2b544;
+  /* nomi usati anche da crea.js e skill.js */
+  --card:var(--s1);--card2:var(--s2);--pink:var(--rose);--cyan:var(--acc);
+  color-scheme:dark;
+  --r:16px;--rc:10px;--font:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-size:15px;line-height:1.45}
-body{padding-bottom:calc(84px + env(safe-area-inset-bottom));background:radial-gradient(900px 420px at 50% -180px,rgba(255,45,111,.13),transparent 65%),var(--bg);min-height:100vh}
-header.top{position:sticky;top:0;z-index:5;background:rgba(8,8,13,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
-.logo{font-weight:900;font-size:21px;letter-spacing:-.6px;display:flex;align-items:baseline;gap:5px}
-.logo i{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
-.logo small{font-size:9.5px;font-weight:800;color:var(--mut);letter-spacing:1px;text-transform:uppercase}
+button,input,select,textarea,code{font-family:var(--font)}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{padding-bottom:calc(74px + env(safe-area-inset-bottom));min-height:100vh}
+.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-4px}
+.ic.big{width:30px;height:30px}
+.ic.gira{animation:gira 1s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ic.gira{animation:none}.tab.on{animation:none!important}}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+/* barra in alto */
+header.top{position:sticky;top:0;z-index:7;background:rgba(13,21,36,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:-.4px}
+.logo .mark{width:30px;height:30px;border-radius:9px;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center}
+.logo .mark svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.logo small{font-size:12.5px;font-weight:600;color:var(--mut);letter-spacing:0}
 .sp{flex:1}
-.topscore{display:none;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:5px 11px;font-weight:900;font-size:14px;cursor:pointer}
-.iconbtn{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:7px 11px;font-size:14px;font-weight:600;cursor:pointer}
-main{max-width:720px;margin:0 auto;padding:16px}
-.tab{display:none}.tab.on{display:block;animation:f .2s}
-@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
-h2{font-size:24px;letter-spacing:-.4px;margin-bottom:4px}
-h3{font-size:16px}
-.sub{color:var(--mut);font-size:13.5px;margin-bottom:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
-label{display:block;font-size:12px;color:var(--mut);margin:12px 0 5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-input,select,textarea{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:11px 12px;font-size:15px;font-family:inherit}
-textarea{min-height:70px;resize:vertical;line-height:1.4}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan)}
+.topscore{display:none;align-items:center;gap:5px;background:var(--s1);border:1px solid var(--line);border-radius:30px;padding:5px 11px;font-weight:800;font-size:14px;cursor:pointer}
+.iconbtn{display:inline-grid;place-items:center;min-width:38px;height:38px;background:var(--s1);border:1px solid var(--line);color:var(--txt);border-radius:11px;padding:0 9px;font:600 14px/1 var(--font);cursor:pointer}
+.iconbtn:disabled{opacity:.6}
+.chipacc{display:inline-flex;align-items:center;gap:7px;height:38px;white-space:nowrap;padding:0 12px 0 4px;background:var(--s1);border:1px solid var(--line);border-radius:30px;color:var(--txt);font:700 13.5px/1 var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
+.chipacc.off{padding:0 12px;color:var(--acc);border-color:var(--acc-line);background:var(--acc-soft)}
+.av{position:relative;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--s3);overflow:hidden;flex:none;font-size:13px}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.av.lg{width:46px;height:46px;font-size:18px}
+main{max-width:760px;margin:0 auto;padding:18px 16px}
+.tab{display:none}.tab.on{display:block;animation:f .18s}
+@keyframes f{from{opacity:0}to{opacity:1}}
+h2{font-size:26px;font-weight:800;letter-spacing:-.6px;line-height:1.2;margin-bottom:4px}
+h3{font-size:16.5px;font-weight:700;letter-spacing:-.2px}
+.sub{color:var(--mut);font-size:14px;margin-bottom:16px;max-width:62ch}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card>h3+*{margin-top:6px}
+label{display:block;font-size:13px;color:var(--mut);margin:14px 0 6px;font-weight:600}
+input,select,textarea{width:100%;background:var(--s2);border:1px solid var(--line);color:var(--txt);border-radius:var(--rc);padding:11px 12px;font:500 15px/1.4 var(--font)}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
 input:disabled{opacity:.5}
+::placeholder{color:var(--mut2)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:14px;padding:14px;border:0;border-radius:14px;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(100deg,var(--pink),#ff5a3c);cursor:pointer;box-shadow:0 6px 20px -8px rgba(255,45,111,.6);text-decoration:none}
-.btn:disabled{opacity:.5}
-.btn.alt{background:var(--card2);border:1px solid var(--line);box-shadow:none}
-.btn.cy{background:linear-gradient(100deg,#0fb9b1,var(--cyan));color:#06232a;box-shadow:0 6px 20px -8px rgba(37,244,238,.5)}
-.btn.sm{width:auto;margin:0;padding:8px 12px;font-size:13px;border-radius:10px;box-shadow:none}
+/* pulsanti: pieno = l'azione principale, tenue = la seconda, contorno = le altre */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;padding:13px 16px;border:1px solid transparent;border-radius:var(--rc);font:700 15px/1.25 var(--font);color:var(--acc-ink);background:var(--acc);cursor:pointer;text-decoration:none;transition:filter .15s}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{filter:brightness(.95)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.cy{background:var(--acc-soft);color:var(--acc);border-color:var(--acc-line)}
+.btn.alt{background:var(--s2);color:var(--txt);border-color:var(--line)}
+.btn.danger,.btn.alt.danger{color:var(--rose)}
+.btn.sm{width:auto;margin:0;padding:8px 12px;font-size:13.5px;border-radius:9px;gap:6px}
+.btn .ic{width:18px;height:18px}
 .out{margin-top:12px}
-.item{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;position:relative}
+.item{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;position:relative}
 .item .t{font-weight:700;margin-bottom:4px;padding-right:58px}
 .item .m{color:var(--mut);font-size:13px}
 .item .copy{position:absolute;top:10px;right:10px}
-.tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;background:rgba(37,244,238,.12);color:var(--cyan);margin-right:4px;margin-bottom:4px}
-.tag.p{background:rgba(255,45,111,.14);color:var(--pink)}
-.tag.o{background:rgba(47,214,123,.14);color:var(--ok)}
-.tag.w{background:rgba(255,176,32,.14);color:var(--warn)}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--acc-soft);color:var(--acc);margin-right:4px;margin-bottom:4px}
+.tag.p{background:var(--rose-soft);color:var(--rose)}
+.tag.o{background:rgba(63,214,143,.13);color:var(--ok)}
+.tag.w{background:rgba(242,181,68,.14);color:var(--warn)}
+.tag.g{background:var(--s3);color:var(--mut)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.chip{background:var(--card2);border:1px solid var(--line);border-radius:20px;padding:6px 11px;font-size:13px;cursor:pointer;color:var(--txt)}
-.chip.on{border-color:var(--pink);color:var(--pink)}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:6;background:rgba(12,12,19,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
-nav button{background:none;border:0;color:var(--mut);font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;cursor:pointer}
-nav button b{font-size:21px;line-height:1}
-nav button.on{color:var(--txt)}
-nav button.on b{filter:drop-shadow(0 0 7px var(--pink))}
-.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
-.kpi .v{font-size:22px;font-weight:900}
-.kpi .l{font-size:12px;color:var(--mut)}
+.chip{background:var(--s2);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font:600 13px/1.3 var(--font);cursor:pointer;color:var(--txt)}
+.chip.on{border-color:var(--acc);color:var(--acc)}
+/* navigazione: in basso sul telefono, a sinistra sul computer */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:6;background:rgba(15,24,40,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+nav button{position:relative;background:none;border:0;color:var(--mut);font:600 11.5px/1.2 var(--font);display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0 6px;cursor:pointer}
+nav button .ic{width:23px;height:23px}
+nav button.on{color:var(--acc)}
+nav button.on::before{content:"";position:absolute;top:-5px;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px;background:var(--acc)}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.kpi{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi .v{font-size:24px;font-weight:800;letter-spacing:-.6px;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi .l{font-size:12.5px;color:var(--mut);font-weight:600}
+.kpi .d{font-size:12px;font-weight:700;color:var(--mut);margin-top:2px;font-variant-numeric:tabular-nums}
+.kpi .d.up{color:var(--ok)}.kpi .d.dn{color:var(--rose)}
 .meter{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin:8px 0}
-.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--cyan))}
-.check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.meter i{display:block;height:100%;background:var(--acc)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
 .check:last-child{border-bottom:0}
-.check input{width:20px;height:20px;flex:none;accent-color:var(--pink);margin-top:1px}
+.check input{width:20px;height:20px;flex:none;accent-color:var(--acc);margin-top:1px}
 .check.done span{color:var(--mut);text-decoration:line-through}
-.banner{background:linear-gradient(90deg,rgba(255,45,111,.16),rgba(37,244,238,.10));border:1px solid rgba(255,45,111,.6);border-radius:14px;padding:12px;margin-bottom:12px;font-size:14px}
+.banner{background:var(--rose-soft);border:1px solid rgba(255,86,130,.42);border-radius:14px;padding:12px;margin-bottom:12px;font-size:14px}
 .empty{color:var(--mut);text-align:center;padding:18px;font-size:14px}
-.acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.seg{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:12px}
-.seg button{flex:1;background:none;border:0;color:var(--mut);padding:9px 4px;border-radius:9px;font-weight:800;font-size:13px;cursor:pointer}
-.seg button.on{background:var(--card);color:var(--txt);box-shadow:0 1px 0 var(--line2)}
-.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#fff;color:#000;padding:10px 16px;border-radius:30px;font-weight:800;font-size:14px;opacity:0;transition:.25s;z-index:40;pointer-events:none;max-width:90vw;text-align:center}
+.acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.seg{display:flex;background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
+.seg button{flex:1;background:none;border:0;color:var(--mut);padding:9px 10px;border-radius:9px;font:700 13.5px/1.2 var(--font);cursor:pointer;white-space:nowrap}
+.seg button.on{background:var(--s3);color:var(--txt)}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);background:var(--txt);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;font-size:14px;opacity:0;transition:.22s;z-index:40;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:30;display:none;align-items:flex-end;justify-content:center}
+.modal{position:fixed;inset:0;background:rgba(4,8,16,.72);z-index:30;display:none;align-items:flex-end;justify-content:center}
 .modal.on{display:flex}
-.sheet{background:var(--card);width:100%;max-width:720px;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
-small.n{display:block;color:var(--mut);font-size:12px;margin-top:6px}
-a{color:var(--cyan)}
-svg text{fill:var(--mut);font-size:10px}
-label.opt{display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font-size:15px;font-weight:700;color:var(--txt);margin:0;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.sheet{background:var(--s1);border:1px solid var(--line);border-bottom:0;width:100%;max-width:720px;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto}
+.sheet-h{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
+small.n{display:block;color:var(--mut);font-size:12.5px;margin-top:8px;line-height:1.45}
+a{color:var(--acc)}
+svg text{fill:var(--mut);font-size:10px;font-family:inherit}
+label.opt{display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:700;color:var(--txt);margin:0;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
 label.opt:last-of-type{border-bottom:0}
-label.opt input{width:20px;height:20px;flex:none;accent-color:var(--pink);margin-top:1px}
-label.opt small{display:block;color:var(--mut);font-weight:400;font-size:12.5px;margin-top:2px}
+label.opt input{width:20px;height:20px;flex:none;accent-color:var(--acc);margin-top:1px}
+label.opt small{display:block;color:var(--mut);font-weight:500;font-size:12.5px;margin-top:2px}
 label.opt.dis{opacity:.45}
-.hk{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px;cursor:pointer;font-weight:700}
-.hk.on{border-color:var(--pink);box-shadow:0 0 0 1px var(--pink)}
-.hk small{display:block;color:var(--mut);font-weight:400;font-size:12px}
+.hk{background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px;cursor:pointer;font-weight:700}
+.hk.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.hk small{display:block;color:var(--mut);font-weight:500;font-size:12px}
 .step{display:flex;gap:8px;font-size:14px;padding:4px 0}
-details{margin-top:10px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--mut)}
+details{margin-top:10px;background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--mut)}
 summary{cursor:pointer;color:var(--txt);font-weight:700}
 .vid{width:100%;max-height:60vh;border-radius:14px;background:#000;display:block;margin-top:12px}
-input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:var(--pink)}
+input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:var(--acc);box-shadow:none}
 /* Studio */
-.hero{padding:6px 2px 14px}
-.hero h1{font-size:28px;line-height:1.12;letter-spacing:-.8px}
-.hero h1 i{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
-.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.feat div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;font-size:11.5px;color:var(--mut);line-height:1.3}
-.feat b{display:block;color:var(--txt);font-size:13px;margin:4px 0 2px}
-.stp{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.hero{padding:6px 0 16px}
+.hero h1{font-size:30px;line-height:1.12;letter-spacing:-1px;font-weight:800;max-width:18ch}
+.hero h1 i{font-style:normal}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.feat div{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:11px;font-size:12px;color:var(--mut);line-height:1.35}
+.feat .ic{color:var(--acc);width:22px;height:22px}
+.feat b{display:block;color:var(--txt);font-size:13.5px;margin:6px 0 2px}
+.stp{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;transition:border-color .2s}
 .stp.open{border-color:var(--line2)}
-.stp-h{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;user-select:none}
-.num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;background:var(--card2);border:1px solid var(--line);flex:none}
-.stp[data-state=ready] .num{background:linear-gradient(135deg,var(--pink),#ff5a3c);border:0}
+.stp-h{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
+.num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--s2);border:1px solid var(--line);flex:none;font-variant-numeric:tabular-nums}
+.stp[data-state=ready] .num{background:var(--acc);color:var(--acc-ink);border:0}
 .stp[data-state=done] .num{background:var(--ok);border:0;color:#04120a}
 .stp[data-state=locked]{opacity:.55}
 .stp-h small{display:block;color:var(--mut);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
 .chev{margin-left:auto;color:var(--mut);transition:transform .2s;font-size:18px}
 .stp.open .chev{transform:rotate(180deg)}
-.stp-b{display:none;padding:0 14px 16px}
+.stp-b{display:none;padding:0 16px 16px}
 .stp.open .stp-b{display:block}
-.drop{position:relative;border:2px dashed var(--line2);border-radius:16px;padding:22px 12px;text-align:center;background:rgba(255,255,255,.015)}
+.drop{position:relative;border:1.5px dashed var(--line2);border-radius:14px;padding:22px 12px;text-align:center;background:var(--s2)}
 .drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0}
 .scorebox{display:flex;gap:16px;align-items:center}
 .ring{position:relative;width:116px;height:116px;flex:none}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring .v{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
-.ring .v b{font-size:38px;font-weight:900;line-height:1;display:block}
+.ring .v b{font-size:38px;font-weight:800;line-height:1;display:block;font-variant-numeric:tabular-nums}
 .ring .v small{font-size:11px;color:var(--mut)}
 .pil{margin:6px 0}
-.pil .lb{display:flex;justify-content:space-between;font-size:12.5px;font-weight:800}
-.pil .lb span{color:var(--mut);font-weight:700}
+.pil .lb{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700}
+.pil .lb span{color:var(--mut);font-weight:600}
 .bar{position:relative;height:7px;border-radius:7px;background:var(--line);overflow:hidden;margin-top:3px}
 .bar i{position:absolute;top:0;bottom:0;left:0;border-radius:7px}
-.bar .g{background:rgba(255,255,255,.2)}
-.bar .f{background:linear-gradient(90deg,var(--pink),var(--cyan))}
-.tl{margin-top:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:10px}
+.bar .g{background:rgba(255,255,255,.18)}
+.bar .f{background:var(--acc)}
+.tl{margin-top:14px;background:var(--s2);border:1px solid var(--line);border-radius:14px;padding:10px}
 .lg{display:flex;flex-wrap:wrap;gap:10px;font-size:11.5px;color:var(--mut);margin-top:6px}
 .lg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
-.h4{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin:16px 0 2px}
+.h4{font-size:13.5px;color:var(--mut);font-weight:700;margin:18px 0 4px}
 .fix{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line)}
-.fix .pt{margin-left:auto;font-size:12px;font-weight:900;color:var(--warn);white-space:nowrap;padding-left:6px}
-.grp{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:10px}
-.grp h4{font-size:11.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin:10px 0 0}
-.grp label.opt{border-bottom-color:#2c2c3e}
-.vs{font-size:11px;font-weight:900;padding:2px 7px;border-radius:20px}
-.vs.up{background:rgba(47,214,123,.15);color:var(--ok)}
-.vs.dn{background:rgba(255,45,111,.15);color:var(--pink)}
-@media (max-width:380px){.feat{grid-template-columns:1fr}.ring{width:96px;height:96px}.ring .v b{font-size:30px}}
+.fix .pt{margin-left:auto;font-size:12px;font-weight:800;color:var(--warn);white-space:nowrap;padding-left:6px}
+.grp{background:var(--s2);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:10px}
+.grp h4{font-size:12.5px;color:var(--mut);font-weight:700;margin:10px 0 0}
+.grp label.opt{border-bottom-color:var(--line)}
+.vs{font-size:11.5px;font-weight:800;padding:2px 7px;border-radius:6px;font-variant-numeric:tabular-nums}
+.vs.up{background:rgba(63,214,143,.14);color:var(--ok)}
+.vs.dn{background:var(--rose-soft);color:var(--rose)}
+/* Crescita */
+.gh{display:flex;align-items:flex-end;gap:12px;justify-content:space-between;margin-bottom:14px}
+.gh .sub{margin:0}
+.tt-card .tt-head{display:flex;gap:14px;align-items:flex-start}
+.tt-card .tt-head .ic{color:var(--acc);margin-top:2px}
+.tt-card p{color:var(--mut);font-size:13.5px;margin-top:4px;max-width:60ch}
+.tt-bar{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.tt-who{flex:1;min-width:0}
+.tt-who b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-who span{display:block;color:var(--mut);font-size:12.5px}
+.tt-err{display:flex;gap:8px;align-items:flex-start;margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--rose-soft);color:#ffd3de;font-size:13px}
+.tt-err .ic{color:var(--rose);width:18px;height:18px;margin-top:1px}
+.tt-note{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--s2);border:1px solid var(--line);font-size:13px;color:var(--mut);margin-bottom:6px}
+.tt-note .ic{color:var(--acc);width:18px;height:18px}
+.tt-passi{margin:14px 0 4px 0;padding-left:0;list-style:none;counter-reset:p}
+.tt-passi li{counter-increment:p;position:relative;padding:0 0 16px 38px;border-left:1px solid var(--line);margin-left:13px;padding-left:24px}
+.tt-passi li:last-child{border-left-color:transparent}
+.tt-passi li::before{content:counter(p);position:absolute;left:-14px;top:-2px;width:27px;height:27px;border-radius:50%;background:var(--s3);color:var(--txt);font-weight:800;font-size:13px;display:grid;place-items:center}
+.tt-passi b{display:block;font-size:14.5px}
+.tt-passi span{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+.tt-val{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--s2);border:1px solid var(--line);border-radius:10px;padding:8px 8px 8px 12px;margin-top:6px}
+.tt-val div{min-width:0}
+.tt-val small{display:block;color:var(--mut);font-size:11.5px;font-weight:600}
+.tt-val code{display:block;font:600 13.5px/1.4 var(--font);color:var(--txt);word-break:break-all}
+.tt-segreto{display:flex;gap:8px}
+.tt-segreto input{flex:1}
+.puls{position:relative}
+.puls svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.puls .bar-v{fill:var(--s3)}
+.puls .bar-v.su{fill:var(--acc)}
+.puls .bar-v.nuovo{fill:transparent;stroke:var(--acc);stroke-dasharray:3 2}
+.puls .bar-v.sel{fill:var(--txt)}
+.puls .med{stroke:var(--mut);stroke-dasharray:4 4;stroke-width:1}
+.puls-info{min-height:44px;margin-top:10px;font-size:13.5px}
+.puls-info b{display:block}
+.puls-info span{color:var(--mut);font-size:12.5px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--mut);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.top{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.top:first-of-type{border-top:0}
+.top .pos{width:20px;font-weight:800;color:var(--mut);font-variant-numeric:tabular-nums;text-align:right;flex:none}
+.top .cov{width:42px;height:56px;border-radius:8px;background:var(--s3);overflow:hidden;flex:none}
+.top .cov img{width:100%;height:100%;object-fit:cover;display:block}
+.top .tx{flex:1;min-width:0}
+.top .tx b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .tx span{color:var(--mut);font-size:12.5px}
+.top .nv{font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
+.top .nv small{display:block;color:var(--mut);font-weight:600;font-size:11.5px}
+.heat{display:grid;grid-template-columns:44px repeat(5,1fr);gap:4px;font-size:11.5px;margin-top:10px}
+.heat .hd{color:var(--mut);text-align:center;font-weight:600}
+.heat .gd{color:var(--mut);font-weight:700;align-self:center}
+.heat .c{height:30px;border-radius:6px;background:var(--s2);display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums;color:var(--txt)}
+.heat .c.v0{background:var(--s2);color:var(--mut2)}
+.vlist .item{display:flex;gap:12px;padding:12px}
+.vlist .cov{width:54px;height:72px;border-radius:9px;background:var(--s3);overflow:hidden;flex:none;display:grid;place-items:center;color:var(--mut2)}
+.vlist .cov img{width:100%;height:100%;object-fit:cover;display:block}
+.vlist .bd{flex:1;min-width:0}
+.vlist .t{padding-right:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nums{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px;font-size:13px;font-variant-numeric:tabular-nums}
+.nums span{display:inline-flex;align-items:center;gap:4px}
+.nums .ic{width:15px;height:15px;color:var(--mut)}
+.mini-l{font-size:12px;color:var(--mut);margin-top:4px}
+@media (max-width:430px){.logo small{display:none}}
+@media (max-width:380px){.feat{grid-template-columns:1fr}.ring{width:96px;height:96px}.ring .v b{font-size:30px}.chipacc span{display:none}.chipacc{padding:0 4px}}
+@media (min-width:700px){.kpis{grid-template-columns:repeat(4,1fr)}main{padding:24px 24px}}
+/* computer: barra laterale e contenuto più largo */
+@media (min-width:1024px){
+  body{padding-bottom:0;padding-left:228px}
+  header.top{margin-left:-228px;padding-left:24px}
+  nav{top:61px;bottom:0;right:auto;width:228px;display:flex;flex-direction:column;gap:4px;padding:18px 12px;border-top:0;border-right:1px solid var(--line);background:var(--bg)}
+  nav button{flex-direction:row;gap:12px;padding:11px 14px;border-radius:10px;font-size:14.5px;justify-content:flex-start}
+  nav button:hover{background:var(--s1);color:var(--txt)}
+  nav button.on{background:var(--acc-soft)}
+  nav button.on::before{top:10px;bottom:10px;left:0;right:auto;width:3px;height:auto;border-radius:0 3px 3px 0}
+  main{max-width:1040px;padding:28px 32px}
+  .sheet{border-radius:20px;border-bottom:1px solid var(--line);margin-bottom:4vh}
+  .modal{align-items:center}
+  .toast{bottom:28px}
+  .gwide{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;align-items:start}
+  .gwide>.card{margin-bottom:0}
+  .gwide+.gwide{margin-top:12px}
+}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.4 2.2 4.9 13.3h6.2l-1.4 8.5 8.6-11.2h-6.3z"/></symbol>
+<symbol id="i-studio" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="M10 9.2v5.6l4.8-2.8z"/></symbol>
+<symbol id="i-plan" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+<symbol id="i-grow" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M5 16l4.5-4.5 3.5 3 6-7"/><path d="M15 7.5h4v4"/></symbol>
+<symbol id="i-tools" viewBox="0 0 24 24"><path d="M11 3.5l1.9 5.1 5.1 1.9-5.1 1.9L11 17.5l-1.9-5.1L4 10.5l5.1-1.9z"/><path d="M18.5 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l2-1.6-2-3.4-2.4.9a7.6 7.6 0 0 0-2.6-1.5L14 2.4h-4l-.4 2.5A7.6 7.6 0 0 0 7 6.4l-2.4-.9-2 3.4 2 1.6a7.6 7.6 0 0 0 0 3l-2 1.6 2 3.4 2.4-.9a7.6 7.6 0 0 0 2.6 1.5l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 2.6-1.5l2.4.9 2-3.4z"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 19.5h14"/></symbol>
+<symbol id="i-tiktok-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5 2.8 19.5h18.4z"/><path d="M12 9.5v4.5M12 17v.01"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></symbol>
+<symbol id="i-comment" viewBox="0 0 24 24"><path d="M20 15.5a2 2 0 0 1-2 2H9l-5 3.5V6.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M14 5l6 6-6 6"/><path d="M20 11h-9a6 6 0 0 0-6 6v1.5"/></symbol>
+<symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/></symbol>
+<symbol id="i-user-plus" viewBox="0 0 24 24"><circle cx="10" cy="8" r="3.8"/><path d="M3 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/><path d="M19 8v6M16 11h6"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M14.5 7.5l3 3"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".9"/></symbol>
+<symbol id="i-text" viewBox="0 0 24 24"><path d="M5 7V5h14v2M12 5v14M9.5 19h5"/></symbol>
+<symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7.5 4v16M16.5 4v16M3 9h4.5M3 15h4.5M16.5 9H21M16.5 15H21"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></symbol>
+<symbol id="i-vote" viewBox="0 0 24 24"><path d="M4.5 11.5h15v8.5h-15z"/><path d="M8.5 11.5 12 4.5l3.5 7"/><path d="M9.5 15.5h5"/></symbol>
+</svg>
 
 <header class="top">
-  <div class="logo">⚡<i>Spinta</i><small>Studio</small></div>
+  <div class="logo"><span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bolt"/></svg></span>Spinta<small>Studio</small></div>
   <span class="sp"></span>
   <div class="topscore" id="topscore" onclick="goTab('studio');stpOpen(2,true);$('#s2').scrollIntoView({behavior:'smooth',block:'start'})"></div>
-  <button class="iconbtn" id="btn-install" style="display:none" onclick="installApp()">⬇︎ Installa</button>
-  <button class="iconbtn" onclick="openSettings()" aria-label="Impostazioni">⚙︎</button>
+  <span id="tt-chip"></span>
+  <button class="iconbtn" id="btn-install" style="display:none" onclick="installApp()">Installa</button>
+  <button class="iconbtn" onclick="openSettings()" aria-label="Impostazioni"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg></button>
 </header>
 
 <main>
@@ -171,11 +323,11 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
     <h1>Il tuo video,<br><i>più forte prima di pubblicarlo</i></h1>
     <p class="sub" style="margin:8px 0 0">Analizzo aggancio, ritmo, audio e formato, correggo quello che fa scorrere via e ti preparo tutto per pubblicare. Poi imparo dai risultati dei tuoi video. Il video non lascia mai il telefono.</p>
     <div class="feat">
-      <div>🎯<b>Spinta Score</b>cosa trattiene chi guarda</div>
-      <div>✨<b>Hook e testi</b>scritti dal tuo parlato</div>
-      <div>📈<b>Impara</b>dai risultati del tuo canale</div>
+      <div><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg><b>Spinta Score</b>cosa trattiene chi guarda</div>
+      <div><svg class="ic" aria-hidden="true"><use href="#i-text"/></svg><b>Hook e testi</b>scritti dal tuo parlato</div>
+      <div><svg class="ic" aria-hidden="true"><use href="#i-grow"/></svg><b>Impara</b>dai numeri del tuo canale</div>
     </div>
-    <button class="btn cy" style="margin-top:12px" onclick="crea()">🎬 Crea un video con Gennarino</button>
+    <button class="btn cy" style="margin-top:14px" onclick="crea()"><svg class="ic" aria-hidden="true"><use href="#i-film"/></svg>Crea un video con Gennarino</button>
     <small class="n" style="text-align:center">Scrive la puntata, le dà la voce e monta il video da solo.</small>
   </div>
 
@@ -184,7 +336,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
     <div class="stp-b">
       <div id="v-warn"></div>
       <div id="v-drop" class="drop">
-        <div style="font-size:30px">🎞️</div>
+        <div style="color:var(--acc);margin-bottom:6px"><svg class="ic big" aria-hidden="true"><use href="#i-film"/></svg></div>
         <b>Tocca per scegliere un video</b>
         <div style="color:var(--mut);font-size:12.5px;margin-top:4px">MP4, MOV o WebM · verticale 9:16 ideale</div>
         <input type="file" accept="video/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv" id="v-file" aria-label="Scegli un video">
@@ -221,7 +373,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   <article class="stp" id="s5" data-state="locked">
     <div class="stp-h" onclick="stpToggle(5)"><span class="num">5</span><div><h3>Esporta e pubblica</h3><small id="s5-sum">Video, copertina, caption e orario</small></div><span class="chev">⌄</span></div>
     <div class="stp-b">
-      <button class="btn" id="o-go" onclick="exportVideo()">🚀 Crea il video finale</button>
+      <button class="btn" id="o-go" onclick="exportVideo()">Crea il video finale</button>
       <small class="n">Tieni l'app aperta finché non finisce (circa quanto dura il video): se esci, l'esportazione si mette in pausa e riprende quando torni.</small>
       <div id="v-out"></div>
     </div>
@@ -253,11 +405,11 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
       <small class="n">Orari medi per l'Italia: controlla in TikTok Studio → Analytics → Follower quando è online il tuo pubblico.</small>
       <label>Note</label>
       <input id="p-note" placeholder="hook, musica, hashtag…">
-      <button class="btn" onclick="addPost()">📅 Aggiungi al piano</button>
+      <button class="btn" onclick="addPost()">Aggiungi al piano</button>
     </div>
     <div class="acts" style="margin-bottom:10px">
-      <button class="btn sm alt" onclick="exportICS()">⬇︎ Esporta tutto nel calendario (.ics)</button>
-      <button class="btn sm alt" onclick="askNotif()">🔔 Attiva avvisi</button>
+      <button class="btn sm alt" onclick="exportICS()"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Esporta nel calendario (.ics)</button>
+      <button class="btn sm alt" onclick="askNotif()"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg>Attiva avvisi</button>
     </div>
     <div id="p-items"></div>
   </div>
@@ -266,7 +418,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
     <div class="card">
       <div class="meter"><i id="ck-bar" style="width:0"></i></div>
       <div id="ck-items"></div>
-      <button class="btn alt" onclick="resetChecklist()">↺ Azzera per il prossimo video</button>
+      <button class="btn alt" onclick="resetChecklist()">Azzera per il prossimo video</button>
     </div>
   </div>
 
@@ -275,17 +427,32 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 <!-- ================= CRESCITA ================= -->
 <section class="tab" id="t-grow">
   <h2>Crescita</h2>
-  <p class="sub">Dopo 48 ore inserisci i dati di ogni video: Spinta li confronta con la tua media e impara cosa funziona sul tuo canale.</p>
+  <p class="sub" id="g-sub">I numeri del tuo canale e cosa funziona per te.</p>
+  <div id="tt-card"></div>
   <div id="g-pending"></div>
-  <div id="g-next"></div>
   <div id="s-kpis" class="kpis"></div>
+  <div class="gwide">
+    <div class="card" id="s-pulse-box" style="display:none">
+      <h3>Video per video</h3>
+      <p class="mini-l" id="s-pulse-sub">View degli ultimi video, dal più vecchio al più nuovo. Tocca una barra per i dettagli.</p>
+      <div class="puls" id="s-pulse"></div>
+      <div class="legend"><span><i style="background:var(--acc)"></i>sopra la mediana</span><span><i style="background:var(--s3)"></i>sotto la mediana</span><span><i style="border:1px dashed var(--acc)"></i>uscito da meno di 48 ore</span></div>
+      <div class="puls-info" id="s-pulse-info"></div>
+    </div>
+    <div class="card" id="s-top-box" style="display:none"><h3>I video che sono andati meglio</h3><div id="s-top"></div></div>
+  </div>
+  <div class="gwide">
+    <div class="card" id="s-when-box" style="display:none"><h3>Quando rendono di più</h3><p class="mini-l">View rispetto alla tua mediana, per giorno e fascia oraria di pubblicazione.</p><div id="s-when"></div></div>
+    <div class="card" id="s-fol-box" style="display:none"><h3>Follower nel tempo</h3><p class="mini-l">Un punto per ogni giorno in cui Spinta ha letto i dati da TikTok.</p><div id="s-fol"></div></div>
+  </div>
+  <div id="g-next"></div>
   <div id="s-insight"></div>
   <div class="card" id="s-chartbox" style="display:none">
-    <h3 style="font-size:15px;margin-bottom:8px">View medie per formato</h3>
-    <div id="s-chart"></div>
+    <h3>View medie per formato</h3>
+    <div id="s-chart" style="margin-top:10px"></div>
   </div>
-  <button class="btn" onclick="openStatForm()">＋ Aggiungi i dati di un video</button>
-  <div id="s-items" class="out"></div>
+  <button class="btn alt" id="s-add" onclick="openStatForm()"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Aggiungi i dati di un video</button>
+  <div id="s-items" class="out vlist"></div>
 </section>
 
 <!-- ================= STRUMENTI ================= -->
@@ -316,7 +483,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
         </select>
       </div>
     </div>
-    <button class="btn" onclick="genHooks()">✨ Genera 10 hook</button>
+    <button class="btn" onclick="genHooks()">Genera 10 hook</button>
   </div>
   <div id="h-out" class="out"></div>
 
@@ -347,7 +514,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
         </select>
       </div>
     </div>
-    <button class="btn" onclick="genCaptions()">✍️ Genera caption + hashtag</button>
+    <button class="btn" onclick="genCaptions()">Genera caption e hashtag</button>
   </div>
   <div id="c-out" class="out"></div>
 </div>
@@ -359,13 +526,13 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   <div class="card">
     <label>Tema del tuo canale</label>
     <input id="i-topic" placeholder="es. robottino AI che vende alla bancarella">
-    <button class="btn" onclick="genSeries()">🎬 Genera 5 serie</button>
+    <button class="btn" onclick="genSeries()">Genera 5 serie</button>
   </div>
   <div id="i-out" class="out"></div>
   <div class="card">
     <h3 style="font-size:17px;margin-bottom:4px">Format di tendenza</h3>
     <p class="sub" style="margin-bottom:6px">Adattati al tuo tema (inseriscilo sopra). Per i suoni e gli hashtag del momento guarda il <a href="https://ads.tiktok.com/business/creativecenter/" target="_blank" rel="noopener">TikTok Creative Center</a>.</p>
-    <button class="btn cy" onclick="genTrends()">🔥 Adatta i format al mio tema</button>
+    <button class="btn cy" onclick="genTrends()">Adatta i format al mio tema</button>
     <div id="i-trends" class="out"></div>
   </div>
 </div>
@@ -375,17 +542,17 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 </main>
 
 <nav id="nav">
-  <button class="on" data-t="studio"><b>🎬</b>Studio</button>
-  <button data-t="plan"><b>📅</b>Piano</button>
-  <button data-t="grow"><b>📊</b>Crescita</button>
-  <button data-t="tools"><b>🧰</b>Strumenti</button>
+  <button class="on" data-t="studio"><svg class="ic" aria-hidden="true"><use href="#i-studio"/></svg>Studio</button>
+  <button data-t="plan"><svg class="ic" aria-hidden="true"><use href="#i-plan"/></svg>Piano</button>
+  <button data-t="grow"><svg class="ic" aria-hidden="true"><use href="#i-grow"/></svg>Crescita</button>
+  <button data-t="tools"><svg class="ic" aria-hidden="true"><use href="#i-tools"/></svg>Strumenti</button>
 </nav>
 
 <!-- Modal dati video -->
 <div class="modal" id="m-stat"><div class="sheet">
   <h2 id="ms-title">Dati del video</h2>
   <p class="sub" style="margin:0">Li trovi in TikTok Studio → Analytics del video. Puoi caricare gli screenshot e li leggo io.</p>
-  <label class="btn cy" style="text-transform:none;letter-spacing:0;font-size:15px;color:#06232a;margin-top:12px">📷 Leggi i dati da screenshot
+  <label class="btn cy" style="margin-top:14px;font-size:15px"><svg class="ic" aria-hidden="true"><use href="#i-camera"/></svg>Leggi i dati da screenshot
     <input type="file" accept="image/*" multiple style="display:none" onchange="ocrStats(event)">
   </label>
   <div id="s-ocr" style="font-size:13px;color:var(--mut);margin-top:8px"></div>
@@ -420,18 +587,21 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
 
 <!-- Modal impostazioni -->
 <div class="modal" id="m-set"><div class="sheet">
-  <h2>Impostazioni</h2>
-  <p class="sub">I dati restano solo su questo dispositivo. Esporta un backup per non perderli o per passarli su un altro telefono.</p>
-  <button class="btn cy" onclick="exportData()">⬇︎ Esporta backup (.json)</button>
-  <label class="btn alt" style="text-transform:none;letter-spacing:0;font-size:15px;color:var(--txt)">⬆︎ Importa backup
+  <div class="sheet-h"><h2>Impostazioni</h2><button class="iconbtn" type="button" aria-label="Chiudi" onclick="closeModal('m-set')"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <div class="card" id="tt-set" style="margin-top:12px"></div>
+  <h3 style="margin-top:18px">Dati di Spinta</h3>
+  <p class="sub" style="margin:4px 0 0">Restano solo su questo dispositivo. Esporta un backup per non perderli o per passarli su un altro telefono (le chiavi di TikTok non ci finiscono).</p>
+  <button class="btn cy" onclick="exportData()"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Esporta backup (.json)</button>
+  <label class="btn alt" style="font-size:15px;color:var(--txt);margin:10px 0 0"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Importa backup
     <input type="file" accept="application/json" style="display:none" onchange="importData(event)">
   </label>
-  <button class="btn alt" style="color:var(--pink)" onclick="wipeData()">Cancella tutti i dati</button>
+  <button class="btn alt danger" onclick="wipeData()"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 2.14.1 · indicazioni aggiornate al <span id="set-rules"></span></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 3.0.0 · indicazioni aggiornate al <span id="set-rules"></span> · <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a href="termini.html" target="_blank" rel="noopener">Termini</a></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
+<script src="tiktok.js?v=3.0.0"></script>
 <script>
 /* fix-webm-duration 1.0.6 — MIT License (c) 2018 Yury Sitnikov — aggiunge la durata ai WebM registrati */
 (function(){var define=undefined,module=undefined;
@@ -1212,15 +1382,18 @@ function openStatForm(id,pid){
   $('#s-format').value=s&&s.format?s.format:FORMATS[0];$('#s-hk').value=s&&s.hk||'';
   ['views','likes','comm','shares','saves','follows','len','watch','full'].forEach(k=>$('#s-'+k).value=s&&s[k]!=null&&s[k]!==''?s[k]:'');
   $('#s-ocr').innerHTML='';document.querySelectorAll('#m-stat input').forEach(e=>e.style.borderColor='');
+  const daTT=!!(s&&s.tt);['views','likes','comm','shares'].forEach(k=>$('#s-'+k).disabled=daTT);
+  if(daTT)$('#s-ocr').innerHTML='View, like, commenti e condivisioni arrivano da TikTok e si aggiornano da soli. Qui puoi aggiungere salvataggi, follower, visione media, formato e tipo di hook.';
   openModal('m-stat');
 }
 function saveStat(){
   const title=$('#s-title').value.trim();const views=+$('#s-views').value;
-  if(!title||!views){toast('Titolo e view sono obbligatori');return}
+  const daTT=!!(DB.stats.find(x=>x.id===$('#s-id').value)||{}).tt;
+  if(!title||(!views&&!daTT)){toast('Titolo e view sono obbligatori');return}
   const o={id:$('#s-id').value||uid(),title,date:$('#s-date').value,hour:$('#s-hour').value,format:$('#s-format').value,hk:$('#s-hk').value,views,
     series:$('#s-series').value,score:$('#s-score').value===''?null:+$('#s-score').value};
   ['likes','comm','shares','saves','follows','len','watch','full'].forEach(k=>{const v=$('#s-'+k).value;o[k]=v===''?'':+v});
-  const prev=DB.stats.find(x=>x.id===o.id)||DB.pending.find(x=>x.id===$('#s-pid').value)||{};['transcript','topic','end','niche','pubAt','f','miss'].forEach(k=>{if(prev[k]!=null&&o[k]==null)o[k]=prev[k]});
+  const prev=DB.stats.find(x=>x.id===o.id)||DB.pending.find(x=>x.id===$('#s-pid').value)||{};['transcript','topic','end','niche','pubAt','f','miss','tt','cover','link','caption','ttAt','src'].forEach(k=>{if(prev[k]!=null&&o[k]==null)o[k]=prev[k]});
   const i=DB.stats.findIndex(x=>x.id===o.id);if(i>=0)DB.stats[i]=o;else DB.stats.push(o);
   const pid=$('#s-pid').value;if(pid)DB.pending=DB.pending.filter(x=>x.id!==pid);
   save();closeModal('m-stat');renderStats();renderPlan();toast('Salvato ✓');
@@ -1229,39 +1402,104 @@ function delStat(id){if(!confirm('Eliminare questo video?'))return;DB.stats=DB.s
 const er=s=>s.views?((+s.likes||0)+(+s.comm||0)+(+s.shares||0)+(+s.saves||0))/s.views*100:0;
 const ret=s=>s.len&&s.watch?Math.min(100,s.watch/s.len*100):null;
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+// quando è uscito un video (ms) e se è ancora «giovane»: sotto le 48 ore i numeri crescono ancora, non si confrontano con gli altri
+const tsOf=s=>s.pubAt||Date.parse((s.date||'1970-01-01')+'T'+(s.hour||'12:00'))||0;
+const giovane=s=>Date.now()-tsOf(s)<48*3600e3;
+const icon=(n,c)=>`<svg class="ic${c?' '+c:''}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const dataBreve=s=>s.date?new Date(s.date+'T12:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}):'';
 function renderStats(){
-  const I=channelInsights();renderPendingGrow();renderNext(I);
-  const S=DB.stats.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const I=channelInsights();renderPendingGrow();renderNext(I);if(window.ttMostraTutto)ttMostraTutto();
+  const tt=window.ttStato?ttStato():null,on=!!(tt&&tt.collegato),u=on?tt.utente||{}:{};
+  $('#g-sub').textContent=on?'I numeri arrivano da TikTok da soli. Salvataggi e visione media puoi aggiungerli tu, anche dagli screenshot.':'I numeri del tuo canale e cosa funziona per te.';
+  const add=$('#s-add');add.className=on?'btn alt':'btn';
+  const S=DB.stats.slice().sort((a,b)=>tsOf(b)-tsOf(a)),M=S.filter(s=>+s.views>0&&!giovane(s));
+  ['#s-pulse-box','#s-top-box','#s-when-box','#s-fol-box'].forEach(k=>$(k).style.display='none');
   if(!S.length){$('#s-kpis').innerHTML='';$('#s-chartbox').style.display='none';
-    $('#s-insight').innerHTML=`<div class="card"><b>Come funziona</b><div style="color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.55">1. Pubblica dallo Studio e tocca "L'ho pubblicato": salvo anche come è montato il video.<br>2. Dopo 48 ore inserisci view, visione media e interazioni (anche da screenshot).<br>3. Dal 4° video ti mostro cosa funziona sul tuo canale e cosa fare la prossima volta.</div></div>`;
+    $('#s-insight').innerHTML=on?'':`<div class="card"><h3>Come funziona</h3><div style="color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.6">1. Pubblica dallo Studio e tocca «L'ho pubblicato»: salvo anche come è montato il video.<br>2. Collega TikTok per avere i numeri da soli, oppure inseriscili tu dopo 48 ore (anche da screenshot).<br>3. Dal 4° video ti mostro cosa funziona sul tuo canale e cosa fare la prossima volta.</div></div>`;
     $('#s-items').innerHTML='';return}
-  const av=avg(S.map(s=>s.views)),aer=avg(S.map(er));const rets=S.map(ret).filter(x=>x!=null);const avRet=rets.length?avg(rets):null;
-  const fol=S.reduce((a,b)=>a+(+b.follows||0),0);
-  $('#s-kpis').innerHTML=`<div class="kpi"><div class="v">${fmt(av)}</div><div class="l">View medie</div></div>
-  <div class="kpi"><div class="v">${avRet!=null?avRet.toFixed(0)+'%':'–'}</div><div class="l">Visione media / durata</div></div>
-  <div class="kpi"><div class="v">${aer.toFixed(1)}%</div><div class="l">Engagement medio</div></div>
-  <div class="kpi"><div class="v">+${fmt(fol)}</div><div class="l">Follower dai video</div></div>`;
-  const groups=fn=>{const m={};S.forEach(s=>{const k=fn(s);if(!k)return;(m[k]=m[k]||[]).push(s)});return Object.entries(m).map(([k,a])=>({k,n:a.length,v:avg(a.map(x=>x.views))})).sort((a,b)=>b.v-a.v)};
-  const pct=v=>{const p=(v/av-1)*100;return `<span class="vs ${p>=0?'up':'dn'}">${p>=0?'+':''}${p.toFixed(0)}%</span>`};
+  // numeri principali
+  const ultimi=M.slice(0,10),av=avg(ultimi.map(s=>+s.views)),aer=avg(M.map(er)),rets=M.map(ret).filter(x=>x!=null),avRet=rets.length?avg(rets):null;
+  const snaps=(DB.ttSnaps||[]).filter(x=>x.f!=null),fol=u.follower_count!=null?u.follower_count:snaps.length?snaps[snaps.length-1].f:null;
+  const prima=(()=>{const lim=Date.now()-7*864e5;let p=null;snaps.forEach(x=>{if(Date.parse(x.d+'T12:00')<=lim)p=x});return p||(snaps.length>1?snaps[0]:null)})();
+  const delta=fol!=null&&prima&&prima.f!=null?fol-prima.f:null,giorni=prima?Math.max(1,Math.round((Date.now()-Date.parse(prima.d+'T12:00'))/864e5)):0;
+  const k=(v,l,d,cl)=>`<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div>${d!=null?`<div class="d ${cl||''}">${d}</div>`:''}</div>`;
+  const kp=[];
+  if(on||fol!=null)kp.push(k(fol!=null?fmt(fol):'–','Follower',delta!=null?`${delta>=0?'+':'−'}${fmt(Math.abs(delta))} in ${giorni} ${giorni===1?'giorno':'giorni'}`:on?'andamento da domani':null,delta>0?'up':delta<0?'dn':''));
+  kp.push(k(M.length?fmt(av):'–','View medie',M.length?`ultimi ${ultimi.length} video`:'dopo 48 ore dal primo video'));
+  kp.push(k(M.length?aer.toFixed(1).replace('.',',')+'%':'–','Coinvolgimento','interazioni sulle view'));
+  if(on&&u.likes_count!=null)kp.push(k(fmt(u.likes_count),'Like totali',u.video_count!=null?`${fmt(u.video_count)} video sul profilo`:null));
+  else if(avRet!=null)kp.push(k(avRet.toFixed(0)+'%','Visione media','sulla durata del video'));
+  else{const fo=S.reduce((a,b)=>a+(+b.follows||0),0);kp.push(k('+'+fmt(fo),'Follower dai video','quelli che inserisci tu'))}
+  $('#s-kpis').innerHTML=kp.join('');
+  renderPulse(S);renderTop(M);renderWhen(M);renderFollowers(snaps);
+  // cosa fare: i tuoi numeri
   const tips=[];
-  tips.push(`🎯 <b>Obiettivo prossimo video:</b> superare ${fmt(av)} view${avRet!=null?` e una visione media oltre il ${Math.min(95,Math.round(avRet+5))}%`:''}, cioè fare meglio della tua media.`);
-  const fl=S.filter(s=>s.full!==''&&s.full!=null);if(fl.length){const af=avg(fl.map(s=>+s.full)),tg=(RULES.obiettivi||{}).completamento||70;tips.push(`🏁 Visione completa media: <b>${af.toFixed(0)}%</b>. Le analisi di settore indicano circa il ${tg}% per i video che vanno meglio: è un riferimento, non una regola di TikTok.`)}
-  if(avRet!=null){if(avRet<40)tips.push('⏱️ Si guarda meno del 40% del video: accorcia, togli le pause e metti il momento migliore prima.');else if(avRet>=70)tips.push('🔥 Visione media ottima: puoi provare video un po\' più lunghi.')}
-  if(aer<4)tips.push('💬 Engagement sotto il 4%: chiudi con una domanda o con "Parte 2" e usa il testo finale.');
-  $('#s-insight').innerHTML=learnCard(I)+`<div class="card">${tips.map(t=>`<div style="margin-bottom:8px;font-size:14px">${t}</div>`).join('')}</div>`;
+  if(M.length){tips.push(`<b>Obiettivo del prossimo video:</b> superare ${fmt(median(M.slice(0,10).map(s=>+s.views)))} view, la mediana dei tuoi ultimi video${avRet!=null?`, con una visione media oltre il ${Math.min(95,Math.round(avRet+5))}%`:''}.`);
+    const fl=M.filter(s=>s.full!==''&&s.full!=null);if(fl.length){const af=avg(fl.map(s=>+s.full)),tg=(RULES.obiettivi||{}).completamento||70;tips.push(`<b>Visione completa media: ${af.toFixed(0)}%.</b> Le analisi di settore indicano circa il ${tg}% per i video che vanno meglio: è un riferimento, non una regola di TikTok.`)}
+    if(avRet!=null){if(avRet<40)tips.push('<b>Si guarda meno del 40% del video:</b> accorcia, togli le pause e metti il momento migliore prima.');else if(avRet>=70)tips.push('<b>Visione media ottima:</b> puoi provare video un po\' più lunghi.')}
+    if(aer<4)tips.push('<b>Coinvolgimento sotto il 4%:</b> chiudi con una domanda o con «Parte 2» e usa il testo finale.');
+    if(on&&!rets.length)tips.push('<b>Per consigli più precisi</b> aggiungi la visione media di qualche video (TikTok Studio → Analytics del video): TikTok non la dà alle app.')}
+  $('#s-insight').innerHTML=learnCard(I)+(tips.length?`<div class="card"><h3>Dai tuoi numeri</h3>${tips.map(t=>`<div class="fix" style="font-size:14px">${t}</div>`).join('')}</div>`:'');
+  // view medie per formato (solo i video con il formato)
+  const groups=fn=>{const m={};M.forEach(s=>{const kk=fn(s);if(!kk)return;(m[kk]=m[kk]||[]).push(s)});return Object.entries(m).map(([kk,a])=>({k:kk,n:a.length,v:avg(a.map(x=>+x.views))})).sort((a,b)=>b.v-a.v)};
   const rows=groups(s=>s.format);$('#s-chartbox').style.display=rows.length>1?'':'none';
-  if(rows.length>1){const mx=Math.max(...rows.map(r=>r.v))||1;const W=320,bh=24,gap=10,H=rows.length*(bh+gap);
-    $('#s-chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ff2d6f"/><stop offset="1" stop-color="#25f4ee"/></linearGradient></defs>`+
-     rows.map((r,i)=>{const y=i*(bh+gap);const w=Math.max(4,r.v/mx*(W-150));return `<text x="0" y="${y+16}" style="font-size:11px">${esc(r.k.slice(0,18))}</text><rect x="118" y="${y+2}" width="${w}" height="${bh-4}" rx="6" fill="url(#g)"/><text x="${122+w}" y="${y+16}" style="fill:#f5f5fa;font-weight:700;font-size:11px">${fmt(r.v)} (${r.n})</text>`}).join('')+'</svg>'}
-  $('#s-items').innerHTML=`<h4 class="h4">I tuoi video</h4>`+S.map(s=>{const r=ret(s);return `<div class="item"><div class="t">${esc(s.title)}</div>
-  <div class="m">${s.date?new Date(s.date+'T12:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}):''}${s.hour?' · '+s.hour:''} · <span class="tag">${esc(s.format)}</span>${s.hk?`<span class="tag p">${esc(s.hk)}</span>`:''} ${pct(s.views)}</div>
-  <div class="m" style="margin-top:4px">👁 ${fmt(s.views)} · ❤️ ${fmt(s.likes)} · 💬 ${fmt(s.comm)} · ↗︎ ${fmt(s.shares)} · 📌 ${fmt(s.saves)}</div>
-  <div class="m">ER ${er(s).toFixed(1)}%${r!=null?' · visione '+r.toFixed(0)+'%':''}${s.full!==''&&s.full!=null?' · completa '+s.full+'%':''}${s.follows?' · +'+s.follows+' follower':''}${s.score!=null&&s.score!==''?' · Spinta Score '+s.score:''}</div>
-  <div class="acts"><button class="btn sm alt" onclick="openStatForm('${s.id}')">✏️ Modifica</button><button class="btn sm alt" onclick="delStat('${s.id}')">🗑</button></div></div>`}).join('');
+  if(rows.length>1){const mx=Math.max(...rows.map(r=>r.v))||1;const W=340,bh=24,gap=10,H=rows.length*(bh+gap);
+    $('#s-chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="View medie per formato">`+
+     rows.map((r,i)=>{const y=i*(bh+gap);const w=Math.max(4,r.v/mx*(W-170));return `<text x="0" y="${y+16}" style="font-size:11.5px;fill:var(--txt)">${esc(r.k.slice(0,20))}</text><rect x="128" y="${y+3}" width="${w}" height="${bh-6}" rx="4" fill="var(--acc)"/><text x="${134+w}" y="${y+16}" style="font-weight:700;font-size:11.5px">${fmt(r.v)} · ${r.n}</text>`}).join('')+'</svg>'}
+  // l'elenco dei video
+  const pct=v=>{if(!M.length)return'';const md=median(M.map(x=>+x.views))||1,p=(v/md-1)*100;return `<span class="vs ${p>=0?'up':'dn'}">${p>=0?'+':'−'}${Math.abs(p).toFixed(0)}% sulla mediana</span>`};
+  $('#s-items').innerHTML=`<h3 style="margin:22px 0 10px">I tuoi video <span style="color:var(--mut);font-weight:600;font-size:14px">${S.length}</span></h3>`+S.slice(0,80).map(s=>{const r=ret(s),young=giovane(s);
+   return `<div class="item"><div class="cov">${s.cover?`<img src="${esc(s.cover)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}${icon('film')}</div><div class="bd">
+   <div class="t">${esc(s.title)}</div>
+   <div class="m">${dataBreve(s)}${s.hour?' alle '+s.hour:''} ${s.format?`<span class="tag">${esc(s.format)}</span>`:''}${s.hk?`<span class="tag p">${esc(s.hk)}</span>`:''}${young?'<span class="tag w">meno di 48 ore</span>':''}${s.tt?'<span class="tag g">da TikTok</span>':''}</div>
+   <div class="nums"><span>${icon('eye')}${fmt(s.views)}</span><span>${icon('heart')}${fmt(s.likes)}</span><span>${icon('comment')}${fmt(s.comm)}</span><span>${icon('share')}${fmt(s.shares)}</span>${s.saves!==''&&s.saves!=null?`<span>${icon('bookmark')}${fmt(s.saves)}</span>`:''}${s.follows?`<span>${icon('user-plus')}+${fmt(s.follows)}</span>`:''}</div>
+   <div class="m" style="margin-top:4px">Coinvolgimento ${er(s).toFixed(1).replace('.',',')}%${r!=null?' · visione '+r.toFixed(0)+'%':''}${s.full!==''&&s.full!=null?' · completa '+s.full+'%':''}${s.score!=null&&s.score!==''?' · Spinta Score '+s.score:''} ${young?'':pct(+s.views)}</div>
+   <div class="acts" style="margin-top:8px"><button class="btn sm alt" onclick="openStatForm('${s.id}')">${icon('edit')}${s.tt?'Completa':'Modifica'}</button>${s.link?`<a class="btn sm alt" href="${esc(s.link)}" target="_blank" rel="noopener">${icon('ext')}TikTok</a>`:''}<button class="btn sm alt" aria-label="Elimina" onclick="delStat('${s.id}')">${icon('trash')}</button></div></div></div>`}).join('')+(S.length>80?`<small class="n">Mostro gli ultimi 80 video su ${S.length}.</small>`:'');
 }
+// video per video: una barra per ogni video, la linea è la mediana
+function renderPulse(S){const V=S.filter(s=>+s.views>0||s.tt).slice(0,36).reverse();if(V.length<2)return;
+  const box=$('#s-pulse-box');box.style.display='';
+  const W=340,H=150,top=10,base=H-18,n=V.length,gap=n>24?2:3,bw=(W-gap*(n-1))/n;
+  const mature=V.filter(s=>!giovane(s)).map(s=>+s.views),md=median(mature.length?mature:V.map(s=>+s.views))||1;
+  const vals=V.map(s=>+s.views||0),srt=vals.slice().sort((a,b)=>a-b),p90=srt[Math.floor(srt.length*.9)]||srt[srt.length-1],mx=Math.max(...vals);
+  const cap=mx>p90*3.5?p90*1.3:mx,y=v=>base-Math.max(2,Math.min(1,v/cap)*(base-top));
+  const bars=V.map((s,i)=>{const x=i*(bw+gap),v=vals[i],cls=giovane(s)?'nuovo':v>=md?'su':'';const yy=y(v);
+    return `<rect class="bar-v ${cls}" data-i="${i}" x="${x.toFixed(1)}" y="${yy.toFixed(1)}" width="${bw.toFixed(1)}" height="${(base-yy).toFixed(1)}" rx="${Math.min(3,bw/2).toFixed(1)}"/>${v>cap?`<path d="M${(x+bw/2-3).toFixed(1)} ${top-2}l3 -5l3 5" fill="var(--acc)"/>`:''}`}).join('');
+  const ym=y(md),d0=V[0].date?new Date(V[0].date+'T12:00'):null,d1=V[n-1].date?new Date(V[n-1].date+'T12:00'):null,f=d=>d?d.toLocaleDateString('it-IT',{day:'numeric',month:'short'}):'';
+  $('#s-pulse-sub').innerHTML=`Gli ultimi ${n} video, dal più vecchio al più nuovo. La linea tratteggiata è la tua mediana: <b style="color:var(--txt)">${fmt(md)} view</b>. Tocca una barra per i dettagli.`;
+  $('#s-pulse').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="View per video, ultimi ${n} video">${bars}<line class="med" x1="0" x2="${W}" y1="${ym.toFixed(1)}" y2="${ym.toFixed(1)}"/><text x="0" y="${H-3}">${f(d0)}</text><text x="${W}" y="${H-3}" text-anchor="end">${f(d1)}</text></svg>`;
+  const info=i=>{const s=V[i];if(!s)return;document.querySelectorAll('#s-pulse .bar-v').forEach(r=>r.classList.toggle('sel',+r.dataset.i===i));
+    $('#s-pulse-info').innerHTML=`<b>${esc(cutTxt(s.title,70))}</b><span>${dataBreve(s)}${s.hour?' alle '+s.hour:''} · ${fmt(s.views)} view · ${fmt(s.likes)} like · ${fmt(s.comm)} commenti${giovane(s)?' · ancora in crescita':` · ${s.views>=md?'+':'−'}${Math.abs(Math.round((s.views/md-1)*100))}% sulla mediana`}</span>`};
+  const svg=$('#s-pulse svg');svg.addEventListener('click',ev=>{const r=ev.target.closest('.bar-v');if(r)info(+r.dataset.i)});
+  info(n-1)}
+// i migliori 5 (dei video con almeno 48 ore)
+function renderTop(M){if(M.length<3)return;$('#s-top-box').style.display='';const md=median(M.map(s=>+s.views))||1;
+  $('#s-top').innerHTML=M.slice().sort((a,b)=>b.views-a.views).slice(0,5).map((s,i)=>{const tag=s.link?'a':'div';
+   return `<${tag} class="top"${s.link?` href="${esc(s.link)}" target="_blank" rel="noopener"`:''}><span class="pos">${i+1}</span><span class="cov">${s.cover?`<img src="${esc(s.cover)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</span><span class="tx"><b>${esc(s.title)}</b><span>${dataBreve(s)} · ${er(s).toFixed(1).replace('.',',')}% di interazioni</span></span><span class="nv">${fmt(s.views)}<small>${(s.views/md).toFixed(1).replace('.',',')}× mediana</small></span></${tag}>`}).join('')}
+// quando rendono di più: giorno × fascia, mediana delle view rispetto alla tua mediana
+const FASCE=[['Mattina',0,11],['Pranzo',11,15],['Pomer.',15,19],['Sera',19,22],['Notte',22,24]];
+function renderWhen(M){const H=M.filter(s=>s.hour&&s.date);if(H.length<8)return;$('#s-when-box').style.display='';
+  const md=median(H.map(s=>+s.views))||1,gg=['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],cel={};
+  H.forEach(s=>{const d=(new Date(s.date+'T12:00').getDay()+6)%7,h=+s.hour.split(':')[0],f=FASCE.findIndex(x=>h>=x[1]&&h<x[2]);(cel[d+'-'+f]=cel[d+'-'+f]||[]).push(+s.views)});
+  let best=null;Object.entries(cel).forEach(([kk,a])=>{if(a.length<2)return;const r=median(a)/md;if(!best||r>best.r)best={kk,r,n:a.length}});
+  const col=r=>{const t=Math.max(-1,Math.min(1,Math.log2(r)));return t>=0?`rgba(47,227,220,${(.15+t*.7).toFixed(2)})`:`rgba(255,86,130,${(.12-t*.45).toFixed(2)})`};
+  let h=`<div class="heat"><span></span>${FASCE.map(f=>`<span class="hd">${f[0]}</span>`).join('')}`;
+  gg.forEach((g,d)=>{h+=`<span class="gd">${g}</span>`;FASCE.forEach((f,i)=>{const a=cel[d+'-'+i];if(!a){h+='<span class="c v0">·</span>';return}const r=median(a)/md;
+    h+=`<span class="c" style="background:${col(r)}" title="${a.length} video, ${fmt(median(a))} view di mediana">${r>=1?'+':'−'}${Math.abs(Math.round((r-1)*100))}%</span>`})});
+  h+='</div>';
+  if(best&&best.r>1.15){const [d,i]=best.kk.split('-').map(Number);h+=`<p class="mini-l" style="margin-top:10px">Finora rende di più <b style="color:var(--txt)">${['lunedì','martedì','mercoledì','giovedì','venerdì','sabato','domenica'][d]} ${['mattina','a pranzo','pomeriggio','sera','notte'][i]}</b>: ${best.n} video, +${Math.round((best.r-1)*100)}% sulla mediana. Con pochi video per casella prendilo come un indizio.</p>`}
+  $('#s-when').innerHTML=h}
+// follower nel tempo, dalle letture giornaliere di TikTok
+function renderFollowers(snaps){if(snaps.length<2)return;$('#s-fol-box').style.display='';
+  const P=snaps.slice(-120),W=340,H=120,pad=18,xs=P.map(x=>Date.parse(x.d+'T12:00')),ys=P.map(x=>x.f),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const X=t=>pad+(x1>x0?(t-x0)/(x1-x0):1)*(W-pad*2),Y=v=>H-pad-(y1>y0?(v-y0)/(y1-y0):.5)*(H-pad*2);
+  const path=P.map((p,i)=>`${i?'L':'M'}${X(xs[i]).toFixed(1)} ${Y(p.f).toFixed(1)}`).join(' ');
+  const area=path+` L${X(xs[xs.length-1]).toFixed(1)} ${H-pad} L${X(xs[0]).toFixed(1)} ${H-pad} Z`,f=t=>new Date(t).toLocaleDateString('it-IT',{day:'numeric',month:'short'}),dv=ys[ys.length-1]-ys[0];
+  $('#s-fol').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Follower nel tempo"><path d="${area}" fill="rgba(47,227,220,.10)"/><path d="${path}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-linejoin="round"/><circle cx="${X(xs[xs.length-1]).toFixed(1)}" cy="${Y(ys[ys.length-1]).toFixed(1)}" r="3.5" fill="var(--acc)"/><text x="${pad}" y="${H-3}">${f(xs[0])}</text><text x="${W-pad}" y="${H-3}" text-anchor="end">${f(xs[xs.length-1])}</text><text x="${pad}" y="11">${fmt(y1)}</text></svg><p class="mini-l">${dv>=0?'+':'−'}${fmt(Math.abs(dv))} follower dal ${f(xs[0])}.</p>`}
 function renderPendingGrow(){const el=$('#g-pending');const P=DB.pending||[];if(!P.length){el.innerHTML='';return}
-  el.innerHTML=`<div class="card"><h3>📥 Da aggiornare</h3>${P.map(p=>{const due=new Date(p.pubAt+48*3600e3),ready=Date.now()>=due;
-   return `<div class="fix"><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(p.title)}</b><div style="color:var(--mut);font-size:12.5px">${ready?'Pronto: inserisci i dati di TikTok Studio':'Dati affidabili da '+slotLabel(due)}</div></div><button class="btn sm ${ready?'':'alt'}" onclick="openStatForm(null,'${p.id}')">Inserisci</button></div>`}).join('')}</div>`}
+  const on=!!(window.ttStato&&ttStato().collegato);
+  el.innerHTML=`<div class="card"><h3>Da aggiornare</h3>${on?'<p class="mini-l">I numeri arrivano da TikTok da soli appena il video compare sul tuo profilo.</p>':''}${P.map(p=>{const due=new Date(p.pubAt+48*3600e3),ready=Date.now()>=due;
+   return `<div class="fix"><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(p.title)}</b><div style="color:var(--mut);font-size:12.5px">${on?'In attesa dei dati da TikTok':ready?'Pronto: inserisci i dati di TikTok Studio':'Dati affidabili da '+slotLabel(due)}</div></div>${on?`<button class="btn sm alt" onclick="ttAggiornaOra()">${icon('refresh')}Aggiorna</button>`:`<button class="btn sm ${ready?'':'alt'}" onclick="openStatForm(null,'${p.id}')">Inserisci</button>`}</div>`}).join('')}</div>`}
 function renderPendingPlan(){const el=$('#p-pending-card');if(!el)return;const P=DB.pending||[];if(!P.length){el.style.display='none';return}
   el.style.display='';const now=Date.now();
   el.innerHTML=`<h3>⏱️ Dopo la pubblicazione</h3>`+P.map(p=>{const c=p.pubAt+primaOra()*60e3,due=p.pubAt+48*3600e3;
@@ -2224,7 +2462,7 @@ function compareGroups(rows,test){const A=[],B=[];rows.forEach(x=>{const t=test(
   if(A.length<2||B.length<2)return null;const m=a=>avg(a.map(x=>x.lv));
   const ra=A.map(x=>x.r).filter(x=>x!=null),rb=B.map(x=>x.r).filter(x=>x!=null);
   return{nA:A.length,nB:B.length,dv:Math.exp(m(A)-m(B))-1,dr:ra.length>=2&&rb.length>=2?avg(ra)-avg(rb):null,w:Math.abs(m(A)-m(B))*Math.sqrt(Math.min(A.length,B.length))}}
-function channelInsights(){const S=DB.stats.filter(s=>+s.views>0),out={n:S.length,nf:S.filter(s=>s.f).length,list:[],score:null};
+function channelInsights(){const S=DB.stats.filter(s=>+s.views>0&&!giovane(s)),out={n:S.length,nf:S.filter(s=>s.f).length,list:[],score:null};
   if(S.length<4)return out;
   const med=median(S.map(s=>+s.views))||1,rows=S.map(s=>({s,f:s.f||null,lv:Math.log(Math.max(1,+s.views)/med),r:ret(s)}));
   const levers=LEVERS.slice(),paces=rows.filter(x=>x.f&&x.f.pace!=null).map(x=>x.f.pace);
@@ -2244,13 +2482,13 @@ const effTxt=c=>c.dv>=0.15||c.dv<=-0.15||c.dr==null?pctTxt(c.dv)+' view':(c.dr>=
 const evid=c=>`${c.nA} contro ${c.nB} video${Math.min(c.nA,c.nB)<4?', pochi dati':''}`;
 function insightRow(x){const c=x.c,rt=c.dr!=null&&Math.abs(c.dr)>=3&&(c.dv>=0.15||c.dv<=-0.15)?` · visione media ${c.dr>=0?'+':'−'}${Math.abs(c.dr).toFixed(0)} punti`:'';
   const badge=`<span class="vs ${x.ok?'up':'dn'}" style="white-space:nowrap">${effTxt(c)}</span>`;
-  if(x.kind==='cat')return `<div class="fix"><span>📊</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.n)}: ${esc(x.k)}</b><div style="color:var(--mut);font-size:12.5px">Rispetto agli altri tuoi video · ${evid(c)}${rt}</div></div>${badge}</div>`;
-  if(x.ok)return `<div class="fix"><span>✅</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.L.n)}</b><div style="color:var(--mut);font-size:12.5px">I tuoi video che ${esc(x.L.yes)} · ${evid(c)}${rt}</div></div>${badge}</div>`;
-  return `<div class="fix"><span>🤔</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.L.n)}: da verificare</b><div style="color:var(--mut);font-size:12.5px">Finora sono andati meglio i video che ${esc(x.L.no)} (${c.nB} contro ${c.nA}): può essere un caso, guarda i prossimi.</div></div>${badge}</div>`}
-function learnCard(I){const head=`<h3>🧠 Cosa funziona sul tuo canale</h3><div style="color:var(--mut);font-size:12.5px;margin:2px 0 6px">Confronto i tuoi video tra loro: sono i tuoi numeri, non regole di TikTok.</div>`;
+  if(x.kind==='cat')return `<div class="fix"><span style="color:var(--acc)">${icon('grow')}</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.n)}: ${esc(x.k)}</b><div style="color:var(--mut);font-size:12.5px">Rispetto agli altri tuoi video · ${evid(c)}${rt}</div></div>${badge}</div>`;
+  if(x.ok)return `<div class="fix"><span style="color:var(--ok)">${icon('check')}</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.L.n)}</b><div style="color:var(--mut);font-size:12.5px">I tuoi video che ${esc(x.L.yes)} · ${evid(c)}${rt}</div></div>${badge}</div>`;
+  return `<div class="fix"><span style="color:var(--warn)">${icon('alert')}</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(x.L.n)}: da verificare</b><div style="color:var(--mut);font-size:12.5px">Finora sono andati meglio i video che ${esc(x.L.no)} (${c.nB} contro ${c.nA}): può essere un caso, guarda i prossimi.</div></div>${badge}</div>`}
+function learnCard(I){const head=`<h3>Cosa funziona sul tuo canale</h3><div style="color:var(--mut);font-size:12.5px;margin:2px 0 6px">Confronto i tuoi video tra loro: sono i tuoi numeri, non regole di TikTok.</div>`;
   if(I.n<4)return `<div class="card">${head}<div style="font-size:13.5px">Ho i dati di <b>${I.n}</b> video: dal 4° comincio a confrontarli e a dirti cosa funziona per te.</div><div class="meter"><i style="width:${I.n/4*100}%"></i></div><small class="n">Pubblica dallo Studio e inserisci i dati dopo 48 ore: così salvo anche come è montato ogni video.</small></div>`;
   const ok=I.list.filter(x=>x.ok).slice(0,5),chk=I.list.filter(x=>!x.ok).slice(0,2),s=I.score;
-  const sc=!s?'':`<div class="fix"><span>🎯</span><div style="flex:1;min-width:0">${s.dv>=0.15?`<b style="font-size:14px">Lo Spinta Score funziona sul tuo canale</b><div style="color:var(--mut);font-size:12.5px">I video da ${s.th} in su hanno fatto ${pctTxt(s.dv)} view · ${evid(s)}</div>`:s.dv<=-0.15?`<b style="font-size:14px">Per ora lo Spinta Score non si vede nelle tue view</b><div style="color:var(--mut);font-size:12.5px">I video da ${s.th} in su sono andati peggio (${evid(s)}): conta di più quello che funziona sul tuo canale.</div>`:`<b style="font-size:14px">Lo Spinta Score per ora non fa differenza nelle tue view</b><div style="color:var(--mut);font-size:12.5px">${evid(s)}: servono altri dati per capirlo.</div>`}</div></div>`;
+  const sc=!s?'':`<div class="fix"><span style="color:var(--acc)">${icon('target')}</span><div style="flex:1;min-width:0">${s.dv>=0.15?`<b style="font-size:14px">Lo Spinta Score funziona sul tuo canale</b><div style="color:var(--mut);font-size:12.5px">I video da ${s.th} in su hanno fatto ${pctTxt(s.dv)} view · ${evid(s)}</div>`:s.dv<=-0.15?`<b style="font-size:14px">Per ora lo Spinta Score non si vede nelle tue view</b><div style="color:var(--mut);font-size:12.5px">I video da ${s.th} in su sono andati peggio (${evid(s)}): conta di più quello che funziona sul tuo canale.</div>`:`<b style="font-size:14px">Lo Spinta Score per ora non fa differenza nelle tue view</b><div style="color:var(--mut);font-size:12.5px">${evid(s)}: servono altri dati per capirlo.</div>`}</div></div>`;
   return `<div class="card">${head}${ok.length||chk.length?[...ok,...chk].map(insightRow).join(''):'<div style="font-size:13.5px;margin-top:6px">Per ora nessuna differenza netta tra i tuoi video: continua a pubblicare e a inserire i dati.</div>'}${sc}
    <small class="n">Basato su ${I.n} video con i dati${I.nf<I.n?` · ${I.nf} con le misure del montaggio, che salvo quando pubblichi dallo Studio`:''}. Con pochi video i numeri cambiano facilmente: prendili come indizi, non come certezze.</small></div>`}
 // la prossima volta: prima i tuoi dati, poi le misure dell'ultimo video, poi i suoi punti deboli
@@ -2300,11 +2538,11 @@ function personalSlot(){const now=new Date(),I=DB.stats.filter(s=>+s.views>0&&s.
 function renderNext(I){const el=$('#g-next');if(!el)return;const has=DB.stats.length||DB.pending.length,idea=($('#nx-idea')||{}).value||'';
   if(!has){el.innerHTML='';return}
   const acts=nextActions(I||channelInsights());
-  el.innerHTML=`<div class="card"><h3>👉 La prossima volta fai questo</h3>
+  el.innerHTML=`<div class="card"><h3>La prossima volta</h3>
    ${acts.map((a,i)=>`<div class="fix"><span class="num" style="width:24px;height:24px;font-size:12px">${i+1}</span><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(a.t)}</b><div style="color:var(--mut);font-size:12.5px">${esc(a.why)}</div></div></div>`).join('')}
-   <h4 class="h4">🎬 Prossimo video</h4><div style="color:var(--mut);font-size:13px;margin:4px 0 2px">Preparo il seguito partendo dall'ultimo video e da quello che funziona sul tuo canale: hook, scaletta, durata e orario.</div>
+   <h4 class="h4">Prossimo video</h4><div style="color:var(--mut);font-size:13px;margin:4px 0 2px">Preparo il seguito partendo dall'ultimo video e da quello che funziona sul tuo canale: hook, scaletta, durata e orario.</div>
    <label>Idea o commento da cui partire (facoltativo)</label><textarea id="nx-idea" style="min-height:60px" placeholder="es. «Fai un'app per dividere il conto in pizzeria»"></textarea>
-   <button class="btn" onclick="genNext()">🎬 Prepara il prossimo video</button><div id="nx-out"></div></div>`;
+   <button class="btn" onclick="genNext()">Prepara il prossimo video</button><div id="nx-out"></div></div>`;
   if(idea)$('#nx-idea').value=idea}
 function lastVideo(){const items=[...DB.stats.map(s=>({...s,_t:s.pubAt||Date.parse((s.date||'1970-01-01')+'T'+(s.hour||'12:00'))})),...DB.pending.map(p=>({...p,_t:p.pubAt}))];
   return items.sort((a,b)=>b._t-a._t)[0]||null}
@@ -2318,16 +2556,16 @@ function genNext(){
   const bestHk=groups(s=>s.hk&&s.hk!=='Nessuno'?s.hk:null)[0],bestLen=groups(s=>!s.len?null:s.len<15?'12':s.len<30?'25':s.len<=60?'45':'75')[0];
   if(bestLen&&S.length>=3)len=+bestLen.k;
   if(Ls){const p=av?(Ls.views/av-1)*100:0,r=ret(Ls),e=er(Ls);
-    if(S.length>1&&p>=10){notes.push(`✅ L'ultimo video ha fatto <b>${fmt(Ls.views)}</b> view, il ${p.toFixed(0)}% sopra la tua media: tieni la stessa formula.`);hk=Ls.hk;if(Ls.len)len=Math.round(Ls.len)}
-    else if(S.length>1)notes.push(`📉 L'ultimo video è ${p<0?'sotto':'in linea con'} la tua media (${fmt(Ls.views)} view): cambio un elemento alla volta.`);
-    if(r!=null&&r<45){len=Math.max(15,Math.round(Math.min(len,(Ls.len||len)*0.7)));notes.push(`⏱️ Visione media al ${r.toFixed(0)}%: il prossimo dura meno (circa ${len} s) e va dritto al punto.`)}
-    if(Ls.full!==''&&Ls.full!=null&&+Ls.full<tgt)notes.push(`🏁 Visione completa ${Ls.full}% (i video che vanno meglio superano circa il ${tgt}%): chiudi con un colpo di scena negli ultimi 3 secondi.`);
-    if(e<4)notes.push('💬 Pochi commenti: finisci con una domanda a cui si risponde con una parola (A o B?).');
-    else if(+Ls.comm>=10)notes.push('💬 Il pubblico commenta: rispondi al commento più votato dentro il video, citandolo a schermo.');
-  }else notes.push('📥 Non ho ancora i numeri dell\'ultimo video: preparo il seguito sulla storia. Inserisci i dati dopo 48 ore per piani più precisi.');
-  if(!hk&&bestHk&&S.length>=3){hk=bestHk.k;notes.push(`🎣 Il tipo di hook che ti rende di più: <b>${esc(hk)}</b>.`)}
+    if(S.length>1&&p>=10){notes.push(`L'ultimo video ha fatto <b>${fmt(Ls.views)}</b> view, il ${p.toFixed(0)}% sopra la tua media: tieni la stessa formula.`);hk=Ls.hk;if(Ls.len)len=Math.round(Ls.len)}
+    else if(S.length>1)notes.push(`L'ultimo video è ${p<0?'sotto':'in linea con'} la tua media (${fmt(Ls.views)} view): cambio un elemento alla volta.`);
+    if(r!=null&&r<45){len=Math.max(15,Math.round(Math.min(len,(Ls.len||len)*0.7)));notes.push(`Visione media al ${r.toFixed(0)}%: il prossimo dura meno (circa ${len} s) e va dritto al punto.`)}
+    if(Ls.full!==''&&Ls.full!=null&&+Ls.full<tgt)notes.push(`Visione completa ${Ls.full}% (i video che vanno meglio superano circa il ${tgt}%): chiudi con un colpo di scena negli ultimi 3 secondi.`);
+    if(e<4)notes.push('Pochi commenti: finisci con una domanda a cui si risponde con una parola (A o B?).');
+    else if(+Ls.comm>=10)notes.push('Il pubblico commenta: rispondi al commento più votato dentro il video, citandolo a schermo.');
+  }else notes.push('Non ho ancora i numeri dell\'ultimo video: preparo il seguito sulla storia. Inserisci i dati dopo 48 ore per piani più precisi.');
+  if(!hk&&bestHk&&S.length>=3){hk=bestHk.k;notes.push(`Il tipo di hook che ti rende di più: <b>${esc(hk)}</b>.`)}
   // orario: la fascia che rende di più sul tuo canale
-  const ps=personalSlot(),when=ps.when||new Date(Date.now()+864e5);if(ps.why)notes.push(`⏰ Pubblico nella fascia che rende di più sul tuo canale: <b>${esc(ps.why)}</b>.`);
+  const ps=personalSlot(),when=ps.when||new Date(Date.now()+864e5);if(ps.why)notes.push(`Pubblico nella fascia che rende di più sul tuo canale: <b>${esc(ps.why)}</b>.`);
   const acts=nextActions(channelInsights());
   // hook proposti
   const topic=L.topic||(ser?ser.name:'');const tArt=topic?withArticle(topic,L.transcript||''):'';const prevHook=(L.title||'').replace(/\s+/g,' ').trim();
@@ -2356,9 +2594,9 @@ function genNext(){
    <h4 class="h4">Hook per il prossimo video</h4>${hooks.map((h,i)=>`<div class="hk ${i?'':'on'}" onclick="useNextHook(${i})">${esc(h.s)}<small>${esc(h.k)} · ${h.sc}/100 · tocca per usarlo nello Studio</small></div>`).join('')}
    <h4 class="h4">Scaletta · circa ${T} secondi</h4>${beats.map(b=>`<div class="fix"><span class="tag" style="white-space:nowrap">${b[0]}</span><div><b style="font-size:14px">${b[1]}</b><div style="font-size:13px;color:var(--mut)">${esc(b[2])}</div></div></div>`).join('')}
    <h4 class="h4">Caption</h4><div class="item" style="white-space:pre-wrap;padding-right:70px">${esc(capFull)}${copyBtn(capFull)}</div>
-   <div style="font-size:13.5px;margin-top:8px">⏰ Pubblica: <b>${slotLabel(when)}</b></div>
-   <button class="btn cy" onclick="crea(true)">🎬 Crea il video con Gennarino</button>
-   <div class="acts"><button class="btn sm" onclick="copy(window._nx.ask)">🤖 Copia la richiesta per Claude</button><button class="btn sm alt" onclick="copy(window._nx.plan)">📋 Copia il piano</button><button class="btn sm alt" onclick="nextToPlan()">📅 Metti nel piano</button></div>
+   <div style="font-size:13.5px;margin-top:8px">${icon('clock')} Pubblica: <b>${slotLabel(when)}</b></div>
+   <button class="btn cy" onclick="crea(true)">${icon('film')}Crea il video con Gennarino</button>
+   <div class="acts"><button class="btn sm" onclick="copy(window._nx.ask)">Copia la richiesta per Claude</button><button class="btn sm alt" onclick="copy(window._nx.plan)">Copia il piano</button><button class="btn sm alt" onclick="nextToPlan()">${icon('plan')}Metti nel piano</button></div>
    <small class="n">"Copia la richiesta per Claude" prepara un messaggio con piano e dati: incollalo in una chat con Claude per farti creare la puntata.</small>`;
   useNextHook(0,true)}
 function useNextHook(i,silent){const h=window._nx&&window._nx.hooks[i];if(!h)return;DB.nextHook=h.s;save();
@@ -2393,18 +2631,18 @@ async function renderOggi(){const el=$('#oggi');if(!el)return;if(vFile){el.style
   if(zero)eps=eps.filter(e=>!e.p.vince);else if(perVinc.length){const m=vt&&perVinc.find(e=>e.p.vince===vt.win);eps=eps.filter(e=>!e.p.vince).concat(m?[m]:[])}
   let [tipo,tit]=OGGI_TIPO[dow];if(zero&&(tipo==='risultato'||tipo==='regalo')){tipo='nessuno';tit='Niente app: nessun voto'}
   const slot=personalSlot().when,P=(DB.pending||[]).slice(-3),tnow=Date.now();
-  const btns=eps.length?eps.map(e=>`<button class="btn sm cy" onclick="creaCon({week:${e.i}})">🎬 ${esc(e.p.titolo||'Crea la puntata di oggi')}</button>`).join('')
-    :`<button class="btn sm cy" onclick="creaCon({tipo:'${tipo}'})">🎬 ${perVinc.length&&!vt?'Crea il risultato':tit}</button>`;
+  const btns=eps.length?eps.map(e=>`<button class="btn sm" onclick="creaCon({week:${e.i}})">${icon('film')}${esc(e.p.titolo||'Crea la puntata di oggi')}</button>`).join('')
+    :`<button class="btn sm" onclick="creaCon({tipo:'${tipo}'})">${icon('film')}${perVinc.length&&!vt?'Crea il risultato':tit}</button>`;
   const needVoti=(dow===3||dow===4||(dow===5&&!vt))&&!vt;
   el.style.display='';
-  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px"><h3 style="margin:0;flex:1">📅 Oggi · ${DAYS[dow]} ${now.getDate()}/${now.getMonth()+1}</h3>${cur?'<span class="tag">piano di Claude</span>':''}</div>
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px"><h3 style="margin:0;flex:1">Oggi, ${DAYS[dow]} ${now.toLocaleDateString('it-IT',{day:'numeric',month:'long'})}</h3>${cur?'<span class="tag">piano della settimana</span>':''}</div>
    <div style="font-size:13.5px;margin-top:6px">${eps.length?`Puntata del giorno: <b>${esc(eps[0].p.titolo||'')}</b>`:perVinc.length&&!vt?'Oggi esce il risultato: prima conta i voti, poi crea la puntata.':`Puntata consigliata: <b>${tit}</b>`}</div>
    ${zero&&(dow===4||dow===5)?'<div style="font-size:13px;margin-top:4px;color:var(--mut)">Nessuno ha votato: questa settimana non esce nessuna app. Gennarino lo dice nella puntata (una volta sola).</div>':''}
-   <div class="acts">${btns}${needVoti||perVinc.length&&!vt?'<button class="btn sm alt" onclick="contaVoti()">🗳️ Conta i voti</button>':''}</div>
-   ${vt?`<div style="font-size:13px;margin-top:4px">🗳️ ${zero?'Nessun voto questa settimana → <b>niente app</b>':`Voti contati: A ${vt.A} · B ${vt.B} · C ${vt.C} → <b>ha vinto la ${vt.win}</b>`} <button class="btn sm alt" style="margin:0 0 0 6px;padding:4px 10px" onclick="contaVoti()">Ricontrolla</button></div>`:''}
-   ${slot?`<div style="font-size:13px;margin-top:8px">⏰ Orario consigliato: <b>${slotLabel(slot)}</b> <button class="btn sm alt" style="margin:0 0 0 6px;padding:4px 10px" onclick="oggiPromemoria()">🔔 Ricordamelo</button></div>`:''}
+   <div class="acts">${btns}${needVoti||perVinc.length&&!vt?`<button class="btn sm alt" onclick="contaVoti()">${icon('vote')}Conta i voti</button>`:''}</div>
+   ${vt?`<div style="font-size:13px;margin-top:8px">${zero?'Nessun voto questa settimana → <b>niente app</b>':`Voti contati: A ${vt.A} · B ${vt.B} · C ${vt.C} → <b>ha vinto la ${vt.win}</b>`} <button class="btn sm alt" style="margin:0 0 0 6px;padding:4px 10px" onclick="contaVoti()">Ricontrolla</button></div>`:''}
+   ${slot?`<div style="font-size:13.5px;margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="color:var(--mut)">${icon('clock')}</span>Orario consigliato: <b>${slotLabel(slot)}</b> <button class="btn sm alt" style="padding:5px 10px" onclick="oggiPromemoria()">${icon('bell')}Ricordamelo</button></div>`:''}
    ${P.map(p=>{const c=p.pubAt+primaOra()*60e3,due=p.pubAt+48*3600e3;
-     return `<div style="font-size:13px;margin-top:6px">${tnow<c?`💬 <b>${esc(cutTxt(p.title,40))}</b>: rispondi ai commenti fino alle <b>${hhmm(new Date(c))}</b>`:tnow<due?`📊 <b>${esc(cutTxt(p.title,40))}</b>: dati da ${slotLabel(new Date(due))}`:`📊 <b>${esc(cutTxt(p.title,40))}</b>: <a href="#" onclick="goTab('grow');openStatForm(null,'${p.id}');return false">inserisci i dati adesso</a>`}</div>`}).join('')}`}
+     return `<div style="font-size:13px;margin-top:6px">${tnow<c?`<b>${esc(cutTxt(p.title,40))}</b>: rispondi ai commenti fino alle <b>${hhmm(new Date(c))}</b>`:tnow<due?`<b>${esc(cutTxt(p.title,40))}</b>: dati da ${slotLabel(new Date(due))}`:`<b>${esc(cutTxt(p.title,40))}</b>: <a href="#" onclick="goTab('grow');openStatForm(null,'${p.id}');return false">inserisci i dati adesso</a>`}</div>`}).join('')}`}
 function oggiPromemoria(){const slot=personalSlot().when;if(!slot){toast('Nessun orario disponibile');return}const pad=n=>String(n).padStart(2,'0');
   const date=`${slot.getFullYear()}-${pad(slot.getMonth()+1)}-${pad(slot.getDate())}`,time=hhmm(slot);
   if(DB.posts.some(p=>p.date===date&&p.time===time)){toast('Promemoria già messo ✓');return}
@@ -2415,6 +2653,7 @@ try{history.scrollRestoration='manual'}catch(_){}
 fitPhone();load();normDB();fillNiches();
 // un risultato del voto rimasto senza rete si manda al sito appena si riapre Spinta
 if(DB.votiDaInviare)fetch('https://ntfy.sh/spinta-bancariello-voti-k7q2m9x4',{method:'POST',body:DB.votiDaInviare}).then(r=>{if(r.ok){DB.votiDaInviare=null;DB.votiInviati=Date.now();save()}}).catch(()=>{});$('#p-date').value=todayISO();applyRules();renderSeriesSel();renderPlan();renderStats();renderReady();renderOggi();scheduleNotifs();updateRules(false);
+if(window.ttAvvio)ttAvvio();
 document.querySelectorAll('.stp-h').forEach(h=>{h.setAttribute('role','button');h.tabIndex=0;h.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();h.click()}})});
 if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>

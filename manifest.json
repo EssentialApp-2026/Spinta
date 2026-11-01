@@ -1,14 +1,14 @@
 {
   "name": "Spinta · Studio video",
   "short_name": "Spinta",
-  "description": "Analizza e migliora i tuoi video TikTok prima di pubblicarli, e impara dai risultati del tuo canale.",
+  "description": "Prepara i tuoi video TikTok, pianifica le uscite e segui i numeri del tuo canale, letti direttamente da TikTok.",
   "lang": "it",
   "start_url": "./spinta.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#08080d",
-  "theme_color": "#08080d",
+  "background_color": "#0d1524",
+  "theme_color": "#0d1524",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
