@@ -12,13 +12,20 @@ const CR_FONT='-apple-system,"Segoe UI",Roboto,sans-serif';
 // la settimana della serie: si vota nei commenti fino a mercoledì sera, il venerdì l'app più votata va sul banco, gratis
 function crNextDow(dow){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+((dow-d.getDay()+7)%7));return d}   // oggi compreso
 const CR_GIORNI=['DOMENICA','LUNEDÌ','MARTEDÌ','MERCOLEDÌ','GIOVEDÌ','VENERDÌ','SABATO'];
+// dopo la creazione il video passa dallo Studio: tutto da solo, passo passo, oppure resta com'è
+const CR_STUDIO={auto:{n:'Automatico',d:'Lo Studio fa da solo Spinta Score, hook, sottotitoli, caption e montaggio, poi esporta: a te resta solo pubblicare.'},
+  manuale:{n:'Manuale',d:'Lo Studio si apre con tutto già pronto e controlli tu ogni passo prima di esportare.'},
+  no:{n:'Nessuno',d:'Il video resta com\'è e lo pubblichi direttamente da qui.'}};
+function crStudioShow(k){k=CR_STUDIO[k]?k:'auto';const h=$('#cr-studio');if(!h)return;h.value=k;
+  document.querySelectorAll('#cr-studio-seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===k));$('#cr-studio-d').textContent=CR_STUDIO[k].d}
+function crStudio(k){crStudioShow(k);crSaveSet()}
 const CR_TIPI={presentazione:'Presentazione della serie',idee:'Tre idee al voto',risultato:'Risultato del voto',regalo:'Il regalo del venerdì',nessuno:'Nessun voto: niente app',risposta:'Risposta a un commento',libera:'Libera (dal piano)'};
-function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0,stile:'spiegone'},d);
-  s.idee=Object.assign({A:'',B:'',C:''},d.idee||{});delete s.goal;delete s.likes;return s}
+function crSet(){const d=DB.creator||{};const s=Object.assign({voice:'riccardo',fx:'leggero',speed:'tiktok',subs:true,bar:true,light:false,sfx:true,music:true,bolla:true,com:'',comUser:'',tipo:'idee',vince:'A',var:0,stile:'spiegone',studio:'auto'},d);
+  s.idee=Object.assign({A:'',B:'',C:''},d.idee||{});delete s.goal;delete s.likes;if(!CR_STUDIO[s.studio])s.studio='auto';return s}
 function crSaveSet(){const v=id=>$('#'+id);const s=crSet();
   DB.creator=Object.assign(s,{voice:v('cr-voice').value,fx:v('cr-fx').value,speed:v('cr-speed').value,subs:v('cr-subs').checked,bar:v('cr-bar').checked,light:v('cr-light').checked,
     sfx:v('cr-sfx').checked,music:v('cr-music').checked,bolla:v('cr-bolla').checked,stile:v('cr-stile').value,com:v('cr-com').value.trim().slice(0,300),comUser:v('cr-cuser').value.trim().replace(/^@+/,'').slice(0,40),
-    tipo:v('cr-tipo').value,vince:v('cr-vince').value,idee:{A:v('cr-iA').value.trim(),B:v('cr-iB').value.trim(),C:v('cr-iC').value.trim()}});save()}
+    tipo:v('cr-tipo').value,vince:v('cr-vince').value,studio:CR_STUDIO[v('cr-studio').value]?v('cr-studio').value:'auto',idee:{A:v('cr-iA').value.trim(),B:v('cr-iB').value.trim(),C:v('cr-iC').value.trim()}});save()}
 
 /* ---------- finestra del creatore ---------- */
 function crInject(){if($('#m-crea'))return;
@@ -50,6 +57,10 @@ function crInject(){if($('#m-crea'))return;
    <div><label>&nbsp;</label><button class="btn alt" id="cr-listen" style="margin:0" onclick="crListen()">▶︎ Ascolta la prima frase</button></div></div>
   <div class="grp" style="margin-top:12px">${opt('cr-subs','Sottotitoli parola per parola, con le parole chiave in giallo',true)}${opt('cr-sfx','Effetti sonori',true)}${opt('cr-music','Musica di sottofondo leggera, creata dal telefono (niente diritti)',true)}${opt('cr-bar','Barra di avanzamento',true)}${opt('cr-light','Modalità leggera (720p) per telefoni lenti',false)}</div>
   <details id="cr-lib"><summary>Libreria del repository</summary><div id="cr-libin" style="margin-top:8px">Carico…</div></details>
+  <label>Prima di pubblicare · passa dallo Studio</label>
+  <div class="seg" id="cr-studio-seg" style="margin-bottom:6px">${Object.entries(CR_STUDIO).map(([k,v])=>`<button type="button" data-v="${k}" onclick="crStudio('${k}')">${v.n}</button>`).join('')}</div>
+  <input type="hidden" id="cr-studio" value="auto"><div id="cr-studio-d" style="font-size:13px"></div>
+  <small class="n">Lo Studio non riscrive quello che il creatore ha già messo nel video (hook, sottotitoli, PARTE, finale, barra): controlla, aggiunge quello che manca e prepara la pubblicazione.</small>
   <button class="btn" id="cr-go" onclick="crMake()">🎬 Crea il video</button>
   <div id="cr-out"></div>
   <small class="n">Voce: Piper (Rhasspy), modello italiano «Riccardo» · motore ONNX Runtime. La prima volta scarica circa 50 MB, poi resta nel telefono.</small>
@@ -59,7 +70,7 @@ function crInject(){if($('#m-crea'))return;
 function crClose(){if(CR.busy&&!confirm('Il video è ancora in preparazione: chiudere e annullare?'))return;if(CR.busy)CR.cancel=true;closeModal('m-crea')}
 function crOpen(fromPlan){crInject();const s=crSet();
   $('#cr-voice').value=s.voice;$('#cr-fx').value=s.fx;$('#cr-speed').value=s.speed;$('#cr-subs').checked=s.subs;$('#cr-bar').checked=s.bar;$('#cr-light').checked=s.light;
-  $('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-stile').value=s.stile==='classico'?'classico':'spiegone';$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
+  crStudioShow(s.studio);$('#cr-sfx').checked=s.sfx!==false;$('#cr-music').checked=s.music!==false;$('#cr-bolla').checked=s.bolla!==false;$('#cr-stile').value=s.stile==='classico'?'classico':'spiegone';$('#cr-com').value=s.com||'';$('#cr-cuser').value=s.comUser||'';
   {const sr=curSeries(),pb=$('#cr-pbox');if(pb){pb.style.display=sr?'':'none';$('#cr-ep').value=sr?sr.ep:''}}$('#cr-tipo').value=fromPlan?'libera':(CR_TIPI[s.tipo]?s.tipo:'idee');$('#cr-vince').value=s.vince||'A';['A','B','C'].forEach(k=>$('#cr-i'+k).value=s.idee[k]||'');crBoxes();
   if(fromPlan||!$('#cr-txt').value.trim())crFill(true);
   openModal('m-crea');crPrev();crLibLoad().then(crLibShow);crWeekLoad().then(crWeekShow)}
@@ -909,7 +920,6 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
   const name=(ser?`${toTag(ser.name).slice(1)}-parte-${ep}`:'gennarino')+'.'+ext;
   [CR.url,CR.cover].forEach(u=>{if(u)URL.revokeObjectURL(u)});CR.url=URL.createObjectURL(out.blob);CR.cover=out.cover?URL.createObjectURL(out.cover):null;
   const file=new File([out.blob],name,{type:out.type});CR.file=file;window._spintaFile=file;
-  file.spintaCrea={subs:!!s.subs,hook:st.hook,end:st.endTxt,part:!!ser,bar:!!s.bar};   // lo Studio sa già cosa c'è nel video
   const tags=[ser?ser.tag:null,...tagsFor('',['gennarino','bancarella'],'tech').split(' ')].filter(Boolean);
   const tg=[...new Set(tags)].slice(0,RULES.hashtag.max).join(' '),pre=ser?`Parte ${ep} · `:'',app=st.app||'';
   const CAP={idee:`${pre}Quale app regalo venerdì? Votate A, B o C nei commenti, fino a mercoledì 👇`,
@@ -919,20 +929,30 @@ function crResult(out,st,lines,s){const ser=st.ser,ep=st.ep,ext=out.type.include
     nessuno:`${pre}Questa settimana niente app: nei commenti non ha votato nessuno 😔 Lunedì tre idee nuove, basta una lettera nei commenti per decidere voi 👇`};
   const cap=CAP[st.tipo]?`${CAP[st.tipo]}\n\n${tg}`:((window._nx&&window._nx.raw&&window._nx.cap&&ser&&window._nx.raw.ep===ep&&crNoBait(window._nx.cap))?window._nx.cap:`${pre}${st.hook} 👇\n\n${tg}`);window._spintaCap=cap;
   const hookW=st.hook.split(/\s+/).filter(Boolean).length,shots=st.items.length+st.items.filter(x=>x.shot).length;
-  DB.lastPkg={id:uid(),at:Date.now(),title:cutTxt(st.hook,90),cap,hk:(((window._nx&&window._nx.hooks)||[]).find(h=>crClean(h.s)===st.hook)||{k:'Personalizzato'}).k,
+  const hk=(((window._nx&&window._nx.hooks)||[]).find(h=>crClean(h.s)===st.hook)||{k:'Personalizzato'}).k,mode=CR_STUDIO[s.studio]?s.studio:'auto';
+  // per lo Studio: cosa c'è già nel video (così non lo scrive due volte), copione con i tempi delle frasi, caption e copertina
+  file.spintaCrea={subs:!!s.subs,hook:st.hook,end:st.endTxt,part:!!ser,bar:!!s.bar,hk,cap,cover:out.cover||null,niche:'tech',mode,
+    testo:lines.map(l=>crClean(l)).join(' '),topic:(st.tipo==='risultato'||st.tipo==='regalo')&&app?app:st.tipo==='libera'?'':'app gratis',
+    righe:st.items.flatMap(it=>(it.pages||[]).map(pg=>({s:Math.round(pg.s*100)/100,e:Math.round(pg.e*100)/100,t:pg.w.join(' ')})))};
+  DB.lastPkg={id:uid(),at:Date.now(),title:cutTxt(st.hook,90),cap,hk,
     len:+st.total.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep}:null,score:null,transcript:lines.join(' ').slice(0,900),topic:'',end:st.endTxt,niche:'tech',made:'creatore',
     f:{lead:0.2,pause:0,topicAt:null,pace:Math.round(shots/Math.max(1,st.total)*100)/10,hookW,subs:!!s.subs,end:true,capQ:/\?|comment|scrivete|ditemelo|dimmi/i.test(cap)},miss:[]};save();
+  // il video passa dallo Studio: da solo (auto) o passo passo (manuale); con «nessuno» resta qui, pronto da pubblicare
+  if(mode!=='no'){crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video creato</h3>
+     <div style="color:var(--mut);font-size:13px;margin-top:4px">${mode==='auto'?'Lo passo allo Studio: Spinta Score, caption e montaggio da solo, poi lo esporta per pubblicarlo.':'Lo passo allo Studio: controlli tu Spinta Score, caption e montaggio, poi esporti e pubblichi.'}</div>
+     <div class="acts"><button class="btn sm" onclick="crToStudio('${mode}')">Apri lo Studio</button></div></div>`);
+    setTimeout(()=>{if(CR.file===file&&$('#m-crea')&&$('#m-crea').classList.contains('on'))crToStudio(mode)},700);return}
   const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));const slot=personalSlot().when;
   crSay(`<div class="card" style="margin-top:12px;background:var(--card2)"><h3>✅ Video pronto</h3>${CR.vociInfo?(CR.vociInfo.vecchia?`<div style="font-size:12.5px;color:var(--warn,#b45309);margin:-4px 0 8px">🎙️ Voce vecchia: ${CR.vociInfo.tot-CR.vociInfo.pronte} frasi non hanno la voce nuova (es. «${esc(cutTxt(CR.vociInfo.manca[0],60))}»). Per avere la voce nuova in tutto il video usa le frasi del piano così come sono, oppure chiedi a Claude le voci nuove per queste frasi. <button class="btn sm alt" onclick="copy(window._crManca||'');toast('Frasi copiate')">Copia le frasi senza voce</button></div>`:`<div style="font-size:12.5px;color:var(--mut);margin:-4px 0 8px">🎙️ Voce nuova di Gennarino in tutte le frasi</div>`):''}
    <div style="color:var(--mut);font-size:12.5px;margin-top:4px">${st.total.toFixed(1)} s · ${(out.blob.size/1048576).toFixed(1)} MB · ${lines.length} frasi</div>
    <video class="vid" src="${CR.url}" controls playsinline></video>
    <div class="acts"><a class="btn sm" href="${CR.url}" download="${name}">⬇︎ Scarica</a>${canShare?'<button class="btn sm cy" onclick="shareFinal()">📤 Condividi su TikTok</button>':''}
-    <button class="btn sm alt" onclick="crToStudio()">📊 Spinta Score</button></div>
+    <button class="btn sm alt" onclick="crToStudio('auto')">✨ Migliora nello Studio</button><button class="btn sm alt" onclick="crToStudio('manuale')">✋ Passo passo</button></div>
    <label>Caption pronta</label><div class="item" style="white-space:pre-wrap;padding-right:70px">${esc(cap)}${copyBtn(cap)}</div>
    ${CR.cover?`<label>Copertina</label><img src="${CR.cover}" style="width:46%;display:block;margin:6px auto;border-radius:12px" alt="Copertina"><div class="acts" style="justify-content:center"><a class="btn sm alt" href="${CR.cover}" download="gennarino-copertina.jpg">⬇︎ Copertina</a></div>`:''}
    ${ext==='webm'?'<small class="n">Formato WebM: dal sito di TikTok si carica senza problemi; se l\'app del telefono non lo vede, convertilo in MP4 (es. con CapCut).</small>':''}
    <div class="acts">${slot?`<button class="btn sm alt" onclick="planFromPkg()">📅 Programma (${esc(slotLabel(slot))})</button>`:''}<button class="btn sm pub-btn" onclick="markPublished('cr-pub')">✅ L'ho pubblicato</button></div>
    <div id="cr-pub"></div><small class="n">Ricordati l'etichetta "Contenuto generato con AI" su TikTok: voce e personaggio sono creati al computer.</small></div>`);
   setTimeout(()=>{const o=$('#cr-out');if(o)o.scrollIntoView({behavior:'smooth',block:'start'})},100)}
-function crToStudio(){if(!CR.file)return;closeModal('m-crea');goTab('studio');loadVideoFile(CR.file)}
+function crToStudio(mode){if(!CR.file)return;if(CR.file.spintaCrea)CR.file.spintaCrea.mode=mode==='auto'?'auto':'manuale';closeModal('m-crea');goTab('studio');loadVideoFile(CR.file)}
 try{crVociLoad()}catch(_){}

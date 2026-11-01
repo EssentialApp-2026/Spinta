@@ -133,6 +133,7 @@ label.opt.dis{opacity:.45}
 .hk.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
 .hk small{display:block;color:var(--mut);font-weight:500;font-size:12px}
 .step{display:flex;gap:8px;font-size:14px;padding:4px 0}
+.st-auto{border-color:rgba(47,227,220,.45)}
 details{margin-top:10px;background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--mut)}
 summary{cursor:pointer;color:var(--txt);font-weight:700}
 .vid{width:100%;max-height:60vh;border-radius:14px;background:#000;display:block;margin-top:12px}
@@ -333,6 +334,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
     <button class="btn cy" style="margin-top:14px" onclick="crea()"><svg class="ic" aria-hidden="true"><use href="#i-film"/></svg>Crea un video con Gennarino</button>
     <small class="n" style="text-align:center">Scrive la puntata, le dà la voce e monta il video da solo.</small>
   </div>
+  <div class="card st-auto" id="st-auto" style="display:none"></div>
 
   <article class="stp open" id="s1" data-state="ready">
     <div class="stp-h" onclick="stpToggle(1)"><span class="num">1</span><div><h3>Carica il video</h3><small id="s1-sum">Dalla galleria o dai file</small></div><span class="chev">⌄</span></div>
@@ -600,7 +602,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt danger" onclick="wipeData()"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 3.0.2 · indicazioni aggiornate al <span id="set-rules"></span> · <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a href="termini.html" target="_blank" rel="noopener">Termini</a></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 3.1.0 · indicazioni aggiornate al <span id="set-rules"></span> · <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a href="termini.html" target="_blank" rel="noopener">Termini</a></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -1567,6 +1569,7 @@ function loadVideoFile(f){if(!f)return;
   if(vURL)URL.revokeObjectURL(vURL);vFile=f;vURL=URL.createObjectURL(f);VA=null;freeOut();renderReady();
   $('#v-name').textContent=`📄 ${f.name} · ${(f.size/1048576).toFixed(1)} MB`;
   const p=$('#v-prev');delete p.dataset.released;p.src=vURL;p.style.display='block';$('#hero').style.display='none';
+  const sa=$('#st-auto');sa.innerHTML='';sa.style.display='none';
   ['v-score','v-auto','v-fix','v-out'].forEach(id=>$('#'+id).innerHTML='');
   [2,3,4,5].forEach(n=>{$('#s'+n).classList.remove('open');stp(n,'locked')});
   stpSum(2,'Quanto trattiene chi guarda');stpSum(3,'Scritti dal tuo parlato');stpSum(4,'Tagli, immagine, audio, testi');stpSum(5,'Video, copertina, caption e orario');
@@ -1667,11 +1670,17 @@ function renderVideoReport(){
   if(L<0.3||L>0.75||C<0.13||S<0.12)sug.light=1;
   if(VA.static.length&&dur>8)sug.speed=1;
   sug.hook=!VA.topText;sug.bar=dur>=20;
+  // video del creatore: tempi, voce e colori li ha decisi il creatore (tagliare pause o accelerare sfaserebbe scene e finale,
+  // la luce cambierebbe i colori delle grafiche): queste correzioni restano spente, chi vuole le accende nel passo 4
+  if(VA.made){sug.trim=0;sug.pause=0;sug.speed=0;sug.light=0}
   VA.sug=sug;VA.pkg={topic:'',topicOk:false,kw:[],kwSure:[],niche:'generale'};
   [2,3,4,5].forEach(n=>stp(n,'ready'));
-  renderAutoCard();renderFixPanel();renderScore();
+  renderAutoCard();renderFixPanel();
+  if(VA.made&&VA.made.testo)creaPrefill();
+  renderScore();
   stp(1,'done');stpSum(1,`${dur.toFixed(1)} s · ${W}×${H}${curSeries()?' · '+curSeries().name+' P'+curSeries().ep:''}`);
   $('#s1').classList.remove('open');goStep(2);
+  if(VA.made)creaStudio();
 }
 function staticZones(){const F=VA.frames.filter(f=>f.t>0.3);if(F.length<3)return[];const md=median(F.map(f=>f.diff));const lim=Math.max(0.006,md*0.45);const out=[];let st=null,lastQ=null;
   F.forEach((f,i)=>{const quiet=f.diff<lim;if(quiet){if(st==null)st=f.t;lastQ=f.t}
@@ -1812,6 +1821,7 @@ async function runExport(o,v0,ac,src,dest,mix){
     <button class="btn alt" onclick="cancelExport&&cancelExport()">Annulla</button></div>`};
   const cleanup=()=>{wakeOff(wk);if(onVis)document.removeEventListener('visibilitychange',onVis);tracks.forEach(t=>t.stop());try{ac.close()}catch(_){}[vA,vB].forEach(x=>{if(!x)return;x.pause();x.removeAttribute('src');x.load();x.remove()});exporting=false;cancelExport=null;const b=$('#o-go');if(b)b.disabled=false};
   const fail=err=>{if(finished&&!err)return;finished=true;try{rec&&rec.state!=='inactive'&&rec.stop()}catch(_){}cleanup();restorePrev();
+    if(VA&&VA.auto)autoPasso(4,'warn','Esportazione non riuscita: nel passo 5 c\'è il motivo e il pulsante per riprovare');
     const det=err?`${err.name||'Errore'}${err.message?': '+err.message:''}`:'il registratore non ha prodotto dati';
     if(err&&err.code!=null){out.innerHTML=`<div class="card">❌ <b>Il telefono non è riuscito ad aprire il video per crearlo.</b>
       <div style="color:var(--mut);font-size:13px;margin-top:6px;line-height:1.5">L'analisi l'ha letto, quindi il video va bene: succede soprattutto con i video HEVC (H.265), che molti telefoni aprono uno alla volta. Chiudi le altre app (fotocamera, galleria, TikTok) e riprova.</div>
@@ -1835,7 +1845,8 @@ async function runExport(o,v0,ac,src,dest,mix){
   let cancelled=false;cancelExport=()=>{cancelled=true};ui(0);
   const prepPlayer=p=>{p.pause();p.playbackRate=rate;try{p.preservesPitch=true;p.webkitPreservesPitch=true}catch(_){}};
   const kill=p=>{if(!p)return;try{p.pause();p.removeAttribute('src');p.load();p.remove()}catch(_){}};
-  const quit=()=>{finished=true;cleanup();restorePrev();out.innerHTML='';toast('Annullato')};
+  const annullato=()=>{if(VA&&VA.auto)autoPasso(4,'warn','Esportazione annullata: quando vuoi tocca «Crea il video finale» nel passo 5')};
+  const quit=()=>{finished=true;cleanup();restorePrev();out.innerHTML='';toast('Annullato');annullato()};
   try{
     // lettore principale: se il telefono non lo apre, lo chiudo, aspetto che liberi il decodificatore e riprovo una volta
     try{await waitMeta(v,12000)}
@@ -1859,7 +1870,7 @@ async function runExport(o,v0,ac,src,dest,mix){
     const chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
     rec.onerror=e=>fail(e.error||e);
     const stop=cancel=>{if(finished)return;finished=true;[vA,vB].forEach(x=>x&&x.pause());
-      rec.onstop=()=>{cleanup();if(cancel){restorePrev();out.innerHTML='';toast('Annullato');return}
+      rec.onstop=()=>{cleanup();if(cancel){restorePrev();out.innerHTML='';toast('Annullato');annullato();return}
         if(!chunks.length){finished=false;fail(null);return}
         const type=((rec.mimeType||mime||'video/webm').split(';')[0])||'video/webm';let blob=new Blob(chunks,{type});
         const done=b=>showResult(b,type,o,plan);
@@ -1889,9 +1900,9 @@ async function runExport(o,v0,ac,src,dest,mix){
 }
 function freeOut(){['_resURL','_covURL'].forEach(k=>{if(window[k]){URL.revokeObjectURL(window[k]);window[k]=null}});window._spintaFile=null;window._spintaCover=null}
 /* il pacchetto del video finale resta salvato: se Android chiude l'app mentre pubblichi su TikTok, al ritorno lo ritrovi */
-function pkgFromCurrent(o,plan,cap){const P=VA.pkg||{},h=P.hooks?P.hooks[P.sel||0]:null,ser=o.series;
-  return{id:uid(),at:Date.now(),title:cutTxt((o.hookTxt||(vFile?vFile.name.replace(/\.[^.]+$/,''):'')||'Video').replace(/\s*\n\s*/g,' '),90),cap,
-    hk:!o.hookTxt?'Nessuno':P.edited||!h?'Personalizzato':h.k,len:+plan.outDur.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep:ser.ep}:null,
+function pkgFromCurrent(o,plan,cap){const P=VA.pkg||{},h=P.hooks?P.hooks[P.sel||0]:null,ser=o.series,mk=VA.made||{};
+  return{id:uid(),at:Date.now(),title:cutTxt((o.hookTxt||mk.hook||(vFile?vFile.name.replace(/\.[^.]+$/,''):'')||'Video').replace(/\s*\n\s*/g,' '),90),cap,
+    hk:o.hookTxt?(P.edited||!h?'Personalizzato':h.k):mk.hook?(mk.hk||'Personalizzato'):'Nessuno',len:+plan.outDur.toFixed(1),series:ser?{id:ser.id,name:ser.name,ep:ser.ep}:null,...(mk.hook?{made:'creatore'}:{}),
     score:VA.score?VA.score.total:null,transcript:(VA.transcript||'').slice(0,900),topic:P.topicOk?P.topic:'',end:o.end?o.endTxt:'',niche:($('#a-niche')||{}).value||'',
     f:videoFeatures(o,plan,cap),miss:VA.score?VA.score.items.filter(i=>i.pts<i.max*0.8).sort((a,b)=>(b.max-b.pts)-(a.max-a.pts)).slice(0,4).map(i=>i.k):[]}}
 function showResult(blob,type,o,plan){
@@ -1919,6 +1930,7 @@ function showResult(blob,type,o,plan){
    <div id="pub-next"></div></div>`;
   stp(5,'done');stpSum(5,`Pronto · ${plan.outDur.toFixed(1)} s · ${(blob.size/1048576).toFixed(1)} MB`);
   makeCover();
+  if(VA&&VA.auto)autoFine(done,plan,blob);
 }
 function nextSlot(){const now=new Date();
   for(let d=0;d<8;d++){const day=new Date(now);day.setDate(now.getDate()+d);
@@ -1967,7 +1979,10 @@ function exportFollowICS(id){const p=DB.pending.find(x=>x.id===id);if(!p){toast(
     return ['BEGIN:VEVENT','UID:'+p.id+'-'+i+'@spinta','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(s),'DTEND:'+icsDate(e),'SUMMARY:'+(t+p.title).replace(/[,;\r\n]/g,' ').slice(0,120),'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:Spinta','END:VALARM','END:VEVENT'].join('\r\n')}).join('\r\n');
   downloadBlob(new Blob([['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Spinta//IT',ev,'END:VCALENDAR'].join('\r\n')],{type:'text/calendar'}),'spinta-promemoria.ics');toast('Aprilo per aggiungerlo al calendario')}
 async function makeCover(){
-  if(!VA){restorePrev();return}const me=VA,url0=vURL;const o=readOpts();const prev=$('#v-prev'),rel=prev.dataset.released==='1';let t;
+  if(!VA){restorePrev();return}const me=VA,url0=vURL;const o=readOpts();
+  // video del creatore: la sua copertina ha già Gennarino con l'hook, nello stile della puntata (se l'immagine non è cambiata)
+  if(me.made&&me.made.cover&&!o.hookTxt&&!o.crop&&!o.light){coverOut(me.made.cover,'dal creatore, con l\'hook',true);restorePrev();return}
+  const prev=$('#v-prev'),rel=prev.dataset.released==='1';let t;
   const pt=rel?(window._prevT||0):prev.currentTime,pp=rel?window._prevPaused!==false:prev.paused;
   if(pp&&pt>0.05)t=pt;
   else{const cand=me.frames.filter(f=>f.t>0.4&&f.luma>0.22&&f.luma<0.82);const pool=cand.length?cand:me.frames;
@@ -1978,18 +1993,20 @@ async function makeCover(){
     if(o.light&&FILTER_OK)ctx.filter=me.filter;ctx.drawImage(v,sx,sy,sw,sh,0,0,W,H);ctx.filter='none';
     const txt=o.hookTxt;if(txt){const gr=ctx.createLinearGradient(0,H*0.3,0,H*0.6);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.5,'rgba(0,0,0,.35)');gr.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gr;ctx.fillRect(0,H*0.3,W,H*0.3);drawCaption(ctx,txt,W,H,0.45,1)}
     const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.92));if(VA!==me||!blob)return;
-    if(window._covURL)URL.revokeObjectURL(window._covURL);const url=URL.createObjectURL(blob);window._covURL=url;
-    const file=new File([blob],'spinta-copertina.jpg',{type:'image/jpeg'});window._spintaCover=file;
-    const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
-    ($('#v-cover')||$('#v-out')).insertAdjacentHTML('beforeend',`<div style="margin-top:14px"><h3 style="font-size:16px">🖼️ Copertina (a ${t.toFixed(1)} s)</h3>
-      <img src="${url}" style="width:60%;display:block;margin:12px auto;border-radius:12px" alt="Copertina">
-      ${txt?'':'<small class="n">Scrivi un testo hook nel campo qui sopra per avere il titolo sulla copertina.</small>'}
-      <div class="acts"><a class="btn sm" href="${url}" download="spinta-copertina.jpg" style="text-decoration:none">⬇︎ Scarica</a>
-      ${canShare?'<button class="btn sm cy" onclick="navigator.share({files:[window._spintaCover]}).catch(()=>{})">📤 Condividi</button>':''}</div>
-      <small class="n">Su TikTok: Modifica copertina → Carica dalla galleria, se la tua versione lo permette. Altrimenti mettila come primo fotogramma o pubblicala come post foto.</small></div>`);
+    coverOut(blob,`a ${t.toFixed(1)} s`,!!txt);
   }catch(_){if(VA===me)toast('Copertina non riuscita')}
   finally{v.removeAttribute('src');v.load();v.remove();restorePrev()}
 }
+function coverOut(blob,quando,conTesto){
+  if(window._covURL)URL.revokeObjectURL(window._covURL);const url=URL.createObjectURL(blob);window._covURL=url;
+  const file=new File([blob],'spinta-copertina.jpg',{type:'image/jpeg'});window._spintaCover=file;
+  const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
+  ($('#v-cover')||$('#v-out')).insertAdjacentHTML('beforeend',`<div style="margin-top:14px"><h3 style="font-size:16px">🖼️ Copertina (${esc(quando)})</h3>
+    <img src="${url}" style="width:60%;display:block;margin:12px auto;border-radius:12px" alt="Copertina">
+    ${conTesto?'':'<small class="n">Scrivi un testo hook nel campo qui sopra per avere il titolo sulla copertina.</small>'}
+    <div class="acts"><a class="btn sm" href="${url}" download="spinta-copertina.jpg" style="text-decoration:none">⬇︎ Scarica</a>
+    ${canShare?'<button class="btn sm cy" onclick="navigator.share({files:[window._spintaCover]}).catch(()=>{})">📤 Condividi</button>':''}</div>
+    <small class="n">Su TikTok: Modifica copertina → Carica dalla galleria, se la tua versione lo permette. Altrimenti mettila come primo fotogramma o pubblicala come post foto.</small></div>`)}
 
 /* ---------- REGOLE ALGORITMO (aggiornabili da spinta-regole.json) ---------- */
 const DEFAULT_RULES={"version": "2026.10.04", "aggiornato": "4 ottobre 2026", "prossimoAggiornamento": "lunedì 12 ottobre", "durata": {"min": 10, "ideale": [15, 90], "max": 180}, "hashtag": {"max": 5, "larghi": 0, "evitare": ["#fyp", "#foryou", "#viral", "#perte", "#neiperte"]}, "hookSecondi": 3, "pausaMin": 0.6, "obiettivi": {"completamento": 70, "rewatch": 15, "frequenza": "3-5 video a settimana", "primaOraMinuti": 30}, "orari": {"0": ["11:00", "18:00", "20:30"], "1": ["12:30", "19:00", "20:00"], "2": ["12:30", "19:00", "20:00"], "3": ["13:00", "19:00", "20:00"], "4": ["12:30", "18:30", "20:00"], "5": ["13:00", "18:00", "21:00"], "6": ["11:30", "15:00", "20:30"]}, "segnali": ["Tempo di visione e percentuale di visione completa (i video che vanno meglio superano circa il 70%)", "Rewatch: oltre il 15-20% è indicato come segnale forte", "Condivisioni", "Commenti lunghi e veloci nella prima ora", "Nuovi follower dal video", "Salvataggi", "Like (il segnale più debole)"], "novita": ["Secondo le analisi i video più lunghi (60-180 s) rendono di più solo se la visione completa resta alta: un video da 15 s visto tutto batte uno da 60 s visto a metà.", "Secondo le analisi più recenti, i video che vanno meglio superano circa il 70% di visione completa.", "TikTok funziona sempre più come motore di ricerca: dì l'argomento a voce, scrivilo a schermo e nella caption.", "Secondo le analisi, hashtag generici come #fyp e #viral non aiutano più: usa da 1 a 5 hashtag specifici della tua nicchia.", "L'audio originale (la tua voce) sembra favorito; i suoni di tendenza aiutano soprattutto se li usi entro 24-48 ore da quando esplodono.", "Interazione nella prima ora: rispondi ai commenti per 30 minuti dopo la pubblicazione.", "Le domande nel video e in caption portano più commenti: chiedi un'opinione, non un like.", "Le serie a puntate e i format ripetibili fanno tornare il pubblico sul profilo.", "Restare in una nicchia precisa rende più dei profili che parlano di tutto.", "Costanza: meglio 3-5 video a settimana regolari che tanti video in pochi giorni.", "Niente filigrane di altre app; i contenuti creati con l'AI vanno etichettati."], "tendenze": {"settimana": "28 settembre – 4 ottobre 2026", "format": [{"nome": "Serie a tema", "come": "Puntate numerate con lo stesso inizio e lo stesso personaggio: chi trova una puntata guarda le altre."}, {"nome": "Video-domanda", "come": "Apri o chiudi con una domanda diretta al pubblico: le analisi riportano circa il 26% di commenti in più."}, {"nome": "Problema → soluzione", "come": "Mostra subito un problema reale del tuo pubblico e risolvilo entro il video."}, {"nome": "Storytelling 60-90 s", "come": "Una mini-storia con posta in gioco, sviluppo e finale chiaro: i video più lunghi crescono se tengono fino alla fine."}, {"nome": "Format ripetibile", "come": "Stessa struttura ogni volta (es. «Giorno X di Y», «Valuto i vostri…»): l'algoritmo e il pubblico la riconoscono."}], "hashtag": [], "suoni": [], "nota": "TikTok non rende pubblici i dati sui suoni e gli hashtag di tendenza in Italia: per quelli del momento apri il TikTok Creative Center dal tuo account."}, "fonti": [{"titolo": "Hootsuite – How the TikTok algorithm works in 2026", "url": "https://blog.hootsuite.com/tiktok-algorithm/"}, {"titolo": "Socialync – TikTok Algorithm 2026: the 7 signals (agg. luglio 2026)", "url": "https://www.socialync.io/blog/tiktok-algorithm-2026-what-works-now"}, {"titolo": "Metricool – TikTok Trends 2026 (agg. agosto 2026)", "url": "https://metricool.com/tiktok-trends/"}, {"titolo": "DeRev – Algoritmo di TikTok 2026", "url": "https://derev.com/2026/07/algoritmo-tiktok-2026/"}, {"titolo": "OpusClip – TikTok's new algorithm 2026", "url": "https://www.opus.pro/blog/tiktoks-new-algorithm-2026"}], "checklistExtra": ["Etichetta \"Contenuto generato con AI\" se usi voci, immagini o personaggi creati con l'AI", "Nessuna filigrana di altre app (CapCut, Instagram…)", "Hashtag specifici della nicchia, niente #fyp o #viral"]};
@@ -2136,11 +2153,11 @@ async function pcm16k(ab){const oc=new OfflineAudioContext(1,Math.ceil(ab.durati
 
 function renderAutoCard(){
   const goals=[['commenti','Più commenti'],['condivisioni','Più condivisioni'],['follow','Più follower'],['salvataggi','Più salvataggi']];
-  const hasA=VA.audio&&VA.audio.hasSound;
+  const hasA=VA.audio&&VA.audio.hasSound,mk=VA.made||{},cr=!!mk.testo,hkFatto=!!mk.hook;
   $('#v-auto').innerHTML=`<div class="grp" style="padding:12px">
    <b>✨ Pilota automatico</b>
-   <div style="color:var(--mut);font-size:13px;margin:4px 0 8px">${hasA?'Ascolto il video, capisco l\'argomento e scrivo hook, sottotitoli, caption e hashtag seguendo le indicazioni aggiornate ogni settimana.':'Il video non ha parlato da ascoltare: scrivi l\'argomento qui sotto e preparo hook e caption.'}</div>
-   ${hasA?`<select id="a-model"><option value="onnx-community/whisper-base">Trascrizione precisa (~80 MB la prima volta)</option><option value="onnx-community/whisper-tiny">Trascrizione veloce (~40 MB)</option></select>
+   <div style="color:var(--mut);font-size:13px;margin:4px 0 8px">${cr?'Video del creatore: copione, tempi delle frasi e caption li ho già, quindi niente trascrizione. Controllo la caption e preparo le correzioni.':hasA?'Ascolto il video, capisco l\'argomento e scrivo hook, sottotitoli, caption e hashtag seguendo le indicazioni aggiornate ogni settimana.':'Il video non ha parlato da ascoltare: scrivi l\'argomento qui sotto e preparo hook e caption.'}</div>
+   ${hasA&&!cr?`<select id="a-model"><option value="onnx-community/whisper-base">Trascrizione precisa (~80 MB la prima volta)</option><option value="onnx-community/whisper-tiny">Trascrizione veloce (~40 MB)</option></select>
    <button class="btn" id="a-go" onclick="autoPrepare()">✨ Prepara tutto in automatico</button>`:''}
    <div id="a-steps" style="margin-top:8px"></div></div>
    <label>Argomento del video</label>
@@ -2150,6 +2167,8 @@ function renderAutoCard(){
    <div><label>Obiettivo</label><select id="a-goal" onchange="goalChange()">${goals.map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select></div></div>
    <div id="a-tr"></div>
    <div id="a-pkg">
+   ${hkFatto?`<label>Hook</label><div class="item" id="a-hookfatto"><b>«${esc(mk.hook)}»</b><div style="color:var(--mut);font-size:12.5px;margin-top:4px">Già nel video, messo dal creatore · punteggio ${hookAnalysis(mk.hook).sc}/100. Per cambiarlo cambialo nel creatore e rifai il video: qui finirebbe sopra a quello che c'è.</div></div>`:''}
+   <div id="a-hookbox"${hkFatto?' style="display:none"':''}>
    <label>Hook proposti</label><div id="a-hooks"><div class="empty" style="padding:10px;font-size:13px">Usa il pilota automatico o conferma l'argomento per ricevere le proposte. Puoi anche scriverlo tu qui sotto.</div></div>
    <label>✏️ Il tuo hook</label>
    <textarea id="a-hookedit" style="min-height:70px" oninput="hookEdited()" placeholder="Scrivi o modifica l'hook. Vai a capo per decidere tu le righe."></textarea>
@@ -2160,10 +2179,11 @@ function renderAutoCard(){
    <div><label>Posizione</label><select id="a-hpos" onchange="hookPreview();updEst()"><option value="0.24" selected>In alto</option><option value="0.42">Al centro</option><option value="0.58">In basso</option></select></div></div>
    ${VA.topText?'<div class="banner" style="margin-top:10px;font-size:13px">⚠️ Questo video ha già un testo in alto nei primi secondi: il nuovo hook ci andrebbe sopra. Carica il video originale senza testo, oppure sposta l\'hook o spegnilo nel passo 4.</div>':''}
    <label>Anteprima</label><canvas id="a-hprev" width="360" height="640" style="width:56%;display:block;margin:0 auto;border-radius:12px;background:#000"></canvas>
+   </div>
    <label>Caption e hashtag</label><textarea id="a-cap" style="min-height:120px" oninput="schedScore()" placeholder="La caption appare qui. Puoi scriverla o modificarla."></textarea>
    <div id="a-trend"></div>
    <button class="btn alt" onclick="goStep(4)">Avanti: montaggio ↓</button></div>`;
-  if(DB.nextHook&&!curHook()){$('#a-hookedit').value=DB.nextHook;hookEdited(true);$('#a-hookscore').insertAdjacentHTML('beforebegin','<div class="tag o" style="margin-top:6px">📋 Hook dal piano del prossimo video</div>')}
+  if(DB.nextHook&&!curHook()&&!hkFatto){$('#a-hookedit').value=DB.nextHook;hookEdited(true);$('#a-hookscore').insertAdjacentHTML('beforebegin','<div class="tag o" style="margin-top:6px">📋 Hook dal piano del prossimo video</div>')}
   if($('#o-trim'))hookPreview();renderTrendBox()}
 const A_STEPS=['Ascolto il video','Capisco l\'argomento','Scelgo l\'hook migliore','Scrivo caption e hashtag','Imposto correzioni e sottotitoli'];
 function aStep(i,state,txt){VA.st=VA.st||A_STEPS.map(n=>({n,state:'wait',txt:''}));VA.st[i]={n:A_STEPS[i],state,txt:txt||''};
@@ -2216,7 +2236,8 @@ function regenPkg(auto){
   const ser=curSeries();let tg=tags.split(' ').filter(Boolean);if(ser)tg=[ser.tag,...tg.filter(t=>t!==ser.tag)].slice(0,RULES.hashtag.max);
   $('#a-cap').value=(ser?`Parte ${ser.ep} · `:'')+(captionLine(tArt,VA.transcript||'')||hooks[0].s.replace(/\n/g,' '))+'\n'+pick(CTA[goal])+'\n\n'+tg.join(' ');
   aStep(3,'ok',`${tg.length} hashtag (max ${RULES.hashtag.max})${useT?'':' · conferma l\'argomento per hashtag più precisi'}`);
-  $('#a-pkg').style.display='';selectHook(0);applyAutoOptions();schedScore();
+  // video del creatore: l'hook è già nel video, scegliere quello proposto lo farebbe scrivere una seconda volta sopra
+  $('#a-pkg').style.display='';if(VA.made&&VA.made.hook)VA.pkg.sel=0;else selectHook(0);applyAutoOptions();schedScore();
 }
 function selectHook(i){const hs=VA.pkg.hooks;VA.pkg.sel=i;VA.pkg.edited=false;
   $('#a-hooks').innerHTML=hs.map((h,j)=>`<div class="hk ${j===i?'on':''}" onclick="selectHook(${j})">${esc(h.s)}<small>${esc(h.k)} · punteggio ${Math.min(99,Math.round(h.sc))}</small></div>`).join('');
@@ -2252,8 +2273,72 @@ function applyAutoOptions(){
   refreshSubsOpt();const on=id=>{const e=$('#'+id);if(e&&!e.disabled)e.checked=true};
   const mk=VA.made||{};if(VA.subs.length&&!VA.hasSubs)on('o-subs');if(curHook().trim()&&!mk.hook)on('o-hook');if(VA.sug.bar&&!mk.bar)on('o-bar');if(!mk.end)on('o-end');if(curSeries()&&!mk.part)on('o-part');
   updEst();const o=readOpts();
-  aStep(4,'ok',[o.subs&&'sottotitoli',VA.hasSubs&&'sottotitoli originali tenuti',o.hook&&'hook',o.part&&'PARTE N',o.end&&'testo finale',o.bar&&'barra',o.trim&&'taglio silenzi',o.pause&&'pause',o.crop&&'9:16',o.light&&'luce',o.vol&&'volume',o.speed&&'1,1×'].filter(Boolean).join(' · '));
+  aStep(4,'ok',[o.subs&&'sottotitoli',VA.hasSubs&&'sottotitoli originali tenuti',o.hook&&'hook',o.part&&'PARTE N',o.end&&'testo finale',o.bar&&'barra',o.trim&&'taglio silenzi',o.pause&&'pause',o.crop&&'9:16',o.light&&'luce',o.vol&&'volume',o.speed&&'1,1×'].filter(Boolean).join(' · ')||'niente da aggiungere');
 }
+
+/* ---------- video del creatore: passa dallo Studio prima di essere pubblicato ----------
+   crea.js manda il video con quello che c'è già dentro (hook, sottotitoli, PARTE, finale, barra), il copione con i tempi delle frasi,
+   la caption e la copertina. Modo «auto»: lo Studio fa da solo i cinque passi (Spinta Score, caption, montaggio, esporta e pubblica);
+   «manuale»: tutto pronto nei passi, decide Sam. Da solo fa solo le correzioni che non toccano tempi, voce e grafiche del creatore,
+   e non scrive mai una seconda volta quello che il creatore ha già messo nel video. */
+const CR_SICURE=['o-vol','o-subs','o-bar','o-end','o-part'];
+function creaPrefill(){const mk=VA.made;
+  VA.transcript=String(mk.testo||'').replace(/\s+/g,' ').trim();
+  VA.subs=(Array.isArray(mk.righe)?mk.righe:[]).filter(x=>x&&x.t&&+x.e>+x.s).map(x=>({s:+x.s,e:+x.e,t:String(x.t)}));
+  // parole della serie che non sono l'argomento (saluti, nomi): non contano per ricerca e caption
+  const kw=keywords(VA.transcript),no=new Set(['guagliù','guagliu','gennarino','bancariello','bancarella','ciao','salve']),top=kw.top.filter(w=>!no.has(w));
+  const topic=String(mk.topic||kw.bi.find(b=>!b.split(' ').some(w=>no.has(w)))||top[0]||'').trim();
+  VA.pkg={topic,topicOk:!!topic,kw:top.slice(0,4),kwSure:top.filter(w=>kw.cnt[w]>=2).slice(0,3),niche:NICHES[mk.niche]?mk.niche:'tech'};
+  $('#a-topic').value=topic;$('#a-niche').value=VA.pkg.niche;$('#a-ok').style.display=topic?'none':'';
+  $('#a-tnote').textContent=topic?'Dal copione del creatore ✓':'Scrivilo e conferma.';
+  if(mk.cap)$('#a-cap').value=mk.cap;
+  $('#a-tr').innerHTML=VA.transcript?`<details><summary>Copione del video</summary><div style="margin-top:6px;white-space:pre-wrap">${esc(VA.transcript)}</div></details>`:'';
+  aStep(0,'ok',`Copione del creatore: ${wordsOf(VA.transcript).length} parole, ${VA.subs.length} righe con i tempi`);
+  aStep(1,topic?'ok':'warn',topic?`Argomento: "${topic}"`:'Argomento non chiaro: scrivilo tu');
+  aStep(2,'ok',mk.hook?`Già nel video: «${cutTxt(mk.hook,60)}» · ${hookAnalysis(mk.hook).sc}/100`:'Nessun hook nel video: scrivilo qui sotto');
+  aStep(3,mk.cap?'ok':'warn',mk.cap?'Caption del creatore':'Caption da scrivere');
+  stpSum(3,mk.hook?'Hook e sottotitoli già nel video · caption pronta':'Dal copione del creatore');
+  renderTrendBox();applyAutoOptions()}
+function creaStudio(){const me=VA,mk=me.made||{},box=$('#st-auto');if(!box)return;box.style.display='';
+  if(mk.mode==='auto'){autoRun();return}
+  box.innerHTML=`<b>Video del creatore · lo controlli tu</b><div style="color:var(--mut);font-size:13px;margin-top:4px;line-height:1.5">Copione, hook e caption arrivano dal creatore, niente trascrizione. Guarda lo Spinta Score (passo 2), controlla caption e montaggio (passi 3 e 4), poi esporta e pubblica nel passo 5.</div>`}
+const AUTO_P=['Caricato e analizzato','Spinta Score','Hook, sottotitoli e caption','Montaggio','Esporta e pubblica'];
+function autoPasso(i,state,txt){const me=VA;if(!me||!me.auto)return;me.auto.p[i]={state,txt:txt||''};autoMostra()}
+function autoMostra(){const me=VA,box=$('#st-auto');if(!me||!me.auto||!box)return;const ic={wait:'⚪',run:'⏳',ok:'✅',warn:'⚠️'};
+  box.innerHTML=`<b>✨ Studio automatico · video del creatore</b>
+   <div style="color:var(--mut);font-size:12.5px;margin:2px 0 6px">Faccio da solo i cinque passi dello Studio, senza toccare voce, tempi e grafiche del creatore.</div>
+   ${AUTO_P.map((n,i)=>{const x=me.auto.p[i];return `<div class="step"><span>${ic[x.state]}</span><span><b>${n}</b>${x.txt?`<br><span style="color:var(--mut);font-size:12.5px">${esc(x.txt)}</span>`:''}</span></div>`}).join('')}
+   ${me.auto.fine?`<div class="acts"><button class="btn sm" type="button" onclick="$('#v-out').scrollIntoView({behavior:'smooth',block:'start'})">Vai a pubblica</button></div>`:''}`}
+function autoRun(){const me=VA,mk=me.made;me.auto={p:AUTO_P.map(()=>({state:'wait',txt:''})),fine:false};
+  autoPasso(0,'ok',`${me.dur.toFixed(1)} s · ${me.W}×${me.H}`);
+  // passo 3: hook e sottotitoli li ha già messi il creatore; la caption la controllo (invito a commentare, hashtag entro il massimo)
+  const capEl=$('#a-cap'),cap0=capEl.value,cap1=capSistema(cap0);if(cap1!==cap0)capEl.value=cap1;
+  autoPasso(2,cap1?'ok':'warn',[mk.hook&&'hook già nel video',mk.subs&&'sottotitoli già nel video',!cap1?'caption mancante: scrivila nel passo 3':cap1!==cap0?'caption sistemata (invito o hashtag)':'caption del creatore controllata'].filter(Boolean).join(' · '));
+  // passo 4: solo le correzioni sicure che lo Spinta Score chiede
+  renderScore();const ok=new Set(CR_SICURE);
+  (me.score.items||[]).forEach(i=>{if(i.fix&&ok.has(i.fix)&&i.pts<i.max*0.8){const e=$('#'+i.fix);if(e&&!e.disabled)e.checked=true}});
+  updEst();renderScore();
+  const o=readOpts(),fatte=[o.vol&&'volume normalizzato',o.subs&&'sottotitoli',o.bar&&'barra di avanzamento',o.end&&'testo finale',o.part&&o.series&&'PARTE '+o.series.ep].filter(Boolean);
+  autoPasso(3,'ok',fatte.length?'Aggiunto: '+fatte.join(', '):'Niente da correggere: il video resta com\'è, senza ricodificarlo');
+  // passo 2: punteggio, e cosa resta da migliorare (si cambia nel creatore)
+  const S=me.score,resta=S.items.filter(i=>i.pts<i.max*0.8).sort((a,b)=>(b.max-b.pts)-(a.max-a.pts)).slice(0,2).map(i=>i.k.toLowerCase());
+  autoPasso(1,'ok',`${me.scoreBefore} → ${S.total} su 100${resta.length?` · da migliorare nel creatore: ${resta.join(', ')}`:' · niente da migliorare'}`);
+  // passo 5
+  autoPasso(4,'run',fatte.length?'Creo il video finale: tieni l\'app aperta, ci vuole circa quanto dura il video':'Preparo il video finale…');
+  goStep(5);
+  setTimeout(()=>{if(VA!==me)return;exportVideo();
+    if(!exporting&&!window._resURL)autoPasso(4,'warn','Questo telefono non riesce a esportare il video: tocca «Crea il video finale» qui sotto per riprovare')},300)}
+function autoFine(done,plan,blob){const me=VA;if(!me||!me.auto)return;me.auto.fine=true;
+  autoPasso(4,'ok',`Pronto: ${plan.outDur.toFixed(1)} s · ${(blob.size/1048576).toFixed(1)} MB${done.length?' · '+done.join(', '):''}. Scaricalo o condividilo su TikTok qui sotto, poi tocca «L'ho pubblicato».`);
+  setTimeout(()=>{const o=$('#v-out');if(o&&VA===me)o.scrollIntoView({behavior:'smooth',block:'start'})},300)}
+// caption del creatore: tengo il suo testo; aggiungo l'invito a commentare se manca e tengo gli hashtag entro il massimo
+function capSistema(cap){let c=String(cap||'').trim();if(!c)return c;const mx=RULES.hashtag.max;
+  let k=0;c=c.replace(/(^|\s)#[^\s#]+/g,m=>++k>mx?'':m).replace(/[ \t]+\n/g,'\n').replace(/[ \t]{2,}/g,' ').trim();
+  if(!/\?|comment|scrivete|ditemelo|dimmi/i.test(c)){const cta=pick(CTA[($('#a-goal')||{}).value]||CTA.commenti),m=c.match(/\n\s*\n(?=#)/);
+    c=m?c.slice(0,m.index)+'\n'+cta+c.slice(m.index):c+'\n'+cta}
+  if(!/#[^\s#]+/.test(c)){const ser=curSeries(),tg=[...new Set([ser?ser.tag:null,...tagsFor('',VA&&VA.pkg?curPkg().kws:[],($('#a-niche')||{}).value||'tech').split(' ')].filter(Boolean))].slice(0,mx);
+    if(tg.length)c+='\n\n'+tg.join(' ')}
+  return c}
 /* ---------- backup ---------- */
 function openSettings(){openModal('m-set')}
 function exportData(){downloadBlob(new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}),'spinta-backup-'+todayISO()+'.json');toast('Backup scaricato')}
@@ -2447,9 +2532,9 @@ function videoFeatures(o,plan,cap){const A=VA.audio,hasA=!!(A&&A.hasSound),r1=x=
   const kws=curPkg().kws;let topicAt=null;
   if(VA.subs&&VA.subs.length&&kws.length){const s=VA.subs.find(x=>kws.some(k=>x.t.toLowerCase().includes(k)));if(s)topicAt=Math.max(0,plan.outT(Math.max(plan.start,s.s))/plan.rate)}
   const cuts=(VA.cuts||[]).filter(t=>t>plan.start&&t<plan.end&&!plan.skips.some(k=>t>=k.s&&t<=k.e)).length;
-  const hk=o.hook&&o.hookTxt?o.hookTxt.replace(/\n/g,' '):'';
+  const mk=VA.made||{},hk=o.hook&&o.hookTxt?o.hookTxt.replace(/\n/g,' '):(mk.hook||'');   // video del creatore: hook e finale sono già nel video
   return{lead:r1(lead),pause:r1(pause),topicAt:r1(topicAt),pace:r1(cuts/Math.max(1,plan.outDur)*10),hookW:hk?hk.split(/\s+/).filter(Boolean).length:0,
-    subs:!!(VA.hasSubs||o.subs),end:!!(o.end&&o.endTxt),capQ:/\?|comment|scrivete|ditemelo|dimmi/i.test(cap||'')}}
+    subs:!!(VA.hasSubs||o.subs),end:!!((o.end&&o.endTxt)||mk.end),capQ:/\?|comment|scrivete|ditemelo|dimmi/i.test(cap||'')}}
 // le leve del montaggio: per ognuna confronto i tuoi video che la rispettano con quelli che no
 const LEVERS=[
  {id:'start',n:'Partenza immediata',yes:'partono subito',no:'hanno un silenzio all\'inizio',get:f=>f.lead==null?null:f.lead<=0.5,fix:'o-trim',adv:'Parti subito: niente silenzio né saluto prima della prima frase'},
@@ -2608,7 +2693,7 @@ function nextToPlan(){const x=window._nx;if(!x)return;const d=x.when,pad=n=>Stri
   DB.posts.push({id:uid(),title:(DB.nextHook||(x.hooks[0]||{}).s||'Prossimo video'),date:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,time:hhmm(d),note:x.plan.split('\n')[1],st:'idea'});save();scheduleNotifs();toast('Nel piano: '+slotLabel(d))}
 
 /* ---------- creatore video con Gennarino (crea.js, caricato solo quando serve) ---------- */
-function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.14.1')}
+function creaApri(){return window.crOpenWith?Promise.resolve():loadScript('crea.js?v=2.15.0')}
 function crea(fromPlan){if(window.crOpen)return window.crOpen(fromPlan);toast('Apro il creatore…');
   creaApri().then(()=>window.crOpen(fromPlan)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
 function creaCon(o){if(!window.crOpenWith)toast('Apro il creatore…');creaApri().then(()=>window.crOpenWith(o)).catch(()=>toast('Serve la connessione per aprire il creatore'))}
