@@ -83,12 +83,12 @@
     {
      "lettera": "A",
      "idea": "Innaffia le piante",
-     "voti": 0
+     "voti": 2
     },
     {
      "lettera": "B",
      "idea": "Segnapunti della scopa",
-     "voti": 0
+     "voti": 1
     },
     {
      "lettera": "C",
@@ -96,8 +96,8 @@
      "voti": 0
     }
    ],
-   "conteggio": "",
-   "vince": ""
+   "conteggio": "2026-11-06T05:05+01:00",
+   "vince": "A"
   },
   {
    "settimana": "2026-W46",
