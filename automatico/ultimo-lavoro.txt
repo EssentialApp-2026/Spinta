@@ -1,14 +1,14 @@
-settimana 2026-W45 dal 2026-11-01
-$ /home/runner/mako/bin/python automatico/voce_mako.py settimana /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
-2026-W45 0 battute da fare (riferimento mako-w43s-1 (prova «vivace» scelta da Sam, 25 ottobre), vivacità 0.6, cfg 0.5)
-2026-W45: 67 battute, copie: capito 0.94, somiglia 0.582
+settimana 2026-W46 dal 2026-11-08
+$ /home/runner/mako/bin/python automatico/voce_mako.py settimana /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
+2026-W46 0 battute da fare (riferimento mako-w43s-1 (prova «vivace» scelta da Sam, 25 ottobre), vivacità 0.6, cfg 0.5)
+2026-W46: 67 battute, copie: capito 0.94, somiglia 0.573
  
-$ /home/runner/mako/bin/python automatico/voce_mako.py installa 2026-W45
-2026-W45 installata: 67 battute nuove, 67 in tutto
+$ /home/runner/mako/bin/python automatico/voce_mako.py installa 2026-W46
+2026-W46 installata: 67 battute nuove, 67 in tutto
  
 voce: mako
-$ /opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W45.json
+$ /opt/hostedtoolcache/Python/3.12.16/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W46.json
 voci: tutte le frasi hanno la voce nuova
-ok: 2026-W45 · 12 puntate
+ok: 2026-W46 · 12 puntate
  
-fatto 2026-W45
+fatto 2026-W46
