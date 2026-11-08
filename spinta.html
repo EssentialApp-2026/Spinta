@@ -456,6 +456,8 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
     <h3>View medie per formato</h3>
     <div id="s-chart" style="margin-top:10px"></div>
   </div>
+  <div class="card" id="g-manda-box"><h3>I dati alla serie</h3><p class="mini-l" id="g-manda-n"></p>
+    <button class="btn cy" id="g-manda" onclick="mandaDati()"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Manda i dati a Claude</button></div>
   <button class="btn alt" id="s-add" onclick="openStatForm()"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Aggiungi i dati di un video</button>
   <div id="s-items" class="out vlist"></div>
 </section>
@@ -602,7 +604,7 @@ input[type=range]{padding:0;height:28px;background:none;border:0;accent-color:va
   </label>
   <button class="btn alt danger" onclick="wipeData()"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Cancella tutti i dati</button>
   <button class="btn alt" onclick="closeModal('m-set')">Chiudi</button>
-  <small class="n" style="text-align:center;margin-top:14px">Spinta 3.1.2 · indicazioni aggiornate al <span id="set-rules"></span> · <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a href="termini.html" target="_blank" rel="noopener">Termini</a></small>
+  <small class="n" style="text-align:center;margin-top:14px">Spinta 3.2 · indicazioni aggiornate al <span id="set-rules"></span> · <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a href="termini.html" target="_blank" rel="noopener">Termini</a></small>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -1413,7 +1415,7 @@ const giovane=s=>Date.now()-tsOf(s)<48*3600e3;
 const icon=(n,c)=>`<svg class="ic${c?' '+c:''}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 const dataBreve=s=>s.date?new Date(s.date+'T12:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}):'';
 function renderStats(){
-  const I=channelInsights();renderPendingGrow();renderNext(I);if(window.ttMostraTutto)ttMostraTutto();
+  const I=channelInsights();renderPendingGrow();renderNext(I);mandaNota();if(window.ttMostraTutto)ttMostraTutto();
   const tt=window.ttStato?ttStato():null,on=!!(tt&&tt.collegato),u=on?tt.utente||{}:{};
   $('#g-sub').textContent=on?'I numeri arrivano da TikTok da soli. Salvataggi e visione media puoi aggiungerli tu, anche dagli screenshot.':'I numeri del tuo canale e cosa funziona per te.';
   const add=$('#s-add');add.className=on?'btn alt':'btn';
@@ -2743,6 +2745,29 @@ function oggiPromemoria(){const slot=personalSlot().when;if(!slot){toast('Nessun
   const date=`${slot.getFullYear()}-${pad(slot.getMonth()+1)}-${pad(slot.getDate())}`,time=hhmm(slot);
   if(DB.posts.some(p=>p.date===date&&p.time===time)){toast('Promemoria già messo ✓');return}
   DB.posts.push({id:uid(),title:'Puntata di Gennarino',date,time,note:'Dalla schermata Oggi',st:'idea'});save();scheduleNotifs();renderPlan();toast(`Ti avviso ${slotLabel(slot)}`)}
+
+/* ---------- DATI ALLA SERIE: i numeri del canale vanno al repository di 'O Bancariello ----------
+   GitHub li legge ogni ora (automatico/canale.py → claude/canale.json e claude/canale-analisi.md) e il piano di sabato
+   sceglie come aprire gli sketch in base a cosa funziona. Solo numeri: niente chiavi, trascrizioni o caption. */
+const NTFY_CANALE='https://ntfy.sh/spinta-bancariello-canale-r8w3n5q2';
+async function mandaDati(){
+  const S=DB.stats.filter(s=>s&&s.title&&s.date).sort((a,b)=>tsOf(b)-tsOf(a)).slice(0,80);
+  if(!S.length){toast('Prima servono i dati di qualche video');return}
+  const num=x=>x===''||x==null||!isFinite(+x)?undefined:+x,last=(DB.ttSnaps||[]).slice(-1)[0]||{};
+  const dati={v:1,at:new Date().toISOString(),user:{f:num(last.f),l:num(last.l),n:num(last.n)},
+    snaps:(DB.ttSnaps||[]).filter(x=>x.f!=null).slice(-120).map(x=>[x.d,+x.f]),
+    video:S.map(s=>({t:cutTxt(s.title,110),d:s.date,h:s.hour||'',pub:num(s.pubAt),v:num(s.views),l:num(s.likes),c:num(s.comm),s:num(s.shares),
+      sv:num(s.saves),fo:num(s.follows),len:num(s.len),w:num(s.watch),full:num(s.full),score:num(s.score),hk:s.hk||undefined,fmt:s.format||undefined}))};
+  const txt=JSON.stringify(dati),b=uid(),PZ=2400,n=Math.ceil(txt.length/PZ),btn=$('#g-manda');
+  if(n>40){toast('Troppi dati da mandare');return}
+  if(btn)btn.disabled=true;
+  try{for(let i=0;i<n;i++){const r=await fetch(NTFY_CANALE,{method:'POST',body:JSON.stringify({k:'canale',b,i,n,d:txt.slice(i*PZ,(i+1)*PZ)})});if(!r.ok)throw 0}
+    DB.datiInviati=Date.now();save();mandaNota();toast(`Mandati i numeri di ${S.length} video: entro un'ora li legge GitHub`)}
+  catch(_){toast('Non sono riuscito a mandarli: controlla la connessione e riprova')}
+  finally{if(btn)btn.disabled=false}}
+function mandaNota(){const el=$('#g-manda-n');if(!el)return;const t=DB.datiInviati,d=t?new Date(t):null;
+  el.innerHTML=(d?`Ultimo invio: <b style="color:var(--txt)">${d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'short'})} alle ${hhmm(d)}</b>. `:'')+
+    'Manda i numeri dei video e dei follower al repository della serie (pubblico, come il resto): il piano di sabato li usa per scegliere cosa funziona. Mandali prima di sabato pomeriggio.'}
 
 /* ---------- avvio ---------- */
 try{history.scrollRestoration='manual'}catch(_){}

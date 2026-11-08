@@ -1,0 +1,37 @@
+# Legge i numeri del canale mandati da Spinta (Crescita → «Manda i dati a Claude») e li salva in claude/canale.json,
+# con l'analisi in claude/canale-analisi.md. Il piano di sabato (settimana.yml) li usa per scegliere come aprire gli sketch.
+# Gira ogni ora: ntfy.sh tiene i messaggi 12 ore, quindi un invio non si perde.
+name: Dati del canale
+on:
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: spinta-canale
+  cancel-in-progress: false
+jobs:
+  leggi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Leggi i dati
+        run: python3 automatico/canale.py leggi
+      - name: Salva
+        run: |
+          git config user.name "Spinta automatica"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add claude/canale.json claude/canale-analisi.md 2>/dev/null || exit 0
+          git commit -q -m "Dati del canale (automatico)" || exit 0
+          for i in 1 2 3; do git pull -q --rebase && git push -q && exit 0; sleep 10; done; exit 1
+      - name: Avvisa se qualcosa è andato storto
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          t="Spinta: i dati del canale non sono arrivati al repository"
+          gh issue list --repo ${{ github.repository }} --state open --json title --jq '.[].title' | grep -Fxq "$t" && exit 0
+          gh issue create --repo ${{ github.repository }} --title "$t" --body "Il lavoro automatico non è finito: guarda il log qui ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} e rilancialo da Actions → Run workflow." || true

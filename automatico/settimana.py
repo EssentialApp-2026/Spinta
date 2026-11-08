@@ -135,6 +135,16 @@ def scegli_idee(dom, sett=None):
 
 
 # ---------------- il piano ----------------
+def sketch(i, k, var, chiusa, altre=None):
+    """Uno sketch di 6-7 frasi sull'idea i: la situazione (hook), il problema, l'idea, il voto. Niente emoji, frasi sotto i 110 caratteri."""
+    fatto = re.sub(r'^mamma mia,?\s*', '', i['storia'], flags=re.I).strip()
+    hook = ('POV: ' + fatto) if var == 'pov' else i['storia']
+    c = [hook, 'Uè guagliù, succede pure a voi?', i['domandaE'], f"Allora ho pensato a un'app: «{i['nome']}».", i['cosa'],
+         f"È l'idea {k}: la volete? Scrivete {k} nei commenti."]
+    c.append(chiusa if not altre else f'Oppure {altre[0]} o {altre[1]}: {chiusa[0].lower() + chiusa[1:]}')
+    return [x if len(x) <= 110 else x[:107].rsplit(' ', 1)[0] + '…' for x in c]
+
+
 def piano(sett, dom, piazza, idee, apertura):
     A, B, C = idee; L = dict(zip('ABC', idee))
     abc = [f'A: {A["nome"]}.', f'B: {B["nome"]}.', f'C: {C["nome"]}.']
@@ -145,16 +155,19 @@ def piano(sett, dom, piazza, idee, apertura):
                            f'Uè guagliù, il bancariello si è spostato in {piazza}!', *abc,
                            'Scrivete la lettera nei commenti, fino a mercoledì sera.', 'Venerdì la più votata è sul banco, gratis.']))
     if apertura: P[0].update(apertura=apertura, aperturaFrasi=2)
-    gancio = f'{maiuscola(A["problema"])}, {B["problema"]} o {C["problema"]}: chi vi frega di più?'
-    if len(gancio) > 100: gancio = 'Tre fastidi, tre idee: quale vi frega di più?'
-    P.append(dict(id='promemoria-lunedi', tipo='idee', giorno='lunedì', titolo='Avete già votato?',
-                  copione=[gancio, 'Uè guagliù, il voto è aperto da ieri.', *abc,
-                           'Basta una lettera nei commenti per decidere.', 'Chi non ha ancora votato, ha tempo fino a mercoledì sera!']))
-    P.append(dict(id='cosa-dimenticate', tipo='libera', giorno='martedì', titolo='Cosa vi frega ogni giorno?',
-                  copione=[A['storia'], 'Uè guagliù, a me succede sempre!', B['domandaE'], C['domandaE'], 'Per questo ho pensato a queste tre idee.',
-                           'Ditemi nei commenti cosa vi frega ogni giorno.', 'E chi non ha votato: A, B o C, fino a domani sera!']))
-    P.append(dict(id='ultime-ore', tipo='idee', giorno='mercoledì', titolo='Ultime ore per votare',
-                  copione=['Stasera chiudo le urne: manca poco!', "Uè guagliù, l'ultima occasione per votare.", *abc, 'Una lettera nei commenti e avete deciso.', 'Domani vi dico chi ha vinto!']))
+    # lunedì, martedì e mercoledì: uno sketch per idea, che si capisce anche senza conoscere Gennarino (per chi lo trova nei «Per te»).
+    # Si apre con la situazione di tutti i giorni, poi l'idea, poi il voto per quella lettera. Le varianti dell'hook le sceglie
+    # automatico/canale.py dai numeri del canale («Mamma mia, …» oppure «POV: …»).
+    try:
+        from canale import scegli_varianti
+        varianti, perche = scegli_varianti(3, sett)
+    except Exception as e:
+        varianti, perche = ['storia', 'pov', 'storia'], f'dati del canale non letti ({e})'
+    print('sketch:', varianti, '·', perche, flush=True)
+    giorni = (('lunedì', 'Si vota fino a mercoledì sera.'), ('martedì', 'Si vota fino a domani sera.'), ('mercoledì', 'Il voto chiude stasera!'))
+    for (k, i), (g, chiusa), var in zip(L.items(), giorni, varianti):
+        P.append(dict(id=f'sketch-{k}', tipo='libera', giorno=g, titolo=f'Sketch: {i["problema"]}', variante=var, idea=k,
+                      copione=sketch(i, k, var, chiusa, [x for x in 'ABC' if x != k] if g == 'mercoledì' else None)))
     for k, i in L.items():
         P.append(dict(id=f'risultato-{k}', tipo='risultato', giorno='giovedì', titolo='Risultato del voto', vince=k,
                       copione=[f'Ha vinto la {k}: {i["vince"]}', 'Uè guagliù, ho contato i voti e avete scelto voi.', f'Ha vinto la {k}: {i["nome"]}.', i['cosa'],
@@ -173,7 +186,8 @@ def piano(sett, dom, piazza, idee, apertura):
     d = lambda n: (dom + datetime.timedelta(days=n)).isoformat()
     return {'versione': 1, 'settimana': sett, 'dal': d(0), 'al': d(7), 'scritto': datetime.datetime.now(ROMA).date().isoformat(),
             'voto_fino_a': d(3), 'regalo': d(5), 'idee': {k: i['nome'] for k, i in L.items()}, 'idee_id': {k: i['id'] for k, i in L.items()},
-            'nota': f'Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica {piazza} e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, '
+            'nota': f'Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica {piazza} e tre idee; lunedì, martedì e mercoledì uno sketch per idea '
+                    '(si capisce anche senza conoscere Gennarino), mercoledì sera chiude il voto, '
                     'giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c\'è «Niente voti, niente app».',
             'telefoni': {k: {'nome': i['telefono'], 'emoji': i['emoji']} for k, i in L.items()},
             'puntate': P, 'piazza': piazza}
