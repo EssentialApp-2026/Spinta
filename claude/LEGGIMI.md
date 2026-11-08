@@ -118,3 +118,8 @@ Richiesta di Sam: «quando crea un video, prima di pubblicarlo fallo passare da 
   si apre con la situazione di tutti i giorni presa da `storia` del catalogo, così si capisce anche senza conoscere Gennarino, poi l'idea e «Scrivete A nei commenti».
   Due varianti dell'hook: `storia` («Mamma mia, …») e `pov` («POV: …»). `canale.scegli_varianti()` le prova a turno finché ognuna ha 3 video maturi (48 ore),
   poi mette la migliore su due sketch e l'altra sul terzo, per continuare a misurare.
+- **Primi dati (8 novembre 2026)**: 38 video, quasi tutti fermi intorno a 248 view (il primo gruppo di prova di TikTok), 1 like a video in media, zero condivisioni, 4 follower.
+  Il picco del 12 ottobre (6254 view, 6 like, 0 follower) era **sponsorizzato**: sta in `automatico/sponsorizzati.json` e resta fuori dai confronti.
+  Conclusione: il problema è far reagire chi guarda, non orari o giorni. Sam ora copia la caption di Spinta su TikTok (prima scriveva solo hashtag a mano).
+- Quindi dalla W47 anche: sketch da **5 frasi** (circa 20 s); la **domenica** si apre con i tre fastidi («Latte scaduto, strisce blu o piatti: quale app vi regalo?»);
+  il **venerdì** si apre con cosa fa l'app («Il frigo adesso parla da solo!»), il «regalo del venerdì» viene dopo. Il riferimento per giudicare: 250 view e 1 like.

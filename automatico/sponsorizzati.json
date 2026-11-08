@@ -1,0 +1,6 @@
+{
+ "nota": "Video sponsorizzati (pubblicità a pagamento): automatico/canale.py li tiene fuori dai confronti, perché le loro view non dicono cosa funziona da solo. Basta il giorno di pubblicazione; se in quel giorno ci sono più video, aggiungere anche \"titolo\" (l'inizio del titolo).",
+ "video": [
+  {"d": "2026-10-12", "perche": "sponsorizzato da Sam (6254 view, 6 like, 0 follower)"}
+ ]
+}

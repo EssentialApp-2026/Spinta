@@ -116,10 +116,20 @@ def abbina(video, note):
 
 
 # ---------------- cosa funziona ----------------
+def sponsorizzati():
+    try: return json.load(open(os.path.join(QUI, 'sponsorizzati.json'), encoding='utf-8')).get('video', [])
+    except Exception: return []
+
+
+def sponsor(v, sp):
+    return any(x.get('d') == v['d'] and (not x.get('titolo') or chiave(v['t']).startswith(chiave(x['titolo']))) for x in sp)
+
+
 def maturi(dati, ora=None):
     ora = (ora or datetime.datetime.now(ROMA)).timestamp()
-    out = []
+    out = []; sp = sponsorizzati()
     for v in dati.get('video', []):
+        if sponsor(v, sp): continue          # le view pagate non dicono cosa funziona da solo
         ts = v.get('pub', 0) / 1000 if v.get('pub') else datetime.datetime.fromisoformat(v['d'] + 'T' + (v.get('h') or '12:00')).replace(tzinfo=ROMA).timestamp()
         if ora - ts >= GIOVANE and v.get('v', 0) > 0: out.append(v)
     return out
@@ -162,6 +172,8 @@ def analisi(dati):
         righe += ['Nessun video con almeno 48 ore e le view: l\'analisi parte quando ce ne sono.']
         return '\n'.join(righe) + '\n'
     med = statistics.median([v['v'] for v in M]) or 1
+    sp = [v for v in dati.get('video', []) if sponsor(v, sponsorizzati())]
+    if sp: righe += ['Fuori dai confronti perché sponsorizzati: ' + ', '.join(f'{v["d"]} ({v["v"]:g} view, {v.get("l", 0):g} like)' for v in sp) + '.', '']
     righe += [f'**{len(M)} video** con almeno 48 ore · mediana **{med:g} view** · abbinati al piano: {sum("puntata" in v for v in M)}', '']
     def tabella(titolo, g, nota=''):
         nonlocal righe
@@ -181,6 +193,10 @@ def analisi(dati):
     for v in sorted(M, key=lambda v: -v['v'])[:5]:
         p = v.get('puntata', {})
         righe.append(f'- **{v["v"]:g}** view · {v["d"]} {v.get("h", "")} · «{v["t"][:70]}»' + (f' · {p.get("tipo")}{" " + p["variante"] if p.get("variante") else ""}' if p else ''))
+    soglia = sorted(v['v'] for v in M)[int(len(M) * .8)] if len(M) >= 5 else None
+    if soglia is not None and soglia <= med * 1.25:
+        righe += ['', f'**Quasi tutti i video si fermano intorno a {med:g} view**: è il primo gruppo a cui TikTok mostra ogni video. '
+                  'Finché nessuno lo supera, giorni, orari e durate cambiano poco: conta far reagire chi guarda (commenti, condivisioni, guardarlo fino alla fine).']
     righe += ['', 'Con pochi video per riga sono indizi, non certezze.']
     return '\n'.join(righe) + '\n'
 

@@ -136,13 +136,20 @@ def scegli_idee(dom, sett=None):
 
 # ---------------- il piano ----------------
 def sketch(i, k, var, chiusa, altre=None):
-    """Uno sketch di 6-7 frasi sull'idea i: la situazione (hook), il problema, l'idea, il voto. Niente emoji, frasi sotto i 110 caratteri."""
+    """Uno sketch di 5 frasi (circa 20 secondi) sull'idea i: la situazione (hook), il problema, l'app, cosa fa, il voto.
+    Niente emoji, frasi sotto i 110 caratteri."""
     fatto = re.sub(r'^mamma mia,?\s*', '', i['storia'], flags=re.I).strip()
     hook = ('POV: ' + fatto) if var == 'pov' else i['storia']
-    c = [hook, 'Uè guagliù, succede pure a voi?', i['domandaE'], f"Allora ho pensato a un'app: «{i['nome']}».", i['cosa'],
-         f"È l'idea {k}: la volete? Scrivete {k} nei commenti."]
-    c.append(chiusa if not altre else f'Oppure {altre[0]} o {altre[1]}: {chiusa[0].lower() + chiusa[1:]}')
+    voto = f'Scrivete {k} nei commenti, oppure {altre[0]} o {altre[1]}: {chiusa[0].lower() + chiusa[1:]}' if altre else f'Scrivete {k} nei commenti: {chiusa[0].lower() + chiusa[1:]}'
+    c = [hook, i['domandaE'], f"Ho l'app per voi: «{i['nome']}», l'idea {k}.", i['cosa'], voto]
     return [x if len(x) <= 110 else x[:107].rsplit(' ', 1)[0] + '…' for x in c]
+
+
+def gancio_domenica(A, B, C, nuove):
+    """La domenica si apre con i tre fastidi (le parole che la gente cerca), non con «Piazza nuova»."""
+    g = f'{maiuscola(A["problema"])}, {B["problema"]} o {C["problema"]}: quale app vi regalo?'
+    if len(g) <= 90: return g
+    return 'Tre fastidi di tutti i giorni, tre app: quale vi regalo?' if nuove else 'Tre idee da votare: quale app vi regalo?'
 
 
 def piano(sett, dom, piazza, idee, apertura):
@@ -151,7 +158,7 @@ def piano(sett, dom, piazza, idee, apertura):
     P = []
     nuove = not any(i.get('riproposta') for i in idee)
     P.append(dict(id='piazza-nuova', tipo='idee', giorno='domenica', titolo='Piazza nuova, tre idee nuove' if nuove else 'Piazza nuova, tre idee da votare', data=dom.isoformat(),
-                  copione=['Piazza nuova, tre idee nuove: quale costruisco?' if nuove else 'Piazza nuova, tre idee da votare: quale costruisco?',
+                  copione=[gancio_domenica(A, B, C, nuove),
                            f'Uè guagliù, il bancariello si è spostato in {piazza}!', *abc,
                            'Scrivete la lettera nei commenti, fino a mercoledì sera.', 'Venerdì la più votata è sul banco, gratis.']))
     if apertura: P[0].update(apertura=apertura, aperturaFrasi=2)
@@ -164,7 +171,7 @@ def piano(sett, dom, piazza, idee, apertura):
     except Exception as e:
         varianti, perche = ['storia', 'pov', 'storia'], f'dati del canale non letti ({e})'
     print('sketch:', varianti, '·', perche, flush=True)
-    giorni = (('lunedì', 'Si vota fino a mercoledì sera.'), ('martedì', 'Si vota fino a domani sera.'), ('mercoledì', 'Il voto chiude stasera!'))
+    giorni = (('lunedì', 'Si vota fino a mercoledì sera!'), ('martedì', 'Si vota fino a domani sera!'), ('mercoledì', 'Il voto chiude stasera!'))
     for (k, i), (g, chiusa), var in zip(L.items(), giorni, varianti):
         P.append(dict(id=f'sketch-{k}', tipo='libera', giorno=g, titolo=f'Sketch: {i["problema"]}', variante=var, idea=k,
                       copione=sketch(i, k, var, chiusa, [x for x in 'ABC' if x != k] if g == 'mercoledì' else None)))
@@ -177,7 +184,7 @@ def piano(sett, dom, piazza, idee, apertura):
                            'Mi dispiace: venerdì niente regalo.', 'Domenica torno con tre idee nuove.', 'Basta una lettera nei commenti e decidete voi!']))
     for k, i in L.items():
         P.append(dict(id=f'regalo-{k}', tipo='regalo', giorno='venerdì', titolo='Il regalo è sul banco', vince=k,
-                      copione=[f'È venerdì: {i["regalo"]}', 'Uè guagliù, il regalo è sul banco.', ecco(i['nome']), i['righe'][0], i['righe'][1],
+                      copione=[maiuscola(i['regalo']), i['righe'][0], i['righe'][1], f'Uè guagliù, è il regalo del venerdì: {i["nome"]}.',
                                'Gratis, senza registrazione: link nel profilo.', i['manda']]))
     P.append(dict(id='smontaggio', tipo='libera', giorno='sabato', titolo='Si smonta la bancarella',
                   copione=['Sabato si smonta: domani cambio piazza!', 'Uè guagliù, chiudo la tenda e piego il banco.', 'Arrotolo le lampadine e metto tutto nel carretto.',
