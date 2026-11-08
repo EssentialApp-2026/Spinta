@@ -7,6 +7,19 @@ on:
     - cron: '*/30 * * * 4'
     - cron: '*/30 0-17 * * 5'
   workflow_dispatch:
+    inputs:
+      settimana:
+        description: "Per scegliere a mano il vincente: settimana (es. 2026-W46). Vuoto = leggi da Spinta come sempre"
+        required: false
+        default: ''
+      vince:
+        description: 'Vincente: A, B, C oppure nessuno'
+        required: false
+        default: ''
+      voti:
+        description: 'Voti A,B,C (facoltativo, es. 4,2,1)'
+        required: false
+        default: ''
 permissions:
   contents: write
   pages: write
@@ -21,6 +34,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Leggi il risultato
+        id: voto
+        env:
+          VOTO_SETTIMANA: ${{ inputs.settimana }}
+          VOTO_VINCE: ${{ inputs.vince }}
+          VOTO_VOTI: ${{ inputs.voti }}
         run: python3 automatico/risultato.py
       - name: Pubblica
         env:
@@ -33,6 +51,25 @@ jobs:
           git pull -q --rebase
           git push -q
           gh api -X POST repos/${{ github.repository }}/pages/builds > /dev/null || true
+      - name: Avvisa se sono arrivati due vincenti diversi
+        if: steps.voto.outputs.conflitto == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SETTIMANA: ${{ steps.voto.outputs.settimana }}
+          TENUTO: ${{ steps.voto.outputs.tenuto }}
+          ARRIVATO: ${{ steps.voto.outputs.arrivato }}
+          VOTI: ${{ steps.voto.outputs.voti }}
+          QUANDO: ${{ steps.voto.outputs.quando }}
+        run: |
+          t="Spinta: due risultati diversi per il voto $SETTIMANA"
+          gh issue list --repo ${{ github.repository }} --state open --json title --jq '.[].title' | grep -Fxq "$t" && exit 0
+          b="Per la settimana $SETTIMANA il sito ha già il vincente **$TENUTO**. Alle $QUANDO è arrivato un altro risultato con vincente **$ARRIVATO** (voti A,B,C: $VOTI) e l'ho ignorato.
+
+          - Se il secondo l'hai mandato tu (hai ricontato), vai su Actions → «Risultato del voto» → Run workflow e scrivi settimana \`$SETTIMANA\`, vincente \`$ARRIVATO\` e voti \`$VOTI\`.
+          - Se non sei stato tu, non devi fare niente: resta **$TENUTO**. Chiudi pure questa issue.
+
+          Il canale del voto è pubblico, per questo un vincente già fissato non cambia senza la tua conferma."
+          gh issue create --repo ${{ github.repository }} --title "$t" --body "$b" || true
       - name: Avvisa se qualcosa è andato storto
         if: failure()
         env:
