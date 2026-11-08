@@ -10,9 +10,3 @@ App (PWA) di EssentialApp per analizzare, migliorare e pubblicare i video TikTok
 - `spinta-regole.json` – regole dell'algoritmo e tendenze, aggiornate ogni lunedì in automatico
 - `manifest.json`, `sw.js`, `icon-*.png` – installazione e funzionamento offline (`icon-1024.png` è l'icona per TikTok for Developers)
 - `lib/fonts/` – carattere Manrope (licenza OFL)
-
-## 🎬 Cartoonia
-
-Scrivi una storia, ottieni un cartone animato (voci, musica, regia, 16 stili del film, regista IA locale). Sta nella cartella `Cartoonia/`.
-
-**Apri l'app:** https://essentialapp-2026.github.io/Spinta/Cartoonia/
