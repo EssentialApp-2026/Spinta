@@ -1,0 +1,499 @@
+{
+ "v": 1,
+ "at": "2026-11-08T01:56:37.662Z",
+ "user": {
+  "f": 4,
+  "l": 111,
+  "n": 36
+ },
+ "snaps": [
+  [
+   "2026-11-01",
+   4
+  ],
+  [
+   "2026-11-02",
+   4
+  ],
+  [
+   "2026-11-03",
+   4
+  ],
+  [
+   "2026-11-04",
+   4
+  ],
+  [
+   "2026-11-05",
+   4
+  ],
+  [
+   "2026-11-06",
+   4
+  ],
+  [
+   "2026-11-07",
+   4
+  ],
+  [
+   "2026-11-08",
+   4
+  ]
+ ],
+ "video": [
+  {
+   "t": "È venerdì: le piante bevono al momento giusto!",
+   "d": "2026-11-07",
+   "h": "17:17",
+   "v": 232,
+   "l": 0,
+   "c": 0,
+   "s": 0,
+   "len": 22.3,
+   "score": 95,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Parte 33 · Innaffia le piante: è pronta, gratis e senza registrazione. Link nel profilo 🎁",
+   "d": "2026-11-06",
+   "h": "13:39",
+   "v": 248,
+   "l": 0,
+   "c": 0,
+   "s": 0,
+   "len": 22
+  },
+  {
+   "t": "Parte 32 · Ha vinto la A: Innaffia le piante! Venerdì la trovate sul banco, gratis 🎁 Come",
+   "d": "2026-11-05",
+   "h": "16:05",
+   "v": 181,
+   "l": 0,
+   "c": 0,
+   "s": 0,
+   "len": 20
+  },
+  {
+   "t": "Stasera chiudo le urne: manca poco!",
+   "d": "2026-11-04",
+   "h": "14:01",
+   "v": 183,
+   "l": 1,
+   "c": 4,
+   "s": 0,
+   "len": 16.4,
+   "score": 93,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #robot #intelligenzaartificiale",
+   "d": "2026-11-03",
+   "h": "13:42",
+   "v": 248,
+   "l": 2,
+   "c": 2,
+   "s": 0,
+   "len": 20
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #tech #chatgpt",
+   "d": "2026-11-02",
+   "h": "13:08",
+   "v": 248,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 18
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #tecnologia #tech",
+   "d": "2026-11-01",
+   "h": "12:28",
+   "v": 248,
+   "l": 3,
+   "c": 3,
+   "s": 0,
+   "len": 19
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #app #robot",
+   "d": "2026-10-31",
+   "h": "09:00",
+   "v": 242,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 23
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #chatgpt #tecnologia",
+   "d": "2026-10-30",
+   "h": "06:10",
+   "v": 245,
+   "l": 3,
+   "c": 0,
+   "s": 0,
+   "len": 20
+  },
+  {
+   "t": "Ha vinto la A: il frigo non vi frega più!",
+   "d": "2026-10-29",
+   "h": "06:55",
+   "v": 247,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 20.4,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #robot #intelligenzaartificiale",
+   "d": "2026-10-28",
+   "h": "13:41",
+   "v": 240,
+   "l": 2,
+   "c": 2,
+   "s": 0,
+   "len": 17
+  },
+  {
+   "t": "Mamma mia, quel formaggio era scaduto da una settimana!",
+   "d": "2026-10-27",
+   "h": "15:57",
+   "v": 232,
+   "l": 2,
+   "c": 0,
+   "s": 0,
+   "len": 21.5,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Latte scaduto, strisce blu o piatti: chi vi frega di più?",
+   "d": "2026-10-26",
+   "h": "16:20",
+   "v": 245,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 17.2,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #intelligenzaartificiale #app",
+   "d": "2026-10-25",
+   "h": "20:13",
+   "v": 246,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 22
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #tech #app",
+   "d": "2026-10-24",
+   "h": "12:18",
+   "v": 249,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 19
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #app #tecnologia",
+   "d": "2026-10-23",
+   "h": "13:25",
+   "v": 251,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 16
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #intelligenzaartificiale #tecnologia",
+   "d": "2026-10-22",
+   "h": "16:05",
+   "v": 258,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 17
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #ai #chatgpt",
+   "d": "2026-10-21",
+   "h": "12:33",
+   "v": 239,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 12
+  },
+  {
+   "t": "Mamma mia, quand'è scaduta l'assicurazione?",
+   "d": "2026-10-20",
+   "h": "19:04",
+   "v": 242,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 16.1,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #tech #intelligenzaartificiale",
+   "d": "2026-10-19",
+   "h": "12:25",
+   "v": 244,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 14
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #app #tecnologia",
+   "d": "2026-10-18",
+   "h": "10:01",
+   "v": 256,
+   "l": 2,
+   "c": 3,
+   "s": 0,
+   "len": 16
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #intelligenzaartificiale #tech",
+   "d": "2026-10-17",
+   "h": "15:22",
+   "v": 261,
+   "l": 2,
+   "c": 0,
+   "s": 0,
+   "len": 18
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #intelligenzaartificiale #ai",
+   "d": "2026-10-16",
+   "h": "15:53",
+   "v": 238,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 17
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #tecnologia #tech",
+   "d": "2026-10-15",
+   "h": "18:44",
+   "v": 260,
+   "l": 1,
+   "c": 2,
+   "s": 0,
+   "len": 16
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #ai #robot",
+   "d": "2026-10-14",
+   "h": "15:19",
+   "v": 264,
+   "l": 2,
+   "c": 1,
+   "s": 0,
+   "len": 13
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #robot #tecnologia",
+   "d": "2026-10-13",
+   "h": "16:40",
+   "v": 246,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 17
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #tech #app",
+   "d": "2026-10-12",
+   "h": "15:39",
+   "v": 6254,
+   "l": 6,
+   "c": 0,
+   "s": 0,
+   "len": 16
+  },
+  {
+   "t": "#obancariello #gennarino #bancarella #ai #tech",
+   "d": "2026-10-11",
+   "h": "19:11",
+   "v": 250,
+   "l": 1,
+   "c": 2,
+   "s": 0,
+   "len": 18
+  },
+  {
+   "t": "#milestone #gennarino #obancariello #gratis #robot",
+   "d": "2026-10-10",
+   "h": "22:01",
+   "v": 261,
+   "l": 2,
+   "c": 0,
+   "s": 0,
+   "len": 24
+  },
+  {
+   "t": "#intelligenzaartificiale #tecnologia #bancarella #gennarino #ai",
+   "d": "2026-10-10",
+   "h": "14:23",
+   "v": 250,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 27
+  },
+  {
+   "t": "È venerdì: la lista della spesa ve la scrivete parlando!",
+   "d": "2026-10-09",
+   "h": "13:04",
+   "v": 664,
+   "l": 58,
+   "c": 3,
+   "s": 0,
+   "len": 18.4,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Puntata 5",
+   "d": "2026-10-09",
+   "h": "13:06",
+   "v": 248,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "sv": 0,
+   "fo": 0,
+   "w": 3.2,
+   "full": 2.7,
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Ci siamo! Ha vinto la lettera C…",
+   "d": "2026-10-08",
+   "h": "13:12",
+   "v": 256,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 20.9,
+   "score": 94,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "A, B o C? Decidete voi cosa regalo venerdì.",
+   "d": "2026-10-07",
+   "h": "14:07",
+   "v": 880,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 17.4,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Puntata 4",
+   "d": "2026-10-07",
+   "h": "13:27",
+   "v": 870,
+   "l": 0,
+   "c": 0,
+   "s": 0,
+   "sv": 0,
+   "fo": 0,
+   "w": 2,
+   "full": 1,
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Come nasce un'app su una bancarella? Ve lo dico io.",
+   "d": "2026-10-06",
+   "h": "13:23",
+   "v": 941,
+   "l": 6,
+   "c": 0,
+   "s": 0,
+   "len": 15.8,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Puntata 3",
+   "d": "2026-10-06",
+   "h": "12:33",
+   "v": 928,
+   "l": 6,
+   "c": 0,
+   "s": 0,
+   "sv": 1,
+   "fo": 1,
+   "w": 4.7,
+   "hk": "Serie",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Puntata 2",
+   "d": "2026-10-06",
+   "h": "",
+   "v": 863,
+   "l": 2,
+   "c": 1,
+   "s": 0,
+   "sv": 0,
+   "fo": 0,
+   "w": 2.3,
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Puntata 1",
+   "d": "2026-10-06",
+   "h": "",
+   "v": 205,
+   "l": 0,
+   "c": 0,
+   "s": 0,
+   "sv": 1,
+   "fo": 0,
+   "w": 3,
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Nessuno ti dice questo sul Robottino regala App dalla Barbarella…",
+   "d": "2026-10-05",
+   "h": "19:26",
+   "v": 868,
+   "l": 2,
+   "c": 2,
+   "s": 0,
+   "len": 23.8,
+   "score": 82,
+   "hk": "Curiosità",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "#obancariello #robottino #crea #gratis #tiktokitalia",
+   "d": "2026-10-04",
+   "h": "18:15",
+   "v": 212,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 28
+  }
+ ]
+}
