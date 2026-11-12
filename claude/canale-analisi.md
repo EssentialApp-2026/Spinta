@@ -1,23 +1,23 @@
 # Il canale in numeri
 
-Aggiornato da Spinta il 2026-11-08 alle 01:56 · scritto da `automatico/canale.py`.
+Aggiornato da Spinta il 2026-11-12 alle 15:04 · scritto da `automatico/canale.py`.
 
-Follower **4** · like totali 111 · video sul profilo 36
+Follower **4** · like totali 114 · video sul profilo 41
 
-Follower dal 2026-11-01 al 2026-11-08: 4 → 4
+Follower dal 2026-11-01 al 2026-11-12: 4 → 4
 
-Fuori dai confronti perché sponsorizzati: 2026-10-12 (6254 view, 6 like).
+Fuori dai confronti perché sponsorizzati: 2026-10-12 (6256 view, 6 like).
 
-**38 video** con almeno 48 ore · mediana **248 view** · abbinati al piano: 7
+**43 video** con almeno 48 ore · mediana **248 view** · abbinati al piano: 10
 
 ## Per tipo di puntata
 
 | | video | view rispetto alla mediana |
 |---|---|---|
-| regalo | 1 | +168% |
+| regalo | 2 | +82% |
 | risultato | 1 | −0% |
-| libera | 3 | −2% |
-| idee | 2 | −14% |
+| idee | 3 | −1% |
+| libera | 4 | −2% |
 
 ## Per giorno
 
@@ -25,28 +25,28 @@ Fuori dai confronti perché sponsorizzati: 2026-10-12 (6254 view, 6 like).
 |---|---|---|
 | gio | 5 | +3% |
 | mer | 6 | +2% |
-| sab | 5 | +1% |
-| dom | 5 | +0% |
-| ven | 5 | +0% |
-| mar | 8 | −0% |
-| lun | 4 | −1% |
+| sab | 6 | +1% |
+| dom | 6 | +0% |
+| ven | 6 | +0% |
+| mar | 9 | −1% |
+| lun | 5 | −1% |
 
 ## Per fascia oraria
 
 | | video | view rispetto alla mediana |
 |---|---|---|
 | notte | 1 | +5% |
-| pranzo | 17 | +0% |
+| pranzo | 18 | +0% |
 | sera | 4 | +0% |
-| mattina | 4 | −1% |
-| pomeriggio | 10 | −1% |
+| mattina | 5 | −1% |
+| pomeriggio | 13 | −1% |
 
 ## Per durata
 
 | | video | view rispetto alla mediana |
 |---|---|---|
-| sotto 20 s | 21 | +0% |
-| 20-30 s | 12 | −1% |
+| sotto 20 s | 23 | +0% |
+| 20-30 s | 15 | −1% |
 
 ## I migliori
 
