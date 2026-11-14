@@ -168,6 +168,37 @@
     "mercoledì: Ultime ore per votare",
     "sabato: Si smonta la bancarella"
    ]
+  },
+  {
+   "settimana": "2026-W47",
+   "idee": {
+    "A": "La lista dei regali di Natale",
+    "B": "Turni del cane",
+    "C": "Bollette da pagare"
+   },
+   "piazza": "Piazza Dante",
+   "fatto_da": "automatico/settimana.py",
+   "hook": [
+    "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+    "POV: il ventitré dicembre e ancora nessun regalo!",
+    "Mamma mia, il cane mi guarda dalla porta e nessuno lo porta fuori!",
+    "POV: la bolletta della luce scaduta da due settimane!",
+    "Ha vinto la A: i regali di Natale sono sotto controllo!",
+    "Ha vinto la B: il cane esce sempre all'ora giusta!",
+    "Ha vinto la C: le bollette non vi sorprendono più!",
+    "Zero voti: questa volta niente app.",
+    "Natale è sotto controllo!",
+    "Il cane ha i suoi turni!",
+    "Le bollette le ricordo io!",
+    "Sabato si smonta: domani cambio piazza!"
+   ],
+   "parti": [
+    "domenica: Piazza nuova, tre idee nuove",
+    "lunedì: Sketch: i regali dell'ultimo minuto",
+    "martedì: Sketch: il cane da portare fuori",
+    "mercoledì: Sketch: la bolletta dimenticata",
+    "sabato: Si smonta la bancarella"
+   ]
   }
  ]
 }

@@ -147,6 +147,55 @@
    ],
    "conteggio": "2026-11-12T16:02+01:00",
    "vince": "B"
+  },
+  {
+   "settimana": "2026-W47",
+   "dal": "2026-11-15T00:00:00+01:00",
+   "chiude": "2026-11-18T23:59:00+01:00",
+   "uscita": "2026-11-20T19:00:00+01:00",
+   "piazza": "Piazza Dante",
+   "regali": {
+    "A": {
+     "id": "regali-natale",
+     "nome": "La lista dei regali di Natale",
+     "emoji": "🎁",
+     "descrizione": "Segni a chi devi fare il regalo, cosa e quanto vuoi spendere: spunti quando l'hai comprato e vedi quanto hai speso in tutto. Tutto resta sul tuo telefono.",
+     "link": "../Spinta/regali/2026-W47/regali-natale/"
+    },
+    "B": {
+     "id": "turni-cane",
+     "nome": "Turni del cane",
+     "emoji": "🐕",
+     "descrizione": "Scrivi chi c'è in casa: ogni giorno ti dico chi porta fuori il cane la mattina e la sera e chi gli dà la pappa. I turni li mandi su WhatsApp.",
+     "link": "../Spinta/regali/2026-W47/turni-cane/"
+    },
+    "C": {
+     "id": "bollette",
+     "nome": "Bollette da pagare",
+     "emoji": "💡",
+     "descrizione": "Segni le bollette con la scadenza: in cima quelle da pagare prima, e il promemoria entra nel calendario del telefono qualche giorno prima. Tutto resta sul tuo telefono.",
+     "link": "../Spinta/regali/2026-W47/bollette/"
+    }
+   },
+   "opzioni": [
+    {
+     "lettera": "A",
+     "idea": "La lista dei regali di Natale",
+     "voti": 0
+    },
+    {
+     "lettera": "B",
+     "idea": "Turni del cane",
+     "voti": 0
+    },
+    {
+     "lettera": "C",
+     "idea": "Bollette da pagare",
+     "voti": 0
+    }
+   ],
+   "conteggio": "",
+   "vince": ""
   }
  ]
 }

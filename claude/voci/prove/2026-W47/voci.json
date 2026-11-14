@@ -1,0 +1,639 @@
+{
+ "settimana": "2026-W47",
+ "vivacita": 0.6,
+ "cfg": 0.5,
+ "riferimento": "mako-w43s-1 (prova «vivace» scelta da Sam, 25 ottobre)",
+ "battute": [
+  {
+   "file": "m01.mp3",
+   "testo": "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+   "fonte": "copia",
+   "capito": 0.91,
+   "somiglia": 0.682,
+   "sentito": "tre fastidi di tutti i giorni, tre \"up\" quale vi regalo?",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m02.mp3",
+   "testo": "Uè guagliù, il bancariello si è spostato in Piazza Dante!",
+   "fonte": "copia",
+   "capito": 0.8,
+   "somiglia": 0.736,
+   "sentito": "Weh, Guayou, il bancariello si è spostato in piazza Dante.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m03.mp3",
+   "testo": "A: La lista dei regali di Natale.",
+   "fonte": "copia",
+   "capito": 0.92,
+   "somiglia": 0.726,
+   "sentito": "La lista dei regali di Natale",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m04.mp3",
+   "testo": "B: Turni del cane.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.636,
+   "sentito": "B. Turni del cane.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m05.mp3",
+   "testo": "C: Bollette da pagare.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.572,
+   "sentito": "C. bollette da pagare",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m06.mp3",
+   "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.634,
+   "sentito": "Scrivete la lettera nei commenti fino a mercoledì sera.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m07.mp3",
+   "testo": "Venerdì la più votata è sul banco, gratis.",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.616,
+   "sentito": "Vinedi la più votata è sul banco, gratis!",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m08.mp3",
+   "testo": "POV: il ventitré dicembre e ancora nessun regalo!",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.746,
+   "sentito": "POV il 23 dicembre e ancora nessun regalo.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m09.mp3",
+   "testo": "E i regali di Natale: li comprate all'ultimo minuto?",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.652,
+   "sentito": "e i regali di Natale li comprate all'ultimo minuto.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m10.mp3",
+   "testo": "Ho l'app per voi: «La lista dei regali di Natale», l'idea A.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.667,
+   "sentito": "Ho l'app per voi, la lista dei regali di Natale, l'idea A.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m11.mp3",
+   "testo": "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
+   "fonte": "copia",
+   "capito": 0.91,
+   "somiglia": 0.628,
+   "sentito": "Segnate chi, cosa e quanto spendete e spontate quando lo comprate.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m12.mp3",
+   "testo": "Scrivete A nei commenti: si vota fino a mercoledì sera!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.578,
+   "sentito": "Scrivete a nei commenti, si vota fino a mercoledì sera.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m13.mp3",
+   "testo": "Mamma mia, il cane mi guarda dalla porta e nessuno lo porta fuori!",
+   "fonte": "copia",
+   "capito": 0.85,
+   "somiglia": 0.777,
+   "sentito": "Mamma mia, i cani mi guarda dalla porta e nessuno lo porta fuori.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m14.mp3",
+   "testo": "E il cane: chi lo porta fuori stasera?",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.537,
+   "sentito": "E i cane, chi lo porta fuori stasera?",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m15.mp3",
+   "testo": "Ho l'app per voi: «Turni del cane», l'idea B.",
+   "fonte": "copia",
+   "capito": 0.92,
+   "somiglia": 0.766,
+   "sentito": "Ho l'app per voi, turni del cane, l'idea B e C.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m16.mp3",
+   "testo": "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
+   "fonte": "copia",
+   "capito": 0.93,
+   "somiglia": 0.753,
+   "sentito": "scrivete chi c'è in casa e vi dico chi porta fuori i cane.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m17.mp3",
+   "testo": "Scrivete B nei commenti: si vota fino a domani sera!",
+   "fonte": "copia",
+   "capito": 0.8,
+   "somiglia": 0.593,
+   "sentito": "Scrivete bene i commenti, si vota fino a domani sera.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m18.mp3",
+   "testo": "POV: la bolletta della luce scaduta da due settimane!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.704,
+   "sentito": "POV, la bolletta della luce scaduta da due settimane.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m19.mp3",
+   "testo": "E le bollette: le pagate sempre in tempo?",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.532,
+   "sentito": "e le bollette le pagate sempre in tempo?",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m20.mp3",
+   "testo": "Ho l'app per voi: «Bollette da pagare», l'idea C.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.588,
+   "sentito": "Ho l'app per voi, bollette da pagare, l'idea C.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m21.mp3",
+   "testo": "Segnate le bollette e vi dico quando vanno pagate.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.552,
+   "sentito": "Segnate le bollette e vi dico quando vanno pagate.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m22.mp3",
+   "testo": "Scrivete C nei commenti, oppure A o B: il voto chiude stasera!",
+   "fonte": "copia",
+   "capito": 0.87,
+   "somiglia": 0.684,
+   "sentito": "Scriveteci nei commenti oppure a O B il voto chiude stasera.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m23.mp3",
+   "testo": "Ha vinto la A: i regali di Natale sono sotto controllo!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.806,
+   "sentito": "Ha vinto la A. I regali di Natale sono sotto controllo.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m24.mp3",
+   "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
+   "fonte": "copia",
+   "capito": 0.84,
+   "somiglia": 0.563,
+   "sentito": "\"Oeeh, Guagliu, ho contato i voti, avete scelto voi?\"",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m25.mp3",
+   "testo": "Ha vinto la A: La lista dei regali di Natale.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.795,
+   "sentito": "Ha vinto la \"A\", la lista dei regali di Natale.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m26.mp3",
+   "testo": "Da oggi ci lavoro, giorno e notte.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.522,
+   "sentito": "Da oggi ci lavoro giorno e notte.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m27.mp3",
+   "testo": "Venerdì è sul banco, gratis per tutti.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.513,
+   "sentito": "Venerdì è sul banco gratis per tutti.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m28.mp3",
+   "testo": "Qual è il regalo più strano che avete ricevuto? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.663,
+   "sentito": "Qual è il regalo più strano che avete ricevuto? Ditemelo nei commenti.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m29.mp3",
+   "testo": "Ha vinto la B: il cane esce sempre all'ora giusta!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.579,
+   "sentito": "Ha vinto la B, il cane esce sempre all'ora giusta.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m30.mp3",
+   "testo": "Ha vinto la B: Turni del cane.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.56,
+   "sentito": "Ha vinto la B, turni del cane.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m31.mp3",
+   "testo": "Come si chiama il vostro cane? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.62,
+   "sentito": "Come si chiama il vostro cane? Ditemelo nei commenti!",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m32.mp3",
+   "testo": "Ha vinto la C: le bollette non vi sorprendono più!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.603,
+   "sentito": "Ha vinto la C, le bollette non vi sorprendono più.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m33.mp3",
+   "testo": "Ha vinto la C: Bollette da pagare.",
+   "fonte": "copia",
+   "capito": 0.77,
+   "somiglia": 0.543,
+   "sentito": "Avvinto la C, bollette da pagare.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m34.mp3",
+   "testo": "Qual è la bolletta che vi spaventa di più? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.659,
+   "sentito": "Qual è la bolletta che vi spaventa di più? Dime non nei commenti.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m35.mp3",
+   "testo": "Zero voti: questa volta niente app.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.487,
+   "sentito": "Zero voti, questa volta niente appina.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m36.mp3",
+   "testo": "Uè guagliù, ho letto tutti i commenti.",
+   "fonte": "copia",
+   "capito": 0.71,
+   "somiglia": 0.506,
+   "sentito": "Què, Guayou, ho letto tutti i commenti.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m37.mp3",
+   "testo": "Ma nessuno ha scritto A, B o C.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.426,
+   "sentito": "Ma nessuno ha scritto A, B o C.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m38.mp3",
+   "testo": "Mi dispiace: venerdì niente regalo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.575,
+   "sentito": "Mi dispiace venerdì niente regalo.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m39.mp3",
+   "testo": "Domenica torno con tre idee nuove.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.54,
+   "sentito": "Domenica attorno con tre idee nuove.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m40.mp3",
+   "testo": "Basta una lettera nei commenti e decidete voi!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.601,
+   "sentito": "Basta una lettera nei commenti e decidete voi!",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m41.mp3",
+   "testo": "Natale è sotto controllo!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.657,
+   "sentito": "Natale è sotto controllo.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m42.mp3",
+   "testo": "Segnate a chi fare il regalo e cosa.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.515,
+   "sentito": "Segnate a chi fare il regalo e cosa.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m43.mp3",
+   "testo": "Vi dico quanto avete speso.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.694,
+   "sentito": "Vi dico quanto avete speso.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m44.mp3",
+   "testo": "Uè guagliù, è il regalo del venerdì: La lista dei regali di Natale.",
+   "fonte": "copia",
+   "capito": 0.85,
+   "somiglia": 0.671,
+   "sentito": "Qua, Guayu, è il regalo del venerdì, la lista dei regali di Natale.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m45.mp3",
+   "testo": "Gratis, senza registrazione: link nel profilo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.72,
+   "sentito": "Gratis, senza registrazione, link nel profilo.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m46.mp3",
+   "testo": "Mandatela a chi compra i regali la vigilia!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.566,
+   "sentito": "Mandatela a chi compra i regali la vigilia.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m47.mp3",
+   "testo": "Il cane ha i suoi turni!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.58,
+   "sentito": "Il cane ha i suoi turni.",
+   "seme": 3,
+   "ripulita": true
+  },
+  {
+   "file": "m48.mp3",
+   "testo": "Scrivete chi c'è in casa.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.478,
+   "sentito": "Scrivete chi c'è in casa.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m49.mp3",
+   "testo": "Ogni giorno si sa chi lo porta fuori.",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.573,
+   "sentito": "Ogni giorno si sa che lo porta fuori.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m50.mp3",
+   "testo": "Uè guagliù, è il regalo del venerdì: Turni del cane.",
+   "fonte": "copia",
+   "capito": 0.86,
+   "somiglia": 0.609,
+   "sentito": "Ue, quale ue, e il regalo del venerdì, turni del cane.",
+   "seme": 2,
+   "ripulita": true
+  },
+  {
+   "file": "m51.mp3",
+   "testo": "Mandatela a chi fa finta di non sentire il cane!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.591,
+   "sentito": "Mandatela a chi fa finta di non sentire il cane.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m52.mp3",
+   "testo": "Le bollette le ricordo io!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.686,
+   "sentito": "Le bollette le ricordo io.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m53.mp3",
+   "testo": "Segnate la bolletta e la scadenza.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.467,
+   "sentito": "segnate la bolletta e la scadenza.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m54.mp3",
+   "testo": "Vi avviso qualche giorno prima.",
+   "fonte": "copia",
+   "capito": 0.8,
+   "somiglia": 0.585,
+   "sentito": "Vi abbiso qualche giorno prima.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m55.mp3",
+   "testo": "Uè guagliù, è il regalo del venerdì: Bollette da pagare.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.623,
+   "sentito": "Ué, guagliù, è il regalo del venerdì, bollette da pagare.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m56.mp3",
+   "testo": "Mandatela a chi paga sempre in ritardo!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.569,
+   "sentito": "Mandatela a chi paga sempre in ritardo.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m57.mp3",
+   "testo": "Sabato si smonta: domani cambio piazza!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.584,
+   "sentito": "Sabato si smonta, domani cambio piazza.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m58.mp3",
+   "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
+   "fonte": "copia",
+   "capito": 0.78,
+   "somiglia": 0.581,
+   "sentito": "We, Guayou, chiudo la tenda e piego il banco.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m59.mp3",
+   "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.54,
+   "sentito": "Arrotolo le lampadine e metto tutto nel carretto.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m60.mp3",
+   "testo": "Saluto Piazza Dante: grazie per questa settimana!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.591,
+   "sentito": "Saluto Piazza Dante, grazie per questa settimana.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m61.mp3",
+   "testo": "Dove vado domani? Non ve lo dico ancora.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.626,
+   "sentito": "Dove vado domani? Non ve lo dico ancora!",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m62.mp3",
+   "testo": "Domani piazza nuova e tre idee nuove da votare.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.612,
+   "sentito": "Domani, piazza Nuova e Tre idee nuove da votare.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m63.mp3",
+   "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.583,
+   "sentito": "Secondo voi dove mi sposto, scrivetelo nei commenti.",
+   "seme": 0,
+   "ripulita": true
+  }
+ ],
+ "ultimo": 63
+}

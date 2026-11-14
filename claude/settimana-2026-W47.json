@@ -1,0 +1,222 @@
+{
+  "versione": 1,
+  "settimana": "2026-W47",
+  "dal": "2026-11-15",
+  "al": "2026-11-22",
+  "scritto": "2026-11-14",
+  "voto_fino_a": "2026-11-18",
+  "regalo": "2026-11-20",
+  "idee": {
+    "A": "La lista dei regali di Natale",
+    "B": "Turni del cane",
+    "C": "Bollette da pagare"
+  },
+  "idee_id": {
+    "A": "regali-natale",
+    "B": "turni-cane",
+    "C": "bollette"
+  },
+  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Dante e tre idee; lunedì, martedì e mercoledì uno sketch per idea (si capisce anche senza conoscere Gennarino), mercoledì sera chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
+  "telefoni": {
+    "A": {
+      "nome": "Regali",
+      "emoji": "🎁"
+    },
+    "B": {
+      "nome": "Cane",
+      "emoji": "🐕"
+    },
+    "C": {
+      "nome": "Bollette",
+      "emoji": "💡"
+    }
+  },
+  "puntate": [
+    {
+      "id": "piazza-nuova",
+      "tipo": "idee",
+      "giorno": "domenica",
+      "titolo": "Piazza nuova, tre idee nuove",
+      "data": "2026-11-15",
+      "copione": [
+        "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+        "Uè guagliù, il bancariello si è spostato in Piazza Dante!",
+        "A: La lista dei regali di Natale.",
+        "B: Turni del cane.",
+        "C: Bollette da pagare.",
+        "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+        "Venerdì la più votata è sul banco, gratis."
+      ],
+      "apertura": "piazza-2026-W47.mp4",
+      "aperturaFrasi": 2
+    },
+    {
+      "id": "sketch-A",
+      "tipo": "libera",
+      "giorno": "lunedì",
+      "titolo": "Sketch: i regali dell'ultimo minuto",
+      "variante": "pov",
+      "idea": "A",
+      "copione": [
+        "POV: il ventitré dicembre e ancora nessun regalo!",
+        "E i regali di Natale: li comprate all'ultimo minuto?",
+        "Ho l'app per voi: «La lista dei regali di Natale», l'idea A.",
+        "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
+        "Scrivete A nei commenti: si vota fino a mercoledì sera!"
+      ]
+    },
+    {
+      "id": "sketch-B",
+      "tipo": "libera",
+      "giorno": "martedì",
+      "titolo": "Sketch: il cane da portare fuori",
+      "variante": "storia",
+      "idea": "B",
+      "copione": [
+        "Mamma mia, il cane mi guarda dalla porta e nessuno lo porta fuori!",
+        "E il cane: chi lo porta fuori stasera?",
+        "Ho l'app per voi: «Turni del cane», l'idea B.",
+        "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
+        "Scrivete B nei commenti: si vota fino a domani sera!"
+      ]
+    },
+    {
+      "id": "sketch-C",
+      "tipo": "libera",
+      "giorno": "mercoledì",
+      "titolo": "Sketch: la bolletta dimenticata",
+      "variante": "pov",
+      "idea": "C",
+      "copione": [
+        "POV: la bolletta della luce scaduta da due settimane!",
+        "E le bollette: le pagate sempre in tempo?",
+        "Ho l'app per voi: «Bollette da pagare», l'idea C.",
+        "Segnate le bollette e vi dico quando vanno pagate.",
+        "Scrivete C nei commenti, oppure A o B: il voto chiude stasera!"
+      ]
+    },
+    {
+      "id": "risultato-A",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "A",
+      "copione": [
+        "Ha vinto la A: i regali di Natale sono sotto controllo!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la A: La lista dei regali di Natale.",
+        "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Qual è il regalo più strano che avete ricevuto? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "risultato-B",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "B",
+      "copione": [
+        "Ha vinto la B: il cane esce sempre all'ora giusta!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la B: Turni del cane.",
+        "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Come si chiama il vostro cane? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "risultato-C",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "C",
+      "copione": [
+        "Ha vinto la C: le bollette non vi sorprendono più!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la C: Bollette da pagare.",
+        "Segnate le bollette e vi dico quando vanno pagate.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Qual è la bolletta che vi spaventa di più? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "nessun-voto",
+      "tipo": "nessuno",
+      "giorno": "giovedì",
+      "titolo": "Niente voti, niente app",
+      "copione": [
+        "Zero voti: questa volta niente app.",
+        "Uè guagliù, ho letto tutti i commenti.",
+        "Ma nessuno ha scritto A, B o C.",
+        "Mi dispiace: venerdì niente regalo.",
+        "Domenica torno con tre idee nuove.",
+        "Basta una lettera nei commenti e decidete voi!"
+      ]
+    },
+    {
+      "id": "regalo-A",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "A",
+      "copione": [
+        "Natale è sotto controllo!",
+        "Segnate a chi fare il regalo e cosa.",
+        "Vi dico quanto avete speso.",
+        "Uè guagliù, è il regalo del venerdì: La lista dei regali di Natale.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi compra i regali la vigilia!"
+      ]
+    },
+    {
+      "id": "regalo-B",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "B",
+      "copione": [
+        "Il cane ha i suoi turni!",
+        "Scrivete chi c'è in casa.",
+        "Ogni giorno si sa chi lo porta fuori.",
+        "Uè guagliù, è il regalo del venerdì: Turni del cane.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi fa finta di non sentire il cane!"
+      ]
+    },
+    {
+      "id": "regalo-C",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "C",
+      "copione": [
+        "Le bollette le ricordo io!",
+        "Segnate la bolletta e la scadenza.",
+        "Vi avviso qualche giorno prima.",
+        "Uè guagliù, è il regalo del venerdì: Bollette da pagare.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi paga sempre in ritardo!"
+      ]
+    },
+    {
+      "id": "smontaggio",
+      "tipo": "libera",
+      "giorno": "sabato",
+      "titolo": "Si smonta la bancarella",
+      "copione": [
+        "Sabato si smonta: domani cambio piazza!",
+        "Uè guagliù, chiudo la tenda e piego il banco.",
+        "Arrotolo le lampadine e metto tutto nel carretto.",
+        "Saluto Piazza Dante: grazie per questa settimana!",
+        "Dove vado domani? Non ve lo dico ancora.",
+        "Domani piazza nuova e tre idee nuove da votare.",
+        "Secondo voi dove mi sposto? Scrivetelo nei commenti!"
+      ]
+    }
+  ],
+  "piazza": "Piazza Dante"
+}

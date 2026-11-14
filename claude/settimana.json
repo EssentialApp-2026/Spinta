@@ -1,34 +1,34 @@
 {
   "versione": 1,
-  "settimana": "2026-W46",
-  "dal": "2026-11-08",
-  "al": "2026-11-15",
-  "scritto": "2026-10-25",
-  "voto_fino_a": "2026-11-11",
-  "regalo": "2026-11-13",
+  "settimana": "2026-W47",
+  "dal": "2026-11-15",
+  "al": "2026-11-22",
+  "scritto": "2026-11-14",
+  "voto_fino_a": "2026-11-18",
+  "regalo": "2026-11-20",
   "idee": {
-    "A": "Quanta acqua ho bevuto",
-    "B": "Garanzie e scontrini",
-    "C": "L'uovo sodo perfetto"
+    "A": "La lista dei regali di Natale",
+    "B": "Turni del cane",
+    "C": "Bollette da pagare"
   },
   "idee_id": {
-    "A": "acqua-bicchieri",
-    "B": "garanzie",
-    "C": "uovo-perfetto"
+    "A": "regali-natale",
+    "B": "turni-cane",
+    "C": "bollette"
   },
-  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Garibaldi e tre idee, lunedì e martedì promemoria, mercoledì chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
+  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Dante e tre idee; lunedì, martedì e mercoledì uno sketch per idea (si capisce anche senza conoscere Gennarino), mercoledì sera chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
   "telefoni": {
     "A": {
-      "nome": "Acqua",
-      "emoji": "💧"
+      "nome": "Regali",
+      "emoji": "🎁"
     },
     "B": {
-      "nome": "Garanzie",
-      "emoji": "🧾"
+      "nome": "Cane",
+      "emoji": "🐕"
     },
     "C": {
-      "nome": "Uovo",
-      "emoji": "🥚"
+      "nome": "Bollette",
+      "emoji": "💡"
     }
   },
   "puntate": [
@@ -37,62 +37,62 @@
       "tipo": "idee",
       "giorno": "domenica",
       "titolo": "Piazza nuova, tre idee nuove",
-      "data": "2026-11-08",
+      "data": "2026-11-15",
       "copione": [
-        "Piazza nuova, tre idee nuove: quale costruisco?",
-        "Uè guagliù, il bancariello si è spostato in Piazza Garibaldi!",
-        "A: Quanta acqua ho bevuto.",
-        "B: Garanzie e scontrini.",
-        "C: L'uovo sodo perfetto.",
+        "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+        "Uè guagliù, il bancariello si è spostato in Piazza Dante!",
+        "A: La lista dei regali di Natale.",
+        "B: Turni del cane.",
+        "C: Bollette da pagare.",
         "Scrivete la lettera nei commenti, fino a mercoledì sera.",
         "Venerdì la più votata è sul banco, gratis."
       ],
-      "apertura": "piazza-2026-W46.mp4",
+      "apertura": "piazza-2026-W47.mp4",
       "aperturaFrasi": 2
     },
     {
-      "id": "promemoria-lunedi",
-      "tipo": "idee",
+      "id": "sketch-A",
+      "tipo": "libera",
       "giorno": "lunedì",
-      "titolo": "Avete già votato?",
+      "titolo": "Sketch: i regali dell'ultimo minuto",
+      "variante": "pov",
+      "idea": "A",
       "copione": [
-        "L'acqua che non beviamo, la garanzia scaduta o l'uovo troppo duro: chi vi frega di più?",
-        "Uè guagliù, il voto è aperto da ieri.",
-        "A: Quanta acqua ho bevuto.",
-        "B: Garanzie e scontrini.",
-        "C: L'uovo sodo perfetto.",
-        "Basta una lettera nei commenti per decidere.",
-        "Chi non ha ancora votato, ha tempo fino a mercoledì sera!"
+        "POV: il ventitré dicembre e ancora nessun regalo!",
+        "E i regali di Natale: li comprate all'ultimo minuto?",
+        "Ho l'app per voi: «La lista dei regali di Natale», l'idea A.",
+        "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
+        "Scrivete A nei commenti: si vota fino a mercoledì sera!"
       ]
     },
     {
-      "id": "cosa-dimenticate",
+      "id": "sketch-B",
       "tipo": "libera",
       "giorno": "martedì",
-      "titolo": "Cosa vi frega ogni giorno?",
+      "titolo": "Sketch: il cane da portare fuori",
+      "variante": "storia",
+      "idea": "B",
       "copione": [
-        "Mamma mia, a fine giornata ho bevuto solo un caffè!",
-        "Uè guagliù, a me succede sempre!",
-        "E le garanzie: sapete quando scadono?",
-        "E l'uovo sodo: vi viene sempre come volete?",
-        "Per questo ho pensato a queste tre idee.",
-        "Ditemi nei commenti cosa vi frega ogni giorno.",
-        "E chi non ha votato: A, B o C, fino a domani sera!"
+        "Mamma mia, il cane mi guarda dalla porta e nessuno lo porta fuori!",
+        "E il cane: chi lo porta fuori stasera?",
+        "Ho l'app per voi: «Turni del cane», l'idea B.",
+        "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
+        "Scrivete B nei commenti: si vota fino a domani sera!"
       ]
     },
     {
-      "id": "ultime-ore",
-      "tipo": "idee",
+      "id": "sketch-C",
+      "tipo": "libera",
       "giorno": "mercoledì",
-      "titolo": "Ultime ore per votare",
+      "titolo": "Sketch: la bolletta dimenticata",
+      "variante": "pov",
+      "idea": "C",
       "copione": [
-        "Stasera chiudo le urne: manca poco!",
-        "Uè guagliù, l'ultima occasione per votare.",
-        "A: Quanta acqua ho bevuto.",
-        "B: Garanzie e scontrini.",
-        "C: L'uovo sodo perfetto.",
-        "Una lettera nei commenti e avete deciso.",
-        "Domani vi dico chi ha vinto!"
+        "POV: la bolletta della luce scaduta da due settimane!",
+        "E le bollette: le pagate sempre in tempo?",
+        "Ho l'app per voi: «Bollette da pagare», l'idea C.",
+        "Segnate le bollette e vi dico quando vanno pagate.",
+        "Scrivete C nei commenti, oppure A o B: il voto chiude stasera!"
       ]
     },
     {
@@ -102,13 +102,13 @@
       "titolo": "Risultato del voto",
       "vince": "A",
       "copione": [
-        "Ha vinto la A: l'acqua non ve la scordate più!",
+        "Ha vinto la A: i regali di Natale sono sotto controllo!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la A: Quanta acqua ho bevuto.",
-        "Toccate ogni bicchiere e vi dico quanto manca.",
+        "Ha vinto la A: La lista dei regali di Natale.",
+        "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Quanti bicchieri bevete voi? Ditemelo nei commenti!"
+        "Qual è il regalo più strano che avete ricevuto? Ditemelo nei commenti!"
       ]
     },
     {
@@ -118,13 +118,13 @@
       "titolo": "Risultato del voto",
       "vince": "B",
       "copione": [
-        "Ha vinto la B: le garanzie non scadono più di nascosto!",
+        "Ha vinto la B: il cane esce sempre all'ora giusta!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la B: Garanzie e scontrini.",
-        "Segnate cosa avete comprato e vi dico fino a quando c'è la garanzia.",
+        "Ha vinto la B: Turni del cane.",
+        "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Cosa vi si è rotto appena finita la garanzia? Ditemelo nei commenti!"
+        "Come si chiama il vostro cane? Ditemelo nei commenti!"
       ]
     },
     {
@@ -134,13 +134,13 @@
       "titolo": "Risultato del voto",
       "vince": "C",
       "copione": [
-        "Ha vinto la C: l'uovo viene sempre giusto!",
+        "Ha vinto la C: le bollette non vi sorprendono più!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la C: L'uovo sodo perfetto.",
-        "Scegliete come lo volete e vi suono al momento giusto.",
+        "Ha vinto la C: Bollette da pagare.",
+        "Segnate le bollette e vi dico quando vanno pagate.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Voi l'uovo come lo volete? Ditemelo nei commenti!"
+        "Qual è la bolletta che vi spaventa di più? Ditemelo nei commenti!"
       ]
     },
     {
@@ -164,13 +164,12 @@
       "titolo": "Il regalo è sul banco",
       "vince": "A",
       "copione": [
-        "È venerdì: l'acqua si conta da sola!",
-        "Uè guagliù, il regalo è sul banco.",
-        "Ecco Quanta acqua ho bevuto.",
-        "Toccate più ogni volta che bevete.",
-        "Vi faccio vedere come va la settimana.",
+        "Natale è sotto controllo!",
+        "Segnate a chi fare il regalo e cosa.",
+        "Vi dico quanto avete speso.",
+        "Uè guagliù, è il regalo del venerdì: La lista dei regali di Natale.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi beve solo caffè!"
+        "Mandatela a chi compra i regali la vigilia!"
       ]
     },
     {
@@ -180,13 +179,12 @@
       "titolo": "Il regalo è sul banco",
       "vince": "B",
       "copione": [
-        "È venerdì: le garanzie le tengo io!",
-        "Uè guagliù, il regalo è sul banco.",
-        "Ecco Garanzie e scontrini.",
-        "Segnate cosa comprate e quando.",
-        "Vi avviso prima che scada la garanzia.",
+        "Il cane ha i suoi turni!",
+        "Scrivete chi c'è in casa.",
+        "Ogni giorno si sa chi lo porta fuori.",
+        "Uè guagliù, è il regalo del venerdì: Turni del cane.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi perde sempre gli scontrini!"
+        "Mandatela a chi fa finta di non sentire il cane!"
       ]
     },
     {
@@ -196,13 +194,12 @@
       "titolo": "Il regalo è sul banco",
       "vince": "C",
       "copione": [
-        "È venerdì: l'uovo viene come lo volete voi!",
-        "Uè guagliù, il regalo è sul banco.",
-        "Ecco l'uovo sodo perfetto.",
-        "Scegliete: alla coque, barzotto o sodo.",
-        "Vi suono quando è pronto.",
+        "Le bollette le ricordo io!",
+        "Segnate la bolletta e la scadenza.",
+        "Vi avviso qualche giorno prima.",
+        "Uè guagliù, è il regalo del venerdì: Bollette da pagare.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi fa le uova di gomma!"
+        "Mandatela a chi paga sempre in ritardo!"
       ]
     },
     {
@@ -214,12 +211,12 @@
         "Sabato si smonta: domani cambio piazza!",
         "Uè guagliù, chiudo la tenda e piego il banco.",
         "Arrotolo le lampadine e metto tutto nel carretto.",
-        "Saluto Piazza Garibaldi: grazie per questa settimana!",
+        "Saluto Piazza Dante: grazie per questa settimana!",
         "Dove vado domani? Non ve lo dico ancora.",
         "Domani piazza nuova e tre idee nuove da votare.",
         "Secondo voi dove mi sposto? Scrivetelo nei commenti!"
       ]
     }
   ],
-  "piazza": "Piazza Garibaldi"
+  "piazza": "Piazza Dante"
 }

@@ -782,6 +782,15 @@
    "foto": "File:Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg",
    "licenza": "CC0",
    "descrizione": "Volo in avanti su Piazza Garibaldi (foto vera, CC0: «Napoli Centrale Station - Piazza Garibaldi Entrance 01.jpg», nessun credito da citare; le persone vere sono state tolte da automatico/persone.py) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."
+  },
+  {
+   "file": "piazza-2026-W47.mp4",
+   "poster": "piazza-2026-W47.jpg",
+   "settimana": "2026-W47",
+   "piazza": "Piazza Dante",
+   "foto": "File:Convento Soriano.jpg",
+   "licenza": "Public domain",
+   "descrizione": "Volo in avanti su Piazza Dante (foto vera, Public domain: «Convento Soriano.jpg», nessun credito da citare; le persone vere sono state tolte da automatico/persone.py) fino alla bancarella di Gennarino coi telefoni della settimana. Fatta in automatico da automatico/piazza.py. Si usa solo come apertura della puntata della domenica."
   }
  ]
 }
