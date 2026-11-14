@@ -1,10 +1,10 @@
 {
  "v": 1,
- "at": "2026-11-12T15:04:30.106Z",
+ "at": "2026-11-14T09:09:47.010Z",
  "user": {
-  "f": 4,
-  "l": 114,
-  "n": 41
+  "f": 5,
+  "l": 120,
+  "n": 42
  },
  "snaps": [
   [
@@ -54,15 +54,29 @@
   [
    "2026-11-12",
    4
+  ],
+  [
+   "2026-11-14",
+   5
   ]
  ],
  "video": [
   {
+   "t": "Parte 40 · Garanzie e scontrini: è pronta, gratis e senza registrazione. Link nel profilo ",
+   "d": "2026-11-13",
+   "h": "05:46",
+   "v": 207,
+   "l": 1,
+   "c": 2,
+   "s": 0,
+   "len": 20
+  },
+  {
    "t": "Parte 39 · Ha vinto la B: Garanzie e scontrini! Venerdì la trovate sul banco, gratis 🎁 Co",
    "d": "2026-11-12",
    "h": "15:19",
-   "v": 17,
-   "l": 0,
+   "v": 205,
+   "l": 1,
    "c": 0,
    "s": 0,
    "len": 11
@@ -71,8 +85,8 @@
    "t": "Parte 38 · Quale app vi regalo venerdì, gratis? A: Quanta acqua ho bevuto · B: Garanzie e ",
    "d": "2026-11-11",
    "h": "18:36",
-   "v": 248,
-   "l": 0,
+   "v": 250,
+   "l": 1,
    "c": 0,
    "s": 0,
    "len": 16
@@ -81,8 +95,8 @@
    "t": "Mamma mia, a fine giornata ho bevuto solo un caffè!",
    "d": "2026-11-10",
    "h": "06:49",
-   "v": 244,
-   "l": 0,
+   "v": 245,
+   "l": 1,
    "c": 0,
    "s": 0,
    "len": 22.6,
@@ -94,8 +108,8 @@
    "t": "Parte 36 · Quale app vi regalo venerdì, gratis? A: Quanta acqua ho bevuto · B: Garanzie e ",
    "d": "2026-11-09",
    "h": "16:34",
-   "v": 241,
-   "l": 0,
+   "v": 243,
+   "l": 1,
    "c": 0,
    "s": 0,
    "len": 19
@@ -104,8 +118,8 @@
    "t": "Piazza nuova, tre idee nuove: quale costruisco?",
    "d": "2026-11-08",
    "h": "18:00",
-   "v": 253,
-   "l": 0,
+   "v": 254,
+   "l": 1,
    "c": 3,
    "s": 0,
    "len": 19.9,
