@@ -1,10 +1,10 @@
 {
  "v": 1,
- "at": "2026-11-14T09:09:47.010Z",
+ "at": "2026-11-21T07:45:48.794Z",
  "user": {
   "f": 5,
-  "l": 120,
-  "n": 42
+  "l": 128,
+  "n": 50
  },
  "snaps": [
   [
@@ -58,14 +58,127 @@
   [
    "2026-11-14",
    5
+  ],
+  [
+   "2026-11-15",
+   5
+  ],
+  [
+   "2026-11-16",
+   5
+  ],
+  [
+   "2026-11-18",
+   5
+  ],
+  [
+   "2026-11-19",
+   5
+  ],
+  [
+   "2026-11-20",
+   5
+  ],
+  [
+   "2026-11-21",
+   5
   ]
  ],
  "video": [
   {
+   "t": "Sabato si smonta: domani cambio piazza!",
+   "d": "2026-11-21",
+   "h": "08:43",
+   "v": 0,
+   "l": 0,
+   "c": 0,
+   "s": 0,
+   "len": 23.9,
+   "score": 95,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Parte 46 · Bollette da pagare: è pronta, gratis e senza registrazione. Link nel profilo 🎁",
+   "d": "2026-11-20",
+   "h": "18:50",
+   "v": 45,
+   "l": 0,
+   "c": 0,
+   "s": 0,
+   "len": 16
+  },
+  {
+   "t": "POV: la bolletta della luce scaduta da due settimane!",
+   "d": "2026-11-19",
+   "h": "22:01",
+   "v": 216,
+   "l": 2,
+   "c": 0,
+   "s": 0,
+   "len": 16.9,
+   "score": 95,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Parte 44 · POV: la bolletta della luce scaduta da due settimane! Voi che ne pensate? Ditem",
+   "d": "2026-11-19",
+   "h": "14:41",
+   "v": 211,
+   "l": 1,
+   "c": 2,
+   "s": 0,
+   "len": 16
+  },
+  {
+   "t": "Parte 43 · Mamma mia, il cane mi guarda dalla porta e nessuno lo porta fuori! Voi che ne p",
+   "d": "2026-11-17",
+   "h": "05:42",
+   "v": 244,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 17
+  },
+  {
+   "t": "POV: il ventitré dicembre e ancora nessun regalo!",
+   "d": "2026-11-16",
+   "h": "20:51",
+   "v": 239,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 19.2,
+   "score": 95,
+   "hk": "Personalizzato",
+   "fmt": "Serie (puntata)"
+  },
+  {
+   "t": "Parte 42 · Quale app vi regalo venerdì, gratis? A: La lista dei regali di Natale · B: Turn",
+   "d": "2026-11-15",
+   "h": "09:42",
+   "v": 265,
+   "l": 2,
+   "c": 0,
+   "s": 0,
+   "len": 19
+  },
+  {
+   "t": "Parte 41 · Sabato si smonta: domani cambio piazza! Voi che ne pensate? Ditemelo nei commen",
+   "d": "2026-11-14",
+   "h": "13:49",
+   "v": 223,
+   "l": 1,
+   "c": 0,
+   "s": 0,
+   "len": 22
+  },
+  {
    "t": "Parte 40 · Garanzie e scontrini: è pronta, gratis e senza registrazione. Link nel profilo ",
    "d": "2026-11-13",
    "h": "05:46",
-   "v": 207,
+   "v": 209,
    "l": 1,
    "c": 2,
    "s": 0,
@@ -131,7 +244,7 @@
    "t": "È venerdì: le piante bevono al momento giusto!",
    "d": "2026-11-07",
    "h": "17:17",
-   "v": 237,
+   "v": 240,
    "l": 1,
    "c": 0,
    "s": 0,
