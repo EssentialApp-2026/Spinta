@@ -1,0 +1,222 @@
+{
+  "versione": 1,
+  "settimana": "2026-W48",
+  "dal": "2026-11-22",
+  "al": "2026-11-29",
+  "scritto": "2026-11-21",
+  "voto_fino_a": "2026-11-25",
+  "regalo": "2026-11-27",
+  "idee": {
+    "A": "Timer per i compiti",
+    "B": "Documenti in scadenza",
+    "C": "Chi paga il caffè"
+  },
+  "idee_id": {
+    "A": "compiti-pomodoro",
+    "B": "documenti",
+    "C": "caffe-turno"
+  },
+  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Quattro Giornate e tre idee; lunedì, martedì e mercoledì uno sketch per idea (si capisce anche senza conoscere Gennarino), mercoledì sera chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
+  "telefoni": {
+    "A": {
+      "nome": "Compiti",
+      "emoji": "📚"
+    },
+    "B": {
+      "nome": "Documenti",
+      "emoji": "🪪"
+    },
+    "C": {
+      "nome": "Caffè",
+      "emoji": "☕"
+    }
+  },
+  "puntate": [
+    {
+      "id": "piazza-nuova",
+      "tipo": "idee",
+      "giorno": "domenica",
+      "titolo": "Piazza nuova, tre idee nuove",
+      "data": "2026-11-22",
+      "copione": [
+        "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+        "Uè guagliù, il bancariello si è spostato in Piazza Quattro Giornate!",
+        "A: Timer per i compiti.",
+        "B: Documenti in scadenza.",
+        "C: Chi paga il caffè.",
+        "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+        "Venerdì la più votata è sul banco, gratis."
+      ],
+      "apertura": "piazza-2026-W48.mp4",
+      "aperturaFrasi": 2
+    },
+    {
+      "id": "sketch-A",
+      "tipo": "libera",
+      "giorno": "lunedì",
+      "titolo": "Sketch: i compiti che non finiscono mai",
+      "variante": "storia",
+      "idea": "A",
+      "copione": [
+        "Mamma mia, tre ore sul libro e una pagina sola!",
+        "E i compiti: quanto ci mettono i vostri figli?",
+        "Ho l'app per voi: «Timer per i compiti», l'idea A.",
+        "Venticinque minuti di studio e cinque di pausa: vi suono io.",
+        "Scrivete A nei commenti: si vota fino a mercoledì sera!"
+      ]
+    },
+    {
+      "id": "sketch-B",
+      "tipo": "libera",
+      "giorno": "martedì",
+      "titolo": "Sketch: la carta d'identità scaduta",
+      "variante": "pov",
+      "idea": "B",
+      "copione": [
+        "POV: all'aeroporto con la carta d'identità scaduta!",
+        "E i documenti: sapete quando scade la patente?",
+        "Ho l'app per voi: «Documenti in scadenza», l'idea B.",
+        "Segnate i documenti e vi avviso prima che scadano.",
+        "Scrivete B nei commenti: si vota fino a domani sera!"
+      ]
+    },
+    {
+      "id": "sketch-C",
+      "tipo": "libera",
+      "giorno": "mercoledì",
+      "titolo": "Sketch: il caffè da pagare",
+      "variante": "storia",
+      "idea": "C",
+      "copione": [
+        "Mamma mia, al bar si litiga sempre su chi paga il caffè!",
+        "E al bar coi colleghi: chi paga il caffè oggi?",
+        "Ho l'app per voi: «Chi paga il caffè», l'idea C.",
+        "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
+        "Scrivete C nei commenti, oppure A o B: il voto chiude stasera!"
+      ]
+    },
+    {
+      "id": "risultato-A",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "A",
+      "copione": [
+        "Ha vinto la A: i compiti si fanno senza perdere tempo!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la A: Timer per i compiti.",
+        "Venticinque minuti di studio e cinque di pausa: vi suono io.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Qual era la materia che odiavate? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "risultato-B",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "B",
+      "copione": [
+        "Ha vinto la B: i documenti non scadono più a sorpresa!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la B: Documenti in scadenza.",
+        "Segnate i documenti e vi avviso prima che scadano.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Quale documento vi è scaduto nel momento peggiore? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "risultato-C",
+      "tipo": "risultato",
+      "giorno": "giovedì",
+      "titolo": "Risultato del voto",
+      "vince": "C",
+      "copione": [
+        "Ha vinto la C: al bar si sa chi paga!",
+        "Uè guagliù, ho contato i voti e avete scelto voi.",
+        "Ha vinto la C: Chi paga il caffè.",
+        "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
+        "Da oggi ci lavoro, giorno e notte.",
+        "Venerdì è sul banco, gratis per tutti.",
+        "Il caffè come lo prendete? Ditemelo nei commenti!"
+      ]
+    },
+    {
+      "id": "nessun-voto",
+      "tipo": "nessuno",
+      "giorno": "giovedì",
+      "titolo": "Niente voti, niente app",
+      "copione": [
+        "Zero voti: questa volta niente app.",
+        "Uè guagliù, ho letto tutti i commenti.",
+        "Ma nessuno ha scritto A, B o C.",
+        "Mi dispiace: venerdì niente regalo.",
+        "Domenica torno con tre idee nuove.",
+        "Basta una lettera nei commenti e decidete voi!"
+      ]
+    },
+    {
+      "id": "regalo-A",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "A",
+      "copione": [
+        "I compiti hanno il loro timer!",
+        "Venticinque minuti di studio, poi la pausa.",
+        "Vi suono io quando si cambia.",
+        "Uè guagliù, è il regalo del venerdì: Timer per i compiti.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi studia col telefono in mano!"
+      ]
+    },
+    {
+      "id": "regalo-B",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "B",
+      "copione": [
+        "I documenti li controllo io!",
+        "Segnate carta d'identità, patente e passaporto.",
+        "Vi avviso un mese prima.",
+        "Uè guagliù, è il regalo del venerdì: Documenti in scadenza.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela a chi parte sempre col documento scaduto!"
+      ]
+    },
+    {
+      "id": "regalo-C",
+      "tipo": "regalo",
+      "giorno": "venerdì",
+      "titolo": "Il regalo è sul banco",
+      "vince": "C",
+      "copione": [
+        "Il caffè ha i suoi turni!",
+        "Scrivete chi prende il caffè con voi.",
+        "Ogni giorno vi dico chi offre.",
+        "Uè guagliù, è il regalo del venerdì: Chi paga il caffè.",
+        "Gratis, senza registrazione: link nel profilo.",
+        "Mandatela al collega che non paga mai!"
+      ]
+    },
+    {
+      "id": "smontaggio",
+      "tipo": "libera",
+      "giorno": "sabato",
+      "titolo": "Si smonta la bancarella",
+      "copione": [
+        "Sabato si smonta: domani cambio piazza!",
+        "Uè guagliù, chiudo la tenda e piego il banco.",
+        "Arrotolo le lampadine e metto tutto nel carretto.",
+        "Saluto Piazza Quattro Giornate: grazie per questa settimana!",
+        "Dove vado domani? Non ve lo dico ancora.",
+        "Domani piazza nuova e tre idee nuove da votare.",
+        "Secondo voi dove mi sposto? Scrivetelo nei commenti!"
+      ]
+    }
+  ],
+  "piazza": "Piazza Quattro Giornate"
+}

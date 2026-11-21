@@ -1640,18 +1640,274 @@
     "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
     "file": "voci/2026-W47/m63.mp3"
    }
+  ],
+  "2026-W48": [
+   {
+    "testo": "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+    "file": "voci/2026-W48/m01.mp3"
+   },
+   {
+    "testo": "Uè guagliù, il bancariello si è spostato in Piazza Quattro Giornate!",
+    "file": "voci/2026-W48/m02.mp3"
+   },
+   {
+    "testo": "A: Timer per i compiti.",
+    "file": "voci/2026-W48/m03.mp3"
+   },
+   {
+    "testo": "B: Documenti in scadenza.",
+    "file": "voci/2026-W48/m04.mp3"
+   },
+   {
+    "testo": "C: Chi paga il caffè.",
+    "file": "voci/2026-W48/m05.mp3"
+   },
+   {
+    "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+    "file": "voci/2026-W48/m06.mp3"
+   },
+   {
+    "testo": "Venerdì la più votata è sul banco, gratis.",
+    "file": "voci/2026-W48/m07.mp3"
+   },
+   {
+    "testo": "Mamma mia, tre ore sul libro e una pagina sola!",
+    "file": "voci/2026-W48/m08.mp3"
+   },
+   {
+    "testo": "E i compiti: quanto ci mettono i vostri figli?",
+    "file": "voci/2026-W48/m09.mp3"
+   },
+   {
+    "testo": "Ho l'app per voi: «Timer per i compiti», l'idea A.",
+    "file": "voci/2026-W48/m10.mp3"
+   },
+   {
+    "testo": "Venticinque minuti di studio e cinque di pausa: vi suono io.",
+    "file": "voci/2026-W48/m11.mp3"
+   },
+   {
+    "testo": "Scrivete A nei commenti: si vota fino a mercoledì sera!",
+    "file": "voci/2026-W48/m12.mp3"
+   },
+   {
+    "testo": "POV: all'aeroporto con la carta d'identità scaduta!",
+    "file": "voci/2026-W48/m13.mp3"
+   },
+   {
+    "testo": "E i documenti: sapete quando scade la patente?",
+    "file": "voci/2026-W48/m14.mp3"
+   },
+   {
+    "testo": "Ho l'app per voi: «Documenti in scadenza», l'idea B.",
+    "file": "voci/2026-W48/m15.mp3"
+   },
+   {
+    "testo": "Segnate i documenti e vi avviso prima che scadano.",
+    "file": "voci/2026-W48/m16.mp3"
+   },
+   {
+    "testo": "Scrivete B nei commenti: si vota fino a domani sera!",
+    "file": "voci/2026-W48/m17.mp3"
+   },
+   {
+    "testo": "Mamma mia, al bar si litiga sempre su chi paga il caffè!",
+    "file": "voci/2026-W48/m18.mp3"
+   },
+   {
+    "testo": "E al bar coi colleghi: chi paga il caffè oggi?",
+    "file": "voci/2026-W48/m19.mp3"
+   },
+   {
+    "testo": "Ho l'app per voi: «Chi paga il caffè», l'idea C.",
+    "file": "voci/2026-W48/m20.mp3"
+   },
+   {
+    "testo": "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
+    "file": "voci/2026-W48/m21.mp3"
+   },
+   {
+    "testo": "Scrivete C nei commenti, oppure A o B: il voto chiude stasera!",
+    "file": "voci/2026-W48/m22.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: i compiti si fanno senza perdere tempo!",
+    "file": "voci/2026-W48/m23.mp3"
+   },
+   {
+    "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
+    "file": "voci/2026-W48/m24.mp3"
+   },
+   {
+    "testo": "Ha vinto la A: Timer per i compiti.",
+    "file": "voci/2026-W48/m25.mp3"
+   },
+   {
+    "testo": "Da oggi ci lavoro, giorno e notte.",
+    "file": "voci/2026-W48/m26.mp3"
+   },
+   {
+    "testo": "Venerdì è sul banco, gratis per tutti.",
+    "file": "voci/2026-W48/m27.mp3"
+   },
+   {
+    "testo": "Qual era la materia che odiavate? Ditemelo nei commenti!",
+    "file": "voci/2026-W48/m28.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: i documenti non scadono più a sorpresa!",
+    "file": "voci/2026-W48/m29.mp3"
+   },
+   {
+    "testo": "Ha vinto la B: Documenti in scadenza.",
+    "file": "voci/2026-W48/m30.mp3"
+   },
+   {
+    "testo": "Quale documento vi è scaduto nel momento peggiore? Ditemelo nei commenti!",
+    "file": "voci/2026-W48/m31.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: al bar si sa chi paga!",
+    "file": "voci/2026-W48/m32.mp3"
+   },
+   {
+    "testo": "Ha vinto la C: Chi paga il caffè.",
+    "file": "voci/2026-W48/m33.mp3"
+   },
+   {
+    "testo": "Il caffè come lo prendete? Ditemelo nei commenti!",
+    "file": "voci/2026-W48/m34.mp3"
+   },
+   {
+    "testo": "Zero voti: questa volta niente app.",
+    "file": "voci/2026-W48/m35.mp3"
+   },
+   {
+    "testo": "Uè guagliù, ho letto tutti i commenti.",
+    "file": "voci/2026-W48/m36.mp3"
+   },
+   {
+    "testo": "Ma nessuno ha scritto A, B o C.",
+    "file": "voci/2026-W48/m37.mp3"
+   },
+   {
+    "testo": "Mi dispiace: venerdì niente regalo.",
+    "file": "voci/2026-W48/m38.mp3"
+   },
+   {
+    "testo": "Domenica torno con tre idee nuove.",
+    "file": "voci/2026-W48/m39.mp3"
+   },
+   {
+    "testo": "Basta una lettera nei commenti e decidete voi!",
+    "file": "voci/2026-W48/m40.mp3"
+   },
+   {
+    "testo": "I compiti hanno il loro timer!",
+    "file": "voci/2026-W48/m41.mp3"
+   },
+   {
+    "testo": "Venticinque minuti di studio, poi la pausa.",
+    "file": "voci/2026-W48/m42.mp3"
+   },
+   {
+    "testo": "Vi suono io quando si cambia.",
+    "file": "voci/2026-W48/m43.mp3"
+   },
+   {
+    "testo": "Uè guagliù, è il regalo del venerdì: Timer per i compiti.",
+    "file": "voci/2026-W48/m44.mp3"
+   },
+   {
+    "testo": "Gratis, senza registrazione: link nel profilo.",
+    "file": "voci/2026-W48/m45.mp3"
+   },
+   {
+    "testo": "Mandatela a chi studia col telefono in mano!",
+    "file": "voci/2026-W48/m46.mp3"
+   },
+   {
+    "testo": "I documenti li controllo io!",
+    "file": "voci/2026-W48/m47.mp3"
+   },
+   {
+    "testo": "Segnate carta d'identità, patente e passaporto.",
+    "file": "voci/2026-W48/m48.mp3"
+   },
+   {
+    "testo": "Vi avviso un mese prima.",
+    "file": "voci/2026-W48/m49.mp3"
+   },
+   {
+    "testo": "Uè guagliù, è il regalo del venerdì: Documenti in scadenza.",
+    "file": "voci/2026-W48/m50.mp3"
+   },
+   {
+    "testo": "Mandatela a chi parte sempre col documento scaduto!",
+    "file": "voci/2026-W48/m51.mp3"
+   },
+   {
+    "testo": "Il caffè ha i suoi turni!",
+    "file": "voci/2026-W48/m52.mp3"
+   },
+   {
+    "testo": "Scrivete chi prende il caffè con voi.",
+    "file": "voci/2026-W48/m53.mp3"
+   },
+   {
+    "testo": "Ogni giorno vi dico chi offre.",
+    "file": "voci/2026-W48/m54.mp3"
+   },
+   {
+    "testo": "Uè guagliù, è il regalo del venerdì: Chi paga il caffè.",
+    "file": "voci/2026-W48/m55.mp3"
+   },
+   {
+    "testo": "Mandatela al collega che non paga mai!",
+    "file": "voci/2026-W48/m56.mp3"
+   },
+   {
+    "testo": "Sabato si smonta: domani cambio piazza!",
+    "file": "voci/2026-W48/m57.mp3"
+   },
+   {
+    "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
+    "file": "voci/2026-W48/m58.mp3"
+   },
+   {
+    "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
+    "file": "voci/2026-W48/m59.mp3"
+   },
+   {
+    "testo": "Saluto Piazza Quattro Giornate: grazie per questa settimana!",
+    "file": "voci/2026-W48/m60.mp3"
+   },
+   {
+    "testo": "Dove vado domani? Non ve lo dico ancora.",
+    "file": "voci/2026-W48/m61.mp3"
+   },
+   {
+    "testo": "Domani piazza nuova e tre idee nuove da votare.",
+    "file": "voci/2026-W48/m62.mp3"
+   },
+   {
+    "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
+    "file": "voci/2026-W48/m63.mp3"
+   }
   ]
  },
  "accento": {
   "2026-W44": 0,
   "2026-W46": 0,
   "2026-W45": 0,
-  "2026-W47": 0
+  "2026-W47": 0,
+  "2026-W48": 0
  },
  "motore": {
   "2026-W44": "mako-copia (Chatterbox, vivacità 0.6, cfg 0.5)",
   "2026-W46": "mako-copia (Chatterbox, vivacità 0.6, cfg 0.5)",
   "2026-W45": "mako-copia (Chatterbox, vivacità 0.6, cfg 0.5)",
-  "2026-W47": "mako-copia (Chatterbox, vivacità 0.6, cfg 0.5)"
+  "2026-W47": "mako-copia (Chatterbox, vivacità 0.6, cfg 0.5)",
+  "2026-W48": "mako-copia (Chatterbox, vivacità 0.6, cfg 0.5)"
  }
 }

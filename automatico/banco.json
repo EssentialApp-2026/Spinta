@@ -196,6 +196,55 @@
    ],
    "conteggio": "",
    "vince": ""
+  },
+  {
+   "settimana": "2026-W48",
+   "dal": "2026-11-22T00:00:00+01:00",
+   "chiude": "2026-11-25T23:59:00+01:00",
+   "uscita": "2026-11-27T19:00:00+01:00",
+   "piazza": "Piazza Quattro Giornate",
+   "regali": {
+    "A": {
+     "id": "compiti-pomodoro",
+     "nome": "Timer per i compiti",
+     "emoji": "📚",
+     "descrizione": "Il metodo del pomodoro: venticinque minuti di studio, cinque di pausa, e ogni quattro giri una pausa lunga. Ti suono io quando si cambia. Funziona anche senza internet.",
+     "link": "../Spinta/regali/2026-W48/compiti-pomodoro/"
+    },
+    "B": {
+     "id": "documenti",
+     "nome": "Documenti in scadenza",
+     "emoji": "🪪",
+     "descrizione": "Segni carta d'identità, patente, passaporto e tessera sanitaria con la scadenza: ti avviso un mese prima, anche col promemoria nel calendario. Tutto resta sul tuo telefono.",
+     "link": "../Spinta/regali/2026-W48/documenti/"
+    },
+    "C": {
+     "id": "caffe-turno",
+     "nome": "Chi paga il caffè",
+     "emoji": "☕",
+     "descrizione": "Scrivi chi prende il caffè con te: ogni giorno ti dico a chi tocca offrire, a giro, senza litigare. Il turno di oggi lo mandi nel gruppo.",
+     "link": "../Spinta/regali/2026-W48/caffe-turno/"
+    }
+   },
+   "opzioni": [
+    {
+     "lettera": "A",
+     "idea": "Timer per i compiti",
+     "voti": 0
+    },
+    {
+     "lettera": "B",
+     "idea": "Documenti in scadenza",
+     "voti": 0
+    },
+    {
+     "lettera": "C",
+     "idea": "Chi paga il caffè",
+     "voti": 0
+    }
+   ],
+   "conteggio": "",
+   "vince": ""
   }
  ]
 }

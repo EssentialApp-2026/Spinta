@@ -1,57 +1,59 @@
-settimana 2026-W47 dal 2026-11-15
-idee: ['La lista dei regali di Natale', 'Turni del cane', 'Bollette da pagare']
-$ /opt/hostedtoolcache/Python/3.12.16/x64/bin/python3 automatico/piazza.py 2026-W47 Regali:🎁 Cane:🐕 Bollette:💡
-{"piazza": "Piazza Dante", "file": "piazza-2026-W47.mp4", "poster": "piazza-2026-W47.jpg", "foto": "File:Convento Soriano.jpg", "licenza": "Public domain", "pagina": "https://commons.wikimedia.org/wiki/File:Convento_Soriano.jpg", "torna": false}
-persone tolte: 23, foto rifatta per il 11.8%
-persone tolte: 1, foto rifatta per il 0.1%
+settimana 2026-W48 dal 2026-11-22
+idee: ['Timer per i compiti', 'Documenti in scadenza', 'Chi paga il caffè']
+$ /opt/hostedtoolcache/Python/3.12.16/x64/bin/python3 automatico/piazza.py 2026-W48 Compiti:📚 Documenti:🪪 Caffè:☕
+{"piazza": "Piazza Quattro Giornate", "file": "piazza-2026-W48.mp4", "poster": "piazza-2026-W48.jpg", "foto": "File:Piazza Quattro Giornate - Vomero 100 0379.jpg", "licenza": "Public domain", "pagina": "https://commons.wikimedia.org/wiki/File:Piazza_Quattro_Giornate_-_Vomero_100_0379.jpg", "torna": false}
+persone tolte: 4, foto rifatta per il 0.5%
 
-sketch: ['pov', 'storia', 'pov'] · prova
-$ /opt/hostedtoolcache/Python/3.12.16/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W47.json
-avviso: 48 frasi senza voce nuova (useranno Piper), es. «Tre fastidi di tutti i giorni, tre app: quale vi regalo?»
-ok: 2026-W47 · 12 puntate
+sketch: ['storia', 'pov', 'storia'] · prova
+$ /opt/hostedtoolcache/Python/3.12.16/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W48.json
+avviso: 44 frasi senza voce nuova (useranno Piper), es. «Uè guagliù, il bancariello si è spostato in Piazza Quattro Giornate!»
+ok: 2026-W48 · 12 puntate
  
-$ /home/runner/mako/bin/python automatico/voce_mako.py settimana /home/runner/work/Spinta/Spinta/claude/settimana-2026-W47.json
-glia 0.526 (47s) | Mandatela a chi fa finta di non sentire i cane.
-   seme 1: capito 1.00 somiglia 0.591 (45s) | Mandatela a chi fa finta di non sentire il cane.
-m52.mp3 | Le bollette le ricordo io!
-   seme 0: capito 1.00 somiglia 0.513 (38s) | Le bollette le ricordo io.
-   seme 1: capito 1.00 somiglia 0.686 (37s) | Le bollette le ricordo io.
-m53.mp3 | Segnate la bolletta e la scadenza.
-   seme 0: capito 0.83 somiglia 0.526 (41s) | Signate la bolletta e la scadenza.
-   seme 1: capito 1.00 somiglia 0.467 (42s) | segnate la bolletta e la scadenza.
-m54.mp3 | Vi avviso qualche giorno prima.
-   seme 0: capito 0.80 somiglia 0.470 (36s) | Vi abbisso qualche giorno prima.
-   seme 1: capito 0.80 somiglia 0.585 (37s) | Vi abbiso qualche giorno prima.
-m55.mp3 | Uè guagliù, è il regalo del venerdì: Bollette da pagare.
-   seme 0: capito 1.00 somiglia 0.623 (53s) | Ué, guagliù, è il regalo del venerdì, bollette da pagare.
-   seme 1: capito 0.57 somiglia 0.610 (49s) | Qua, Guayou, è il legalo del Venice D, bollette da pagare.
-m56.mp3 | Mandatela a chi paga sempre in ritardo!
-   seme 0: capito 1.00 somiglia 0.501 (42s) | Mandatela a chi paga sempre in ritardo.
-   seme 1: capito 1.00 somiglia 0.569 (50s) | Mandatela a chi paga sempre in ritardo.
+$ /home/runner/mako/bin/python automatico/voce_mako.py settimana /home/runner/work/Spinta/Spinta/claude/settimana-2026-W48.json
+ | Mandatela a chi parte sempre col documento scaduto.
+   seme 1: capito 1.00 somiglia 0.612 (49s) | Mandatela a chi parte sempre col documento scaduto.
+m52.mp3 | Il caffè ha i suoi turni!
+   seme 0: capito 0.18 somiglia 0.618 (46s) | e caffè a sua tourmi.
+   seme 1: capito 0.83 somiglia 0.483 (38s) | Il caffè ha i suoi durmi.
+m53.mp3 | Scrivete chi prende il caffè con voi.
+   seme 0: capito 1.00 somiglia 0.482 (42s) | Scrivete chi prende il caffè con voi.
+   seme 1: capito 1.00 somiglia 0.546 (40s) | Scrivete chi prende il caffè con voi.
+m54.mp3 | Ogni giorno vi dico chi offre.
+   seme 0: capito 1.00 somiglia 0.535 (38s) | Ogni giorno vi dico chi offre.
+   seme 1: capito 1.00 somiglia 0.591 (39s) | Ogni giorno vi dico chi offre.
+m55.mp3 | Uè guagliù, è il regalo del venerdì: Chi paga il caffè.
+   seme 0: capito 0.82 somiglia 0.705 (56s) | Ouai, Gualiu, è il regalo del venerdì, chi paga il caffè.
+   seme 1: capito 0.82 somiglia 0.767 (57s) | "Weh, Guayu" è il regalo del venerdì chi paga il caffè.
+m56.mp3 | Mandatela al collega che non paga mai!
+   seme 0: capito 0.86 somiglia 0.492 (48s) | Mandatele al collega che non paga mai.
+   seme 1: capito 0.57 somiglia 0.624 (46s) | Mandate l'alcollega che non paga mai!
 m57.mp3 | Sabato si smonta: domani cambio piazza!
-   seme 0: capito 1.00 somiglia 0.584 (50s) | Sabato si smonta, domani cambio piazza.
-   seme 1: capito 1.00 somiglia 0.538 (53s) | Sabato si smonta, domani cambio piazza.
+   seme 0: capito 1.00 somiglia 0.591 (48s) | Sabato si smonta, domani cambio piazza.
+   seme 1: capito 1.00 somiglia 0.539 (53s) | Sabato si smonta, domani cambio piazza.
 m58.mp3 | Uè guagliù, chiudo la tenda e piego il banco.
-   seme 0: capito 0.78 somiglia 0.559 (51s) | Weh, Guayu, chiudo la tenda e piego il banco.
-   seme 1: capito 0.78 somiglia 0.581 (53s) | We, Guayou, chiudo la tenda e piego il banco.
+   seme 0: capito 0.78 somiglia 0.560 (51s) | Weh, Guayu, chiudo la tenda e piego il banco.
+   seme 1: capito 0.78 somiglia 0.581 (52s) | We, Guayou, chiudo la tenda e piego il banco.
 m59.mp3 | Arrotolo le lampadine e metto tutto nel carretto.
-   seme 0: capito 0.88 somiglia 0.613 (51s) | Arrotolo le lampadine e metto tutto nel scarvetto.
-   seme 1: capito 1.00 somiglia 0.540 (51s) | Arrotolo le lampadine e metto tutto nel carretto.
-m60.mp3 | Saluto Piazza Dante: grazie per questa settimana!
-   seme 0: capito 1.00 somiglia 0.539 (48s) | Saluto Piazza Dante, grazie per questa settimana.
-   seme 1: capito 1.00 somiglia 0.591 (50s) | Saluto Piazza Dante, grazie per questa settimana.
+   seme 0: capito 0.88 somiglia 0.611 (50s) | Arrotolo le lampadine e metto tutto nel scarvetto.
+   seme 1: capito 1.00 somiglia 0.548 (49s) | Arrotolo le lampadine e metto tutto nel carretto.
+m60.mp3 | Saluto Piazza Quattro Giornate: grazie per questa settimana!
+   seme 0: capito 1.00 somiglia 0.576 (47s) | Saluto Piazza 4 giornate grazie per questa settimana.
+   seme 1: capito 1.00 somiglia 0.762 (53s) | Saluto Piazza 4 Giornate! Grazie per questa settimana!
 m61.mp3 | Dove vado domani? Non ve lo dico ancora.
-   seme 0: capito 1.00 somiglia 0.604 (52s) | Dove vado domani? Non ve lo dico ancora.
-   seme 1: capito 1.00 somiglia 0.626 (54s) | Dove vado domani? Non ve lo dico ancora!
+   seme 0: capito 1.00 somiglia 0.602 (52s) | Dove vado domani? Non ve lo dico ancora.
+   seme 1: capito 1.00 somiglia 0.629 (54s) | Dove vado domani? Non ve lo dico ancora!
 m62.mp3 | Domani piazza nuova e tre idee nuove da votare.
-   seme 0: capito 1.00 somiglia 0.612 (51s) | Domani, piazza Nuova e Tre idee nuove da votare.
-   seme 1: capito 0.82 somiglia 0.578 (48s) | Domani piazza nuova e 3D nuove da votare.
+   seme 0: capito 1.00 somiglia 0.614 (50s) | Domani, piazza Nuova e Tre idee nuove da votare.
+   seme 1: capito 0.82 somiglia 0.582 (48s) | Domani piazza nuova e 3D nuove da votare.
 m63.mp3 | Secondo voi dove mi sposto? Scrivetelo nei commenti!
-   seme 0: capito 1.00 somiglia 0.583 (49s) | Secondo voi dove mi sposto, scrivetelo nei commenti.
-   seme 1: capito 1.00 somiglia 0.566 (49s) | Secondo voi dove mi sposto, scrivetelo nei commenti.
-2026-W47: 63 battute, copie: capito 0.95, somiglia 0.613
- t_stream_analyzer:🚨 Detected 2x repetition of token 6324
+   seme 0: capito 1.00 somiglia 0.592 (48s) | Secondo voi dove mi sposto, scrivetelo nei commenti.
+   seme 1: capito 0.80 somiglia 0.567 (50s) | Secondo voi dovemi sposto, scrivetelo nei commenti.
+2026-W48: 63 battute, copie: capito 0.92, somiglia 0.604
+ t_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:🚨 Detected 2x repetition of token 6324
 WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(False), alignment_repetition=tensor(False), token_repetition=True
+WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
 WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
 WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:🚨 Detected 2x repetition of token 6405
 WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(False), alignment_repetition=tensor(False), token_repetition=True
@@ -66,16 +68,13 @@ WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS tok
 WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
 WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
 WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
-WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
-WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
-WARNING:chatterbox.models.t3.inference.alignment_stream_analyzer:forcing EOS token, long_tail=tensor(True), alignment_repetition=tensor(False), token_repetition=False
 
-$ /home/runner/mako/bin/python automatico/voce_mako.py installa 2026-W47
-2026-W47 installata: 63 battute nuove, 63 in tutto
+$ /home/runner/mako/bin/python automatico/voce_mako.py installa 2026-W48
+2026-W48 installata: 63 battute nuove, 63 in tutto
  
 voce: mako
-$ /opt/hostedtoolcache/Python/3.12.16/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W47.json
+$ /opt/hostedtoolcache/Python/3.12.16/x64/bin/python3 claude/controlla.py /home/runner/work/Spinta/Spinta/claude/settimana-2026-W48.json
 voci: tutte le frasi hanno la voce nuova
-ok: 2026-W47 · 12 puntate
+ok: 2026-W48 · 12 puntate
  
-fatto 2026-W47
+fatto 2026-W48

@@ -1,0 +1,639 @@
+{
+ "settimana": "2026-W48",
+ "vivacita": 0.6,
+ "cfg": 0.5,
+ "riferimento": "mako-w43s-1 (prova «vivace» scelta da Sam, 25 ottobre)",
+ "battute": [
+  {
+   "file": "m01.mp3",
+   "testo": "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+   "fonte": "copia",
+   "capito": 0.91,
+   "somiglia": 0.685,
+   "sentito": "tre fastidi di tutti i giorni, tre \"up\" quale vi regalo?",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m02.mp3",
+   "testo": "Uè guagliù, il bancariello si è spostato in Piazza Quattro Giornate!",
+   "fonte": "copia",
+   "capito": 0.86,
+   "somiglia": 0.724,
+   "sentito": "Guayou, il bancariello si è spostato in piazza Quattro Giornate",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m03.mp3",
+   "testo": "A: Timer per i compiti.",
+   "fonte": "copia",
+   "capito": 0.67,
+   "somiglia": 0.657,
+   "sentito": "A. Timer Peri Compiti",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m04.mp3",
+   "testo": "B: Documenti in scadenza.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.644,
+   "sentito": "B. Documenti in scadenza",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m05.mp3",
+   "testo": "C: Chi paga il caffè.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.462,
+   "sentito": "Ci chi paga il caffè?",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m06.mp3",
+   "testo": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.632,
+   "sentito": "Scrivete la lettera nei commenti, fino a mercoledì sera.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m07.mp3",
+   "testo": "Venerdì la più votata è sul banco, gratis.",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.615,
+   "sentito": "Venedi la più votata è sul banco, gratis!",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m08.mp3",
+   "testo": "Mamma mia, tre ore sul libro e una pagina sola!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.736,
+   "sentito": "Mamma mia, tre ore sul libro e una pagina sola.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m09.mp3",
+   "testo": "E i compiti: quanto ci mettono i vostri figli?",
+   "fonte": "copia",
+   "capito": 0.94,
+   "somiglia": 0.473,
+   "sentito": "E compiti quanto ci mettono i vostri figli?",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m10.mp3",
+   "testo": "Ho l'app per voi: «Timer per i compiti», l'idea A.",
+   "fonte": "copia",
+   "capito": 0.78,
+   "somiglia": 0.582,
+   "sentito": "Ho lappe per voi, teamer per i compiti, l'idea A.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m11.mp3",
+   "testo": "Venticinque minuti di studio e cinque di pausa: vi suono io.",
+   "fonte": "copia",
+   "capito": 0.91,
+   "somiglia": 0.673,
+   "sentito": "25 minuti di studio e 5 di pausa vi suono io.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m12.mp3",
+   "testo": "Scrivete A nei commenti: si vota fino a mercoledì sera!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.584,
+   "sentito": "Scrivete a nei commenti, si vota fino a mercoledì sera.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m13.mp3",
+   "testo": "POV: all'aeroporto con la carta d'identità scaduta!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.561,
+   "sentito": "POV, all'aeroporto con la carta d'identità scaduta.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m14.mp3",
+   "testo": "E i documenti: sapete quando scade la patente?",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.58,
+   "sentito": "E i documenti sapete quando scade la patente?",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m15.mp3",
+   "testo": "Ho l'app per voi: «Documenti in scadenza», l'idea B.",
+   "fonte": "copia",
+   "capito": 0.91,
+   "somiglia": 0.724,
+   "sentito": "O L'app per voi, Documenti in scadenza, l'idea B.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m16.mp3",
+   "testo": "Segnate i documenti e vi avviso prima che scadano.",
+   "fonte": "copia",
+   "capito": 0.89,
+   "somiglia": 0.581,
+   "sentito": "Segnate i documenti e vi abbiso prima che scadano.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m17.mp3",
+   "testo": "Scrivete B nei commenti: si vota fino a domani sera!",
+   "fonte": "copia",
+   "capito": 0.8,
+   "somiglia": 0.588,
+   "sentito": "Scrivete bene i commenti, si vota fino a domani sera.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m18.mp3",
+   "testo": "Mamma mia, al bar si litiga sempre su chi paga il caffè!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.802,
+   "sentito": "Mamma mia, al bar si litiga sempre su chi paga il caffè.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m19.mp3",
+   "testo": "E al bar coi colleghi: chi paga il caffè oggi?",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.489,
+   "sentito": "E al bar coi colleghi, chi paga il caffè oggi?",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m20.mp3",
+   "testo": "Ho l'app per voi: «Chi paga il caffè», l'idea C.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.585,
+   "sentito": "Ho l'app per voi chi paga il caffè l'idea C.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m21.mp3",
+   "testo": "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.542,
+   "sentito": "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m22.mp3",
+   "testo": "Scrivete C nei commenti, oppure A o B: il voto chiude stasera!",
+   "fonte": "copia",
+   "capito": 0.87,
+   "somiglia": 0.685,
+   "sentito": "Scriveteci nei commenti oppure a O B il voto chiude stasera.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m23.mp3",
+   "testo": "Ha vinto la A: i compiti si fanno senza perdere tempo!",
+   "fonte": "copia",
+   "capito": 0.91,
+   "somiglia": 0.658,
+   "sentito": "A vinto la A, i compiti si fanno senza perdere tempo.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m24.mp3",
+   "testo": "Uè guagliù, ho contato i voti e avete scelto voi.",
+   "fonte": "copia",
+   "capito": 0.84,
+   "somiglia": 0.561,
+   "sentito": "\"Oeeh, Guagliù, ho contato i voti, avete scelto voi?\"",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m25.mp3",
+   "testo": "Ha vinto la A: Timer per i compiti.",
+   "fonte": "copia",
+   "capito": 0.88,
+   "somiglia": 0.458,
+   "sentito": "Ha vinto la A Team per i compiti.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m26.mp3",
+   "testo": "Da oggi ci lavoro, giorno e notte.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.52,
+   "sentito": "Da oggi ci lavoro giorno e notte.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m27.mp3",
+   "testo": "Venerdì è sul banco, gratis per tutti.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.521,
+   "sentito": "Venerdì è sul banco gratis per tutti.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m28.mp3",
+   "testo": "Qual era la materia che odiavate? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.634,
+   "sentito": "Qual era la materia che odiavate? Ditemelo nei commenti.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m29.mp3",
+   "testo": "Ha vinto la B: i documenti non scadono più a sorpresa!",
+   "fonte": "copia",
+   "capito": 0.76,
+   "somiglia": 0.801,
+   "sentito": "Avvento la B, i documenti non scadano più a sorpresa.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m30.mp3",
+   "testo": "Ha vinto la B: Documenti in scadenza.",
+   "fonte": "copia",
+   "capito": 0.77,
+   "somiglia": 0.565,
+   "sentito": "Abinto la B, Documenti in scadenza.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m31.mp3",
+   "testo": "Quale documento vi è scaduto nel momento peggiore? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.612,
+   "sentito": "Quale documento vi è scaduto nel momento peggiore? Ditemelo nei commenti!",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m32.mp3",
+   "testo": "Ha vinto la C: al bar si sa chi paga!",
+   "fonte": "copia",
+   "capito": 0.84,
+   "somiglia": 0.772,
+   "sentito": "Ha vinto la C al Bar Si Sacchi Paga.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m33.mp3",
+   "testo": "Ha vinto la C: Chi paga il caffè.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.587,
+   "sentito": "Ha vinto la C chi paga il caffè.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m34.mp3",
+   "testo": "Il caffè come lo prendete? Ditemelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.618,
+   "sentito": "Il caffè come lo prendete? Ditemelo nei commenti!",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m35.mp3",
+   "testo": "Zero voti: questa volta niente app.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.489,
+   "sentito": "Zero voti, questa volta niente appina.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m36.mp3",
+   "testo": "Uè guagliù, ho letto tutti i commenti.",
+   "fonte": "copia",
+   "capito": 0.71,
+   "somiglia": 0.504,
+   "sentito": "Què, Guayou, ho letto tutti i commenti.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m37.mp3",
+   "testo": "Ma nessuno ha scritto A, B o C.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.43,
+   "sentito": "Ma nessuno ha scritto A, B o C.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m38.mp3",
+   "testo": "Mi dispiace: venerdì niente regalo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.581,
+   "sentito": "Mi dispiace venerdì niente regalo.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m39.mp3",
+   "testo": "Domenica torno con tre idee nuove.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.535,
+   "sentito": "Domenica attorno con 3 idee nuove.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m40.mp3",
+   "testo": "Basta una lettera nei commenti e decidete voi!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.601,
+   "sentito": "Basta una lettera nei commenti e decidete voi!",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m41.mp3",
+   "testo": "I compiti hanno il loro timer!",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.57,
+   "sentito": "i compiti hanno il loro teamer.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m42.mp3",
+   "testo": "Venticinque minuti di studio, poi la pausa.",
+   "fonte": "copia",
+   "capito": 0.86,
+   "somiglia": 0.538,
+   "sentito": "25 minuti di studio, poi la pausa.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m43.mp3",
+   "testo": "Vi suono io quando si cambia.",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.723,
+   "sentito": "Vi sono io quando si cambia.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m44.mp3",
+   "testo": "Uè guagliù, è il regalo del venerdì: Timer per i compiti.",
+   "fonte": "copia",
+   "capito": 0.73,
+   "somiglia": 0.723,
+   "sentito": "Weh, Guayou, è il regalo del venerdì, Timmer per i compiti.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m45.mp3",
+   "testo": "Gratis, senza registrazione: link nel profilo.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.717,
+   "sentito": "Gratis, senza registrazione, link nel profilo.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m46.mp3",
+   "testo": "Mandatela a chi studia col telefono in mano!",
+   "fonte": "copia",
+   "capito": 0.75,
+   "somiglia": 0.489,
+   "sentito": "Mandate la chi studia col telefono in mano.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m47.mp3",
+   "testo": "I documenti li controllo io!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.624,
+   "sentito": "I documenti li controllo io.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m48.mp3",
+   "testo": "Segnate carta d'identità, patente e passaporto.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.626,
+   "sentito": "Segnate carta d'identità, patente e passaporto.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m49.mp3",
+   "testo": "Vi avviso un mese prima.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.434,
+   "sentito": "vi avviso un mese prima.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m50.mp3",
+   "testo": "Uè guagliù, è il regalo del venerdì: Documenti in scadenza.",
+   "fonte": "copia",
+   "capito": 0.67,
+   "somiglia": 0.751,
+   "sentito": "Ouai, Guayou, è il regalo del Banner D, Documenti in scadenza.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m51.mp3",
+   "testo": "Mandatela a chi parte sempre col documento scaduto!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.612,
+   "sentito": "Mandatela a chi parte sempre col documento scaduto.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m52.mp3",
+   "testo": "Il caffè ha i suoi turni!",
+   "fonte": "copia",
+   "capito": 0.83,
+   "somiglia": 0.483,
+   "sentito": "Il caffè ha i suoi durmi.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m53.mp3",
+   "testo": "Scrivete chi prende il caffè con voi.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.546,
+   "sentito": "Scrivete chi prende il caffè con voi.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m54.mp3",
+   "testo": "Ogni giorno vi dico chi offre.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.591,
+   "sentito": "Ogni giorno vi dico chi offre.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m55.mp3",
+   "testo": "Uè guagliù, è il regalo del venerdì: Chi paga il caffè.",
+   "fonte": "copia",
+   "capito": 0.82,
+   "somiglia": 0.767,
+   "sentito": "\"Weh, Guayu\" è il regalo del venerdì chi paga il caffè.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m56.mp3",
+   "testo": "Mandatela al collega che non paga mai!",
+   "fonte": "copia",
+   "capito": 0.86,
+   "somiglia": 0.492,
+   "sentito": "Mandatele al collega che non paga mai.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m57.mp3",
+   "testo": "Sabato si smonta: domani cambio piazza!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.591,
+   "sentito": "Sabato si smonta, domani cambio piazza.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m58.mp3",
+   "testo": "Uè guagliù, chiudo la tenda e piego il banco.",
+   "fonte": "copia",
+   "capito": 0.78,
+   "somiglia": 0.581,
+   "sentito": "We, Guayou, chiudo la tenda e piego il banco.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m59.mp3",
+   "testo": "Arrotolo le lampadine e metto tutto nel carretto.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.548,
+   "sentito": "Arrotolo le lampadine e metto tutto nel carretto.",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m60.mp3",
+   "testo": "Saluto Piazza Quattro Giornate: grazie per questa settimana!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.762,
+   "sentito": "Saluto Piazza 4 Giornate! Grazie per questa settimana!",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m61.mp3",
+   "testo": "Dove vado domani? Non ve lo dico ancora.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.629,
+   "sentito": "Dove vado domani? Non ve lo dico ancora!",
+   "seme": 1,
+   "ripulita": true
+  },
+  {
+   "file": "m62.mp3",
+   "testo": "Domani piazza nuova e tre idee nuove da votare.",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.614,
+   "sentito": "Domani, piazza Nuova e Tre idee nuove da votare.",
+   "seme": 0,
+   "ripulita": true
+  },
+  {
+   "file": "m63.mp3",
+   "testo": "Secondo voi dove mi sposto? Scrivetelo nei commenti!",
+   "fonte": "copia",
+   "capito": 1.0,
+   "somiglia": 0.592,
+   "sentito": "Secondo voi dove mi sposto, scrivetelo nei commenti.",
+   "seme": 0,
+   "ripulita": true
+  }
+ ],
+ "ultimo": 63
+}

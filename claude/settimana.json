@@ -1,34 +1,34 @@
 {
   "versione": 1,
-  "settimana": "2026-W47",
-  "dal": "2026-11-15",
-  "al": "2026-11-22",
-  "scritto": "2026-11-14",
-  "voto_fino_a": "2026-11-18",
-  "regalo": "2026-11-20",
+  "settimana": "2026-W48",
+  "dal": "2026-11-22",
+  "al": "2026-11-29",
+  "scritto": "2026-11-21",
+  "voto_fino_a": "2026-11-25",
+  "regalo": "2026-11-27",
   "idee": {
-    "A": "La lista dei regali di Natale",
-    "B": "Turni del cane",
-    "C": "Bollette da pagare"
+    "A": "Timer per i compiti",
+    "B": "Documenti in scadenza",
+    "C": "Chi paga il caffè"
   },
   "idee_id": {
-    "A": "regali-natale",
-    "B": "turni-cane",
-    "C": "bollette"
+    "A": "compiti-pomodoro",
+    "B": "documenti",
+    "C": "caffe-turno"
   },
-  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Dante e tre idee; lunedì, martedì e mercoledì uno sketch per idea (si capisce anche senza conoscere Gennarino), mercoledì sera chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
+  "nota": "Settimana preparata da Spinta in automatico (automatico/settimana.py): domenica Piazza Quattro Giornate e tre idee; lunedì, martedì e mercoledì uno sketch per idea (si capisce anche senza conoscere Gennarino), mercoledì sera chiude il voto, giovedì il risultato, venerdì il regalo, sabato si smonta la bancarella. Risultato e regalo sono pronti per tutte e tre le idee; se nessuno vota c'è «Niente voti, niente app».",
   "telefoni": {
     "A": {
-      "nome": "Regali",
-      "emoji": "🎁"
+      "nome": "Compiti",
+      "emoji": "📚"
     },
     "B": {
-      "nome": "Cane",
-      "emoji": "🐕"
+      "nome": "Documenti",
+      "emoji": "🪪"
     },
     "C": {
-      "nome": "Bollette",
-      "emoji": "💡"
+      "nome": "Caffè",
+      "emoji": "☕"
     }
   },
   "puntate": [
@@ -37,31 +37,31 @@
       "tipo": "idee",
       "giorno": "domenica",
       "titolo": "Piazza nuova, tre idee nuove",
-      "data": "2026-11-15",
+      "data": "2026-11-22",
       "copione": [
         "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
-        "Uè guagliù, il bancariello si è spostato in Piazza Dante!",
-        "A: La lista dei regali di Natale.",
-        "B: Turni del cane.",
-        "C: Bollette da pagare.",
+        "Uè guagliù, il bancariello si è spostato in Piazza Quattro Giornate!",
+        "A: Timer per i compiti.",
+        "B: Documenti in scadenza.",
+        "C: Chi paga il caffè.",
         "Scrivete la lettera nei commenti, fino a mercoledì sera.",
         "Venerdì la più votata è sul banco, gratis."
       ],
-      "apertura": "piazza-2026-W47.mp4",
+      "apertura": "piazza-2026-W48.mp4",
       "aperturaFrasi": 2
     },
     {
       "id": "sketch-A",
       "tipo": "libera",
       "giorno": "lunedì",
-      "titolo": "Sketch: i regali dell'ultimo minuto",
-      "variante": "pov",
+      "titolo": "Sketch: i compiti che non finiscono mai",
+      "variante": "storia",
       "idea": "A",
       "copione": [
-        "POV: il ventitré dicembre e ancora nessun regalo!",
-        "E i regali di Natale: li comprate all'ultimo minuto?",
-        "Ho l'app per voi: «La lista dei regali di Natale», l'idea A.",
-        "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
+        "Mamma mia, tre ore sul libro e una pagina sola!",
+        "E i compiti: quanto ci mettono i vostri figli?",
+        "Ho l'app per voi: «Timer per i compiti», l'idea A.",
+        "Venticinque minuti di studio e cinque di pausa: vi suono io.",
         "Scrivete A nei commenti: si vota fino a mercoledì sera!"
       ]
     },
@@ -69,14 +69,14 @@
       "id": "sketch-B",
       "tipo": "libera",
       "giorno": "martedì",
-      "titolo": "Sketch: il cane da portare fuori",
-      "variante": "storia",
+      "titolo": "Sketch: la carta d'identità scaduta",
+      "variante": "pov",
       "idea": "B",
       "copione": [
-        "Mamma mia, il cane mi guarda dalla porta e nessuno lo porta fuori!",
-        "E il cane: chi lo porta fuori stasera?",
-        "Ho l'app per voi: «Turni del cane», l'idea B.",
-        "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
+        "POV: all'aeroporto con la carta d'identità scaduta!",
+        "E i documenti: sapete quando scade la patente?",
+        "Ho l'app per voi: «Documenti in scadenza», l'idea B.",
+        "Segnate i documenti e vi avviso prima che scadano.",
         "Scrivete B nei commenti: si vota fino a domani sera!"
       ]
     },
@@ -84,14 +84,14 @@
       "id": "sketch-C",
       "tipo": "libera",
       "giorno": "mercoledì",
-      "titolo": "Sketch: la bolletta dimenticata",
-      "variante": "pov",
+      "titolo": "Sketch: il caffè da pagare",
+      "variante": "storia",
       "idea": "C",
       "copione": [
-        "POV: la bolletta della luce scaduta da due settimane!",
-        "E le bollette: le pagate sempre in tempo?",
-        "Ho l'app per voi: «Bollette da pagare», l'idea C.",
-        "Segnate le bollette e vi dico quando vanno pagate.",
+        "Mamma mia, al bar si litiga sempre su chi paga il caffè!",
+        "E al bar coi colleghi: chi paga il caffè oggi?",
+        "Ho l'app per voi: «Chi paga il caffè», l'idea C.",
+        "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
         "Scrivete C nei commenti, oppure A o B: il voto chiude stasera!"
       ]
     },
@@ -102,13 +102,13 @@
       "titolo": "Risultato del voto",
       "vince": "A",
       "copione": [
-        "Ha vinto la A: i regali di Natale sono sotto controllo!",
+        "Ha vinto la A: i compiti si fanno senza perdere tempo!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la A: La lista dei regali di Natale.",
-        "Segnate chi, cosa e quanto spendete, e spuntate quando lo comprate.",
+        "Ha vinto la A: Timer per i compiti.",
+        "Venticinque minuti di studio e cinque di pausa: vi suono io.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Qual è il regalo più strano che avete ricevuto? Ditemelo nei commenti!"
+        "Qual era la materia che odiavate? Ditemelo nei commenti!"
       ]
     },
     {
@@ -118,13 +118,13 @@
       "titolo": "Risultato del voto",
       "vince": "B",
       "copione": [
-        "Ha vinto la B: il cane esce sempre all'ora giusta!",
+        "Ha vinto la B: i documenti non scadono più a sorpresa!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la B: Turni del cane.",
-        "Scrivete chi c'è in casa e vi dico chi porta fuori il cane.",
+        "Ha vinto la B: Documenti in scadenza.",
+        "Segnate i documenti e vi avviso prima che scadano.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Come si chiama il vostro cane? Ditemelo nei commenti!"
+        "Quale documento vi è scaduto nel momento peggiore? Ditemelo nei commenti!"
       ]
     },
     {
@@ -134,13 +134,13 @@
       "titolo": "Risultato del voto",
       "vince": "C",
       "copione": [
-        "Ha vinto la C: le bollette non vi sorprendono più!",
+        "Ha vinto la C: al bar si sa chi paga!",
         "Uè guagliù, ho contato i voti e avete scelto voi.",
-        "Ha vinto la C: Bollette da pagare.",
-        "Segnate le bollette e vi dico quando vanno pagate.",
+        "Ha vinto la C: Chi paga il caffè.",
+        "Scrivete i colleghi e vi dico a chi tocca offrire oggi.",
         "Da oggi ci lavoro, giorno e notte.",
         "Venerdì è sul banco, gratis per tutti.",
-        "Qual è la bolletta che vi spaventa di più? Ditemelo nei commenti!"
+        "Il caffè come lo prendete? Ditemelo nei commenti!"
       ]
     },
     {
@@ -164,12 +164,12 @@
       "titolo": "Il regalo è sul banco",
       "vince": "A",
       "copione": [
-        "Natale è sotto controllo!",
-        "Segnate a chi fare il regalo e cosa.",
-        "Vi dico quanto avete speso.",
-        "Uè guagliù, è il regalo del venerdì: La lista dei regali di Natale.",
+        "I compiti hanno il loro timer!",
+        "Venticinque minuti di studio, poi la pausa.",
+        "Vi suono io quando si cambia.",
+        "Uè guagliù, è il regalo del venerdì: Timer per i compiti.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi compra i regali la vigilia!"
+        "Mandatela a chi studia col telefono in mano!"
       ]
     },
     {
@@ -179,12 +179,12 @@
       "titolo": "Il regalo è sul banco",
       "vince": "B",
       "copione": [
-        "Il cane ha i suoi turni!",
-        "Scrivete chi c'è in casa.",
-        "Ogni giorno si sa chi lo porta fuori.",
-        "Uè guagliù, è il regalo del venerdì: Turni del cane.",
+        "I documenti li controllo io!",
+        "Segnate carta d'identità, patente e passaporto.",
+        "Vi avviso un mese prima.",
+        "Uè guagliù, è il regalo del venerdì: Documenti in scadenza.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi fa finta di non sentire il cane!"
+        "Mandatela a chi parte sempre col documento scaduto!"
       ]
     },
     {
@@ -194,12 +194,12 @@
       "titolo": "Il regalo è sul banco",
       "vince": "C",
       "copione": [
-        "Le bollette le ricordo io!",
-        "Segnate la bolletta e la scadenza.",
-        "Vi avviso qualche giorno prima.",
-        "Uè guagliù, è il regalo del venerdì: Bollette da pagare.",
+        "Il caffè ha i suoi turni!",
+        "Scrivete chi prende il caffè con voi.",
+        "Ogni giorno vi dico chi offre.",
+        "Uè guagliù, è il regalo del venerdì: Chi paga il caffè.",
         "Gratis, senza registrazione: link nel profilo.",
-        "Mandatela a chi paga sempre in ritardo!"
+        "Mandatela al collega che non paga mai!"
       ]
     },
     {
@@ -211,12 +211,12 @@
         "Sabato si smonta: domani cambio piazza!",
         "Uè guagliù, chiudo la tenda e piego il banco.",
         "Arrotolo le lampadine e metto tutto nel carretto.",
-        "Saluto Piazza Dante: grazie per questa settimana!",
+        "Saluto Piazza Quattro Giornate: grazie per questa settimana!",
         "Dove vado domani? Non ve lo dico ancora.",
         "Domani piazza nuova e tre idee nuove da votare.",
         "Secondo voi dove mi sposto? Scrivetelo nei commenti!"
       ]
     }
   ],
-  "piazza": "Piazza Dante"
+  "piazza": "Piazza Quattro Giornate"
 }

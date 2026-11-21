@@ -199,6 +199,37 @@
     "mercoledì: Sketch: la bolletta dimenticata",
     "sabato: Si smonta la bancarella"
    ]
+  },
+  {
+   "settimana": "2026-W48",
+   "idee": {
+    "A": "Timer per i compiti",
+    "B": "Documenti in scadenza",
+    "C": "Chi paga il caffè"
+   },
+   "piazza": "Piazza Quattro Giornate",
+   "fatto_da": "automatico/settimana.py",
+   "hook": [
+    "Tre fastidi di tutti i giorni, tre app: quale vi regalo?",
+    "Mamma mia, tre ore sul libro e una pagina sola!",
+    "POV: all'aeroporto con la carta d'identità scaduta!",
+    "Mamma mia, al bar si litiga sempre su chi paga il caffè!",
+    "Ha vinto la A: i compiti si fanno senza perdere tempo!",
+    "Ha vinto la B: i documenti non scadono più a sorpresa!",
+    "Ha vinto la C: al bar si sa chi paga!",
+    "Zero voti: questa volta niente app.",
+    "I compiti hanno il loro timer!",
+    "I documenti li controllo io!",
+    "Il caffè ha i suoi turni!",
+    "Sabato si smonta: domani cambio piazza!"
+   ],
+   "parti": [
+    "domenica: Piazza nuova, tre idee nuove",
+    "lunedì: Sketch: i compiti che non finiscono mai",
+    "martedì: Sketch: la carta d'identità scaduta",
+    "mercoledì: Sketch: il caffè da pagare",
+    "sabato: Si smonta la bancarella"
+   ]
   }
  ]
 }
